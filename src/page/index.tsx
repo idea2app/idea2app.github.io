@@ -1,4 +1,5 @@
 import { createCell, Fragment } from 'web-cell';
+import { HTMLHyperLinkProps } from 'web-utility/source/DOM-type';
 import { CellRouter } from 'cell-router/source';
 import { NavBar } from 'boot-cell/source/Navigator/NavBar';
 import { NavLink } from 'boot-cell/source/Navigator/Nav';
@@ -6,21 +7,29 @@ import { NavLink } from 'boot-cell/source/Navigator/Nav';
 import { history } from '../model';
 import WebCell_0 from '../image/WebCell-0.png';
 
-import { Hello } from './Hello';
-import { CellClock } from './Clock';
+import { HomePage } from './Home';
 
-const menu = [
+const menu: HTMLHyperLinkProps[] = [
     {
-        title: 'Hello',
-        href: 'hello'
+        title: '品质服务',
+        href: '#services'
     },
     {
-        title: 'Clock',
-        href: 'clock'
+        title: '客户案例',
+        href: '#projects'
     },
     {
-        title: 'GitHub source',
-        href: 'https://github.com/EasyWebApp/scaffold'
+        title: '菁英团队',
+        href: '#members'
+    },
+    {
+        title: '合作伙伴',
+        href: '#partners'
+    },
+    {
+        title: '开源生态',
+        target: '_blank',
+        href: 'https://github.com/idea2app'
     }
 ];
 
@@ -28,14 +37,10 @@ export function PageFrame() {
     return (
         <>
             <NavBar
-                narrow
-                brand={
-                    <img
-                        alt="WebCell scaffold"
-                        src={WebCell_0}
-                        style={{ width: '2rem' }}
-                    />
-                }
+                className="shadow-none"
+                background="white"
+                theme="light"
+                brand="idea2app"
             >
                 {menu.map(({ title, ...props }) => (
                     <NavLink {...props}>{title}</NavLink>
@@ -48,17 +53,18 @@ export function PageFrame() {
                 history={history}
                 routes={[
                     {
-                        paths: ['clock'],
-                        component: CellClock
-                    },
-                    {
-                        paths: ['hello', ''],
-                        component: Hello
+                        paths: [''],
+                        component: HomePage
                     }
                 ]}
             />
-            <footer className="text-center bg-light py-5">
-                Proudly developed with
+            <footer className="text-center py-5">
+                <img
+                    className="mx-1"
+                    style={{ width: '2rem' }}
+                    src={WebCell_0}
+                />
+                自豪地采用
                 <a
                     className="mx-1"
                     target="_blank"
@@ -66,7 +72,7 @@ export function PageFrame() {
                 >
                     WebCell v2
                 </a>
-                &amp;
+                和
                 <a
                     className="mx-1"
                     target="_blank"
@@ -74,6 +80,7 @@ export function PageFrame() {
                 >
                     BootCell v1
                 </a>
+                开发
             </footer>
         </>
     );

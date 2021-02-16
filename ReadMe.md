@@ -1,13 +1,11 @@
-![](src/image/WebCell-0.png)
+![](https://github.com/idea2app.png)
 
-# WebCell scaffold
+# idea2app 官方网站
 
-App Project scaffold of **WebCell** v2
+https://ideapp.dev/
 
-https://web-cell.dev/scaffold/
-
-[![NPM Dependency](https://david-dm.org/EasyWebApp/scaffold.svg)][1]
-[![CI & CD](https://github.com/EasyWebApp/scaffold/workflows/CI%20&%20CD/badge.svg)][2]
+[![NPM Dependency](https://david-dm.org/idea2app/idea2app.github.io.svg)][1]
+[![CI & CD](https://github.com/idea2app/idea2app.github.io/workflows/CI%20&%20CD/badge.svg)][2]
 
 ## Technology stack
 
@@ -32,8 +30,8 @@ npm start
 npm run build
 ```
 
-[1]: https://david-dm.org/EasyWebApp/scaffold
-[2]: https://github.com/EasyWebApp/scaffold/actions
+[1]: https://david-dm.org/idea2app/idea2app.github.io
+[2]: https://github.com/idea2app/idea2app.github.io/actions
 [3]: https://typescriptlang.org
 [4]: https://web-cell.dev/
 [5]: https://bootstrap.web-cell.dev/

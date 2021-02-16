@@ -21,5 +21,6 @@ jobs:
               uses: peaceiris/actions-gh-pages@v3
               with:
                   publish_dir: ./dist
+                  cname: ideapp.dev
                   personal_token: ${{ secrets.GITHUB_TOKEN }}
                   force_orphan: true
