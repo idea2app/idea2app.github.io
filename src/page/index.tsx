@@ -40,6 +40,8 @@ export function PageFrame() {
                 className="shadow-none"
                 background="white"
                 theme="light"
+                narrow
+                menuAlign="end"
                 brand="idea2app"
             >
                 {menu.map(({ title, ...props }) => (

@@ -12,6 +12,7 @@
         "web-utility": "^2.4.4"
     },
     "devDependencies": {
+        "@types/classnames": "^2.2.11",
         "@types/node": "^14.14.28",
         "@typescript-eslint/parser": "^4.15.1",
         "autoprefixer": "^9.8.6",
