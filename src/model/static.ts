@@ -61,3 +61,59 @@ export const partners = [
         URL: 'https://fcc-cd.dev'
     }
 ];
+
+export const libraries = [
+    {
+        type: 'scaffold',
+        name: 'React-MobX-Bootstrap-ts',
+        summary:
+            '基于 TypeScript、MobX 和 Bootstrap 的 React 项目脚手架，其灵感来自 WebCell 脚手架。',
+        packages: [
+            { repo: 'react' },
+            { org: 'mobxjs' },
+            { repo: 'bootstrap' },
+            { repo: 'typescript' }
+        ]
+    },
+    {
+        type: 'scaffold',
+        name: 'Vue-MobX-Bootstrap-ts',
+        summary:
+            '基于 TypeScript、MobX 和 Bootstrap 的 React 项目脚手架，其灵感来自 WebCell 脚手架。',
+        packages: [
+            { repo: 'vue' },
+            { org: 'mobxjs' },
+            { repo: 'bootstrap' },
+            { repo: 'typescript' }
+        ]
+    },
+    {
+        type: 'scaffold',
+        name: 'uniapp-uview-ts',
+        summary: '基于 UniApp、UView 和 TypeScript 的小程序项目模板',
+        packages: [
+            { repo: 'vue' },
+            { org: 'dcloudio' },
+            { org: 'YanxinNet' },
+            { repo: 'typescript' }
+        ]
+    },
+    {
+        type: 'scaffold',
+        name: 'NodeTS-LeanCloud',
+        summary:
+            '基于 Koa、TypeScript、Swagger 和 LeanCloud 的 Node.js 后端项目脚手架',
+        packages: [
+            { repo: 'nodejs' },
+            { repo: 'koa' },
+            { org: 'leancloud' },
+            { repo: 'typescript' }
+        ]
+    },
+    {
+        type: 'scaffold',
+        name: 'ThinkPHP-scaffold',
+        summary: '基于 PHP 7+ 和 ThinkPHP 6 的后端项目脚手架',
+        packages: [{ org: 'top-think' }, { repo: 'php' }]
+    }
+];

@@ -8,6 +8,7 @@ import { history } from '../model';
 import WebCell_0 from '../image/WebCell-0.png';
 
 import { HomePage } from './Home';
+import { OpenSourcePage } from './OpenSource';
 
 const menu: HTMLHyperLinkProps[] = [
     {
@@ -28,8 +29,7 @@ const menu: HTMLHyperLinkProps[] = [
     },
     {
         title: '开源生态',
-        target: '_blank',
-        href: 'https://github.com/idea2app'
+        href: 'open-source'
     }
 ];
 
@@ -54,10 +54,8 @@ export function PageFrame() {
                 style={{ minHeight: '60vh' }}
                 history={history}
                 routes={[
-                    {
-                        paths: [''],
-                        component: HomePage
-                    }
+                    { paths: [''], component: HomePage },
+                    { paths: ['open-source'], component: OpenSourcePage }
                 ]}
             />
             <footer className="text-center py-5">
