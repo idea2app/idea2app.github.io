@@ -13,19 +13,19 @@ import { OpenSourcePage } from './OpenSource';
 const menu: HTMLHyperLinkProps[] = [
     {
         title: '品质服务',
-        href: '#services'
+        href: '?section=services'
     },
     {
         title: '客户案例',
-        href: '#projects'
+        href: '?section=projects'
     },
     {
         title: '菁英团队',
-        href: '#members'
+        href: '?section=members'
     },
     {
         title: '合作伙伴',
-        href: '#partners'
+        href: '?section=partners'
     },
     {
         title: '开源生态',

@@ -1,3 +1,27 @@
+export const services = [
+    {
+        name: '业务信息化咨询',
+        summary:
+            '帮您梳理业务流程，发掘「提效降本」的痛点，量身定制「信息化转型」方案',
+        icon:
+            'https://cdn.jsdelivr.net/gh/froala/design-blocks@master/dist/imgs/icons/layers.svg'
+    },
+    {
+        name: '定制化软件开发',
+        summary:
+            '一线工程师基于业界领先技术高效交付软件系统，让您的钱花在刀刃上',
+        icon:
+            'https://cdn.jsdelivr.net/gh/froala/design-blocks@master/dist/imgs/icons/monitor.svg'
+    },
+    {
+        name: '敏捷团队培训',
+        summary:
+            '与您的技术团队面对面一起从实践中学习「敏捷开发」方法论，成长为可靠、高效的「现代化工程团队」',
+        icon:
+            'https://cdn.jsdelivr.net/gh/froala/design-blocks@master/dist/imgs/icons/cloud.svg'
+    }
+];
+
 export const projects = [
     {
         name: 'in235 官网',
@@ -7,7 +31,7 @@ export const projects = [
     },
     {
         name: 'Shopify 采集平台',
-        URL: 'http://shopify.com',
+        URL: 'http://shopifycopy.com',
         preview:
             'https://cdn.jsdelivr.net/gh/froala/design-blocks@master/dist/imgs/hero/red.svg'
     },
@@ -64,6 +88,13 @@ export const partners = [
 
 export const libraries = [
     {
+        type: 'package',
+        name: 'WebCell',
+        summary: '基于 TypeScript 和 JSX 的 Web 标准组件框架',
+        packages: [{ org: 'EasyWebApp' }, { repo: 'typescript' }],
+        URL: 'https://web-cell.dev'
+    },
+    {
         type: 'scaffold',
         name: 'React-MobX-Bootstrap-ts',
         summary:
@@ -114,6 +145,6 @@ export const libraries = [
         type: 'scaffold',
         name: 'ThinkPHP-scaffold',
         summary: '基于 PHP 7+ 和 ThinkPHP 6 的后端项目脚手架',
-        packages: [{ org: 'top-think' }, { repo: 'php' }]
+        packages: [{ org: 'top-think' }, { repo: 'docker' }, { repo: 'php' }]
     }
 ];
