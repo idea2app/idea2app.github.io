@@ -4,7 +4,7 @@ import { Image } from 'boot-cell/source/Media/Image';
 import { MediaObject } from 'boot-cell/source/Content/MediaObject';
 
 import { Section } from '../component/Section';
-import { services, members, partners, projects } from '../model/static';
+import { services, members, partners, projects } from './data';
 
 interface HomePageProps extends WebCellProps {
     section?: string;

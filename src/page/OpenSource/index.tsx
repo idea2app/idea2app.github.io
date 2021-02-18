@@ -2,7 +2,7 @@ import { createCell } from 'web-cell';
 
 import { Section } from '../../component/Section';
 import { ProjectCard } from './ProjectCard';
-import { libraries } from '../../model/static';
+import { libraries } from '../data';
 
 export function OpenSourcePage() {
     return (

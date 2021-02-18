@@ -2,7 +2,7 @@ import { WebCellProps, createCell } from 'web-cell';
 import classNames from 'classnames';
 import { Button } from 'boot-cell/source/Form/Button';
 
-import { libraries } from '../../model/static';
+import { libraries } from '../data';
 
 export type ProjectCardProps = WebCellProps & typeof libraries[0];
 
