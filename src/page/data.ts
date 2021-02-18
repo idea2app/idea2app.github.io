@@ -39,6 +39,14 @@ export const members = [
             'Web/JavaScript 全栈工程师，汉梦文化汉服社区创始人，FCC 成都社区核心组织者。',
         GitHub: 'lingziyb',
         projects: projects.slice(2)
+    },
+    {
+        name: '书香墨剑',
+        position: '开发者',
+        summary:
+            'Web/JavaScript 全栈工程师，FCC 成都社区核心组织者。',
+        GitHub: 'demongodYY',
+        projects: []
     }
 ];
 
