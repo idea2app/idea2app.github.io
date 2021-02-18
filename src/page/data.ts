@@ -42,11 +42,10 @@ export const members = [
     },
     {
         name: 'Too',
-        position: '产品管理员',
+        position: '团队润滑剂/敏捷开发专员',
         summary:
             'Python 工程师，擅长使用精益创业和敏捷开发等技术方法来保证项目产品开发和交付，负责沟通协调团队成员，充分理解用户需求，交付优质产品。',
-        GitHub: 'too',
-        projects
+        GitHub: 'too'
     }
 ];
 
