@@ -8,28 +8,28 @@ import { history } from '../model';
 import WebCell_0 from '../image/WebCell-0.png';
 
 import { HomePage } from './Home';
+import { OpenSourcePage } from './OpenSource';
 
 const menu: HTMLHyperLinkProps[] = [
     {
         title: '品质服务',
-        href: '#services'
+        href: '?section=services'
     },
     {
         title: '客户案例',
-        href: '#projects'
+        href: '?section=projects'
     },
     {
         title: '菁英团队',
-        href: '#members'
+        href: '?section=members'
     },
     {
         title: '合作伙伴',
-        href: '#partners'
+        href: '?section=partners'
     },
     {
         title: '开源生态',
-        target: '_blank',
-        href: 'https://github.com/idea2app'
+        href: 'open-source'
     }
 ];
 
@@ -40,6 +40,8 @@ export function PageFrame() {
                 className="shadow-none"
                 background="white"
                 theme="light"
+                narrow
+                menuAlign="end"
                 brand="idea2app"
             >
                 {menu.map(({ title, ...props }) => (
@@ -52,10 +54,8 @@ export function PageFrame() {
                 style={{ minHeight: '60vh' }}
                 history={history}
                 routes={[
-                    {
-                        paths: [''],
-                        component: HomePage
-                    }
+                    { paths: [''], component: HomePage },
+                    { paths: ['open-source'], component: OpenSourcePage }
                 ]}
             />
             <footer className="text-center py-5">
