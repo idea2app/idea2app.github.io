@@ -41,6 +41,7 @@ export function PageFrame() {
                 background="white"
                 theme="light"
                 narrow
+                expand="md"
                 menuAlign="end"
                 brand="idea2app"
             >
