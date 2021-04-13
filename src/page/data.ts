@@ -67,8 +67,7 @@ export const members = [
     {
         name: '书香墨剑',
         position: '开发者',
-        summary:
-            'Web/JavaScript 全栈工程师，FCC 成都社区核心组织者。',
+        summary: 'Web/JavaScript 全栈工程师，FCC 成都社区核心组织者。',
         GitHub: 'demongodYY',
         projects: []
     },
@@ -90,7 +89,7 @@ export const partners = [
     {
         name: '二拾三度五',
         summary: '一个有温度的品牌运营制造商',
-        logo: 'https://www.in235.com/23.5-logo.d912547a.png',
+        logo: 'https://www.in235.com/logo-black.efbc4bb1.png',
         URL: 'https://www.in235.com'
     },
     {
@@ -108,6 +107,17 @@ export const libraries = [
         summary: '基于 TypeScript 和 JSX 的 Web 标准组件框架',
         packages: [{ org: 'EasyWebApp' }, { repo: 'typescript' }],
         URL: 'https://web-cell.dev'
+    },
+    {
+        type: 'package',
+        name: 'React-Bootstrap-editor',
+        summary: '基于 TypeScript、React 和 Bootstrap 的富文本编辑器',
+        packages: [
+            { repo: 'react' },
+            { repo: 'bootstrap' },
+            { repo: 'typescript' }
+        ],
+        URL: 'https://ideapp.dev/React-Bootstrap-editor/'
     },
     {
         type: 'scaffold',

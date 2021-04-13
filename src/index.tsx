@@ -19,11 +19,7 @@ if (process.env.NODE_ENV !== 'development')
         ?.register('sw.js')
         .then(serviceWorkerUpdate)
         .then(worker => {
-            if (
-                window.confirm(
-                    'New version of this Web App detected, update now?'
-                )
-            )
+            if (window.confirm('检测到新版本，是否立即启用？'))
                 worker.postMessage({ type: 'SKIP_WAITING' });
         });
 
