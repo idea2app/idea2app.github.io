@@ -65,6 +65,14 @@ export const members = [
         projects: projects.slice(2)
     },
     {
+        name: '喵喵',
+        position: '开发者',
+        summary:
+            'Web/JavaScript 前端工程师，开源社优秀志愿者，FCC 志愿者，FCC 成都社区核心组织者。',
+        GitHub: 'Cute233',
+        projects: []
+    },
+    {
         name: '书香墨剑',
         position: '开发者',
         summary:
