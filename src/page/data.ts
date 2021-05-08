@@ -85,6 +85,13 @@ export const members = [
         summary:
             'Python 工程师，擅长使用精益创业和敏捷开发等技术方法来保证项目产品开发和交付，负责沟通协调团队成员，充分理解用户需求，交付优质产品。',
         GitHub: 'too'
+    },
+    {
+        name: 'AK',
+        position: 'PM/开发者',
+        summary: 'Python后台工程师，FCC 成都社区核心组织者，摄影师。',
+        GitHub: 'Akagilnc',
+        projects: []
     }
 ];
 
