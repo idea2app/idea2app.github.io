@@ -9,6 +9,7 @@ import WebCell_0 from '../image/WebCell-0.png';
 
 import { HomePage } from './Home';
 import { OpenSourcePage } from './OpenSource';
+import { CasePage } from './Case';
 
 const menu: HTMLHyperLinkProps[] = [
     {
@@ -43,6 +44,7 @@ export function PageFrame() {
                 narrow
                 expand="md"
                 menuAlign="end"
+                fixed="top"
                 brand="idea2app"
             >
                 {menu.map(({ title, ...props }) => (
@@ -56,7 +58,8 @@ export function PageFrame() {
                 history={history}
                 routes={[
                     { paths: [''], component: HomePage },
-                    { paths: ['open-source'], component: OpenSourcePage }
+                    { paths: ['open-source'], component: OpenSourcePage },
+                    { paths: ['case'], component: CasePage }
                 ]}
             />
             <footer className="text-center py-5">

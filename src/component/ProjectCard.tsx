@@ -2,9 +2,9 @@ import { WebCellProps, createCell } from 'web-cell';
 import classNames from 'classnames';
 import { Button } from 'boot-cell/source/Form/Button';
 
-import { libraries } from '../data';
+import { Project } from '../model/Project';
 
-export type ProjectCardProps = WebCellProps & typeof libraries[0];
+export type ProjectCardProps = WebCellProps & Project;
 
 export function ProjectCard({
     className,
@@ -23,7 +23,6 @@ export function ProjectCard({
             className={classNames(
                 'shadow',
                 'p-3',
-                'h-100',
                 'd-flex',
                 'flex-column',
                 'justify-content-between',
@@ -46,29 +45,37 @@ export function ProjectCard({
                     />
                 ))}
             </header>
-            <h3 className="h5 my-3 text-center">
-                <a
-                    target="_blank"
-                    href={URL || `https://github.com/idea2app/${name}`}
-                >
-                    {name}
-                </a>
-            </h3>
+            <h3 className="h5 my-3 text-center">{name}</h3>
             <p className="flex-fill text-muted">{summary}</p>
 
-            <Button
-                block
-                outline
-                color={isScaffold ? 'success' : 'primary'}
-                target="_blank"
-                href={
-                    isScaffold
-                        ? `https://github.com/idea2app/${name}/generate`
-                        : URL
-                }
-            >
-                {isScaffold ? '新建项目' : '访问官网'}
-            </Button>
+            <footer className="d-flex">
+                <Button
+                    block
+                    size="sm"
+                    outline
+                    color="primary"
+                    target="_blank"
+                    href={URL || `https://ideapp.dev/${name}/`}
+                >
+                    查看{isScaffold ? '演示' : '文档'}
+                </Button>
+
+                {URL ? null : (
+                    <Button
+                        className="mt-0 ml-3"
+                        block
+                        size="sm"
+                        outline
+                        color="success"
+                        target="_blank"
+                        href={`https://github.com/idea2app/${name}/${
+                            isScaffold ? 'generate' : ''
+                        }`}
+                    >
+                        {isScaffold ? '新建项目' : '查看源码'}
+                    </Button>
+                )}
+            </footer>
         </div>
     );
 }

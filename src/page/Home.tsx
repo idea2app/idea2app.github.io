@@ -4,7 +4,9 @@ import { Image } from 'boot-cell/source/Media/Image';
 import { MediaObject } from 'boot-cell/source/Content/MediaObject';
 
 import { Section } from '../component/Section';
-import { services, members, partners, projects } from './data';
+import { services, partners } from './data';
+import members from '../model/User';
+import cases, { Case } from '../model/Case';
 
 interface HomePageProps extends WebCellProps {
     section?: string;
@@ -20,14 +22,21 @@ export class HomePage extends mixin<HomePageProps>() {
         this.setProps({ section }).then(() => scrollTo(`#${section}`));
     }
 
-    renderCase = ({ preview, URL, name }: typeof projects[0]) => (
+    renderCase = ({ preview, name }: Case) => (
         <li className="col-12 col-sm-6 col-md-3">
-            <img src={preview} />
+            <img
+                className="w-100"
+                style={{
+                    height: '10rem',
+                    objectFit: 'cover',
+                    objectPosition: 'top'
+                }}
+                src={preview}
+            />
             <h3 className="h5 my-3">
                 <a
                     className="text-decoration-none text-dark stretched-link"
-                    target="_blank"
-                    href={URL}
+                    href={`case?name=${name}`}
                 >
                     {name}
                 </a>
@@ -106,7 +115,7 @@ export class HomePage extends mixin<HomePageProps>() {
                 </Section>
                 <Section id="projects" title="客户案例">
                     <ul className="list-unstyled row mt-5 text-center">
-                        {projects.map(this.renderCase)}
+                        {cases.map(this.renderCase)}
                     </ul>
                 </Section>
                 <Section
