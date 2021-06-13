@@ -12,19 +12,19 @@
         "web-utility": "^2.4.4"
     },
     "devDependencies": {
-        "@types/classnames": "^2.2.11",
-        "@types/node": "^14.14.37",
-        "@typescript-eslint/parser": "^4.22.0",
+        "@types/classnames": "^2.3.1",
+        "@types/node": "^14.17.3",
+        "@typescript-eslint/parser": "^4.26.1",
         "autoprefixer": "^9.8.6",
-        "eslint": "^7.24.0",
-        "eslint-config-prettier": "^8.2.0",
-        "eslint-plugin-prettier": "^3.3.1",
+        "eslint": "^7.28.0",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-prettier": "^3.4.0",
         "husky": "^6.0.0",
-        "lint-staged": "^10.5.4",
+        "lint-staged": "^11.0.0",
         "parcel-bundler": "^1.12.5",
         "postcss-modules": "^3.2.2",
-        "prettier": "^2.2.1",
-        "typescript": "^4.2.4",
+        "prettier": "^2.3.1",
+        "typescript": "^4.3.2",
         "workbox-cli": "^6.1.5"
     },
     "prettier": {
