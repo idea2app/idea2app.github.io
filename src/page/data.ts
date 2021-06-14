@@ -18,23 +18,3 @@ export const services = [
         icon: 'https://cdn.jsdelivr.net/gh/froala/design-blocks@master/dist/imgs/icons/cloud.svg'
     }
 ];
-
-export const partners = [
-    {
-        name: '创造 1024',
-        summary: 'MVP（最有价值专家）工程师天团',
-        logo: 'https://github.com/Creator-1024.png'
-    },
-    {
-        name: '二拾三度五',
-        summary: '一个有温度的品牌运营制造商',
-        logo: 'https://www.in235.com/logo-black.efbc4bb1.png',
-        URL: 'https://www.in235.com'
-    },
-    {
-        name: 'FCC 成都社区',
-        summary: '西南地区顶级工程师社群',
-        logo: 'https://fcc-cd.dev/images/FCC-CDC-v1-0.png',
-        URL: 'https://fcc-cd.dev'
-    }
-];
