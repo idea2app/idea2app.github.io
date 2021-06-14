@@ -33,6 +33,7 @@ export function ProjectCard({
             <header className="d-flex justify-content-around">
                 {packages.map(({ repo, org }) => (
                     <img
+                        key={`${name}-${repo || org}`}
                         className="rounded"
                         style={{ width: '3rem' }}
                         alt={repo || org}
@@ -57,10 +58,10 @@ export function ProjectCard({
                     target="_blank"
                     href={URL || `https://ideapp.dev/${name}/`}
                 >
-                    查看{isScaffold ? '演示' : '文档'}
+                    查看{!URL && isScaffold ? '演示' : '文档'}
                 </Button>
 
-                {URL ? null : (
+                {URL && !isScaffold ? null : (
                     <Button
                         className="mt-0 ml-3"
                         block

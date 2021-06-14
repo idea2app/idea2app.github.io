@@ -48,7 +48,9 @@ export function PageFrame() {
                 brand="idea2app"
             >
                 {menu.map(({ title, ...props }) => (
-                    <NavLink {...props}>{title}</NavLink>
+                    <NavLink key={props.href} {...props}>
+                        {title}
+                    </NavLink>
                 ))}
             </NavBar>
 

@@ -36,7 +36,7 @@ export class CasePage extends mixin<CasePageProps>() {
     }
 
     renderAvatar = ({ name, GitHub }: User) => (
-        <li className="list-inline-item">
+        <li key={name} className="list-inline-item">
             <Image
                 className="rounded-circle"
                 style={{ width: '3rem' }}
@@ -53,6 +53,7 @@ export class CasePage extends mixin<CasePageProps>() {
                 <section className="row">
                     {list.map(item => (
                         <OrganizationCard
+                            key={item.name}
                             className="col-12 col-sm-6 col-md-12 my-2 px-2"
                             {...item}
                         />
@@ -69,7 +70,11 @@ export class CasePage extends mixin<CasePageProps>() {
                 <section className="row">
                     {list.map(item => (
                         <div className="col-12 col-sm-6 col-md-12 mb-3 px-2">
-                            <ProjectCard className="h-100" {...item} />
+                            <ProjectCard
+                                key={item.name}
+                                className="h-100"
+                                {...item}
+                            />
                         </div>
                     ))}
                 </section>

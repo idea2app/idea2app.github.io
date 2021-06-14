@@ -118,14 +118,16 @@ export const NodetsLeancloud: Project = {
         { repo: 'koa' },
         { org: 'leancloud' },
         { repo: 'typescript' }
-    ]
+    ],
+    URL: 'https://github.com/idea2app/NodeTS-LeanCloud/'
 };
 
 export const ThinkphpScaffold: Project = {
     type: 'scaffold',
     name: 'ThinkPHP-scaffold',
     summary: '基于 PHP 7+ 和 ThinkPHP 6 的后端项目脚手架',
-    packages: [{ org: 'top-think' }, { repo: 'docker' }, { repo: 'php' }]
+    packages: [{ org: 'top-think' }, { repo: 'docker' }, { repo: 'php' }],
+    URL: 'https://github.com/idea2app/ThinkPHP-scaffold/'
 };
 
 export default [

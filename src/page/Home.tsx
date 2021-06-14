@@ -24,8 +24,8 @@ export class HomePage extends mixin<HomePageProps>() {
         this.setProps({ section }).then(() => scrollTo(`#${section}`));
     }
 
-    renderCase = ({ preview, name }: Case) => (
-        <li className="col-12 col-sm-6 col-md-3">
+    renderCase = ({ name, preview }: Case) => (
+        <li key={name} className="col-12 col-sm-6 col-md-3">
             <img
                 className="w-100"
                 style={{
@@ -85,6 +85,7 @@ export class HomePage extends mixin<HomePageProps>() {
                     <ul className="col-12 col-sm-6 list-unstyled d-flex flex-column justify-content-center">
                         {services.map(({ icon, name, summary }) => (
                             <MediaObject
+                                key={name}
                                 className="my-4"
                                 listItem
                                 image={icon}
@@ -106,8 +107,9 @@ export class HomePage extends mixin<HomePageProps>() {
                     summary="小而美、自下而上生长的学习型团队"
                 >
                     <ul className="list-unstyled row mt-5">
-                        {members.map(({ GitHub, name, position, summary }) => (
+                        {members.map(({ name, GitHub, position, summary }) => (
                             <MediaObject
+                                key={name}
                                 className="col-12 col-md-6 mb-3"
                                 listItem
                                 image={`https://github.com/${GitHub}.png`}
@@ -125,6 +127,7 @@ export class HomePage extends mixin<HomePageProps>() {
                             .filter(({ summary }) => summary)
                             .map(item => (
                                 <OrganizationCard
+                                    key={item.name}
                                     className="col-12 col-sm-4 mb-4"
                                     {...item}
                                 />
