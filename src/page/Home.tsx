@@ -4,8 +4,10 @@ import { Image } from 'boot-cell/source/Media/Image';
 import { MediaObject } from 'boot-cell/source/Content/MediaObject';
 
 import { Section } from '../component/Section';
-import { services, partners } from './data';
+import { OrganizationCard } from '../component/OrganizationCard';
+import { services } from './data';
 import members from '../model/User';
+import partners from '../model/Organization';
 import cases, { Case } from '../model/Case';
 
 interface HomePageProps extends WebCellProps {
@@ -41,26 +43,6 @@ export class HomePage extends mixin<HomePageProps>() {
                     {name}
                 </a>
             </h3>
-        </li>
-    );
-
-    renderPartner = ({ logo, URL, name, summary }: typeof partners[0]) => (
-        <li className="col-12 col-sm-4 d-flex flex-column align-items-center">
-            <img
-                className="flex-fill w-50"
-                style={{ objectFit: 'contain' }}
-                src={logo}
-            />
-            <h3 className="h5 mt-3">
-                <a
-                    className="text-decoration-none text-dark stretched-link"
-                    target="_blank"
-                    href={URL}
-                >
-                    {name}
-                </a>
-            </h3>
-            <p className="text-muted mb-5 mb-sm-0">{summary}</p>
         </li>
     );
 
@@ -138,9 +120,16 @@ export class HomePage extends mixin<HomePageProps>() {
                     </ul>
                 </Section>
                 <Section id="partners" title="合作伙伴">
-                    <ul className="list-unstyled row mt-5 text-center">
-                        {partners.map(this.renderPartner)}
-                    </ul>
+                    <div className="row mt-5 text-center">
+                        {partners
+                            .filter(({ summary }) => summary)
+                            .map(item => (
+                                <OrganizationCard
+                                    className="col-12 col-sm-4 mb-4"
+                                    {...item}
+                                />
+                            ))}
+                    </div>
                 </Section>
             </main>
         );

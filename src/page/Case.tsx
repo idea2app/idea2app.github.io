@@ -11,8 +11,11 @@ import { PageProps } from 'cell-router/source';
 import { Badge } from 'boot-cell/source/Reminder/Badge';
 import { Image } from 'boot-cell/source/Media/Image';
 
+import { OrganizationCard } from '../component/OrganizationCard';
 import { ProjectCard } from '../component/ProjectCard';
 import { User } from '../model/User';
+import { Organization } from '../model/Organization';
+import { Project } from '../model/Project';
 import cases from '../model/Case';
 
 export interface CasePageProps extends PageProps {
@@ -43,20 +46,44 @@ export class CasePage extends mixin<CasePageProps>() {
         </li>
     );
 
+    renderPartners(list: Organization[]) {
+        return (
+            <>
+                <h2 className="h5 my-3">合作伙伴</h2>
+                <section className="row">
+                    {list.map(item => (
+                        <OrganizationCard
+                            className="col-12 col-sm-6 col-md-12 my-2 px-2"
+                            {...item}
+                        />
+                    ))}
+                </section>
+            </>
+        );
+    }
+
+    renderProjects(list: Project[]) {
+        return (
+            <>
+                <h2 className="h5 my-3">自研开源项目</h2>
+                <section className="row">
+                    {list.map(item => (
+                        <div className="col-12 col-sm-6 col-md-12 mb-3 px-2">
+                            <ProjectCard className="h-100" {...item} />
+                        </div>
+                    ))}
+                </section>
+            </>
+        );
+    }
+
     render({ name }: CasePageProps) {
         const caseData = cases.find(item => item.name === name);
 
         return (
             caseData && (
                 <main className="row mt-5">
-                    <article className="col-9">
-                        <Image
-                            className="d-block mx-auto"
-                            fluid
-                            src={caseData.preview}
-                        />
-                    </article>
-                    <header className="col-3">
+                    <header className="col-12 col-md-3 order-md-1">
                         <div className="d-flex justify-content-between align-items-center">
                             <Badge color="primary">{caseData.type}</Badge>
                             <h1 className="h4 text-right">{name}</h1>
@@ -74,19 +101,18 @@ export class CasePage extends mixin<CasePageProps>() {
                         <ul className="list-inline">
                             {caseData.team.map(this.renderAvatar)}
                         </ul>
-                        {caseData.projects && (
-                            <>
-                                <h2 className="h5 my-3">自研开源项目</h2>
-                                <ul className="list-unstyled">
-                                    {caseData.projects.map(item => (
-                                        <li className="mt-3">
-                                            <ProjectCard {...item} />
-                                        </li>
-                                    ))}
-                                </ul>
-                            </>
-                        )}
+                        {caseData.partners &&
+                            this.renderPartners(caseData.partners)}
+                        {caseData.projects &&
+                            this.renderProjects(caseData.projects)}
                     </header>
+                    <article className="col-12 col-md-9 order-md-0">
+                        <Image
+                            className="d-block mx-auto"
+                            fluid
+                            src={caseData.preview}
+                        />
+                    </article>
                 </main>
             )
         );

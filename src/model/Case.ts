@@ -10,6 +10,13 @@ import {
 } from '../image';
 import { User, TechQuery, lingziyb, Cute233 } from './User';
 import {
+    Organization,
+    in235,
+    KupoTech,
+    inBracket,
+    PuZaoSi
+} from './Organization';
+import {
     Project,
     WebCell,
     EChartsModel,
@@ -26,14 +33,16 @@ export interface Case {
     URL?: string;
     preview: string;
     team: User[];
+    partners?: Organization[];
     projects?: Project[];
 }
 
-export const in235: Case = {
+export const in235_PWA: Case = {
     type: 'desktop',
     name: 'in235 官网',
     URL: 'https://www.in235.com',
     preview: case_in235,
+    partners: [in235],
     team: [TechQuery],
     projects: [WebCell, MobxStrapi, StrapiCkeditorPlugin]
 };
@@ -68,6 +77,7 @@ export const InstitutionAnalysis: Case = {
     type: 'desktop',
     name: '制度分析系统',
     preview: case_InstitutionAnalysis,
+    partners: [KupoTech],
     team: [TechQuery, lingziyb],
     projects: [EChartsModel]
 };
@@ -76,6 +86,7 @@ export const OralCavity: Case = {
     type: 'desktop',
     name: '隐贝口腔医疗系统',
     preview: case_OralCavity,
+    partners: [inBracket],
     team: [TechQuery, lingziyb],
     projects: [VueMobxBootstrapTs]
 };
@@ -92,12 +103,13 @@ export const FloatIsland: Case = {
     type: 'mobile',
     name: '浮游岛装置小程序',
     preview: case_FloatIsland,
+    partners: [PuZaoSi],
     team: [TechQuery, lingziyb],
     projects: [Koagger, NodetsLeancloud]
 };
 
 export default [
-    in235,
+    in235_PWA,
     OAFevent,
     ShopifyCopy,
     IndustryData,
