@@ -51,4 +51,11 @@ export const Akagilnc: User = {
     GitHub: 'Akagilnc'
 };
 
-export default [TechQuery, lingziyb, too, demongodYY, Cute233, Akagilnc];
+export const tree7ion: User = {
+    name: '小树',
+    position: '业务分析师/大数据产品经理',
+    summary: '资深B端产品经理，产业互联网先行者，猫奴。',
+    GitHub: 'tree7ion'
+};
+
+export default [TechQuery, lingziyb, too, demongodYY, Cute233, Akagilnc, tree7ion];
