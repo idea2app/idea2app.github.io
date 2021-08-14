@@ -59,10 +59,10 @@ export const tree7ion: User = {
 };
 
 export const stevending1st: User = {
-    name: '止戈',
-    position: '开发者',
+    name: '丁止戈',
+    position: 'Web/JavaScript 开发者',
     summary:
-        '前端打杂。',
+        '前端打杂，fCC 志愿者，关注开放式协作。',
     GitHub: 'stevending1st'
 };
 
