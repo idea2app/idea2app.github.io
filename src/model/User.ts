@@ -58,4 +58,12 @@ export const tree7ion: User = {
     GitHub: 'tree7ion'
 };
 
-export default [TechQuery, lingziyb, too, demongodYY, Cute233, Akagilnc, tree7ion];
+export const stevending1st: User = {
+    name: '止戈',
+    position: '开发者',
+    summary:
+        '前端打杂。',
+    GitHub: 'stevending1st'
+};
+
+export default [TechQuery, lingziyb, too, demongodYY, Cute233, Akagilnc, tree7ion, stevending1st];
