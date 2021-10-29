@@ -45,7 +45,13 @@ export function PageFrame() {
                 expand="md"
                 menuAlign="end"
                 fixed="top"
-                brand="idea2app"
+                brand={
+                    <img
+                        style={{ width: '3rem' }}
+                        alt="idea2app"
+                        src="https://github.com/idea2app.png"
+                    />
+                }
             >
                 {menu.map(({ title, ...props }) => (
                     <NavLink key={props.href} {...props}>

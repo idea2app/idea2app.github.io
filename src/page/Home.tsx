@@ -5,6 +5,7 @@ import { MediaObject } from 'boot-cell/source/Content/MediaObject';
 
 import { Section } from '../component/Section';
 import { OrganizationCard } from '../component/OrganizationCard';
+import style from './Home.module.less';
 import { services } from './data';
 import members from '../model/User';
 import partners from '../model/Organization';
@@ -25,16 +26,8 @@ export class HomePage extends mixin<HomePageProps>() {
     }
 
     renderCase = ({ name, preview }: Case) => (
-        <li key={name} className="col-12 col-sm-6 col-md-3">
-            <img
-                className="w-100"
-                style={{
-                    height: '10rem',
-                    objectFit: 'cover',
-                    objectPosition: 'top'
-                }}
-                src={preview}
-            />
+        <li key={name} className={`col-12 col-sm-6 col-md-3 ${style.case}`}>
+            <Image className={style.preview} background src={preview} />
             <h3 className="h5 my-3">
                 <a
                     className="text-decoration-none text-dark stretched-link"
@@ -70,12 +63,14 @@ export class HomePage extends mixin<HomePageProps>() {
                     <div classList="col-12 col-md-6 text-center">
                         <img
                             style={{ width: '10rem' }}
+                            alt="idea2app"
                             src="https://github.com/idea2app.png"
                         />
-                        <h1>idea2app</h1>
-                        <h2 className="h4 text-muted">全行业信息化转型专家</h2>
+                        <h2 className="h4 text-muted my-4">
+                            全行业信息化转型专家
+                        </h2>
                         <h2 className="h4 text-muted">远程办公团队</h2>
-                        <p className="h4 mt-4">您的每个创意都值得用心实现</p>
+                        <p className="h4">您的每个创意都值得用心实现</p>
                     </div>
                 </Section>
                 <Section id="services" className="row">

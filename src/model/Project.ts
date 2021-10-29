@@ -6,6 +6,14 @@ export interface Project {
     URL?: string;
 }
 
+export const EventSubmitterPolyfill: Project = {
+    type: 'package',
+    name: 'Event Submitter polyfill',
+    summary: 'W3C DOM 表单提交事件的提交者属性的 polyfill 补丁',
+    packages: [{ org: 'w3c' }, { repo: 'html' }],
+    URL: 'https://github.com/idea2app/event-submitter-polyfill'
+};
+
 export const WebCell: Project = {
     type: 'package',
     name: 'WebCell',
@@ -14,19 +22,19 @@ export const WebCell: Project = {
     URL: 'https://web-cell.dev'
 };
 
+export const Edkit: Project = {
+    type: 'package',
+    name: 'Edkit',
+    summary: '基于 TypeScript 的 HTML 富文本编辑工具箱',
+    packages: [{ repo: 'html' }, { repo: 'typescript' }]
+};
+
 export const EChartsModel: Project = {
     type: 'package',
     name: 'ECharts-model',
     summary:
         '基于 TypeScript 的 ECharts 数据模型生成器，让您可以专注于数据结构而不是复杂的选项。',
     packages: [{ repo: 'echarts' }, { repo: 'typescript' }]
-};
-
-export const ReactBootstrapEditor: Project = {
-    type: 'package',
-    name: 'React-Bootstrap-editor',
-    summary: '基于 TypeScript、React 和 Bootstrap 的富文本编辑器',
-    packages: [{ repo: 'react' }, { repo: 'bootstrap' }, { repo: 'typescript' }]
 };
 
 export const ReactMobxBootstrapTs: Project = {
@@ -55,6 +63,18 @@ export const ReactMobxAntdesignTs: Project = {
     ]
 };
 
+export const NextBootstrapTs: Project = {
+    type: 'scaffold',
+    name: 'next-bootstrap-ts',
+    summary: '基于 TypeScript、Next 和 Bootstrap 的 React 项目脚手架',
+    packages: [
+        { repo: 'react' },
+        { repo: 'nextjs' },
+        { repo: 'bootstrap' },
+        { repo: 'typescript' }
+    ]
+};
+
 export const VueMobxBootstrapTs: Project = {
     type: 'scaffold',
     name: 'Vue-MobX-Bootstrap-ts',
@@ -64,6 +84,19 @@ export const VueMobxBootstrapTs: Project = {
         { repo: 'vue' },
         { org: 'mobxjs' },
         { repo: 'bootstrap' },
+        { repo: 'typescript' }
+    ]
+};
+
+export const TaroVantMobXTs: Project = {
+    type: 'scaffold',
+    name: 'Taro-Vant-MobX-ts',
+    summary: '基于 TypeScript、MobX 和 Vant 的 Taro 项目脚手架',
+    packages: [
+        { repo: 'react' },
+        { org: 'NervJS' },
+        { org: 'youzan' },
+        { org: 'mobxjs' },
         { repo: 'typescript' }
     ]
 };
@@ -131,12 +164,15 @@ export const ThinkphpScaffold: Project = {
 };
 
 export default [
+    EventSubmitterPolyfill,
     WebCell,
+    Edkit,
     EChartsModel,
-    ReactBootstrapEditor,
     ReactMobxBootstrapTs,
     ReactMobxAntdesignTs,
+    NextBootstrapTs,
     VueMobxBootstrapTs,
+    TaroVantMobXTs,
     UniappUviewTs,
     MobxStrapi,
     StrapiCkeditorPlugin,

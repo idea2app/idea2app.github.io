@@ -40,7 +40,7 @@ export const Cute233: User = {
     name: '喵喵',
     position: '开发者',
     summary:
-        'Web/JavaScript 前端工程师，开源社优秀志愿者，FCC 志愿者，FCC 成都社区核心组织者。',
+        'Web/JavaScript 前端工程师，开源社优秀志愿者、TEDxChengdu 志愿者，FCC 成都社区核心组织者。',
     GitHub: 'Cute233'
 };
 
@@ -61,9 +61,17 @@ export const tree7ion: User = {
 export const stevending1st: User = {
     name: '丁止戈',
     position: 'Web/JavaScript 开发者',
-    summary:
-        '前端打杂，fCC 志愿者，关注开放式协作。',
+    summary: '前端打杂，fCC 志愿者，关注开放式协作。',
     GitHub: 'stevending1st'
 };
 
-export default [TechQuery, lingziyb, too, demongodYY, Cute233, Akagilnc, tree7ion, stevending1st];
+export default [
+    TechQuery,
+    lingziyb,
+    too,
+    demongodYY,
+    Cute233,
+    Akagilnc,
+    tree7ion,
+    stevending1st
+];

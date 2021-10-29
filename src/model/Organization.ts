@@ -15,7 +15,7 @@ export const FCC_CDC: Organization = {
 export const in235: Organization = {
     name: '二拾三度五',
     summary: '一个有温度的品牌运营制造商',
-    logo: 'https://www.in235.com/logo-black.efbc4bb1.png',
+    logo: 'https://www.in235.com/logo-black.cc22dda9.png',
     URL: 'https://www.in235.com'
 };
 
