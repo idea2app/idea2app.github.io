@@ -74,6 +74,7 @@ export class HomePage extends mixin<HomePageProps>() {
                         />
                         <h1>idea2app</h1>
                         <h2 className="h4 text-muted">全行业信息化转型专家</h2>
+                        <h2 className="h4 text-muted">远程办公团队</h2>
                         <p className="h4 mt-4">您的每个创意都值得用心实现</p>
                     </div>
                 </Section>
