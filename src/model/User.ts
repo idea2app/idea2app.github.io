@@ -65,6 +65,13 @@ export const stevending1st: User = {
     GitHub: 'stevending1st'
 };
 
+export const mythcsj: User = {
+    name: '诗杰',
+    position: 'java开发',
+    summary: '',
+    GitHub: 'mythcsj'
+};
+
 export default [
     TechQuery,
     lingziyb,
@@ -73,5 +80,6 @@ export default [
     Cute233,
     Akagilnc,
     tree7ion,
-    stevending1st
+    stevending1st,
+    mythcsj
 ];
