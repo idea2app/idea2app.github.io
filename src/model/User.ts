@@ -66,9 +66,9 @@ export const stevending1st: User = {
 };
 
 export const mythcsj: User = {
-    name: 'mythcsj',
+    name: '诗杰',
     position: '开发者',
-    summary: 'JAVA开发，华为云HDZ核心成员，阿里云ACE宣传委员，fCC 成都社区核心组织者，CSDN Meetup 成都站长，开源社优秀志愿者，中国DevOps社区志愿者，PyChina 成都志愿者',
+    summary: 'JAVA开发，华为云HDZ核心成员，阿里云ACE宣传委员，fCC 成都核心组织者，CSDN Meetup 成都站长，开源社优秀志愿者，中国DevOps社区志愿者，PyChina 成都志愿者',
     GitHub: 'mythcsj'
 };
 
