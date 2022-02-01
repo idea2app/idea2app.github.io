@@ -1,6 +1,6 @@
 import { WebCellProps, createCell } from 'web-cell';
 import classNames from 'classnames';
-import { Button } from 'boot-cell/source/Form/Button';
+import { Button } from 'boot-cell';
 
 import { Project } from '../model/Project';
 

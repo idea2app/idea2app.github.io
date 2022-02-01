@@ -20,7 +20,7 @@ import {
     Project,
     WebCell,
     EChartsModel,
-    VueMobxBootstrapTs,
+    VueBootstrapTs,
     MobxStrapi,
     StrapiCkeditorPlugin,
     Koagger,
@@ -70,7 +70,7 @@ export const IndustryData: Case = {
     name: '行业数据系统',
     preview: case_IndustryData,
     team: [TechQuery, lingziyb, Cute233],
-    projects: [VueMobxBootstrapTs, EChartsModel, Koagger, NodetsLeancloud]
+    projects: [VueBootstrapTs, EChartsModel, Koagger, NodetsLeancloud]
 };
 
 export const InstitutionAnalysis: Case = {
@@ -88,7 +88,7 @@ export const OralCavity: Case = {
     preview: case_OralCavity,
     partners: [inBracket],
     team: [TechQuery, lingziyb],
-    projects: [VueMobxBootstrapTs]
+    projects: [VueBootstrapTs]
 };
 
 export const MyPoker: Case = {

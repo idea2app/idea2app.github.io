@@ -75,17 +75,12 @@ export const NextBootstrapTs: Project = {
     ]
 };
 
-export const VueMobxBootstrapTs: Project = {
+export const VueBootstrapTs: Project = {
     type: 'scaffold',
-    name: 'Vue-MobX-Bootstrap-ts',
+    name: 'Vue-Bootstrap-ts',
     summary:
-        '基于 TypeScript、MobX 和 Bootstrap 的 React 项目脚手架，其灵感来自 WebCell 脚手架。',
-    packages: [
-        { repo: 'vue' },
-        { org: 'mobxjs' },
-        { repo: 'bootstrap' },
-        { repo: 'typescript' }
-    ]
+        '基于 TypeScript 和 Bootstrap 的 React 项目脚手架，其灵感来自 WebCell 脚手架。',
+    packages: [{ repo: 'vue' }, { repo: 'bootstrap' }, { repo: 'typescript' }]
 };
 
 export const TaroVantMobXTs: Project = {
@@ -171,7 +166,7 @@ export default [
     ReactMobxBootstrapTs,
     ReactMobxAntdesignTs,
     NextBootstrapTs,
-    VueMobxBootstrapTs,
+    VueBootstrapTs,
     TaroVantMobXTs,
     UniappUviewTs,
     MobxStrapi,
