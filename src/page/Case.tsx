@@ -7,9 +7,8 @@ import {
     createCell,
     Fragment
 } from 'web-cell';
-import { PageProps } from 'cell-router/source';
-import { Badge } from 'boot-cell/source/Reminder/Badge';
-import { Image } from 'boot-cell/source/Media/Image';
+import { PageProps } from 'cell-router';
+import { Badge, Image } from 'boot-cell';
 
 import { OrganizationCard } from '../component/OrganizationCard';
 import { ProjectCard } from '../component/ProjectCard';

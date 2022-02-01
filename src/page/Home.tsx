@@ -1,7 +1,6 @@
 import { WebCellProps, component, mixin, watch, createCell } from 'web-cell';
 import { scrollTo } from 'web-utility/source/DOM';
-import { Image } from 'boot-cell/source/Media/Image';
-import { MediaObject } from 'boot-cell/source/Content/MediaObject';
+import { Button, Image, MediaObject } from 'boot-cell';
 
 import { Section } from '../component/Section';
 import { OrganizationCard } from '../component/OrganizationCard';
@@ -79,7 +78,7 @@ export class HomePage extends mixin<HomePageProps>() {
                         src="https://cdn.jsdelivr.net/gh/froala/design-blocks@master/dist/imgs//draws/simple-iphone.svg"
                     />
                     <ul className="col-12 col-sm-6 list-unstyled d-flex flex-column justify-content-center">
-                        {services.map(({ icon, name, summary }) => (
+                        {services.map(({ icon, name, summary, action }) => (
                             <MediaObject
                                 key={name}
                                 className="my-4"
@@ -88,6 +87,15 @@ export class HomePage extends mixin<HomePageProps>() {
                                 title={name}
                             >
                                 <p className="text-muted">{summary}</p>
+                                {action && (
+                                    <Button
+                                        color="success"
+                                        size="sm"
+                                        href={action}
+                                    >
+                                        立即咨询
+                                    </Button>
+                                )}
                             </MediaObject>
                         ))}
                     </ul>

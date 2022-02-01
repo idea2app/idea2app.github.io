@@ -9,7 +9,8 @@ export const services = [
         name: '定制化软件开发',
         summary:
             '一线工程师基于业界领先技术高效交付软件系统，让您的钱花在刀刃上',
-        icon: 'https://cdn.jsdelivr.net/gh/froala/design-blocks@master/dist/imgs/icons/monitor.svg'
+        icon: 'https://cdn.jsdelivr.net/gh/froala/design-blocks@master/dist/imgs/icons/monitor.svg',
+        action: 'https://wenjuan.feishu.cn/m/cfm?t=sBih7Nzwkwqi-0l12'
     },
     {
         name: '敏捷团队培训',
