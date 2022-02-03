@@ -25,7 +25,10 @@ export class HomePage extends mixin<HomePageProps>() {
     }
 
     renderCase = ({ name, preview }: Case) => (
-        <li key={name} className={`col-12 col-sm-6 col-md-3 ${style.case}`}>
+        <li
+            key={name}
+            className={`col-12 col-sm-6 col-md-3 position-relative ${style.case}`}
+        >
             <Image className={style.preview} background src={preview} />
             <h3 className="h5 my-3">
                 <a

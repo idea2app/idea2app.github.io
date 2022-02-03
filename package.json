@@ -3,11 +3,11 @@
     "version": "0.4.0",
     "description": "idea2app 官方网站",
     "dependencies": {
-        "boot-cell": "2.0.0-alpha.0",
+        "boot-cell": "^2.0.0-alpha.3",
         "browser-unhandled-rejection": "^1.0.2",
-        "cell-router": "2.1.0-rc.1",
+        "cell-router": "2.1.1",
         "classnames": "^2.3.1",
-        "web-cell": "2.4.0-rc.6",
+        "web-cell": "^2.4.0-rc.6",
         "web-utility": "^3.0.0"
     },
     "devDependencies": {

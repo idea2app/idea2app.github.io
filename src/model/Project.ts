@@ -29,6 +29,13 @@ export const Edkit: Project = {
     packages: [{ repo: 'html' }, { repo: 'typescript' }]
 };
 
+export const IdeaReact: Project = {
+    type: 'package',
+    name: 'Idea-React',
+    summary: '基于 TypeScript 和 Bootstrap 的 React 高级组件库',
+    packages: [{ repo: 'react' }, { repo: 'bootstrap' }, { repo: 'typescript' }]
+};
+
 export const EChartsModel: Project = {
     type: 'package',
     name: 'ECharts-model',
@@ -65,7 +72,7 @@ export const ReactMobxAntdesignTs: Project = {
 
 export const NextBootstrapTs: Project = {
     type: 'scaffold',
-    name: 'next-bootstrap-ts',
+    name: 'Next-Bootstrap-ts',
     summary: '基于 TypeScript、Next 和 Bootstrap 的 React 项目脚手架',
     packages: [
         { repo: 'react' },
@@ -108,11 +115,11 @@ export const UniappUviewTs: Project = {
     ]
 };
 
-export const MobxStrapi: Project = {
+export const MobxRestful: Project = {
     type: 'package',
-    name: 'MobX-Strapi',
-    summary: 'Strapi v3 的 MobX SDK',
-    packages: [{ org: 'mobxjs' }, { org: 'strapi' }]
+    name: 'MobX-RESTful',
+    summary: '用于 RESTful API 的通用 MobX 4/5 抽象基类和装饰器工具库',
+    packages: [{ org: 'mobxjs' }, { org: 'swagger-api' }]
 };
 
 export const StrapiCkeditorPlugin: Project = {
@@ -150,6 +157,19 @@ export const NodetsLeancloud: Project = {
     URL: 'https://github.com/idea2app/NodeTS-LeanCloud/'
 };
 
+export const KotlinSpringBoot: Project = {
+    type: 'scaffold',
+    name: 'Kotlin-Spring-Boot',
+    summary: '基于 Kotlin 和 Spring Boot 的后端项目脚手架',
+    packages: [
+        { org: 'spring-projects' },
+        { repo: 'docker' },
+        { repo: 'kotlin' },
+        { repo: 'java' }
+    ],
+    URL: 'https://github.com/idea2app/Kotlin-Spring-Boot/'
+};
+
 export const ThinkphpScaffold: Project = {
     type: 'scaffold',
     name: 'ThinkPHP-scaffold',
@@ -162,6 +182,7 @@ export default [
     EventSubmitterPolyfill,
     WebCell,
     Edkit,
+    IdeaReact,
     EChartsModel,
     ReactMobxBootstrapTs,
     ReactMobxAntdesignTs,
@@ -169,9 +190,10 @@ export default [
     VueBootstrapTs,
     TaroVantMobXTs,
     UniappUviewTs,
-    MobxStrapi,
+    MobxRestful,
     StrapiCkeditorPlugin,
     Koagger,
     NodetsLeancloud,
+    KotlinSpringBoot,
     ThinkphpScaffold
 ];

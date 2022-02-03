@@ -2128,15 +2128,15 @@ boolbase@^1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
-boot-cell@2.0.0-alpha.0:
-  version "2.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/boot-cell/-/boot-cell-2.0.0-alpha.0.tgz#2bcdc0b503e8e48e5c82f6160db27133e24d7635"
-  integrity sha512-6/oLBUATHE63jn11lU5lmLoRkKeRat+Vh9rgkHxIyWGoLTzGUiEjhlQ456eE/wewT5g+XSINYsiEMw6GHDLsBw==
+boot-cell@^2.0.0-alpha.3:
+  version "2.0.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/boot-cell/-/boot-cell-2.0.0-alpha.3.tgz#cf2c80237e71123a3a7dd6d1e968e023cdde101a"
+  integrity sha512-oUIjbOVeCZNFOllN3bbngt2HwPlomWtCjLl+gwld/+3QuoQcOlNZIZDYHQwNEE7i4D1Aju9XV29ZwskRumUzJA==
   dependencies:
     "@swc/helpers" "^0.3.2"
     classnames "^2.3.1"
     regenerator-runtime "^0.13.9"
-    web-cell "^2.4.0-rc.2"
+    web-cell "^2.4.0-rc.6"
     web-utility "^3.0.0"
 
 boxen@^4.2.0:
@@ -2338,10 +2338,10 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001286, caniuse-lite@^1.0.30001297:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001304.tgz#38af55ed3fc8220cb13e35e6e7309c8c65a05559"
   integrity sha512-bdsfZd6K6ap87AGqSHJP/s1V+U6Z5lyrcbBu3ovbCCf8cSYpwTtGrCBObMpJqwxfTbLW6YTIdbb1jEeTelcpYQ==
 
-cell-router@2.1.0-rc.1:
-  version "2.1.0-rc.1"
-  resolved "https://registry.yarnpkg.com/cell-router/-/cell-router-2.1.0-rc.1.tgz#6d29cd2057ca6c6cd9ff278fd02dae9656d09369"
-  integrity sha512-LXYGs3p/4r3HOuKPjycQ46X2B0xV9DDp6RKku+W30Ug2VbvnAqKBPohCD2Lh/h+dmFH3NmR+JouEeUj0Xu2h7g==
+cell-router@2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/cell-router/-/cell-router-2.1.1.tgz#e870c47a66952a20b794c3dd03f9f3fba1828dd4"
+  integrity sha512-yD2CJyGJQQcI8KNpRItpWt74AMnN1Zc9tKFyyp2Gx9ulAq1FaUfcUCIjmRTx3rwjDGMFV/T9ORngha+cdoGI4Q==
   dependencies:
     "@swc/helpers" "^0.3.2"
     iterable-observer "1.0.0-rc.0"
@@ -6484,7 +6484,7 @@ weak-lru-cache@^1.2.1:
   resolved "https://registry.yarnpkg.com/weak-lru-cache/-/weak-lru-cache-1.2.1.tgz#6b4f2da7e1701f845e71522417f1df1e39503df8"
   integrity sha512-O5ag1F0Xk6ui+Fg5LlosTcVAyHs6DeyiDDbOapNtFCx/KjZ82B3U9stM9hvzbVclKWn9ABPjaINX/nQkGkJkKg==
 
-web-cell@2.4.0-rc.6, web-cell@^2.4.0-rc.2:
+web-cell@2.4.0-rc.6, web-cell@^2.4.0-rc.6:
   version "2.4.0-rc.6"
   resolved "https://registry.yarnpkg.com/web-cell/-/web-cell-2.4.0-rc.6.tgz#5f55d46de28183a5b316c5dd33b43d3370b97029"
   integrity sha512-DqPv9etkWq2e6MroTaQCS9F2P/Vr0n6vNdRF4MaVObNWkqLuUtEZnm2GtwCnDT/9zCS2TcIazhR2Hs3PIQpJ0g==
