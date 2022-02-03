@@ -11,9 +11,9 @@ https://ideapp.dev/
 
 -   Language: [TypeScript v4][3]
 -   Component engine: [WebCell v2][4]
--   Component suite: [BootCell v1][5]
+-   Component suite: [BootCell v2][5]
 -   PWA framework: [Workbox v6][6]
--   Package bundler: [Parcel v1][7]
+-   Package bundler: [Parcel v2][7]
 -   CI / CD: GitHub [Actions][8] + [Pages][9]
 
 ## Development

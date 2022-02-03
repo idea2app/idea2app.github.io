@@ -73,6 +73,13 @@ export const mythcsj: User = {
     GitHub: 'mythcsj'
 };
 
+export const manyuanrong: User = {
+    name: 'EnokMan',
+    position: 'Web/JavaScript 全栈工程师',
+    summary: 'Deno 中文社区创始人、汉梦文化汉服社区联合创始人',
+    GitHub: 'manyuanrong'
+};
+
 export default [
     TechQuery,
     lingziyb,
@@ -82,5 +89,6 @@ export default [
     Akagilnc,
     tree7ion,
     stevending1st,
-    mythcsj
+    mythcsj,
+    manyuanrong
 ];

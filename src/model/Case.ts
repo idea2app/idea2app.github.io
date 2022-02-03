@@ -6,9 +6,22 @@ import {
     case_InstitutionAnalysis,
     case_OralCavity,
     case_MyPoker,
-    case_FloatIsland
+    case_FloatIsland,
+    case_2049,
+    case_NgoLawWiki,
+    case_JianYangWomenUnion,
+    case_EthPlanet
 } from '../image';
-import { User, TechQuery, lingziyb, Cute233 } from './User';
+import {
+    User,
+    TechQuery,
+    lingziyb,
+    Cute233,
+    demongodYY,
+    tree7ion,
+    stevending1st,
+    manyuanrong
+} from './User';
 import {
     Organization,
     in235,
@@ -19,9 +32,11 @@ import {
 import {
     Project,
     WebCell,
+    Edkit,
     EChartsModel,
+    ReactMobxBootstrapTs,
     VueBootstrapTs,
-    MobxStrapi,
+    MobxRestful,
     StrapiCkeditorPlugin,
     Koagger,
     NodetsLeancloud
@@ -44,7 +59,7 @@ export const in235_PWA: Case = {
     preview: case_in235,
     partners: [in235],
     team: [TechQuery],
-    projects: [WebCell, MobxStrapi, StrapiCkeditorPlugin]
+    projects: [WebCell, MobxRestful, StrapiCkeditorPlugin]
 };
 
 export const OAFevent: Case = {
@@ -108,6 +123,43 @@ export const FloatIsland: Case = {
     projects: [Koagger, NodetsLeancloud]
 };
 
+export const CreativeAssistant2049: Case = {
+    type: 'mobile',
+    name: '2049 创意助手',
+    URL: 'https://client.aiuxstudio.com/',
+    preview: case_2049,
+    partners: [],
+    team: [demongodYY, TechQuery, lingziyb],
+    projects: [Edkit, EChartsModel, ReactMobxBootstrapTs, Koagger]
+};
+
+export const NgoLawWiki: Case = {
+    type: 'desktop',
+    name: '公益法律百科网站',
+    URL: 'https://www.yilight.com.cn/',
+    preview: case_NgoLawWiki,
+    partners: [],
+    team: [TechQuery, tree7ion, stevending1st, manyuanrong, lingziyb]
+};
+
+export const JianYangWomenUnion: Case = {
+    type: 'mobile',
+    name: '简阳妇联小程序',
+    preview: case_JianYangWomenUnion,
+    partners: [],
+    team: [TechQuery, lingziyb]
+};
+
+export const EthPlanet: Case = {
+    type: 'desktop',
+    name: '以太坊行星官网',
+    URL: 'http://esc.ethplanet.org/',
+    preview: case_EthPlanet,
+    partners: [],
+    team: [TechQuery],
+    projects: [WebCell, StrapiCkeditorPlugin]
+};
+
 export default [
     in235_PWA,
     OAFevent,
@@ -116,5 +168,9 @@ export default [
     InstitutionAnalysis,
     OralCavity,
     MyPoker,
-    FloatIsland
+    FloatIsland,
+    CreativeAssistant2049,
+    NgoLawWiki,
+    JianYangWomenUnion,
+    EthPlanet
 ];

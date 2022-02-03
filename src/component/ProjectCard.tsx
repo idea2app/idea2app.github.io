@@ -63,7 +63,7 @@ export function ProjectCard({
 
                 {URL && !isScaffold ? null : (
                     <Button
-                        className="mt-0 ml-3"
+                        className="mt-0 ms-3"
                         block
                         size="sm"
                         outline
