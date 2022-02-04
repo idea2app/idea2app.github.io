@@ -27,7 +27,11 @@ import {
     in235,
     KupoTech,
     inBracket,
-    PuZaoSi
+    PuZaoSi,
+    AiuxDesign,
+    ForNgo,
+    JianYangWomenUnion,
+    EthPlanet
 } from './Organization';
 import {
     Project,
@@ -35,6 +39,7 @@ import {
     Edkit,
     EChartsModel,
     ReactMobxBootstrapTs,
+    NextBootstrapTs,
     VueBootstrapTs,
     MobxRestful,
     StrapiCkeditorPlugin,
@@ -128,7 +133,7 @@ export const CreativeAssistant2049: Case = {
     name: '2049 创意助手',
     URL: 'https://client.aiuxstudio.com/',
     preview: case_2049,
-    partners: [],
+    partners: [AiuxDesign],
     team: [demongodYY, TechQuery, lingziyb],
     projects: [Edkit, EChartsModel, ReactMobxBootstrapTs, Koagger]
 };
@@ -138,24 +143,32 @@ export const NgoLawWiki: Case = {
     name: '公益法律百科网站',
     URL: 'https://www.yilight.com.cn/',
     preview: case_NgoLawWiki,
-    partners: [],
-    team: [TechQuery, tree7ion, stevending1st, manyuanrong, lingziyb]
+    partners: [ForNgo],
+    team: [TechQuery, tree7ion, stevending1st, manyuanrong, lingziyb],
+    projects: [NextBootstrapTs]
 };
 
-export const JianYangWomenUnion: Case = {
+export const JYWomenUnion: Case = {
     type: 'mobile',
     name: '简阳妇联小程序',
     preview: case_JianYangWomenUnion,
-    partners: [],
-    team: [TechQuery, lingziyb]
+    partners: [JianYangWomenUnion],
+    team: [TechQuery, lingziyb],
+    projects: [
+        Edkit,
+        EChartsModel,
+        ReactMobxBootstrapTs,
+        Koagger,
+        NodetsLeancloud
+    ]
 };
 
-export const EthPlanet: Case = {
+export const EthPlanetSite: Case = {
     type: 'desktop',
     name: '以太坊行星官网',
     URL: 'http://esc.ethplanet.org/',
     preview: case_EthPlanet,
-    partners: [],
+    partners: [EthPlanet],
     team: [TechQuery],
     projects: [WebCell, StrapiCkeditorPlugin]
 };
@@ -171,6 +184,6 @@ export default [
     FloatIsland,
     CreativeAssistant2049,
     NgoLawWiki,
-    JianYangWomenUnion,
-    EthPlanet
+    JYWomenUnion,
+    EthPlanetSite
 ];

@@ -1,5 +1,5 @@
 import { createCell, Fragment } from 'web-cell';
-import { HTMLHyperLinkProps } from 'web-utility/source/DOM-type';
+import { HTMLHyperLinkProps } from 'web-utility';
 import { CellRouter } from 'cell-router';
 import { NavBar, NavLink } from 'boot-cell';
 

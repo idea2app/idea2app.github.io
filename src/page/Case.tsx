@@ -1,4 +1,4 @@
-import { scrollTo } from 'web-utility/source/DOM';
+import { scrollTo } from 'web-utility';
 import {
     component,
     mixin,
