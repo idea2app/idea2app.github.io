@@ -8,7 +8,7 @@
         "cell-router": "2.1.1",
         "classnames": "^2.3.1",
         "web-cell": "^2.4.0-rc.6",
-        "web-utility": "^3.0.0"
+        "web-utility": "^3.0.1"
     },
     "devDependencies": {
         "@nuintun/qrcode": "^3.1.1",
@@ -56,7 +56,7 @@
         "prepare": "husky install",
         "test": "lint-staged",
         "start": "parcel src/index.html --open",
-        "pack": "parcel build src/index.html --public-url . --no-optimize",
+        "pack": "parcel build src/index.html --public-url .",
         "build": "rm -rf dist/  &&  npm run pack  &&  workbox generateSW"
     }
 }
