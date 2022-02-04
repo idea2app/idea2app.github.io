@@ -1,5 +1,5 @@
 import { WebCellProps, component, mixin, watch, createCell } from 'web-cell';
-import { scrollTo } from 'web-utility/source/DOM';
+import { scrollTo } from 'web-utility';
 import { Button, Image, MediaObject } from 'boot-cell';
 
 import { Section } from '../component/Section';

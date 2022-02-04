@@ -43,4 +43,38 @@ export const PuZaoSi: Organization = {
     URL: 'https://www.puzaosi.com/'
 };
 
-export default [FCC_CDC, in235, Creator1024, KupoTech, inBracket, PuZaoSi];
+export const AiuxDesign: Organization = {
+    name: '艾体验设计',
+    logo: 'https://github.com/AiuxDesign.png',
+    URL: 'https://aiuxstudio.com/'
+};
+
+export const ForNgo: Organization = {
+    name: '复恩法律',
+    logo: 'https://www.forngo.org.cn/wp-content/themes/forngo/images/logo-w.png',
+    URL: 'https://www.forngo.org.cn/'
+};
+
+export const JianYangWomenUnion: Organization = {
+    name: '简阳市妇联',
+    logo: 'http://www.cdsfl.org.cn/statics/images/2019/logo.png'
+};
+
+export const EthPlanet: Organization = {
+    name: '以太坊行星',
+    logo: 'https://www.ethplanet.org/_nuxt/img/ee08134.png',
+    URL: 'https://www.ethplanet.org/'
+};
+
+export default [
+    FCC_CDC,
+    in235,
+    Creator1024,
+    KupoTech,
+    inBracket,
+    PuZaoSi,
+    AiuxDesign,
+    ForNgo,
+    JianYangWomenUnion,
+    EthPlanet
+];
