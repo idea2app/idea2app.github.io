@@ -18,6 +18,7 @@ export function OrganizationCard({
                 'd-flex',
                 'flex-column',
                 'align-items-center',
+                'position-relative',
                 className
             )}
         >
