@@ -66,10 +66,10 @@ export const stevending1st: User = {
 };
 
 export const mythcsj: User = {
-    name: '诗杰',
-    position: '开发者',
+    name: 'mythcsj',
+    position: '社区之光',
     summary:
-        'Java 开发、华为云 HDZ 核心成员、阿里云 ACE 宣传委员、fCC 成都核心组织者、CSDN Meetup 成都站长、开源社优秀志愿者、中国 DevOps 社区志愿者、PyChina 成都志愿者',
+        'Java/Node.js 开发者，成都市万州联合商会理事、freeCodeCamp 成都核心组织者、华为云享专家、华为云 HCDG 成都负责人、华为成都昇腾 AI 开发者俱乐部主理人、阿里云飞天 Club 成都核心成员、极狐 GitLab 成都 User Group Leader、声网 Agora 成都俱乐部主理人、TiDB Community 成都地区负责人、CSDN Meetup 成都站长',
     GitHub: 'mythcsj'
 };
 
