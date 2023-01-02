@@ -1,52 +1,53 @@
 import { observer } from 'mobx-react';
-import { Card,Col, Container, Row } from 'react-bootstrap';
+import { InferGetServerSidePropsType } from 'next';
+import { FC } from 'react';
+import { Card, Col, Container, Row } from 'react-bootstrap';
+import { formatDate } from 'web-utility';
 
 import { GitCard } from '../components/Git/Card';
 import { PageHead } from '../components/PageHead';
+import projectStore from '../models/Project';
 import { i18n } from '../models/Translation';
 import styles from '../styles/Home.module.less';
 import { withTranslation } from './api/core';
-import { framework, mainNav } from './api/home';
+import { framework } from './api/home';
 
-export const getServerSideProps = withTranslation();
+export const getServerSideProps = withTranslation(async () => {
+  projectStore.clear();
 
-const HomePage = observer(() => {
-  const { t } = i18n;
+  const projects = await projectStore.getList({}, 1, 9);
 
-  return (
+  return {
+    props: { projects },
+  };
+});
+
+const { t } = i18n;
+
+const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
+  observer(({ projects }) => (
     <>
       <PageHead />
 
       <Container as="main" className={styles.main}>
-        <h1 className={`m-0 text-center ${styles.title}`}>
-          {t('welcome_to')}
-          <a className="text-primary mx-2" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
+        <h1 className={`mb-5 text-center ${styles.title}`}>idea2app</h1>
 
-        <p className={`text-center fs-4 ${styles.description}`}>
-          {t('get_started_by_editing')}
-          <code className={`mx-2 rounded-3 bg-light ${styles.code}`}>
-            pages/index.tsx
-          </code>
-        </p>
-
-        <Row className="g-4" xs={1} sm={2} md={4}>
-          {mainNav().map(({ link, title, summary }) => (
-            <Col key={link}>
+        <Row className="g-4" xs={1} sm={2} md={3}>
+          {projects.map(({ id, name, price, settlementDate }) => (
+            <Col key={id + ''}>
               <Card
-                className={`h-100 p-4 rounded-3 border ${styles.card}`}
+                className={`h-100 rounded-3 border ${styles.card}`}
                 tabIndex={-1}
               >
-                <Card.Body>
-                  <Card.Title as="h2" className="fs-4 mb-3">
-                    <a href={link} className="stretched-link">
-                      {title} &rarr;
-                    </a>
+                <Card.Body className="d-flex flex-column">
+                  <Card.Title as="h3" className="flex-fill fs-5 mb-3">
+                    <a className="stretched-link">{name}</a>
                   </Card.Title>
-                  <Card.Text className="fs-5">{summary}</Card.Text>
                 </Card.Body>
+                <Card.Footer className="d-flex">
+                  <strong className="flex-fill">￥{price}</strong>
+                  <time>🏁 {formatDate(+settlementDate!, 'YYYY-MM-DD')}</time>
+                </Card.Footer>
               </Card>
             </Col>
           ))}
@@ -72,7 +73,6 @@ const HomePage = observer(() => {
         </Row>
       </Container>
     </>
-  );
-});
+  ));
 
 export default HomePage;
