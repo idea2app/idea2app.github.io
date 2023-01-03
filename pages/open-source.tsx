@@ -16,13 +16,15 @@ export const getServerSideProps = withTranslation(async () => {
   return { props: { list } };
 });
 
+const { t } = i18n;
+
 const ScrollListPage: FC<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = observer(({ list }) => (
   <Container>
-    <PageHead title={i18n.t('scroll_list')} />
+    <PageHead title={t('open_source_project')} />
 
-    <h1 className="my-4">{i18n.t('scroll_list')}</h1>
+    <h1 className="my-4">{t('open_source_project')}</h1>
 
     {repositoryStore.downloading > 0 && <Loading />}
 

@@ -1,5 +1,6 @@
 import { HTTPError } from 'koajax';
 import { parseLanguageHeader } from 'mobx-i18n';
+import { DataObject } from 'mobx-restful';
 import {
   GetServerSideProps,
   GetServerSidePropsContext,
@@ -45,7 +46,11 @@ export function safeAPI(handler: NextAPI): NextAPI {
   };
 }
 
-export function withErrorLog<T extends GetServerSideProps>(origin: T) {
+export function withErrorLog<
+  I extends DataObject,
+  O extends DataObject = {},
+  F extends GetServerSideProps<O, I> = GetServerSideProps<O, I>,
+>(origin: F) {
   return (async context => {
     try {
       return await origin(context);
@@ -53,7 +58,7 @@ export function withErrorLog<T extends GetServerSideProps>(origin: T) {
       console.error(error);
       throw error;
     }
-  }) as T;
+  }) as F;
 }
 
 interface RouteProps<T extends ParsedUrlQuery> {
@@ -64,12 +69,12 @@ interface RouteProps<T extends ParsedUrlQuery> {
 }
 
 export function withRoute<
-  R extends Record<string, any>,
-  P extends Record<string, any> = {},
-  O extends GetServerSideProps<P, R> = GetServerSideProps<P, R>,
+  I extends DataObject,
+  O extends DataObject = {},
+  F extends GetServerSideProps<O, I> = GetServerSideProps<O, I>,
 >(
-  origin?: O,
-): GetServerSideProps<RouteProps<R> & InferGetServerSidePropsType<O>, R> {
+  origin?: F,
+): GetServerSideProps<RouteProps<I> & InferGetServerSidePropsType<F>, I> {
   return async context => {
     const options =
         (await origin?.(context)) || ({} as GetServerSidePropsResult<{}>),
@@ -84,18 +89,18 @@ export function withRoute<
         ),
       },
     } as GetServerSidePropsResult<
-      RouteProps<R> & InferGetServerSidePropsType<O>
+      RouteProps<I> & InferGetServerSidePropsType<F>
     >;
   };
 }
 
 export function withTranslation<
-  R extends Record<string, any>,
-  P extends Record<string, any> = {},
-  O extends GetServerSideProps<P, R> = GetServerSideProps<P, R>,
+  I extends DataObject,
+  O extends DataObject = {},
+  F extends GetServerSideProps<O, I> = GetServerSideProps<O, I>,
 >(
-  origin?: O,
-): GetServerSideProps<RouteProps<R> & InferGetServerSidePropsType<O>, R> {
+  origin?: F,
+): GetServerSideProps<RouteProps<I> & InferGetServerSidePropsType<F>, I> {
   return async context => {
     const { language = '' } = context.req.cookies,
       languages = parseLanguageHeader(
@@ -106,7 +111,7 @@ export function withTranslation<
     return ((await origin?.(context)) || {
       props: {},
     }) as GetServerSidePropsResult<
-      RouteProps<R> & InferGetServerSidePropsType<O>
+      RouteProps<I> & InferGetServerSidePropsType<F>
     >;
   };
 }
