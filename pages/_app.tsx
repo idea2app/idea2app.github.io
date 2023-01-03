@@ -25,18 +25,30 @@ const AppShell = observer(({ Component, pageProps }: AppProps) => {
       </Head>
       <Navbar bg="white" variant="light" fixed="top" expand="sm">
         <Container>
-          <Navbar.Brand href="/">{Name}</Navbar.Brand>
+          <Navbar.Brand href="/">
+            <span className="visually-hidden">{Name}</span>
+            <Image
+              style={{ width: '3rem' }}
+              src="https://github.com/idea2app.png"
+            />
+          </Navbar.Brand>
 
           <Navbar.Toggle aria-controls="navbar-inner" />
 
           <Navbar.Collapse id="navbar-inner">
-            <Nav className="me-auto">
+            <Nav className="ms-auto me-3">
+              <Nav.Link
+                target="_blank"
+                href="https://idea2app.feishu.cn/docx/THOEdTXzGopJnGxFlLocb8wVnkf"
+              >
+                {t('careers')}
+              </Nav.Link>
               <Link href="/open-source" passHref>
                 <Nav.Link>{t('open_source_project')}</Nav.Link>
               </Link>
-              <Link target="_blank" href="https://github.com/idea2app" passHref>
-                <Nav.Link>GitHub</Nav.Link>
-              </Link>
+              <Nav.Link target="_blank" href="https://github.com/idea2app">
+                GitHub
+              </Nav.Link>
             </Nav>
 
             <Select

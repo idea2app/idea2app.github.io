@@ -9,7 +9,7 @@ import projectStore from '../models/Project';
 import { i18n } from '../models/Translation';
 import styles from '../styles/Home.module.less';
 import { withErrorLog, withTranslation } from './api/core';
-import { mainNav } from './api/home';
+import { service } from './api/home';
 
 export const getServerSideProps = withErrorLog(
   withTranslation(async () => {
@@ -42,18 +42,16 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
           {t('idea2app_slogan')}
         </p>
 
-        <Row className="mt-5 g-4" xs={1} sm={2} md={4}>
-          {mainNav().map(({ link, title, summary }) => (
-            <Col key={link}>
+        <Row className="mt-5 g-4" xs={1} sm={2} md={3}>
+          {service().map(({ title, summary }) => (
+            <Col key={title}>
               <Card
                 className={`h-100 p-4 rounded-3 border ${styles.card}`}
                 tabIndex={-1}
               >
                 <Card.Body>
                   <Card.Title as="h2" className="fs-4 mb-3">
-                    <a href={link} className="stretched-link">
-                      {title} &rarr;
-                    </a>
+                    {title}
                   </Card.Title>
                   <Card.Text className="fs-5">{summary}</Card.Text>
                 </Card.Body>
