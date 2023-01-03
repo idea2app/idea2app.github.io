@@ -1,11 +1,15 @@
 import { IDType } from 'mobx-restful';
 
 export default {
+  idea2app_summary: '全行业信息化转型专家',
+  idea2app_slogan: '您的每个创意都值得用心实现',
+  IT_transformation_consulting: '业务信息化咨询',
+  latest_projects: '近期项目',
   welcome_to: '欢迎使用',
   get_started_by_editing: '开始你的项目吧，编辑',
   upstream_projects: '上游项目',
   home_page: '主页',
-  source_code: '源代码',
+  open_source_project: '开源项目',
   component: '组件',
   pagination: '分页',
   powered_by: '强力驱动自',

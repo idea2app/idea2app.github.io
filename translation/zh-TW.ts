@@ -1,11 +1,15 @@
 import { IDType } from 'mobx-restful';
 
 export default {
+  idea2app_summary: '全行業資訊化轉型專家',
+  idea2app_slogan: '您的每個創意都值得用心實現',
+  IT_transformation_consulting: '業務資訊化咨詢',
+  latest_projects: '近期專案',
   welcome_to: '歡迎使用',
   get_started_by_editing: '開始你的專案吧，編輯',
   upstream_projects: '上游專案',
   home_page: '主頁',
-  source_code: '源代碼',
+  open_source_project: '開源專案',
   component: '元件',
   pagination: '分頁',
   powered_by: '強力驅動自',

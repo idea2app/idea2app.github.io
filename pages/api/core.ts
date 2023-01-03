@@ -45,6 +45,17 @@ export function safeAPI(handler: NextAPI): NextAPI {
   };
 }
 
+export function withErrorLog<T extends GetServerSideProps>(origin: T) {
+  return (async context => {
+    try {
+      return await origin(context);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }) as T;
+}
+
 interface RouteProps<T extends ParsedUrlQuery> {
   route: Pick<
     GetServerSidePropsContext<T>,

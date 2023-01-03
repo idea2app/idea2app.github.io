@@ -1,10 +1,11 @@
 import '../styles/globals.less';
 
+import { Option, Select } from 'idea-react';
 import { observer, useStaticRendering } from 'mobx-react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import Link from 'next/link';
-import { Container, Dropdown, Image, Nav, Navbar } from 'react-bootstrap';
+import { Container, Image, Nav, Navbar } from 'react-bootstrap';
 
 import { isServer } from '../models/Base';
 import { i18n, LanguageName } from '../models/Translation';
@@ -22,7 +23,7 @@ const AppShell = observer(({ Component, pageProps }: AppProps) => {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Navbar bg="primary" variant="dark" fixed="top" expand="sm">
+      <Navbar bg="white" variant="light" fixed="top" expand="sm">
         <Container>
           <Navbar.Brand href="/">{Name}</Navbar.Brand>
 
@@ -30,40 +31,27 @@ const AppShell = observer(({ Component, pageProps }: AppProps) => {
 
           <Navbar.Collapse id="navbar-inner">
             <Nav className="me-auto">
-              <Link href="/component" passHref>
-                <Nav.Link>{t('component')}</Nav.Link>
+              <Link href="/open-source" passHref>
+                <Nav.Link>{t('open_source_project')}</Nav.Link>
               </Link>
-              <Link href="/pagination" passHref>
-                <Nav.Link>{t('pagination')}</Nav.Link>
-              </Link>
-              <Link href="/scroll-list" passHref>
-                <Nav.Link>{t('scroll_list')}</Nav.Link>
-              </Link>
-              <Link
-                target="_blank"
-                href="https://github.com/idea2app/Next-Bootstrap-TS"
-                passHref
-              >
-                <Nav.Link>{t('source_code')}</Nav.Link>
+              <Link target="_blank" href="https://github.com/idea2app" passHref>
+                <Nav.Link>GitHub</Nav.Link>
               </Link>
             </Nav>
-          </Navbar.Collapse>
 
-          <Dropdown className="me-3 mt-1">
-            <Dropdown.Toggle>{LanguageName[currentLanguage]}</Dropdown.Toggle>
-            <Dropdown.Menu>
+            <Select
+              value={currentLanguage}
+              onChange={key =>
+                i18n.changeLanguage(key as typeof currentLanguage)
+              }
+            >
               {Object.entries(LanguageName).map(([key, name]) => (
-                <Dropdown.Item
-                  key={key}
-                  onClick={() =>
-                    i18n.changeLanguage(key as typeof currentLanguage)
-                  }
-                >
+                <Option key={key} value={key}>
                   {name}
-                </Dropdown.Item>
+                </Option>
               ))}
-            </Dropdown.Menu>
-          </Dropdown>
+            </Select>
+          </Navbar.Collapse>
         </Container>
       </Navbar>
 

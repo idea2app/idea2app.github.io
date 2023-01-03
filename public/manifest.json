@@ -1,8 +1,8 @@
 {
-  "name": "Next-Bootstrap.ts scaffold",
-  "short_name": "Next.ts demo",
+  "name": "idea2app",
+  "short_name": "idea2app",
   "start_url": ".",
-  "description": "React project scaffold based on TypeScript, Next.js, Bootstrap & Workbox.",
+  "description": "Every idea of yours is worth our efforts to realize",
   "scope": "/",
   "display": "standalone",
   "orientation": "any",
@@ -12,9 +12,9 @@
   "background_color": "transparent",
   "icons": [
     {
-      "src": "typescript.png",
+      "src": "https://github.com/idea2app.png",
       "type": "image/png",
-      "sizes": "280x280"
+      "sizes": "200x200"
     }
   ]
 }
