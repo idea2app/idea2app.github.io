@@ -1,11 +1,15 @@
 import { IDType } from 'mobx-restful';
 
 export default {
+  idea2app_summary: 'Industry-wide IT transformation expert',
+  idea2app_slogan: 'Every idea of yours is worth our efforts to realize',
+  IT_transformation_consulting: 'IT transformation consulting',
+  latest_projects: 'Latest projects',
   welcome_to: 'Welcome to',
   get_started_by_editing: 'Get started by editing',
   upstream_projects: 'Upstream projects',
   home_page: 'Home Page',
-  source_code: 'Source Code',
+  open_source_project: 'Open-source project',
   component: 'Component',
   pagination: 'Pagination',
   powered_by: 'Powered by',

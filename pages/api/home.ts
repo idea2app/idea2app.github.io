@@ -2,7 +2,7 @@ import { i18n } from '../../models/Translation';
 
 export const mainNav = () => [
   {
-    title: i18n.t('documentation'),
+    title: i18n.t('IT_transformation_consulting'),
     link: 'https://nextjs.org/docs',
     summary: i18n.t('documentation_summary'),
   },

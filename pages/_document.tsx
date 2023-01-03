@@ -4,7 +4,7 @@ export default function Document() {
   return (
     <Html>
       <Head>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="https://github.com/idea2app.png" />
 
         <link rel="manifest" href="/manifest.json" />
         <script src="https://polyfill.web-cell.dev/feature/PWAManifest.js"></script>
