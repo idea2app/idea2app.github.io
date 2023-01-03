@@ -4,7 +4,9 @@ export const isServer = () => typeof window === 'undefined';
 
 export const ownClient = new HTTPClient({
   baseURI: `${
-    isServer() ? process.env.NEXT_PUBLIC_API_HOST! : globalThis.location?.origin
+    isServer()
+      ? process.env.VERCEL_URL || 'http://localhost:3000'
+      : globalThis.location?.origin
   }/api/`,
   responseType: 'json',
 });
