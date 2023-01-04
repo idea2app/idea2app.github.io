@@ -1,11 +1,13 @@
 import { observer } from 'mobx-react';
 import { InferGetServerSidePropsType } from 'next';
 import { FC } from 'react';
-import { Card, Col, Container, Image, Row } from 'react-bootstrap';
-import { formatDate } from 'web-utility';
+import { Button, Card, Col, Container, Image, Row } from 'react-bootstrap';
 
+import { GitListLayout } from '../components/Git';
 import { PageHead } from '../components/PageHead';
+import { ProjectListLayout } from '../components/Project';
 import projectStore from '../models/Project';
+import repositoryStore from '../models/Repository';
 import { i18n } from '../models/Translation';
 import styles from '../styles/Home.module.less';
 import { withErrorLog, withTranslation } from './api/core';
@@ -15,10 +17,13 @@ export const getServerSideProps = withErrorLog(
   withTranslation(async () => {
     projectStore.clear();
 
-    const projects = await projectStore.getList({}, 1, 9);
+    const [projects, repositories] = await Promise.all([
+      projectStore.getList({}, 1, 9),
+      repositoryStore.getList({}, 1),
+    ]);
 
     return {
-      props: { projects },
+      props: { projects, repositories },
     };
   }),
 );
@@ -26,7 +31,7 @@ export const getServerSideProps = withErrorLog(
 const { t } = i18n;
 
 const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
-  observer(({ projects }) => (
+  observer(({ projects, repositories }) => (
     <>
       <PageHead />
 
@@ -60,28 +65,29 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
           ))}
         </Row>
 
-        <h2 className="my-5 text-center">{t('latest_projects')}</h2>
+        <section>
+          <h2 className="my-5 text-center">{t('latest_projects')}</h2>
 
-        <Row className="g-4" xs={1} sm={2} md={3}>
-          {projects.map(({ id, name, price, settlementDate }) => (
-            <Col key={id + ''}>
-              <Card
-                className={`h-100 rounded-3 border ${styles.card}`}
-                tabIndex={-1}
-              >
-                <Card.Body className="d-flex flex-column">
-                  <Card.Title as="h3" className="flex-fill fs-5 mb-3">
-                    <a className="stretched-link">{name}</a>
-                  </Card.Title>
-                </Card.Body>
-                <Card.Footer className="d-flex">
-                  <strong className="flex-fill">￥{price}</strong>
-                  <time>🏁 {formatDate(+settlementDate!, 'YYYY-MM-DD')}</time>
-                </Card.Footer>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+          <ProjectListLayout defaultData={projects} />
+
+          <footer className="text-center mt-5">
+            <Button variant="outline-primary" size="sm" href="/project">
+              {t('load_more')}
+            </Button>
+          </footer>
+        </section>
+
+        <section>
+          <h2 className="my-5 text-center">{t('open_source_project')}</h2>
+
+          <GitListLayout defaultData={repositories} />
+
+          <footer className="text-center mt-5">
+            <Button variant="outline-primary" size="sm" href="/open-source">
+              {t('load_more')}
+            </Button>
+          </footer>
+        </section>
       </Container>
     </>
   ));

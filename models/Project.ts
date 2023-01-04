@@ -6,7 +6,13 @@ import { makeFilter } from '../pages/api/Lark/core';
 import { ownClient } from './Base';
 
 export type Project = Record<
-  'id' | 'name' | 'price' | 'startDate' | 'settlementDate',
+  | 'id'
+  | 'name'
+  | 'type'
+  | 'workForm'
+  | 'price'
+  | 'startDate'
+  | 'settlementDate',
   TableCellValue
 >;
 

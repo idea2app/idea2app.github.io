@@ -13,6 +13,7 @@ specifiers:
   '@types/lodash': ^4.14.191
   '@types/node': ^16.18.11
   '@types/react': ^17.0.52
+  classnames: ^2.3.2
   editorjs-html: ^3.4.2
   eslint: ^8.31.0
   eslint-config-next: ^12.3.4
@@ -53,6 +54,7 @@ dependencies:
   '@editorjs/list': 1.8.0
   '@editorjs/paragraph': 2.9.0
   '@editorjs/quote': 2.5.0
+  classnames: 2.3.2
   editorjs-html: 3.4.2
   idea-react: 0.27.11_wuwhjehtb3nhae7urou2zggzfe
   koajax: 0.8.3_typescript@4.9.4

@@ -18,18 +18,17 @@ export const getServerSideProps = withTranslation(async () => {
 
 const { t } = i18n;
 
-const ScrollListPage: FC<
-  InferGetServerSidePropsType<typeof getServerSideProps>
-> = observer(({ list }) => (
-  <Container>
-    <PageHead title={t('open_source_project')} />
+const GitListPage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
+  observer(({ list }) => (
+    <Container>
+      <PageHead title={t('open_source_project')} />
 
-    <h1 className="my-4">{t('open_source_project')}</h1>
+      <h1 className="my-4">{t('open_source_project')}</h1>
 
-    {repositoryStore.downloading > 0 && <Loading />}
+      {repositoryStore.downloading > 0 && <Loading />}
 
-    <GitList store={repositoryStore} defaultData={list} />
-  </Container>
-));
+      <GitList store={repositoryStore} defaultData={list} />
+    </Container>
+  ));
 
-export default ScrollListPage;
+export default GitListPage;

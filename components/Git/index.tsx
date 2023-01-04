@@ -1,19 +1,31 @@
 import { observer } from 'mobx-react';
-import { ScrollList, ScrollListProps } from 'mobx-restful-table';
-import { Col,Row } from 'react-bootstrap';
+import { ScrollListProps } from 'mobx-restful-table';
+import { FC } from 'react';
+import { Col, Row } from 'react-bootstrap';
 
 import { GitRepository, RepositoryModel } from '../../models/Repository';
-import { i18n } from '../../models/Translation';
+import { XScrollList } from '../XScrollList';
 import { GitCard } from './Card';
+
+export const GitListLayout: FC<{ defaultData: GitRepository[] }> = ({
+  defaultData,
+}) => (
+  <Row as="ul" className="list-unstyled g-4" xs={1} sm={2}>
+    {defaultData.map(item => (
+      <Col as="li" key={item.id}>
+        <GitCard className="h-100 shadow-sm" {...item} />
+      </Col>
+    ))}
+  </Row>
+);
 
 export interface GitListProps extends ScrollListProps<GitRepository> {
   store: RepositoryModel;
 }
 
 @observer
-export class GitList extends ScrollList<GitListProps> {
+export class GitList extends XScrollList<GitListProps> {
   store = this.props.store;
-  translater = i18n;
 
   constructor(props: GitListProps) {
     super(props);
@@ -24,14 +36,6 @@ export class GitList extends ScrollList<GitListProps> {
   renderList() {
     const { allItems } = this.store;
 
-    return (
-      <Row as="ul" className="list-unstyled g-4" xs={1} sm={2}>
-        {allItems.map(item => (
-          <Col as="li" key={item.id}>
-            <GitCard className="h-100 shadow-sm" {...item} />
-          </Col>
-        ))}
-      </Row>
-    );
+    return <GitListLayout defaultData={allItems} />;
   }
 }
