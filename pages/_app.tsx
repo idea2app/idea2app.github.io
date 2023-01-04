@@ -37,6 +37,9 @@ const AppShell = observer(({ Component, pageProps }: AppProps) => {
 
           <Navbar.Collapse id="navbar-inner">
             <Nav className="ms-auto me-3">
+              <Link href="/project" passHref>
+                <Nav.Link>{t('latest_projects')}</Nav.Link>
+              </Link>
               <Nav.Link
                 target="_blank"
                 href="https://idea2app.feishu.cn/docx/THOEdTXzGopJnGxFlLocb8wVnkf"

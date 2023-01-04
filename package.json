@@ -1,6 +1,6 @@
 {
-  "name": "@idea2app/next-bootstrap-ts",
-  "version": "0.7.0",
+  "name": "@idea2app/ows",
+  "version": "2.0.0-beta",
   "description": "React project scaffold based on TypeScript, Next.js, Bootstrap & Workbox.",
   "private": true,
   "dependencies": {
@@ -12,6 +12,7 @@
     "@editorjs/list": "^1.8.0",
     "@editorjs/paragraph": "^2.9.0",
     "@editorjs/quote": "^2.5.0",
+    "classnames": "^2.3.2",
     "editorjs-html": "^3.4.2",
     "idea-react": "^0.27.11",
     "koajax": "^0.8.3",
