@@ -1,5 +1,6 @@
 import { components } from '@octokit/openapi-types';
 import { memoize } from 'lodash';
+import { observable } from 'mobx';
 import { ListModel, toggle } from 'mobx-restful';
 import { averageOf, buildURLData } from 'web-utility';
 
@@ -31,6 +32,9 @@ export class RepositoryModel extends ListModel<GitRepository> {
   baseURI = 'orgs/idea2app/repos';
   indexKey = 'full_name' as const;
 
+  @observable
+  currentGroup: GitRepository[] = [];
+
   @toggle('downloading')
   async getOne(URI: string) {
     const { body } = await this.client.get<Repository>(`repos/${URI}`);
@@ -39,6 +43,12 @@ export class RepositoryModel extends ListModel<GitRepository> {
       ...body!,
       languages: await getGitLanguages(URI),
     });
+  }
+
+  async getGroup(URIs: string[]) {
+    return (this.currentGroup = await Promise.all(
+      URIs.map(URI => this.getOne(URI)),
+    ));
   }
 
   async loadPage(page: number, per_page: number) {

@@ -14,6 +14,7 @@
     "@editorjs/quote": "^2.5.0",
     "classnames": "^2.3.2",
     "editorjs-html": "^3.4.2",
+    "file-type": "^18.0.0",
     "idea-react": "^0.27.11",
     "koajax": "^0.8.3",
     "lark-ts-sdk": "^0.7.9",
@@ -29,7 +30,8 @@
     "react-bootstrap": "^2.7.0",
     "react-dom": "^17.0.2",
     "react-editor-js": "^2.1.0",
-    "web-utility": "^4.0.0"
+    "web-utility": "^4.0.0",
+    "webpack": "^5.75.0"
   },
   "devDependencies": {
     "@octokit/openapi-types": "^14.0.0",

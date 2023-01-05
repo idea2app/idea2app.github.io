@@ -1,8 +1,8 @@
 import { TableCellValue, TableRecordList } from 'lark-ts-sdk';
-import { ListModel, NewData, Stream } from 'mobx-restful';
+import { ListModel, NewData, Stream, toggle } from 'mobx-restful';
 import { buildURLData, isEmpty } from 'web-utility';
 
-import { makeFilter } from '../pages/api/Lark/core';
+import { makeFilter, TableRecordData } from '../pages/api/Lark/core';
 import { ownClient } from './Base';
 
 export type Project = Record<
@@ -12,7 +12,10 @@ export type Project = Record<
   | 'workForm'
   | 'price'
   | 'startDate'
-  | 'settlementDate',
+  | 'settlementDate'
+  | 'remark'
+  | 'image'
+  | 'openSource',
   TableCellValue
 >;
 
@@ -22,6 +25,18 @@ const AppId = process.env.NEXT_PUBLIC_PROJECT_APP,
 export class ProjectModel extends Stream<Project>(ListModel) {
   client = ownClient;
   baseURI = `Lark/bitable/v1/apps/${AppId}/tables/${TableId}/records`;
+
+  normalize({ id, fields }: TableRecordList<Project>['data']['items'][number]) {
+    return { ...fields, id: id! };
+  }
+
+  @toggle('downloading')
+  async getOne(id: string) {
+    const { body } = await this.client.get<TableRecordData<Project>>(
+      `${this.baseURI}/${id}`,
+    );
+    return (this.currentOne = this.normalize(body!.data.record));
+  }
 
   async *openStream(filter: NewData<Project>) {
     var lastPage = '';
@@ -42,7 +57,7 @@ export class ProjectModel extends Stream<Project>(ListModel) {
       lastPage = page_token;
       this.totalCount = total;
 
-      yield* items.map(({ id, fields }) => ({ ...fields, id: id! }));
+      yield* items.map(item => this.normalize(item));
     } while (has_more);
   }
 }

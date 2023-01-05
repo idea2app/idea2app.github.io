@@ -6,8 +6,8 @@ import { Button, Card, Col, Container, Image, Row } from 'react-bootstrap';
 import { GitListLayout } from '../components/Git';
 import { PageHead } from '../components/PageHead';
 import { ProjectListLayout } from '../components/Project';
-import projectStore from '../models/Project';
-import repositoryStore from '../models/Repository';
+import { ProjectModel } from '../models/Project';
+import { RepositoryModel } from '../models/Repository';
 import { i18n } from '../models/Translation';
 import styles from '../styles/Home.module.less';
 import { withErrorLog, withTranslation } from './api/core';
@@ -15,11 +15,9 @@ import { service } from './api/home';
 
 export const getServerSideProps = withErrorLog(
   withTranslation(async () => {
-    projectStore.clear();
-
     const [projects, repositories] = await Promise.all([
-      projectStore.getList({}, 1, 9),
-      repositoryStore.getList({}, 1),
+      new ProjectModel().getList({}, 1, 9),
+      new RepositoryModel().getList({}, 1),
     ]);
 
     return {
