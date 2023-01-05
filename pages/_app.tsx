@@ -23,7 +23,13 @@ const AppShell = observer(({ Component, pageProps }: AppProps) => {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Navbar bg="white" variant="light" fixed="top" expand="sm">
+      <Navbar
+        bg="white"
+        variant="light"
+        fixed="top"
+        expand="sm"
+        collapseOnSelect
+      >
         <Container>
           <Navbar.Brand href="/">
             <span className="visually-hidden">{Name}</span>

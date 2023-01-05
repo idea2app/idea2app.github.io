@@ -1,8 +1,25 @@
-import { Lark, LarkData } from 'lark-ts-sdk';
+import {
+  Lark,
+  LarkData,
+  TableCellLink,
+  TableCellRelation,
+  TableCellText,
+  TableCellValue,
+} from 'lark-ts-sdk';
 import { DataObject } from 'mobx-restful';
 import { isEmpty } from 'web-utility';
 
 import { safeAPI } from '../core';
+
+export type TableRecordData<T extends Record<string, TableCellValue>> =
+  LarkData<{
+    record: { id: string; record_id: string; fields: T };
+  }>;
+
+export const normalizeText = (
+  value: TableCellText | TableCellLink | TableCellRelation,
+) =>
+  value && typeof value === 'object' && 'text' in value ? value.text : value;
 
 /**
  * @see https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/filter
