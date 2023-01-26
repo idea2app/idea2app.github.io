@@ -91,8 +91,9 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
         </section>
 
         <section>
-          <h2 className="my-5 text-center">{t('partner')}</h2>
-
+          <h2 className="my-5 text-center" id="partner">
+            {t('partner')}
+          </h2>
           <Row as="ul" className="list-unstyled" xs={1} sm={2} md={4}>
             {partners.map(item => (
               <Col as="li" key={item.id + ''}>

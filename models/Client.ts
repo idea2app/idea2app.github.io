@@ -3,7 +3,7 @@ import { BiDataTable, TableCellValue } from 'mobx-lark';
 import { LarkBaseId, larkClient } from './Base';
 
 export type Client = Record<
-  'id' | 'name' | 'type' | 'image' | 'summary' | 'partnership',
+  'id' | 'name' | 'type' | 'partnership' | 'image' | 'summary' | 'address',
   TableCellValue
 >;
 

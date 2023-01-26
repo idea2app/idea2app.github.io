@@ -13,9 +13,10 @@ export const Partner: FC<PartnerProps> = ({
   name,
   image,
   summary,
+  address,
 }) => (
   <div
-    className={`d-flex flex-column align-items-center justify-content-center gap-4 ${className}`}
+    className={`d-flex flex-column align-items-center justify-content-center gap-4 position-relative ${className}`}
   >
     <Image
       className="object-fit-cover"
@@ -23,8 +24,11 @@ export const Partner: FC<PartnerProps> = ({
       loading="lazy"
       src={fileURLOf(image)}
     />
-    <h3>{name}</h3>
-
+    <h3>
+      <a className="stretched-link" target="_blank" href={address + ''} rel="noreferrer">
+        {name}
+      </a>
+    </h3>
     <p className="text-muted">{summary}</p>
   </div>
 );
