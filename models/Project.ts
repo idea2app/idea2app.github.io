@@ -2,7 +2,7 @@ import { BiDataTable, makeSimpleFilter, TableCellValue } from 'mobx-lark';
 import { NewData } from 'mobx-restful';
 import { isEmpty } from 'web-utility';
 
-import { larkClient } from './Base';
+import { LarkBaseId, larkClient } from './Base';
 
 export type Project = Record<
   | 'id'
@@ -18,15 +18,14 @@ export type Project = Record<
   TableCellValue
 >;
 
-const AppId = process.env.NEXT_PUBLIC_PROJECT_APP!,
-  TableId = process.env.NEXT_PUBLIC_PROJECT_TABLE!;
+const PROJECT_TABLE = process.env.NEXT_PUBLIC_PROJECT_TABLE!;
 
 export class ProjectModel extends BiDataTable<Project>() {
   client = larkClient;
 
   sort = { settlementDate: 'DESC' } as const;
 
-  constructor(appId = AppId, tableId = TableId) {
+  constructor(appId = LarkBaseId, tableId = PROJECT_TABLE) {
     super(appId, tableId);
   }
 

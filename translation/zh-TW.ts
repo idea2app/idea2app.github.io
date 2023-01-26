@@ -19,6 +19,7 @@ export default {
   home_page: '主頁',
   careers: '招賢納士',
   open_source_project: '開源專案',
+  partner: '合作夥伴',
   component: '元件',
   pagination: '分頁',
   powered_by: '強力驅動自',

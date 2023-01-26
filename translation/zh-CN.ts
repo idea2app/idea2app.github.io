@@ -19,6 +19,7 @@ export default {
   home_page: '主页',
   careers: '招贤纳士',
   open_source_project: '开源项目',
+  partner: '合作伙伴',
   component: '组件',
   pagination: '分页',
   powered_by: '强力驱动自',

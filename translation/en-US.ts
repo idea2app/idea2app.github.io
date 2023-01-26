@@ -19,6 +19,7 @@ export default {
   home_page: 'Home Page',
   careers: 'Careers',
   open_source_project: 'Open-source project',
+  partner: 'Partner',
   component: 'Component',
   pagination: 'Pagination',
   powered_by: 'Powered by',
