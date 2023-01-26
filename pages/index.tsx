@@ -3,9 +3,11 @@ import { InferGetServerSidePropsType } from 'next';
 import { FC } from 'react';
 import { Button, Card, Col, Container, Image, Row } from 'react-bootstrap';
 
+import { Partner } from '../components/Client/Partner';
 import { GitListLayout } from '../components/Git';
 import { PageHead } from '../components/PageHead';
 import { ProjectListLayout } from '../components/Project';
+import { ClientModel } from '../models/Client';
 import { ProjectModel } from '../models/Project';
 import { RepositoryModel } from '../models/Repository';
 import { i18n } from '../models/Translation';
@@ -15,13 +17,14 @@ import { service } from './api/home';
 
 export const getServerSideProps = withErrorLog(
   withTranslation(async () => {
-    const [projects, repositories] = await Promise.all([
+    const [projects, repositories, partners] = await Promise.all([
       new ProjectModel().getList({}, 1, 9),
-      new RepositoryModel().getList({}, 1),
+      new RepositoryModel().getList(),
+      new ClientModel().getList({ partnership: '战略合作' }),
     ]);
 
     return {
-      props: { projects, repositories },
+      props: { projects, repositories, partners },
     };
   }),
 );
@@ -29,7 +32,7 @@ export const getServerSideProps = withErrorLog(
 const { t } = i18n;
 
 const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
-  observer(({ projects, repositories }) => (
+  observer(({ projects, repositories, partners }) => (
     <>
       <PageHead />
 
@@ -85,6 +88,18 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
               {t('load_more')}
             </Button>
           </footer>
+        </section>
+
+        <section>
+          <h2 className="my-5 text-center">{t('partner')}</h2>
+
+          <Row as="ul" className="list-unstyled" xs={1} sm={2} md={4}>
+            {partners.map(item => (
+              <Col as="li" key={item.id + ''}>
+                <Partner className="h-100" {...item} />
+              </Col>
+            ))}
+          </Row>
         </section>
       </Container>
     </>
