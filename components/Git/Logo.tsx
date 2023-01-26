@@ -43,6 +43,6 @@ export class GitLogo extends PureComponent<GitLogoProps> {
     const { path } = this;
     const { name } = this.props;
 
-    return path && <Image fluid src={path} alt={name} />;
+    return path && <Image fluid loading="lazy" src={path} alt={name} />;
   }
 }

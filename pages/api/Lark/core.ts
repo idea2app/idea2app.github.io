@@ -1,47 +1,10 @@
-import {
-  Lark,
-  LarkData,
-  TableCellLink,
-  TableCellRelation,
-  TableCellText,
-  TableCellValue,
-} from 'lark-ts-sdk';
-import { DataObject } from 'mobx-restful';
-import { isEmpty } from 'web-utility';
+import { LarkApp, LarkData } from 'mobx-lark';
 
 import { safeAPI } from '../core';
 
-export type TableRecordData<T extends Record<string, TableCellValue>> =
-  LarkData<{
-    record: { id: string; record_id: string; fields: T };
-  }>;
-
-export const normalizeText = (
-  value: TableCellText | TableCellLink | TableCellRelation,
-) =>
-  value && typeof value === 'object' && 'text' in value ? value.text : value;
-
-/**
- * @see https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/filter
- */
-export function makeFilter(data: DataObject, relation: 'AND' | 'OR' = 'AND') {
-  const list = Object.entries(data)
-    .map(
-      ([key, value]) =>
-        !isEmpty(value) &&
-        (value instanceof Array ? value : [value]).map(
-          (item: string) => `CurrentValue.[${key}].contains("${item}")`,
-        ),
-    )
-    .filter(Boolean)
-    .flat() as string[];
-
-  return list[1] ? `${relation}(${list})` : list[0];
-}
-
-export const lark = new Lark({
-  appId: process.env.LARK_APP_ID!,
-  appSecret: process.env.LARK_APP_SECRET!,
+export const lark = new LarkApp({
+  id: process.env.LARK_APP_ID!,
+  secret: process.env.LARK_APP_SECRET!,
 });
 
 export const proxyLark = <T extends LarkData>(

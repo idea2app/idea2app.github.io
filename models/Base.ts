@@ -11,8 +11,8 @@ const API_Host = isServer()
     : 'http://localhost:3000'
   : globalThis.location.origin;
 
-export const ownClient = new HTTPClient({
-  baseURI: `${API_Host}/api/`,
+export const larkClient = new HTTPClient({
+  baseURI: `${API_Host}/api/Lark/`,
   responseType: 'json',
 });
 

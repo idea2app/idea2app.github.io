@@ -1,4 +1,4 @@
-import { TableRecordList } from 'lark-ts-sdk';
+import { TableRecordList } from 'mobx-lark';
 import { DataObject } from 'mobx-restful';
 
 import { proxyLark } from '../../core';
