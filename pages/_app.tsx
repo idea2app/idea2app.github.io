@@ -55,6 +55,9 @@ const AppShell = observer(({ Component, pageProps }: AppProps) => {
               <Link href="/open-source" passHref>
                 <Nav.Link>{t('open_source_project')}</Nav.Link>
               </Link>
+              <Link href="/#partner" passHref>
+                <Nav.Link>{t('partner')}</Nav.Link>
+              </Link>
               <Nav.Link target="_blank" href="https://github.com/idea2app">
                 GitHub
               </Nav.Link>

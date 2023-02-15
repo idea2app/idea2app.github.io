@@ -2,8 +2,9 @@ import { HTTPClient } from 'koajax';
 
 export const isServer = () => typeof window === 'undefined';
 
-const VercelHost = process.env.VERCEL_URL,
-  GithubToken = process.env.NEXT_PUBLIC_GITHUB_TOKEN;
+export const VercelHost = process.env.VERCEL_URL,
+  GithubToken = process.env.NEXT_PUBLIC_GITHUB_TOKEN,
+  LarkBaseId = process.env.NEXT_PUBLIC_LARK_BASE!;
 
 const API_Host = isServer()
   ? VercelHost
@@ -11,8 +12,8 @@ const API_Host = isServer()
     : 'http://localhost:3000'
   : globalThis.location.origin;
 
-export const ownClient = new HTTPClient({
-  baseURI: `${API_Host}/api/`,
+export const larkClient = new HTTPClient({
+  baseURI: `${API_Host}/api/Lark/`,
   responseType: 'json',
 });
 

@@ -1,5 +1,5 @@
 import { fileTypeFromBuffer } from 'file-type';
-import { TableCellMedia, TableCellValue } from 'lark-ts-sdk';
+import { TableCellMedia, TableCellValue } from 'mobx-lark';
 
 import { safeAPI } from '../../core';
 import { lark } from '../core';
