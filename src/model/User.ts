@@ -80,6 +80,13 @@ export const manyuanrong: User = {
     GitHub: 'manyuanrong'
 };
 
+export const Five: User = {
+    name: 'Five',
+    position: 'Web/JavaScript 全栈工程师',
+    summary: '前端工程师，退役ACMer,极客青年，开源爱好者。tinymce-plugin社区发起人，CSDN博客专家，InfoQ·阿里云签约作者，华为云享专家。 ——有事多研究，没事瞎琢磨',
+    GitHub: 'Five-great'
+};
+
 export default [
     TechQuery,
     lingziyb,
@@ -90,5 +97,6 @@ export default [
     tree7ion,
     stevending1st,
     mythcsj,
-    manyuanrong
+    manyuanrong,
+    Five
 ];
