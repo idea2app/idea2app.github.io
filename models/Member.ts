@@ -2,14 +2,17 @@ import { BiDataTable, TableCellValue } from 'mobx-lark';
 
 import { LarkBaseId, larkClient } from './Base';
 
-export type Member = Record<'id' | 'name' | 'type', TableCellValue>;
+export type Member = Record<
+  'id' | 'nickname' | 'type' | 'skill' | 'position' | 'summary' | 'github',
+  TableCellValue
+>;
 
-const PROJECT_TABLE = process.env.NEXT_PUBLIC_PROJECT_TABLE!;
+const MEMBER_TABLE = process.env.NEXT_PUBLIC_MEMBER_TABLE!;
 
 export class MemberModel extends BiDataTable<Member>() {
   client = larkClient;
 
-  constructor(appId = LarkBaseId, tableId = PROJECT_TABLE) {
+  constructor(appId = LarkBaseId, tableId = MEMBER_TABLE) {
     super(appId, tableId);
   }
 }

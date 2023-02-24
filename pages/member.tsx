@@ -4,7 +4,7 @@ import { InferGetServerSidePropsType } from 'next';
 import { FC } from 'react';
 import { Container } from 'react-bootstrap';
 
-import { MemberList } from '../components/MemberList';
+import { MemberList } from '../components/Member/List';
 import { PageHead } from '../components/PageHead';
 import memberStore, { MemberModel } from '../models/Member';
 import { i18n } from '../models/Translation';
