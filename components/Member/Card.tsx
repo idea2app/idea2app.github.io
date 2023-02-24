@@ -1,7 +1,7 @@
-import { Icon } from 'idea-react';
+import { Avatar, Icon } from 'idea-react';
 import { observer } from 'mobx-react';
 import { FC } from 'react';
-import { Badge, Button, Card, Col, Image } from 'react-bootstrap';
+import { Badge, Card } from 'react-bootstrap';
 
 import { Member } from '../../models/Member';
 
@@ -24,12 +24,7 @@ export const MemberCard: FC<MemberCardProps> = observer(
         <Card.Title as="h3" className="h5 d-flex justify-content-between">
           <span style={{ lineHeight: '3rem' }}>{nickname}</span>
           {github && (
-            <Image
-              className=""
-              style={{ maxHeight: '3rem', borderRadius: '50%' }}
-              src={`https://github.com/${github}.png`}
-              alt={`${nickname} 's avatar`}
-            />
+            <Avatar src={`https://github.com/${github}.png`} size={3} />
           )}
         </Card.Title>
         {position && <Card.Subtitle>{position}</Card.Subtitle>}
