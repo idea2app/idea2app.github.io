@@ -1,6 +1,6 @@
 import '../styles/globals.less';
 
-import { Option, Select } from 'idea-react';
+import { Icon, Option, Select } from 'idea-react';
 import { observer, useStaticRendering } from 'mobx-react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
@@ -55,11 +55,11 @@ const AppShell = observer(({ Component, pageProps }: AppProps) => {
               <Link href="/open-source" passHref>
                 <Nav.Link>{t('open_source_project')}</Nav.Link>
               </Link>
-              <Link href="/#partner" passHref>
-                <Nav.Link>{t('partner')}</Nav.Link>
-              </Link>
               <Link href="/member" passHref>
                 <Nav.Link>{t('member')}</Nav.Link>
+              </Link>
+              <Link href="/#partner" passHref>
+                <Nav.Link>{t('partner')}</Nav.Link>
               </Link>
               <Nav.Link target="_blank" href="https://github.com/idea2app">
                 GitHub

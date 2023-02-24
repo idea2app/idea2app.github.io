@@ -8,13 +8,15 @@ import { MemberList } from '../components/Member/List';
 import { PageHead } from '../components/PageHead';
 import memberStore, { MemberModel } from '../models/Member';
 import { i18n } from '../models/Translation';
-import { withTranslation } from './api/core';
+import { withErrorLog, withTranslation } from './api/core';
 
-export const getServerSideProps = withTranslation(async () => {
-  const list = await new MemberModel().getList({}, 1);
+export const getServerSideProps = withErrorLog(
+  withTranslation(async () => {
+    const list = await new MemberModel().getList({});
 
-  return { props: { list } };
-});
+    return { props: { list } };
+  }),
+);
 
 const { t } = i18n;
 
@@ -22,9 +24,9 @@ const MemberListPage: FC<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = observer(({ list }) => (
   <Container>
-    <PageHead title={t('custom_software_development')} />
+    <PageHead title={t('member')} />
 
-    <h1 className="my-4">{t('custom_software_development')}</h1>
+    <h1 className="my-4">{t('member')}</h1>
 
     {memberStore.downloading > 0 && <Loading />}
 
