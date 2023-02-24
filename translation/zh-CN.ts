@@ -20,6 +20,7 @@ export default {
   careers: '招贤纳士',
   open_source_project: '开源项目',
   partner: '合作伙伴',
+  member: '菁英团队',
   component: '组件',
   pagination: '分页',
   powered_by: '强力驱动自',

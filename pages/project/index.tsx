@@ -8,13 +8,15 @@ import { PageHead } from '../../components/PageHead';
 import { ProjectList } from '../../components/Project';
 import projectStore, { ProjectModel } from '../../models/Project';
 import { i18n } from '../../models/Translation';
-import { withTranslation } from '../api/core';
+import { withErrorLog, withTranslation } from '../api/core';
 
-export const getServerSideProps = withTranslation(async () => {
-  const list = await new ProjectModel().getList({}, 1);
+export const getServerSideProps = withErrorLog(
+  withTranslation(async () => {
+    const list = await new ProjectModel().getList({});
 
-  return { props: { list } };
-});
+    return { props: { list } };
+  }),
+);
 
 const { t } = i18n;
 
