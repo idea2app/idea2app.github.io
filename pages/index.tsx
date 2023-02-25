@@ -1,13 +1,16 @@
 import { observer } from 'mobx-react';
 import { InferGetServerSidePropsType } from 'next';
 import { FC } from 'react';
-import { Button, Card, Col, Container, Image, Row } from 'react-bootstrap';
+import { Card, Col, Container, Image, Row } from 'react-bootstrap';
 
 import { Partner } from '../components/Client/Partner';
 import { GitListLayout } from '../components/Git';
+import { MemberListLayout } from '../components/Member/List';
 import { PageHead } from '../components/PageHead';
 import { ProjectListLayout } from '../components/Project';
+import { Section } from '../components/Section';
 import { ClientModel } from '../models/Client';
+import { MemberModel } from '../models/Member';
 import { ProjectModel } from '../models/Project';
 import { RepositoryModel } from '../models/Repository';
 import { i18n } from '../models/Translation';
@@ -17,14 +20,15 @@ import { service } from './api/home';
 
 export const getServerSideProps = withErrorLog(
   withTranslation(async () => {
-    const [projects, repositories, partners] = await Promise.all([
+    const [projects, repositories, partners, members] = await Promise.all([
       new ProjectModel().getList({}, 1, 9),
       new RepositoryModel().getList(),
       new ClientModel().getList({ partnership: '战略合作' }),
+      new MemberModel().getList({ type: '全职' }),
     ]);
 
     return {
-      props: { projects, repositories, partners },
+      props: { projects, repositories, partners, members },
     };
   }),
 );
@@ -32,14 +36,14 @@ export const getServerSideProps = withErrorLog(
 const { t } = i18n;
 
 const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
-  observer(({ projects, repositories, partners }) => (
+  observer(({ projects, repositories, partners, members }) => (
     <>
       <PageHead />
 
       <Container as="main" className={styles.main}>
         <h1 className={`mb-5 text-center ${styles.title}`}>
           <span className="visually-hidden">idea2app</span>
-          <Image src="https://github.com/idea2app.png" />
+          <Image src="https://github.com/idea2app.png" alt="idea2app logo" />
         </h1>
         <p className={`text-center fs-4 ${styles.description}`}>
           {t('idea2app_summary')}
@@ -66,34 +70,19 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
           ))}
         </Row>
 
-        <section>
-          <h2 className="my-5 text-center">{t('latest_projects')}</h2>
-
+        <Section title={t('latest_projects')} link="/project">
           <ProjectListLayout defaultData={projects} />
+        </Section>
 
-          <footer className="text-center mt-5">
-            <Button variant="outline-primary" size="sm" href="/project">
-              {t('load_more')}
-            </Button>
-          </footer>
-        </section>
-
-        <section>
-          <h2 className="my-5 text-center">{t('open_source_project')}</h2>
-
+        <Section title={t('open_source_project')} link="/open-source">
           <GitListLayout defaultData={repositories} />
+        </Section>
 
-          <footer className="text-center mt-5">
-            <Button variant="outline-primary" size="sm" href="/open-source">
-              {t('load_more')}
-            </Button>
-          </footer>
-        </section>
+        <Section title={t('member')} link="/member">
+          <MemberListLayout defaultData={members} />
+        </Section>
 
-        <section>
-          <h2 className="my-5 text-center" id="partner">
-            {t('partner')}
-          </h2>
+        <Section title={t('partner')} id="partner">
           <Row as="ul" className="list-unstyled g-4" xs={1} sm={2} md={4}>
             {partners.map(item => (
               <Col as="li" key={item.id + ''}>
@@ -101,7 +90,7 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
               </Col>
             ))}
           </Row>
-        </section>
+        </Section>
       </Container>
     </>
   ));
