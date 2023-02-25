@@ -1,4 +1,4 @@
-import { Avatar, Icon } from 'idea-react';
+import { Avatar, Icon, text2color } from 'idea-react';
 import { observer } from 'mobx-react';
 import { FC } from 'react';
 import { Badge, Card } from 'react-bootstrap';
@@ -46,7 +46,12 @@ export const MemberCard: FC<MemberCardProps> = observer(
         {skill && (
           <ul className="list-inline">
             {(skill as string[]).map(value => (
-              <Badge as="li" className="list-inline-item" key={value}>
+              <Badge
+                key={value}
+                className="list-inline-item"
+                bg={text2color(value, ['light'])}
+                as="li"
+              >
                 {value}
               </Badge>
             ))}
