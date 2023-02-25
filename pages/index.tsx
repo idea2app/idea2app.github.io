@@ -82,7 +82,7 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
           <MemberListLayout defaultData={members} />
         </Section>
 
-        <Section title={t('partner')} id="/partner">
+        <Section title={t('partner')} id="partner">
           <Row as="ul" className="list-unstyled g-4" xs={1} sm={2} md={4}>
             {partners.map(item => (
               <Col as="li" key={item.id + ''}>

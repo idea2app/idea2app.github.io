@@ -3,11 +3,7 @@ import { Button } from 'react-bootstrap';
 
 import { i18n } from '../models/Translation';
 
-export interface SectionProps {
-  id?: string;
-  title?: string;
-  link?: string;
-}
+export type SectionProps = Partial<Record<'id' | 'title' | 'link', string>>;
 
 const { t } = i18n;
 

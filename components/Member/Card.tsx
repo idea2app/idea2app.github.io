@@ -48,9 +48,9 @@ export const MemberCard: FC<MemberCardProps> = observer(
             {(skill as string[]).map(value => (
               <Badge
                 key={value}
+                as="li"
                 className="list-inline-item"
                 bg={text2color(value, ['light'])}
-                as="li"
               >
                 {value}
               </Badge>
