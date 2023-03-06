@@ -19,7 +19,7 @@ const MEMBER_TABLE = process.env.NEXT_PUBLIC_MEMBER_TABLE!;
 export class MemberModel extends BiDataTable<Member>() {
   client = larkClient;
 
-  requiredKeys = ['nickname', 'position', 'type', 'skill'] as const;
+  requiredKeys = ['nickname', 'position', 'type', 'skill', 'joinedAt'] as const;
 
   constructor(appId = LarkBaseId, tableId = MEMBER_TABLE) {
     super(appId, tableId);
