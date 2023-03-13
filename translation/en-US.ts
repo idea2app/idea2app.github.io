@@ -12,6 +12,7 @@ export default {
   agile_team_training: '👩‍💻Agile team training',
   agile_team_training_summary:
     'Face-to-face with your technical team to learn Agile Development methodology from practice, and grow into a reliable and efficient Modern Engineering Team',
+  consult_immediately: 'Consult immediately',
   latest_projects: 'Latest projects',
   welcome_to: 'Welcome to',
   get_started_by_editing: 'Get started by editing',
