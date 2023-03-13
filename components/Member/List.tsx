@@ -4,6 +4,7 @@ import { FC } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import { Member, MemberModel } from '../../models/Member';
+import { i18n } from '../../models/Translation';
 import { XScrollList } from '../XScrollList';
 import { MemberCard } from './Card';
 
@@ -25,6 +26,7 @@ export interface MemberListProps extends ScrollListProps<Member> {
 
 @observer
 export class MemberList extends XScrollList<MemberListProps> {
+  translator = i18n;
   store = this.props.store;
 
   constructor(props: MemberListProps) {
