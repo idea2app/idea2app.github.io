@@ -31,8 +31,8 @@ specifiers:
   mobx-i18n: ^0.3.14
   mobx-lark: 1.0.0-beta.0
   mobx-react: ^6.3.1
-  mobx-restful: ^0.6.0
-  mobx-restful-table: ^0.6.1
+  mobx-restful: ^0.6.3
+  mobx-restful-table: ^0.9.0
   next: ^12.3.4
   next-pwa: ~5.6.0
   next-with-less: ^2.0.5
@@ -66,8 +66,8 @@ dependencies:
   mobx-i18n: 0.3.14_mobx@5.15.7
   mobx-lark: 1.0.0-beta.0_p26dyi66jui5532votno5vdvqi
   mobx-react: 6.3.1_hhkghttxnhy2fe22wf4styxgna
-  mobx-restful: 0.6.0_p26dyi66jui5532votno5vdvqi
-  mobx-restful-table: 0.6.1_ksgph2xjzpfws6qncn3nipebtu
+  mobx-restful: 0.6.3_p26dyi66jui5532votno5vdvqi
+  mobx-restful-table: 0.9.0_ksgph2xjzpfws6qncn3nipebtu
   next: 12.3.4_sfoxds7t5ydpegc3knd667wn6m
   prismjs: 1.29.0
   react: 17.0.2
@@ -4085,7 +4085,7 @@ packages:
       '@swc/helpers': 0.4.14
       koajax: 0.8.3_typescript@4.9.5
       mobx: 5.15.7
-      mobx-restful: 0.6.0_p26dyi66jui5532votno5vdvqi
+      mobx-restful: 0.6.3_p26dyi66jui5532votno5vdvqi
       node-fetch: 2.6.8
       regenerator-runtime: 0.13.11
       web-utility: 4.0.0_typescript@4.9.5
@@ -4127,8 +4127,8 @@ packages:
       - react-native
     dev: false
 
-  /mobx-restful-table/0.6.1_ksgph2xjzpfws6qncn3nipebtu:
-    resolution: {integrity: sha512-PhwhVjuk3TEiZ0LBtGm94Na8hW/SFDtAhMlRctGUqQz2wp4HulWX/9RzCeS+0l43urDWZC2IDY1Sg9M1GFk9qg==}
+  /mobx-restful-table/0.9.0_ksgph2xjzpfws6qncn3nipebtu:
+    resolution: {integrity: sha512-xPvGE+uo+fWxW3rK+N7pFzrp3uLax2WModk1xNVpXM0Xh+XtzyTGSn8T+l7ZrSMpHikhB5jNZ6M0A7n3UczsQA==}
     peerDependencies:
       mobx: '>=4 <6'
       react: '>=16 <18'
@@ -4139,9 +4139,9 @@ packages:
       mobx: 5.15.7
       mobx-i18n: 0.3.14_mobx@5.15.7
       mobx-react: 6.3.1_hhkghttxnhy2fe22wf4styxgna
-      mobx-restful: 0.6.0_p26dyi66jui5532votno5vdvqi
+      mobx-restful: 0.6.3_p26dyi66jui5532votno5vdvqi
       react: 17.0.2
-      react-bootstrap: 2.7.0_zsjcj4gvi24ks76nprapl4hsmq
+      react-bootstrap: 2.7.2_zsjcj4gvi24ks76nprapl4hsmq
       regenerator-runtime: 0.13.11
       web-utility: 4.0.0_typescript@4.9.5
     transitivePeerDependencies:
@@ -4152,8 +4152,8 @@ packages:
       - typescript
     dev: false
 
-  /mobx-restful/0.6.0_p26dyi66jui5532votno5vdvqi:
-    resolution: {integrity: sha512-LtA8qDSHPrX/0+5WaKxj+QRWjzSxrvpzvfDcRF8PcX1Z0dzXfRERdNvN7KhBJ3mHYKYp47gZPNjabBzCqzE4YQ==}
+  /mobx-restful/0.6.3_p26dyi66jui5532votno5vdvqi:
+    resolution: {integrity: sha512-y40QEXqOgvWM9Isv6lPwA4Wz9U3zmaI4wxXwJ1HX6D8gmfWOy/0Hhj5xkosOe9xh+4IRHYCLO/Po2ZeXH43jWQ==}
     peerDependencies:
       mobx: '>=4 <6'
     dependencies:
@@ -4619,6 +4619,33 @@ packages:
 
   /react-bootstrap/2.7.0_zsjcj4gvi24ks76nprapl4hsmq:
     resolution: {integrity: sha512-Jcrn6aUuRVBeSB6dzKODKZU1TONOdhAxu0IDm4Sv74SJUm98dMdhSotF2SNvFEADANoR+stV+7TK6SNX1wWu5w==}
+    peerDependencies:
+      '@types/react': '>=16.14.8'
+      react: '>=16.14.0'
+      react-dom: '>=16.14.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.19.0
+      '@restart/hooks': 0.4.7_react@17.0.2
+      '@restart/ui': 1.4.1_sfoxds7t5ydpegc3knd667wn6m
+      '@types/react': 17.0.53
+      '@types/react-transition-group': 4.4.5
+      classnames: 2.3.2
+      dom-helpers: 5.2.1
+      invariant: 2.2.4
+      prop-types: 15.8.1
+      prop-types-extra: 1.1.1_react@17.0.2
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      react-transition-group: 4.4.5_sfoxds7t5ydpegc3knd667wn6m
+      uncontrollable: 7.2.1_react@17.0.2
+      warning: 4.0.3
+    dev: false
+
+  /react-bootstrap/2.7.2_zsjcj4gvi24ks76nprapl4hsmq:
+    resolution: {integrity: sha512-WDSln+mG4RLLFO01stkj2bEx/3MF4YihK9D/dWnHaSxOiQZLbhhlf95D2Jb20X3t2m7vMxRe888FVrfLJoGmmA==}
     peerDependencies:
       '@types/react': '>=16.14.8'
       react: '>=16.14.0'
