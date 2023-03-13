@@ -4,7 +4,6 @@ import { FC } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import { Project, ProjectModel } from '../../models/Project';
-import { i18n } from '../../models/Translation';
 import { XScrollList } from '../XScrollList';
 import { ProjectCard } from './Card';
 
@@ -26,7 +25,6 @@ export interface ProjectListProps extends ScrollListProps<Project> {
 
 @observer
 export class ProjectList extends XScrollList<ProjectListProps> {
-  translator = i18n;
   store = this.props.store;
 
   constructor(props: ProjectListProps) {

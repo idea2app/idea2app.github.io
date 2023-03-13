@@ -4,7 +4,6 @@ import { FC } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import { GitRepository, RepositoryModel } from '../../models/Repository';
-import { i18n } from '../../models/Translation';
 import { XScrollList } from '../XScrollList';
 import { GitCard } from './Card';
 
@@ -26,7 +25,6 @@ export interface GitListProps extends ScrollListProps<GitRepository> {
 
 @observer
 export class GitList extends XScrollList<GitListProps> {
-  translator = i18n;
   store = this.props.store;
 
   constructor(props: GitListProps) {
