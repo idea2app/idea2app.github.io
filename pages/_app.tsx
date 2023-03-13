@@ -1,6 +1,7 @@
 import '../styles/globals.less';
 
-import { Icon, Option, Select } from 'idea-react';
+import { Option, Select } from 'idea-react';
+import { HTTPError } from 'koajax';
 import { observer, useStaticRendering } from 'mobx-react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
@@ -12,6 +13,14 @@ import { i18n, LanguageName } from '../models/Translation';
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 useStaticRendering(isServer());
+
+globalThis.addEventListener?.('unhandledrejection', ({ reason }) => {
+  var { message, statusText } = reason as HTTPError;
+
+  message = statusText || message;
+
+  if (message) alert(message);
+});
 
 const Name = process.env.NEXT_PUBLIC_SITE_NAME || '';
 

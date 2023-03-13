@@ -28,7 +28,15 @@ export const getServerSideProps = withErrorLog(
     ]);
 
     return {
-      props: { projects, repositories, partners, members },
+      props: {
+        projects,
+        repositories,
+        partners,
+        members: members.sort(
+          ({ joinedAt: a }, { joinedAt: b }) =>
+            +new Date(a as number) - +new Date(b as number),
+        ),
+      },
     };
   }),
 );

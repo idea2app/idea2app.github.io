@@ -15,15 +15,11 @@ export default function Document() {
         />
         <link
           rel="stylesheet"
-          href="https://unpkg.com/idea-react@0.27.11/dist/index.css"
+          href="https://unpkg.com/idea-react@1.0.0-alpha.0/dist/index.css"
         />
         <link
           rel="stylesheet"
           href="https://unpkg.com/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
-        />
-        <link
-          rel="stylesheet"
-          href="https://unpkg.com/prismjs@1.29.0/themes/prism.min.css"
         />
       </Head>
 
