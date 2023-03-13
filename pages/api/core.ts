@@ -122,3 +122,9 @@ export function withTranslation<
     >;
   };
 }
+
+export function getTarget(link: URL | string): string {
+  return location.origin !== new URL(link, location.href).origin
+    ? '_blank'
+    : '_self';
+}

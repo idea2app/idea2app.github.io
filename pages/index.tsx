@@ -15,7 +15,7 @@ import { ProjectModel } from '../models/Project';
 import { RepositoryModel } from '../models/Repository';
 import { i18n } from '../models/Translation';
 import styles from '../styles/Home.module.less';
-import { withErrorLog, withTranslation } from './api/core';
+import { getTarget, withErrorLog, withTranslation } from './api/core';
 import { service } from './api/home';
 
 export const getServerSideProps = withErrorLog(
@@ -61,7 +61,7 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
         </p>
 
         <Row className="mt-5 g-4" xs={1} sm={2} md={3}>
-          {service().map(({ title, summary, btnText, btnLink }) => (
+          {service().map(({ title, summary, buttonText, buttonLink }) => (
             <Col key={title}>
               <Card
                 className={`h-100 p-4 rounded-3 border ${styles.card}`}
@@ -72,9 +72,9 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
                     {title}
                   </Card.Title>
                   <Card.Text className="fs-5">{summary}</Card.Text>
-                  {btnText && btnLink && (
-                    <Button href={btnLink} target="_blank">
-                      {btnText}
+                  {buttonText && buttonLink && (
+                    <Button href={buttonLink} target={getTarget(buttonLink)}>
+                      {buttonText}
                     </Button>
                   )}
                 </Card.Body>

@@ -10,8 +10,8 @@ export const service = () => [
   {
     title: t('custom_software_development'),
     summary: t('custom_software_development_summary'),
-    btnText: t('consult_immediately'),
-    btnLink: 'https://wenjuan.feishu.cn/m?t=sBih7Nzwkwqi-0l12',
+    buttonText: t('consult_immediately'),
+    buttonLink: 'https://wenjuan.feishu.cn/m?t=sBih7Nzwkwqi-0l12',
   },
   {
     title: t('agile_team_training'),
