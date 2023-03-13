@@ -12,6 +12,7 @@ export default {
   agile_team_training: '👩‍💻敏捷團隊培訓',
   agile_team_training_summary:
     '與您的技術團隊面對面一起從實踐中學習「敏捷開發」方法論，成長為可靠、高效的「現代化工程團隊」',
+  consult_immediately: '立即諮詢',
   latest_projects: '近期專案',
   welcome_to: '歡迎使用',
   get_started_by_editing: '開始你的專案吧，編輯',

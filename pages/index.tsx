@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import { InferGetServerSidePropsType } from 'next';
 import { FC } from 'react';
-import { Card, Col, Container, Image, Row } from 'react-bootstrap';
+import { Button, Card, Col, Container, Image, Row } from 'react-bootstrap';
 
 import { Partner } from '../components/Client/Partner';
 import { GitListLayout } from '../components/Git';
@@ -53,7 +53,7 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
         </p>
 
         <Row className="mt-5 g-4" xs={1} sm={2} md={3}>
-          {service().map(({ title, summary }) => (
+          {service().map(({ title, summary, btnText, btnLink }) => (
             <Col key={title}>
               <Card
                 className={`h-100 p-4 rounded-3 border ${styles.card}`}
@@ -64,6 +64,11 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
                     {title}
                   </Card.Title>
                   <Card.Text className="fs-5">{summary}</Card.Text>
+                  {btnText && btnLink && (
+                    <Button href={btnLink} target="_blank">
+                      {btnText}
+                    </Button>
+                  )}
                 </Card.Body>
               </Card>
             </Col>
