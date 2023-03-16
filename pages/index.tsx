@@ -60,28 +60,30 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
           {t('idea2app_slogan')}
         </p>
 
-        <Row className="mt-5 g-4" xs={1} sm={2} md={3}>
-          {service().map(({ title, summary, buttonText, buttonLink }) => (
-            <Col key={title}>
-              <Card
-                className={`h-100 p-4 rounded-3 border ${styles.card}`}
-                tabIndex={-1}
-              >
-                <Card.Body>
-                  <Card.Title as="h2" className="fs-4 mb-3">
-                    {title}
-                  </Card.Title>
-                  <Card.Text className="fs-5">{summary}</Card.Text>
-                  {buttonText && buttonLink && (
-                    <Button href={buttonLink} target={getTarget(buttonLink)}>
-                      {buttonText}
-                    </Button>
-                  )}
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+        <Section>
+          <Row className="mt-5 g-4" xs={1} sm={2} md={3}>
+            {service().map(({ title, summary, buttonText, buttonLink }) => (
+              <Col key={title}>
+                <Card
+                  className={`h-100 p-4 rounded-3 border ${styles.card}`}
+                  tabIndex={-1}
+                >
+                  <Card.Body>
+                    <Card.Title as="h2" className="fs-4 mb-3">
+                      {title}
+                    </Card.Title>
+                    <Card.Text className="fs-5">{summary}</Card.Text>
+                    {buttonText && buttonLink && (
+                      <Button href={buttonLink} target={getTarget(buttonLink)}>
+                        {buttonText}
+                      </Button>
+                    )}
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        </Section>
 
         <Section title={t('latest_projects')} link="/project">
           <ProjectListLayout defaultData={projects} />
