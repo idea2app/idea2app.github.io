@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Button, Container } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 import { i18n } from '../models/Translation';
 
@@ -8,23 +8,19 @@ export type SectionProps = Partial<Record<'id' | 'title' | 'link', string>>;
 const { t } = i18n;
 
 export const Section: FC<SectionProps> = ({ id, title, children, link }) => (
-  <Container>
-    <section>
-      {title && (
-        <h2 className="my-5 text-center" id={id}>
-          {title}
-        </h2>
-      )}
+  <section>
+    <h2 className="my-5 text-center" id={id}>
+      {title}
+    </h2>
 
-      {children}
+    {children}
 
-      {link && (
-        <footer className="mt-5 text-center">
-          <Button variant="outline-primary" size="sm" href={link}>
-            {t('load_more')}
-          </Button>
-        </footer>
-      )}
-    </section>
-  </Container>
+    {link && (
+      <footer className="mt-5 text-center">
+        <Button variant="outline-primary" size="sm" href={link}>
+          {t('load_more')}
+        </Button>
+      </footer>
+    )}
+  </section>
 );
