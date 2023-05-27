@@ -1,3 +1,4 @@
+import { Loading } from 'idea-react';
 import { observer } from 'mobx-react';
 import { ScrollListProps } from 'mobx-restful-table';
 import { FC } from 'react';
@@ -20,12 +21,12 @@ export const MemberListLayout: FC<{ defaultData: Member[] }> = ({
 );
 
 export interface MemberListProps extends ScrollListProps<Member> {
-  store: MemberModel;
+  store?: MemberModel;
 }
 
 @observer
 export class MemberList extends XScrollList<MemberListProps> {
-  store = this.props.store;
+  store = this.props.store || new MemberModel();
 
   constructor(props: MemberListProps) {
     super(props);
@@ -34,8 +35,14 @@ export class MemberList extends XScrollList<MemberListProps> {
   }
 
   renderList() {
-    const { allItems } = this.store;
+    const { downloading, allItems } = this.store;
 
-    return <MemberListLayout defaultData={allItems} />;
+    return (
+      <>
+        {downloading > 0 && <Loading />}
+
+        <MemberListLayout defaultData={allItems} />
+      </>
+    );
   }
 }

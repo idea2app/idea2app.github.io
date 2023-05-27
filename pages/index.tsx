@@ -32,7 +32,7 @@ export const getServerSideProps = withErrorLog(
         projects,
         repositories,
         partners,
-        members: members.sort(
+        members: [...members].sort(
           ({ joinedAt: a }, { joinedAt: b }) =>
             +new Date(a as number) - +new Date(b as number),
         ),

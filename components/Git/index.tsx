@@ -11,11 +11,14 @@ export const GitListLayout: FC<{ defaultData: GitRepository[] }> = ({
   defaultData,
 }) => (
   <Row as="ul" className="list-unstyled g-4" xs={1} sm={2}>
-    {defaultData.map(item => (
-      <Col as="li" key={item.id}>
-        <GitCard className="h-100 shadow-sm" {...item} />
-      </Col>
-    ))}
+    {defaultData.map(
+      item =>
+        !!(item.description && item.topics?.length) && (
+          <Col as="li" key={item.id}>
+            <GitCard className="h-100 shadow-sm" {...item} />
+          </Col>
+        ),
+    )}
   </Row>
 );
 
