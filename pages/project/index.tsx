@@ -1,11 +1,12 @@
 import { Loading } from 'idea-react';
 import { observer } from 'mobx-react';
+import { ScrollList } from 'mobx-restful-table';
 import { InferGetServerSidePropsType } from 'next';
 import { FC } from 'react';
 import { Container } from 'react-bootstrap';
 
 import { PageHead } from '../../components/PageHead';
-import { ProjectList } from '../../components/Project';
+import { ProjectListLayout } from '../../components/Project';
 import projectStore, { ProjectModel } from '../../models/Project';
 import { i18n } from '../../models/Translation';
 import { withErrorLog, withTranslation } from '../api/core';
@@ -30,7 +31,12 @@ const ProjectListPage: FC<
 
     {projectStore.downloading > 0 && <Loading />}
 
-    <ProjectList store={projectStore} defaultData={list} />
+    <ScrollList
+      translator={i18n}
+      store={projectStore}
+      renderList={allItems => <ProjectListLayout defaultData={allItems} />}
+      defaultData={list}
+    />
   </Container>
 ));
 
