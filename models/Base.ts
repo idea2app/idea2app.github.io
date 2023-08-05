@@ -12,8 +12,12 @@ const API_Host = isServer()
     : 'http://localhost:3000'
   : globalThis.location.origin;
 
+const { BUILDING } = process.env;
+
 export const larkClient = new HTTPClient({
-  baseURI: `${API_Host}/api/Lark/`,
+  baseURI: BUILDING
+    ? 'https://open.feishu.cn/open-apis/'
+    : `${API_Host}/api/Lark/`,
   responseType: 'json',
 });
 
