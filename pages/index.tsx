@@ -17,8 +17,10 @@ import { i18n } from '../models/Translation';
 import styles from '../styles/Home.module.less';
 import { getTarget } from './api/core';
 import { service } from './api/home';
+import { lark } from './api/Lark/core';
 
 export const getStaticProps = async () => {
+  await lark.getAccessToken();
   const [projects, repositories, partners, members] = await Promise.all([
     new ProjectModel().getList({}, 1, 9),
     new RepositoryModel().getList(),

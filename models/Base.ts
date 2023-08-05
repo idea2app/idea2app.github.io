@@ -1,5 +1,7 @@
 import { HTTPClient } from 'koajax';
 
+import { lark } from '../pages/api/Lark/core';
+
 export const isServer = () => typeof window === 'undefined';
 
 export const VercelHost = process.env.VERCEL_URL,
@@ -14,12 +16,12 @@ const API_Host = isServer()
 
 const { BUILDING } = process.env;
 
-export const larkClient = new HTTPClient({
-  baseURI: BUILDING
-    ? 'https://open.feishu.cn/open-apis/'
-    : `${API_Host}/api/Lark/`,
-  responseType: 'json',
-});
+export const larkClient = BUILDING
+  ? lark.client
+  : new HTTPClient({
+      baseURI: `${API_Host}/api/Lark/`,
+      responseType: 'json',
+    });
 
 export const githubClient = new HTTPClient({
   baseURI: 'https://api.github.com/',
