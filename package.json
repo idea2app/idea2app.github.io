@@ -6,21 +6,21 @@
   "dependencies": {
     "classnames": "^2.3.2",
     "file-type": "^18.5.0",
-    "idea-react": "^1.0.0-beta.1",
+    "idea-react": "1.0.0-rc.10",
     "koajax": "^0.8.4",
     "lodash": "^4.17.21",
     "mobx": "^5.15.7",
-    "mobx-i18n": "^0.3.14",
-    "mobx-lark": "^1.0.0-beta.6",
+    "mobx-i18n": "^0.3.15",
+    "mobx-lark": "1.0.0-rc.2",
     "mobx-react": "^6.3.1",
     "mobx-restful": "^0.6.5",
-    "mobx-restful-table": "^1.0.2",
+    "mobx-restful-table": "^1.0.4",
     "next": "^12.3.4",
     "react": "^17.0.2",
     "react-bootstrap": "^2.7.4",
     "react-dom": "^17.0.2",
-    "web-utility": "^4.0.0",
-    "webpack": "^5.85.1"
+    "web-utility": "^4.1.0",
+    "webpack": "^5.88.2"
   },
   "devDependencies": {
     "@octokit/openapi-types": "^17.2.0",

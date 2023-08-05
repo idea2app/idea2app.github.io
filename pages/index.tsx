@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import { InferGetServerSidePropsType } from 'next';
+import { InferGetStaticPropsType } from 'next';
 import { FC } from 'react';
 import { Button, Card, Col, Container, Image, Row } from 'react-bootstrap';
 
@@ -15,36 +15,35 @@ import { ProjectModel } from '../models/Project';
 import { RepositoryModel } from '../models/Repository';
 import { i18n } from '../models/Translation';
 import styles from '../styles/Home.module.less';
-import { getTarget, withErrorLog, withTranslation } from './api/core';
+import { getTarget } from './api/core';
 import { service } from './api/home';
 
-export const getServerSideProps = withErrorLog(
-  withTranslation(async () => {
-    const [projects, repositories, partners, members] = await Promise.all([
-      new ProjectModel().getList({}, 1, 9),
-      new RepositoryModel().getList(),
-      new ClientModel().getList({ partnership: '战略合作' }),
-      new MemberModel().getList({ type: '全职' }),
-    ]);
+export const getStaticProps = async () => {
+  const [projects, repositories, partners, members] = await Promise.all([
+    new ProjectModel().getList({}, 1, 9),
+    new RepositoryModel().getList(),
+    new ClientModel().getList({ partnership: '战略合作' }),
+    new MemberModel().getList({ type: '全职' }),
+  ]);
 
-    return {
-      props: {
-        projects,
-        repositories,
-        partners,
-        members: [...members].sort(
-          ({ joinedAt: a }, { joinedAt: b }) =>
-            +new Date(a as number) - +new Date(b as number),
-        ),
-      },
-    };
-  }),
-);
+  return {
+    props: {
+      projects,
+      repositories,
+      partners,
+      members: [...members].sort(
+        ({ joinedAt: a }, { joinedAt: b }) =>
+          +new Date(a as number) - +new Date(b as number),
+      ),
+    },
+    revalidate: 60,
+  };
+};
 
 const { t } = i18n;
 
-const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
-  observer(({ projects, repositories, partners, members }) => (
+const HomePage: FC<InferGetStaticPropsType<typeof getStaticProps>> = observer(
+  ({ projects, repositories, partners, members }) => (
     <>
       <PageHead />
 
@@ -106,6 +105,7 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
         </Section>
       </Container>
     </>
-  ));
+  ),
+);
 
 export default HomePage;
