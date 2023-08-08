@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react';
 import { InferGetServerSidePropsType } from 'next';
+import { cache, compose, errorLogger, translator } from 'next-ssr-middleware';
 import { Col, Container, Image, Row } from 'react-bootstrap';
 
 import { GitCard } from '../../components/Git/Card';
@@ -8,15 +9,14 @@ import { ProjectCard } from '../../components/Project/Card';
 import { Project, ProjectModel } from '../../models/Project';
 import { GitRepository, RepositoryModel } from '../../models/Repository';
 import { i18n } from '../../models/Translation';
-import { withErrorLog } from '../api/core';
 import { fileURLOf } from '../api/Lark/file/[id]';
 
 const { t } = i18n;
 
-export const getServerSideProps = withErrorLog<
+export const getServerSideProps = compose<
   { id: string },
   { project: Project; repositories: GitRepository[] }
->(async ({ params: { id } = {} }) => {
+>(cache(), errorLogger, translator(i18n), async ({ params: { id } = {} }) => {
   var repositories: GitRepository[] = [];
 
   const project = await new ProjectModel().getOne(id!);
@@ -41,7 +41,7 @@ const ProjectDetailPage = observer(
 
       <Row className="g-4 my-3">
         <Col xs={12} sm={8}>
-          <Image fluid src={fileURLOf(project.image)} />
+          <Image fluid src={fileURLOf(project.image)} alt={project.name + ''} />
         </Col>
         <Col xs={12} sm={4}>
           <ProjectCard {...project} />

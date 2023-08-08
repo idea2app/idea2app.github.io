@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react';
 import { InferGetServerSidePropsType } from 'next';
+import { cache, compose, errorLogger, translator } from 'next-ssr-middleware';
 import { FC } from 'react';
 import { Button, Card, Col, Container, Image, Row } from 'react-bootstrap';
 
@@ -15,11 +16,14 @@ import { ProjectModel } from '../models/Project';
 import { RepositoryModel } from '../models/Repository';
 import { i18n } from '../models/Translation';
 import styles from '../styles/Home.module.less';
-import { getTarget, withErrorLog, withTranslation } from './api/core';
+import { getTarget } from './api/core';
 import { service } from './api/home';
 
-export const getServerSideProps = withErrorLog(
-  withTranslation(async () => {
+export const getServerSideProps = compose(
+  cache(),
+  errorLogger,
+  translator(i18n),
+  async () => {
     const [projects, repositories, partners, members] = await Promise.all([
       new ProjectModel().getList({}, 1, 9),
       new RepositoryModel().getList(),
@@ -38,7 +42,7 @@ export const getServerSideProps = withErrorLog(
         ),
       },
     };
-  }),
+  },
 );
 
 const { t } = i18n;
