@@ -2,6 +2,7 @@ import { Loading } from 'idea-react';
 import { observer } from 'mobx-react';
 import { ScrollList } from 'mobx-restful-table';
 import { InferGetServerSidePropsType } from 'next';
+import { cache, compose, errorLogger, translator } from 'next-ssr-middleware';
 import { FC } from 'react';
 import { Container } from 'react-bootstrap';
 
@@ -9,13 +10,17 @@ import { GitListLayout } from '../components/Git';
 import { PageHead } from '../components/PageHead';
 import repositoryStore, { RepositoryModel } from '../models/Repository';
 import { i18n } from '../models/Translation';
-import { withTranslation } from './api/core';
 
-export const getServerSideProps = withTranslation(async () => {
-  const list = await new RepositoryModel().getList({}, 1);
+export const getServerSideProps = compose(
+  cache(),
+  errorLogger,
+  translator(i18n),
+  async () => {
+    const list = await new RepositoryModel().getList({}, 1);
 
-  return { props: { list } };
-});
+    return { props: { list } };
+  },
+);
 
 const { t } = i18n;
 

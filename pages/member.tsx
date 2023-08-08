@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
 import { ScrollList } from 'mobx-restful-table';
 import { InferGetServerSidePropsType } from 'next';
+import { cache, compose, errorLogger, translator } from 'next-ssr-middleware';
 import { FC } from 'react';
 import { Container } from 'react-bootstrap';
 
@@ -8,14 +9,16 @@ import { MemberListLayout } from '../components/Member/List';
 import { PageHead } from '../components/PageHead';
 import memberStore, { MemberModel } from '../models/Member';
 import { i18n } from '../models/Translation';
-import { withErrorLog, withTranslation } from './api/core';
 
-export const getServerSideProps = withErrorLog(
-  withTranslation(async () => {
+export const getServerSideProps = compose(
+  cache(),
+  errorLogger,
+  translator(i18n),
+  async () => {
     const list = await new MemberModel().getList();
 
     return { props: { list } };
-  }),
+  },
 );
 
 const { t } = i18n;
