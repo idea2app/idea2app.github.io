@@ -101,8 +101,8 @@ devDependencies:
     specifier: ~5.6.0
     version: 5.6.0(@babel/core@7.22.10)(next@12.3.4)(webpack@5.88.2)
   next-with-less:
-    specifier: ^3.0.1
-    version: 3.0.1(less-loader@11.1.3)(less@4.2.0)(next@12.3.4)
+    specifier: ^2.0.5
+    version: 2.0.5(less-loader@11.1.3)(less@4.2.0)(next@12.3.4)
   prettier:
     specifier: ^3.0.1
     version: 3.0.1
@@ -4506,8 +4506,8 @@ packages:
       - typescript
     dev: false
 
-  /next-with-less@3.0.1(less-loader@11.1.3)(less@4.2.0)(next@12.3.4):
-    resolution: {integrity: sha512-lVJQ+dNWGpR1ccWM/LjY+8i28DC2oPa1Ivrc+h4+DFPJJN6O2EGKZIFBGrd9GLbwAEjFzKPs7yUk6bnrbY0qcw==}
+  /next-with-less@2.0.5(less-loader@11.1.3)(less@4.2.0)(next@12.3.4):
+    resolution: {integrity: sha512-1MJDcgFOPucFPCMXV7rTqcWiLI2nLSBi8bA6msvkiNLhYyZMXaFl4MkyYf7eOEUUEtA/c5eD0grPhbcDkrKqPQ==}
     peerDependencies:
       less: '*'
       less-loader: '>= 7.0.0'
