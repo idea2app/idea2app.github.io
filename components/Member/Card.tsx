@@ -10,26 +10,18 @@ export interface MemberCardProps extends Member {
 }
 
 export const MemberCard: FC<MemberCardProps> = observer(
-  ({
-    className = 'shadow-sm',
-    nickname,
-    type,
-    skill,
-    position,
-    summary,
-    github,
-  }) => (
+  ({ className = 'shadow-sm', nickname, skill, position, summary, github }) => (
     <Card className={className}>
       <Card.Body className="d-flex flex-column gap-3">
         <Card.Title as="h3" className="h5 d-flex justify-content-between">
-          <span style={{ lineHeight: '3rem' }}>{nickname}</span>
+          <span style={{ lineHeight: '3rem' }}>{nickname + ''}</span>
           {github && (
             <Avatar src={`https://github.com/${github}.png`} size={3} />
           )}
         </Card.Title>
-        {position && <Card.Subtitle>{position}</Card.Subtitle>}
+        {position && <Card.Subtitle>{position + ''}</Card.Subtitle>}
 
-        <Card.Text>{summary}</Card.Text>
+        <Card.Text>{summary + ''}</Card.Text>
       </Card.Body>
 
       <Card.Footer>
