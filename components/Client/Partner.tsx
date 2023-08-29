@@ -32,9 +32,9 @@ export const Partner: FC<PartnerProps> = ({
         href={address + ''}
         rel="noreferrer"
       >
-        {name}
+        {name + ''}
       </a>
     </h3>
-    <p className="text-muted">{summary}</p>
+    <p className="text-muted">{summary + ''}</p>
   </div>
 );

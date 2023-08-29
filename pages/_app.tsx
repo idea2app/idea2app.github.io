@@ -2,17 +2,18 @@ import '../styles/globals.less';
 
 import { Option, Select } from 'idea-react';
 import { HTTPError } from 'koajax';
-import { observer, useStaticRendering } from 'mobx-react';
+import { configure } from 'mobx';
+import { enableStaticRendering, observer } from 'mobx-react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import Link from 'next/link';
 import { Container, Image, Nav, Navbar } from 'react-bootstrap';
 
 import { isServer } from '../models/Base';
 import { i18n, LanguageName } from '../models/Translation';
 
-// eslint-disable-next-line react-hooks/rules-of-hooks
-useStaticRendering(isServer());
+configure({ enforceActions: 'never' });
+
+enableStaticRendering(isServer());
 
 globalThis.addEventListener?.('unhandledrejection', ({ reason }) => {
   var { message, statusText } = reason as HTTPError;
@@ -52,24 +53,23 @@ const AppShell = observer(({ Component, pageProps }: AppProps) => {
 
           <Navbar.Collapse id="navbar-inner">
             <Nav className="ms-auto me-3">
-              <Link href="/project" passHref>
-                <Nav.Link>{t('latest_projects')}</Nav.Link>
-              </Link>
+              <Nav.Link href="/project">{t('latest_projects')}</Nav.Link>
+
               <Nav.Link
                 target="_blank"
                 href="https://idea2app.feishu.cn/docx/THOEdTXzGopJnGxFlLocb8wVnkf"
               >
                 {t('careers')}
               </Nav.Link>
-              <Link href="/open-source" passHref>
-                <Nav.Link>{t('open_source_project')}</Nav.Link>
-              </Link>
-              <Link href="/member" passHref>
-                <Nav.Link>{t('member')}</Nav.Link>
-              </Link>
-              <Link href="/#partner" passHref>
-                <Nav.Link>{t('partner')}</Nav.Link>
-              </Link>
+
+              <Nav.Link href="/open-source">
+                {t('open_source_project')}
+              </Nav.Link>
+
+              <Nav.Link href="/member">{t('member')}</Nav.Link>
+
+              <Nav.Link href="/#partner">{t('partner')}</Nav.Link>
+
               <Nav.Link target="_blank" href="https://github.com/idea2app">
                 GitHub
               </Nav.Link>

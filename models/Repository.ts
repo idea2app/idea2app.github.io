@@ -1,6 +1,6 @@
 import { components } from '@octokit/openapi-types';
 import { memoize } from 'lodash';
-import { observable } from 'mobx';
+import { makeObservable, observable } from 'mobx';
 import { ListModel, toggle } from 'mobx-restful';
 import { averageOf, buildURLData } from 'web-utility';
 
@@ -28,6 +28,11 @@ const getGitLanguages = memoize(async (URI: string) => {
 });
 
 export class RepositoryModel extends ListModel<GitRepository> {
+  constructor() {
+    super();
+    makeObservable(this);
+  }
+
   client = githubClient;
   baseURI = 'orgs/idea2app/repos';
   indexKey = 'full_name' as const;

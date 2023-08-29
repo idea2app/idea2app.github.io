@@ -23,6 +23,5 @@ module.exports = withPWA(
       );
       return config;
     },
-    reactStrictMode: true,
   }),
 );

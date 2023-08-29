@@ -1,9 +1,11 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { Button } from 'react-bootstrap';
 
 import { i18n } from '../models/Translation';
 
-export type SectionProps = Partial<Record<'id' | 'title' | 'link', string>>;
+export type SectionProps = PropsWithChildren<
+  Partial<Record<'id' | 'title' | 'link', string>>
+>;
 
 const { t } = i18n;
 
