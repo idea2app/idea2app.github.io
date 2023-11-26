@@ -64,7 +64,7 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
           {t('idea2app_slogan')}
         </p>
 
-        <Row className="mt-5 g-4" xs={1} sm={2} md={3}>
+        <Row className="mt-5 g-4" xs={1} lg={3}>
           {service().map(({ title, summary, buttonText, buttonLink }) => (
             <Col key={title}>
               <Card

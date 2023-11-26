@@ -37,7 +37,7 @@ const AppShell = observer(({ Component, pageProps }: AppProps) => {
         bg="white"
         variant="light"
         fixed="top"
-        expand="sm"
+        expand="md"
         collapseOnSelect
       >
         <Container>
