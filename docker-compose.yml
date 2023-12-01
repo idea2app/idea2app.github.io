@@ -4,13 +4,8 @@ networks:
   idea2app:
 
 services:
-  next-bootstrap-ts:
-    image: idea2app/next-bootstrap-ts
-    environment:
-      - NODE_ENV=production
-      - PORT=3000
-    ports:
-      - 3000:3000
+  web-server:
+    image: idea2app/web-server
     networks:
       - idea2app
     healthcheck:
@@ -34,11 +29,11 @@ services:
 
   caddy:
     depends_on:
-      - next-bootstrap-ts
+      - web-server
     image: caddy
     ports:
       - 80:80
       - 443:443
     networks:
       - idea2app
-    command: caddy reverse-proxy --from your.domain.com --to next-bootstrap-ts:3000
+    command: caddy reverse-proxy --from idea2app.cn --to web-server:3000

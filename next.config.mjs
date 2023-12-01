@@ -1,6 +1,6 @@
-const { NormalModuleReplacementPlugin } = require('webpack'),
-  withLess = require('next-with-less'),
-  setPWA = require('next-pwa');
+import webpack from 'webpack';
+import withLess from 'next-with-less';
+import setPWA from 'next-pwa';
 
 const { NODE_ENV } = process.env,
   withPWA = setPWA({
@@ -13,11 +13,11 @@ const { NODE_ENV } = process.env,
 /**
  * @type {import('next').NextConfig}
  */
-module.exports = withPWA(
+export default withPWA(
   withLess({
     webpack: config => {
       config.plugins.push(
-        new NormalModuleReplacementPlugin(/^node:/, resource => {
+        new webpack.NormalModuleReplacementPlugin(/^node:/, resource => {
           resource.request = resource.request.replace(/^node:/, '');
         }),
       );

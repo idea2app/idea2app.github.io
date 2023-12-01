@@ -9,8 +9,8 @@ on:
       - v*
 env:
   ARTIFACT_PATH: /tmp/artifact.tar
-  BOX_NAME: next-bootstrap-ts
-  BOX_URL: idea2app/next-bootstrap-ts
+  BOX_NAME: web-server
+  BOX_URL: idea2app/web-server
 
 jobs:
   deploy_docker_image:
