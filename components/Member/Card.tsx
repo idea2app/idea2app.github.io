@@ -2,6 +2,7 @@ import { Avatar, Icon, text2color } from 'idea-react';
 import { observer } from 'mobx-react';
 import { FC } from 'react';
 import { Badge, Card } from 'react-bootstrap';
+import { Markdown } from 'react-marked-renderer';
 
 import { Member } from '../../models/Member';
 
@@ -21,7 +22,7 @@ export const MemberCard: FC<MemberCardProps> = observer(
         </Card.Title>
         {position && <Card.Subtitle>{position + ''}</Card.Subtitle>}
 
-        <Card.Text>{summary + ''}</Card.Text>
+        <Markdown markdown={summary + ''} />
       </Card.Body>
 
       <Card.Footer>

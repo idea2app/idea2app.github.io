@@ -14,7 +14,8 @@ export type Member = Record<
   TableCellValue
 >;
 
-const MEMBER_TABLE = process.env.NEXT_PUBLIC_MEMBER_TABLE!;
+export const MEMBER_TABLE = process.env.NEXT_PUBLIC_MEMBER_TABLE!,
+  MEMBER_VIEW = process.env.NEXT_PUBLIC_MEMBER_VIEW!;
 
 export class MemberModel extends BiDataTable<Member>() {
   client = larkClient;
