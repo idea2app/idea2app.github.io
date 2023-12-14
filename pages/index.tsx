@@ -11,7 +11,7 @@ import { PageHead } from '../components/PageHead';
 import { ProjectListLayout } from '../components/Project';
 import { Section } from '../components/Section';
 import { ClientModel } from '../models/Client';
-import { MemberModel } from '../models/Member';
+import { MEMBER_VIEW, MemberModel } from '../models/Member';
 import { ProjectModel } from '../models/Project';
 import { RepositoryModel } from '../models/Repository';
 import { i18n } from '../models/Translation';
@@ -28,7 +28,7 @@ export const getServerSideProps = compose(
       new ProjectModel().getList({}, 1, 9),
       new RepositoryModel().getList(),
       new ClientModel().getList({ partnership: '战略合作' }),
-      new MemberModel().getList({ type: '全职' }),
+      new MemberModel().getViewList(MEMBER_VIEW),
     ]);
 
     return {
@@ -36,9 +36,8 @@ export const getServerSideProps = compose(
         projects,
         repositories,
         partners,
-        members: [...members].sort(
-          ({ joinedAt: a }, { joinedAt: b }) =>
-            +new Date(a as number) - +new Date(b as number),
+        members: members.filter(
+          ({ github, position, summary }) => github && position && summary,
         ),
       },
     };

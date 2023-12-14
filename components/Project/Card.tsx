@@ -46,7 +46,13 @@ export const ProjectCard: FC<ProjectCardProps> = ({
       </ul>
     </Card.Body>
     <Card.Footer className="d-flex">
-      <strong className="flex-fill"></strong>
+      <strong className="flex-fill">
+        ￥
+        {(price + '').replace(/\d/g, (matched, offset) =>
+          offset ? '0' : matched,
+        )}
+        +
+      </strong>
 
       <time>🏁 {formatDate(+settlementDate!, 'YYYY-MM-DD')}</time>
     </Card.Footer>
