@@ -43,6 +43,10 @@ export default {
   topic: 'Topic',
   star_count: 'Star Count',
 
+  // Member page
+  projects_as_leader: 'Projects as leader',
+  projects_as_member: 'Projects as member',
+
   // Open source project
   load_more: 'Load more...',
   no_more: 'No more',

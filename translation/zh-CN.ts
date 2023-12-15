@@ -43,6 +43,10 @@ export default {
   topic: '话题',
   star_count: '星标数',
 
+  // Member page
+  projects_as_leader: '负责的项目',
+  projects_as_member: '参与的项目',
+
   // Open source project
   load_more: '加载更多……',
   no_more: '没有更多',

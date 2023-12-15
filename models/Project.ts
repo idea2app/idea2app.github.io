@@ -9,6 +9,8 @@ export type Project = Record<
   | 'name'
   | 'type'
   | 'workForm'
+  | 'leader'
+  | 'members'
   | 'price'
   | 'startDate'
   | 'settlementDate'
