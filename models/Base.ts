@@ -3,7 +3,7 @@ import { HTTPClient } from 'koajax';
 export const isServer = () => typeof window === 'undefined';
 
 export const VercelHost = process.env.VERCEL_URL,
-  GithubToken = process.env.NEXT_PUBLIC_GITHUB_TOKEN,
+  GithubToken = process.env.GITHUB_TOKEN,
   LarkBaseId = process.env.NEXT_PUBLIC_LARK_BASE!;
 
 const API_Host = isServer()

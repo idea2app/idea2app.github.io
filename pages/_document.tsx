@@ -11,11 +11,11 @@ export default function Document() {
 
         <link
           rel="stylesheet"
-          href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          href="https://npm.onmicrosoft.cn/bootstrap@5.3.2/dist/css/bootstrap.min.css"
         />
         <link
           rel="stylesheet"
-          href="https://unpkg.com/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+          href="https://npm.onmicrosoft.cn/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
         />
       </Head>
 

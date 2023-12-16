@@ -40,19 +40,19 @@ export const getServerSideProps = compose<{ nickname: string }>(
 
 const MemberDetailPage: FC<MemberDetailPageProps> = observer(
   ({ member, leaderProjects, memberProjects }) => (
-    <Container className="mt-5">
+    <Container className="mt-5 pb-4">
       <PageHead title={member.nickname as string} />
 
       <Row>
-        <Col xs={12} sm={4}>
+        <Col xs={12} md={4}>
           <MemberCard
             className="sticky-top"
             style={{ top: '6.5rem' }}
             {...member}
           />
         </Col>
-        <Col xs={12} sm={8}>
-          <Tabs variant="pills" justify className="mt-4 mt-sm-0">
+        <Col xs={12} md={8}>
+          <Tabs variant="pills" justify className="mt-4 mt-md-0">
             {Object.entries({
               [t('projects_as_leader')]: leaderProjects,
               [t('projects_as_member')]: memberProjects,
