@@ -28,7 +28,12 @@ export const getServerSideProps = compose<
 
     repositories = await new RepositoryModel().getGroup(openSource);
   }
-  return { props: { project, repositories } };
+  return {
+    props: {
+      project: JSON.parse(JSON.stringify(project)) as Project,
+      repositories,
+    },
+  };
 });
 
 const ProjectDetailPage = observer(
@@ -40,7 +45,13 @@ const ProjectDetailPage = observer(
       <PageHead title={project.name + ''} />
 
       <Row className="g-4 my-3">
-        <Col xs={12} sm={8}>
+        <Col
+          xs={12}
+          sm={8}
+          as="a"
+          className="text-decoration-none"
+          href={project.link || '#'}
+        >
           <Image fluid src={fileURLOf(project.image)} alt={project.name + ''} />
         </Col>
         <Col xs={12} sm={4}>
