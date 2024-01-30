@@ -9,13 +9,8 @@ export interface GitLogoProps {
 
 @observer
 export class GitLogo extends PureComponent<GitLogoProps> {
-  constructor(props: GitLogoProps) {
-    super(props);
-    makeObservable(this);
-  }
-
   @observable
-  path = '';
+  accessor path = '';
 
   async componentDidMount() {
     const { name } = this.props;

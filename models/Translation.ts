@@ -6,6 +6,7 @@ export const i18n = new TranslationModel({
   'zh-CN': zhCN,
   'zh-TW': () => import('../translation/zh-TW'),
   'zh-HK': () => import('../translation/zh-TW'),
+  'zh-MO': () => import('../translation/zh-TW'),
   'en-US': () => import('../translation/en-US'),
 });
 
