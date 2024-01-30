@@ -1,4 +1,4 @@
-import { BiDataTable, TableCellValue } from 'mobx-lark';
+import { BiDataQueryOptions, BiDataTable, TableCellValue } from 'mobx-lark';
 
 import { LarkBaseId, larkClient } from './Base';
 
@@ -21,6 +21,8 @@ export class MemberModel extends BiDataTable<Member>() {
   client = larkClient;
 
   requiredKeys = ['nickname', 'position', 'type', 'skill', 'joinedAt'] as const;
+
+  queryOptions: BiDataQueryOptions = { text_field_as_array: false };
 
   constructor(appId = LarkBaseId, tableId = MEMBER_TABLE) {
     super(appId, tableId);

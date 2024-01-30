@@ -1,4 +1,12 @@
-import { BiDataTable, makeSimpleFilter, TableCellValue } from 'mobx-lark';
+import {
+  BiDataQueryOptions,
+  BiDataTable,
+  makeSimpleFilter,
+  normalizeText,
+  TableCellLink,
+  TableCellValue,
+  TableRecord,
+} from 'mobx-lark';
 import { NewData } from 'mobx-restful';
 import { isEmpty } from 'web-utility';
 
@@ -16,7 +24,8 @@ export type Project = Record<
   | 'settlementDate'
   | 'remark'
   | 'image'
-  | 'openSource',
+  | 'openSource'
+  | 'link',
   TableCellValue
 >;
 
@@ -26,6 +35,8 @@ export class ProjectModel extends BiDataTable<Project>() {
   client = larkClient;
 
   sort = { settlementDate: 'DESC' } as const;
+
+  queryOptions: BiDataQueryOptions = { text_field_as_array: false };
 
   constructor(appId = LarkBaseId, tableId = PROJECT_TABLE) {
     super(appId, tableId);
@@ -38,6 +49,14 @@ export class ProjectModel extends BiDataTable<Project>() {
     ]
       .filter(Boolean)
       .join('&&');
+  }
+
+  normalize({ id, fields: { link, ...fields } }: TableRecord<Project>) {
+    return {
+      ...fields,
+      id,
+      link: link && normalizeText(link as TableCellLink),
+    };
   }
 }
 

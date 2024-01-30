@@ -18,7 +18,7 @@ export const getServerSideProps = compose(
   async () => {
     const list = await new ProjectModel().getList({});
 
-    return { props: { list } };
+    return { props: JSON.parse(JSON.stringify({ list })) };
   },
 );
 

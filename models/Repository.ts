@@ -1,8 +1,8 @@
 import { components } from '@octokit/openapi-types';
 import { memoize } from 'lodash';
-import { makeObservable, observable } from 'mobx';
-import { ListModel, toggle } from 'mobx-restful';
-import { averageOf, buildURLData } from 'web-utility';
+import { observable } from 'mobx';
+import { ListModel, Stream, toggle } from 'mobx-restful';
+import { averageOf, buildURLData, mergeStream } from 'web-utility';
 
 import { githubClient } from './Base';
 
@@ -13,32 +13,28 @@ export interface GitRepository extends Repository {
 }
 export type Organization = components['schemas']['organization-full'];
 
-const getGitLanguages = memoize(async (URI: string) => {
-  const { body: languageCount } = await githubClient.get<
-    Record<string, number>
-  >(`repos/${URI}/languages`);
-
-  const languageAverage = averageOf(...Object.values(languageCount!));
-
-  const languageList = Object.entries(languageCount!)
-    .filter(([_, score]) => score >= languageAverage)
-    .sort(([_, a], [__, b]) => b - a);
-
-  return languageList.map(([name]) => name);
-});
-
-export class RepositoryModel extends ListModel<GitRepository> {
-  constructor() {
-    super();
-    makeObservable(this);
-  }
-
+export class RepositoryModel extends Stream<GitRepository>(ListModel) {
   client = githubClient;
-  baseURI = 'orgs/idea2app/repos';
   indexKey = 'full_name' as const;
 
+  organizations = ['idea2app', 'IdeaMall', 'EasyWebApp'];
+
   @observable
-  currentGroup: GitRepository[] = [];
+  accessor currentGroup: GitRepository[] = [];
+
+  getGitLanguages = memoize(async (URI: string) => {
+    const { body: languageCount } = await this.client.get<
+      Record<string, number>
+    >(`repos/${URI}/languages`);
+
+    const languageAverage = averageOf(...Object.values(languageCount!));
+
+    const languageList = Object.entries(languageCount!)
+      .filter(([_, score]) => score >= languageAverage)
+      .sort(([_, a], [__, b]) => b - a);
+
+    return languageList.map(([name]) => name);
+  });
 
   @toggle('downloading')
   async getOne(URI: string) {
@@ -46,7 +42,7 @@ export class RepositoryModel extends ListModel<GitRepository> {
 
     return (this.currentOne = {
       ...body!,
-      languages: await getGitLanguages(URI),
+      languages: await this.getGitLanguages(URI),
     });
   }
 
@@ -56,28 +52,49 @@ export class RepositoryModel extends ListModel<GitRepository> {
     ));
   }
 
-  async loadPage(page: number, per_page: number) {
-    const { body: list } = await this.client.get<Repository[]>(
-      `${this.baseURI}?${buildURLData({
-        type: 'public',
-        sort: 'pushed',
-        page,
-        per_page,
-      })}`,
-    );
-    const pageData = await Promise.all(
-      list!.map(async ({ full_name, ...item }) => ({
-        ...item,
-        full_name,
-        languages: await getGitLanguages(full_name),
-      })),
-    );
-    const [_, organization] = this.baseURI.split('/');
+  async *getRepository(organization: string) {
+    const per_page = this.pageSize;
 
+    this.totalCount ||= 0;
+    this.totalCount += await this.getRepositoryCount(organization);
+
+    for (let page = 1, count = 0; ; page++) {
+      const { body: list } = await this.client.get<Repository[]>(
+        `orgs/${organization}/repos?${buildURLData({
+          type: 'public',
+          sort: 'pushed',
+          page,
+          per_page,
+        })}`,
+      );
+      count += list!.length;
+
+      if (count < page * per_page) break;
+
+      const pageData = await Promise.all(
+        list!.map(async ({ full_name, ...item }) => ({
+          ...item,
+          full_name,
+          languages: await this.getGitLanguages(full_name),
+        })),
+      );
+      yield* pageData as GitRepository[];
+    }
+  }
+
+  async getRepositoryCount(organization: string) {
     const { body } = await this.client.get<Organization>(
       `orgs/${organization}`,
     );
-    return { pageData, totalCount: body!.public_repos };
+    return body!.public_repos;
+  }
+
+  openStream() {
+    return mergeStream(
+      ...this.organizations.map(organization =>
+        this.getRepository.bind(this, organization),
+      ),
+    );
   }
 }
 

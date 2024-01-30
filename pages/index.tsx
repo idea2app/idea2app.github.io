@@ -12,7 +12,7 @@ import { ProjectListLayout } from '../components/Project';
 import { Section } from '../components/Section';
 import { ClientModel } from '../models/Client';
 import { MEMBER_VIEW, MemberModel } from '../models/Member';
-import { ProjectModel } from '../models/Project';
+import { Project, ProjectModel } from '../models/Project';
 import { RepositoryModel } from '../models/Repository';
 import { i18n } from '../models/Translation';
 import styles from '../styles/Home.module.less';
@@ -33,7 +33,7 @@ export const getServerSideProps = compose(
 
     return {
       props: {
-        projects,
+        projects: JSON.parse(JSON.stringify(projects)) as Project[],
         repositories,
         partners,
         members: members.filter(
