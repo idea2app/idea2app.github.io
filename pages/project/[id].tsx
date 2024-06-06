@@ -1,3 +1,4 @@
+import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
 import { InferGetServerSidePropsType } from 'next';
 import { cache, compose, errorLogger, translator } from 'next-ssr-middleware';
@@ -7,7 +8,7 @@ import { GitCard } from '../../components/Git/Card';
 import { PageHead } from '../../components/PageHead';
 import { ProjectCard } from '../../components/Project/Card';
 import { Project, ProjectModel } from '../../models/Project';
-import { GitRepository, RepositoryModel } from '../../models/Repository';
+import { GitRepositoryModel } from '../../models/Repository';
 import { i18n } from '../../models/Translation';
 import { fileURLOf } from '../api/Lark/file/[id]';
 
@@ -26,7 +27,9 @@ export const getServerSideProps = compose<
       .split(/\s+/)
       .map(path => new URL(path).pathname.slice(1));
 
-    repositories = await new RepositoryModel().getGroup(openSource);
+    repositories = await new GitRepositoryModel('idea2app').getGroup(
+      openSource,
+    );
   }
   return {
     props: {

@@ -13,7 +13,7 @@ import { Section } from '../components/Section';
 import { ClientModel } from '../models/Client';
 import { MEMBER_VIEW, MemberModel } from '../models/Member';
 import { Project, ProjectModel } from '../models/Project';
-import { RepositoryModel } from '../models/Repository';
+import { GitRepositoryModel } from '../models/Repository';
 import { i18n } from '../models/Translation';
 import styles from '../styles/Home.module.less';
 import { getTarget } from './api/core';
@@ -26,7 +26,7 @@ export const getServerSideProps = compose(
   async () => {
     const [projects, repositories, partners, members] = await Promise.all([
       new ProjectModel().getList({}, 1, 9),
-      new RepositoryModel().getList(),
+      new GitRepositoryModel('idea2app').getList(),
       new ClientModel().getList({ partnership: '战略合作' }),
       new MemberModel().getViewList(MEMBER_VIEW),
     ]);
