@@ -1,7 +1,7 @@
+import { GitRepository } from 'mobx-github';
 import { FC } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
-import { GitRepository } from '../../models/Repository';
 import { GitCard } from './Card';
 
 export const GitListLayout: FC<{ defaultData: GitRepository[] }> = ({

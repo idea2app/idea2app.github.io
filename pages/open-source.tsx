@@ -8,7 +8,7 @@ import { Container } from 'react-bootstrap';
 
 import { GitListLayout } from '../components/Git';
 import { PageHead } from '../components/PageHead';
-import repositoryStore, { RepositoryModel } from '../models/Repository';
+import repositoryStore, { GitRepositoryModel } from '../models/Repository';
 import { i18n } from '../models/Translation';
 
 export const getServerSideProps = compose(
@@ -16,7 +16,7 @@ export const getServerSideProps = compose(
   errorLogger,
   translator(i18n),
   async () => {
-    const list = await new RepositoryModel().getList({}, 1);
+    const list = await new GitRepositoryModel('idea2app').getList({}, 1);
 
     return { props: { list } };
   },

@@ -1,4 +1,5 @@
-import { githubClient } from '../../../models/Base';
+import { githubClient } from 'mobx-github';
+
 import { safeAPI } from '../core';
 
 export const proxyGithub = <T>(dataFilter?: (path: string, data: T) => T) =>
