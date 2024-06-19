@@ -16,7 +16,7 @@ export const getServerSideProps = compose(
   errorLogger,
   translator(i18n),
   async () => {
-    const list = await new GitRepositoryModel('idea2app').getList({}, 1);
+    const list = await new GitRepositoryModel('idea2app').getList();
 
     return { props: { list } };
   },

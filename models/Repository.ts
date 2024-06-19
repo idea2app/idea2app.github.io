@@ -2,12 +2,11 @@ import { observable } from 'mobx';
 import {
   githubClient,
   GitRepository,
-  Organization,
+  RepositoryFilter,
   RepositoryModel,
 } from 'mobx-github';
 import { parseCookie } from 'mobx-i18n';
 import { Stream } from 'mobx-restful';
-import { buildURLData, mergeStream } from 'web-utility';
 
 import { API_Host, isServer } from './Base';
 
@@ -26,9 +25,9 @@ githubClient.use(({ request }, next) => {
   return next();
 });
 
-type Repository = Omit<GitRepository, keyof RepositoryModel['relation']>;
-
-export class GitRepositoryModel extends Stream<GitRepository>(RepositoryModel) {
+export class GitRepositoryModel extends Stream<GitRepository, RepositoryFilter>(
+  RepositoryModel,
+) {
   client = githubClient;
 
   organizations = ['idea2app', 'IdeaMall', 'EasyWebApp'];
@@ -42,50 +41,37 @@ export class GitRepositoryModel extends Stream<GitRepository>(RepositoryModel) {
     ));
   }
 
-  async *getRepository(organization: string) {
-    const per_page = this.pageSize;
+  async *openStream(filter: RepositoryFilter) {
+    const { loadPage } = RepositoryModel.prototype;
+    var count = 0;
 
-    this.totalCount ||= 0;
-    this.totalCount += await this.getRepositoryCount(organization);
+    for (const name of this.organizations) {
+      this.baseURI = `orgs/${name}/repos`;
 
-    for (let page = 1, count = 0; count <= this.totalCount; page++) {
-      const { body: list } = await this.client.get<Repository[]>(
-        `orgs/${organization}/repos?${buildURLData({
-          type: 'public',
-          sort: 'pushed',
-          page,
-          per_page,
-        })}`,
-      );
-      if (!list?.length) break;
+      for (let i = 1; ; i++) {
+        const { pageData, totalCount } = await loadPage.call(
+          this,
+          i,
+          this.pageSize,
+          filter,
+        );
+        const list = pageData.filter(
+          ({ description, topics, fork, archived }) =>
+            description?.trim() && topics?.[0] && !fork && !archived,
+        );
+        const droppedCount = pageData.length - list.length;
 
-      count += list!.length;
+        if (!pageData[0]) break;
 
-      const pageData = await Promise.all(
-        list!.map(async ({ full_name, ...item }) => ({
-          ...item,
-          full_name,
-          // @ts-ignore
-          ...(await this.getOneRelation(full_name, ['languages'])),
-        })),
-      );
-      yield* pageData as GitRepository[];
+        if (i === 1) count += totalCount;
+        if (droppedCount) count -= droppedCount;
+
+        yield* list;
+
+        if (pageData.length < this.pageSize) break;
+      }
     }
-  }
-
-  async getRepositoryCount(organization: string) {
-    const { body } = await this.client.get<Organization>(
-      `orgs/${organization}`,
-    );
-    return body!.public_repos;
-  }
-
-  openStream() {
-    return mergeStream(
-      ...this.organizations.map(organization =>
-        this.getRepository.bind(this, organization),
-      ),
-    );
+    this.totalCount = count;
   }
 }
 
