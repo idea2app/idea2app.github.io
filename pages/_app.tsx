@@ -21,9 +21,10 @@ configure({ enforceActions: 'never' });
 enableStaticRendering(isServer());
 
 globalThis.addEventListener?.('unhandledrejection', ({ reason }) => {
-  var { message, statusText } = reason as HTTPError;
+  var { message, response } = reason as HTTPError;
+  const { statusText, body } = response || {};
 
-  message = statusText || message;
+  message = body?.message || statusText || message;
 
   if (message) alert(message);
 });
