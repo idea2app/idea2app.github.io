@@ -1,6 +1,4 @@
-# Reference: https://pnpm.io/docker#example-1-build-a-bundle-in-a-docker-container
-
-FROM node:18-slim AS base
+FROM node:20-slim AS base
 RUN apt-get update && \
     apt-get install ca-certificates curl libjemalloc-dev -y --no-install-recommends  && \
     rm -rf /var/lib/apt/lists/*
@@ -14,16 +12,15 @@ RUN corepack enable
 COPY . /app
 WORKDIR /app
 
-FROM base AS prod-deps
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store  pnpm i -P --frozen-lockfile --ignore-scripts
-
 FROM base AS build
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store  pnpm i --frozen-lockfile
-RUN pnpm build
+RUN CI=true  pnpm build
 
 FROM base
-COPY --from=prod-deps /app/node_modules ./node_modules
 COPY --from=build /app/public ./public
-COPY --from=build /app/.next ./.next
+COPY --from=build /app/.next/static ./.next/static
+COPY --from=build /app/.next/standalone ./
 EXPOSE 3000
-CMD ["npm", "start"]
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+CMD ["node", "server.js"]

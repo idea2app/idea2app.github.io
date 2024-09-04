@@ -1,3 +1,4 @@
+import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
 import { InferGetServerSidePropsType } from 'next';
 import { cache, compose, errorLogger, translator } from 'next-ssr-middleware';
@@ -34,7 +35,9 @@ export const getServerSideProps = compose(
     return {
       props: {
         projects: JSON.parse(JSON.stringify(projects)) as Project[],
-        repositories,
+        repositories: JSON.parse(
+          JSON.stringify(repositories),
+        ) as GitRepository[],
         partners,
         members: members.filter(
           ({ github, position, summary }) => github && position && summary,

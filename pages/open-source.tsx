@@ -1,7 +1,7 @@
 import { Loading } from 'idea-react';
+import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
 import { ScrollList } from 'mobx-restful-table';
-import { InferGetServerSidePropsType } from 'next';
 import { cache, compose, errorLogger, translator } from 'next-ssr-middleware';
 import { FC } from 'react';
 import { Container } from 'react-bootstrap';
@@ -18,28 +18,27 @@ export const getServerSideProps = compose(
   async () => {
     const list = await new GitRepositoryModel('idea2app').getList();
 
-    return { props: { list } };
+    return { props: JSON.parse(JSON.stringify({ list })) };
   },
 );
 
 const { t } = i18n;
 
-const GitListPage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
-  observer(({ list }) => (
-    <Container>
-      <PageHead title={t('open_source_project')} />
+const GitListPage: FC<{ list: GitRepository[] }> = observer(({ list }) => (
+  <Container>
+    <PageHead title={t('open_source_project')} />
 
-      <h1 className="my-4">{t('open_source_project')}</h1>
+    <h1 className="my-4">{t('open_source_project')}</h1>
 
-      {repositoryStore.downloading > 0 && <Loading />}
+    {repositoryStore.downloading > 0 && <Loading />}
 
-      <ScrollList
-        translator={i18n}
-        store={repositoryStore}
-        renderList={allItems => <GitListLayout defaultData={allItems} />}
-        defaultData={list}
-      />
-    </Container>
-  ));
+    <ScrollList
+      translator={i18n}
+      store={repositoryStore}
+      renderList={allItems => <GitListLayout defaultData={allItems} />}
+      defaultData={list}
+    />
+  </Container>
+));
 
 export default GitListPage;
