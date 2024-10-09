@@ -1,11 +1,11 @@
-import { text2color } from 'idea-react';
 import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
 import { FC } from 'react';
-import { Badge, Button, Card, Col, Row } from 'react-bootstrap';
 
 import { i18n } from '../../models/Translation';
 import { GitLogo } from './Logo';
+import { Card, CardActions, CardContent, CardHeader, Chip, Grid2 } from '@mui/material';
+import Link from 'next/link';
 
 export interface GitCardProps
   extends Pick<GitRepository, 'full_name' | 'html_url' | 'languages'>,
@@ -21,46 +21,44 @@ export const GitCard: FC<GitCardProps> = observer(
     languages = [],
     topics = [],
     description,
-    homepage,
+    homepage
   }) => (
     <Card className={className}>
-      <Card.Body className="d-flex flex-column gap-3">
-        <Card.Title as="h3" className="h5">
+      <CardContent className="flex flex-col gap-4">
+        <CardHeader component="h3">
           <a target="_blank" href={html_url} rel="noreferrer">
             {full_name}
           </a>
-        </Card.Title>
+        </CardHeader>
 
         <nav className="flex-fill">
           {topics.map(topic => (
-            <Badge
+            <Chip
               key={topic}
-              className="me-1"
-              bg={text2color(topic, ['light'])}
-              as="a"
+              className="mr-1"
+              component="a"
               target="_blank"
               href={`https://github.com/topics/${topic}`}
-            >
-              {topic}
-            </Badge>
+              label={topic}
+            />
           ))}
         </nav>
-        <Row as="ul" className="list-unstyled g-4" xs={4}>
+        <Grid2 component="ul" className="g-4">
           {languages.map(language => (
-            <Col as="li" key={language}>
+            <Grid2 component="li" key={language}>
               <GitLogo name={language} />
-            </Col>
+            </Grid2>
           ))}
-        </Row>
-        <Card.Text>{description}</Card.Text>
-      </Card.Body>
-      <Card.Footer className="d-flex justify-content-between align-items-center">
+        </Grid2>
+        {description}
+      </CardContent>
+      <CardActions className="flex items-center justify-between">
         {homepage && (
-          <Button variant="success" target="_blank" href={homepage}>
+          <Link target="_blank" href={homepage}>
             {i18n.t('home_page')}
-          </Button>
+          </Link>
         )}
-      </Card.Footer>
+      </CardActions>
     </Card>
-  ),
+  )
 );

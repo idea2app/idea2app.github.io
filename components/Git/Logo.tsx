@@ -1,8 +1,7 @@
-import { makeObservable, observable } from 'mobx';
+import { observable } from 'mobx';
 import { observer } from 'mobx-react';
+import Image from 'next/image';
 import { PureComponent } from 'react';
-import { Image } from 'react-bootstrap';
-
 export interface GitLogoProps {
   name: string;
 }
@@ -18,7 +17,7 @@ export class GitLogo extends PureComponent<GitLogoProps> {
 
     try {
       const { src } = await this.loadImage(
-        `https://raw.githubusercontent.com/github/explore/master/topics/${topic}/${topic}.png`,
+        `https://raw.githubusercontent.com/github/explore/master/topics/${topic}/${topic}.png`
       );
       this.path = src;
     } catch {
@@ -43,6 +42,6 @@ export class GitLogo extends PureComponent<GitLogoProps> {
     const { path } = this;
     const { name } = this.props;
 
-    return path && <Image fluid loading="lazy" src={path} alt={name} />;
+    return path && <Image className="object-fit" loading="lazy" src={path} alt={name} />;
   }
 }

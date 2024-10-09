@@ -1,95 +1,84 @@
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  CardMedia,
+  Container,
+  Grid2
+} from '@mui/material';
 import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
 import { InferGetServerSidePropsType } from 'next';
 import { cache, compose, errorLogger, translator } from 'next-ssr-middleware';
 import { FC } from 'react';
-import { Button, Card, Col, Container, Image, Row } from 'react-bootstrap';
 
-import { Partner } from '../components/Client/Partner';
-import { GitListLayout } from '../components/Git';
-import { MemberListLayout } from '../components/Member/List';
 import { PageHead } from '../components/PageHead';
-import { ProjectListLayout } from '../components/Project';
-import { Section } from '../components/Section';
 import { ClientModel } from '../models/Client';
 import { MEMBER_VIEW, MemberModel } from '../models/Member';
 import { Project, ProjectModel } from '../models/Project';
 import { GitRepositoryModel } from '../models/Repository';
 import { i18n } from '../models/Translation';
-import styles from '../styles/Home.module.less';
 import { getTarget } from './api/core';
 import { service } from './api/home';
 
-export const getServerSideProps = compose(
-  cache(),
-  errorLogger,
-  translator(i18n),
-  async () => {
-    const [projects, repositories, partners, members] = await Promise.all([
-      new ProjectModel().getList({}, 1, 9),
-      new GitRepositoryModel('idea2app').getList(),
-      new ClientModel().getList({ partnership: '战略合作' }),
-      new MemberModel().getViewList(MEMBER_VIEW),
-    ]);
+export const getServerSideProps = compose(cache(), errorLogger, translator(i18n), async () => {
+  // const [
+  // projects,
+  // repositories
+  // partners, members
+  // ] = await Promise.all([
+  // new ProjectModel().getList({}, 1, 9),
+  // new GitRepositoryModel('idea2app').getList()
+  // new ClientModel().getList({ partnership: '战略合作' }),
+  // new MemberModel().getViewList(MEMBER_VIEW)
+  // ]);
 
-    return {
-      props: {
-        projects: JSON.parse(JSON.stringify(projects)) as Project[],
-        repositories: JSON.parse(
-          JSON.stringify(repositories),
-        ) as GitRepository[],
-        partners,
-        members: members.filter(
-          ({ github, position, summary }) => github && position && summary,
-        ),
-      },
-    };
-  },
-);
+  return {
+    props: {
+      // projects: JSON.parse(JSON.stringify(projects)) as Project[],
+      // repositories: JSON.parse(JSON.stringify(repositories)) as GitRepository[]
+      // partners,
+      // members: members.filter(({ github, position, summary }) => github && position && summary)
+    }
+  };
+});
 
 const { t } = i18n;
 
-const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
-  observer(({ projects, repositories, partners, members }) => (
+const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = observer(
+  ({ projects, repositories, partners, members }) => (
     <>
       <PageHead />
 
-      <Container as="main" className={styles.main}>
-        <h1 className={`mb-5 text-center ${styles.title}`}>
-          <span className="visually-hidden">idea2app</span>
-          <Image src="https://github.com/idea2app.png" alt="idea2app logo" />
+      <Container>
+        <h1 className="mb-5 text-center">
+          <CardMedia image="/idea2app.svg" component="img" alt="idea2app logo" />
         </h1>
-        <p className={`text-center fs-4 ${styles.description}`}>
-          {t('idea2app_summary')}
-        </p>
-        <p className={`text-center fs-4 ${styles.description}`}>
-          {t('idea2app_slogan')}
-        </p>
+        <p className="fs-4 text-center">{t('idea2app_summary')}</p>
+        <p className="fs-4 text-center">{t('idea2app_slogan')}</p>
 
-        <Row className="mt-5 g-4" xs={1} lg={3}>
+        <Grid2 className="g-4 mt-5">
           {service().map(({ title, summary, buttonText, buttonLink }) => (
-            <Col key={title}>
-              <Card
-                className={`h-100 p-4 rounded-3 border ${styles.card}`}
-                tabIndex={-1}
-              >
-                <Card.Body>
-                  <Card.Title as="h2" className="fs-4 mb-3">
-                    {title}
-                  </Card.Title>
-                  <Card.Text className="fs-5">{summary}</Card.Text>
+            <Grid2 key={title}>
+              <Card className="h-100 rounded-3 border p-4" tabIndex={-1}>
+                <CardHeader component="h2" title={title} />
+
+                <CardContent>{summary}</CardContent>
+                <CardActions>
                   {buttonText && buttonLink && (
                     <Button href={buttonLink} target={getTarget(buttonLink)}>
                       {buttonText}
                     </Button>
                   )}
-                </Card.Body>
+                </CardActions>
               </Card>
-            </Col>
+            </Grid2>
           ))}
-        </Row>
+        </Grid2>
 
-        <Section title={t('latest_projects')} link="/project">
+        {/* <Section title={t('latest_projects')} link="/project">
           <ProjectListLayout defaultData={projects} />
         </Section>
 
@@ -99,19 +88,20 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
 
         <Section title={t('member')} link="/member">
           <MemberListLayout defaultData={members} />
-        </Section>
+        </Section> */}
 
-        <Section title={t('partner')} id="partner">
-          <Row as="ul" className="list-unstyled g-4" xs={1} sm={2} md={4}>
+        {/* <Section title={t('partner')} id="partner">
+          <Grid2 component="ul" className="list-unstyled g-4">
             {partners.map(item => (
-              <Col as="li" key={item.id + ''}>
+              <Grid2 key={String(item.id)} component="li">
                 <Partner className="h-100" {...item} />
-              </Col>
+              </Grid2>
             ))}
-          </Row>
-        </Section>
+          </Grid2>
+        </Section> */}
       </Container>
     </>
-  ));
+  )
+);
 
 export default HomePage;

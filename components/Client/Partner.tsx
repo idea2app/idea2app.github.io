@@ -1,5 +1,5 @@
+import Image from 'next/image';
 import { FC } from 'react';
-import { Image } from 'react-bootstrap';
 
 import { Client } from '../../models/Client';
 import { fileURLOf } from '../../pages/api/Lark/file/[id]';
@@ -8,33 +8,21 @@ export interface PartnerProps extends Client {
   className?: string;
 }
 
-export const Partner: FC<PartnerProps> = ({
-  className = '',
-  name,
-  image,
-  summary,
-  address,
-}) => (
+export const Partner: FC<PartnerProps> = ({ className = '', name, image, summary, address }) => (
   <div
-    className={`d-flex flex-column align-items-center justify-content-center gap-3 position-relative ${className}`}
+    className={`flex flex-col items-center justify-center relative gap-4 ${className}`}
   >
     <Image
-      fluid
-      className="object-fit-contain"
-      style={{ height: '5rem' }}
+      className="object-fill h-20"
       loading="lazy"
       src={fileURLOf(image)}
+      alt={`partner ${String(name)} logo`}
     />
     <h3>
-      <a
-        className="stretched-link"
-        target="_blank"
-        href={address + ''}
-        rel="noreferrer"
-      >
-        {name + ''}
+      <a className="stretched-link" target="_blank" href={String(address)} rel="noreferrer">
+        {String(name)}
       </a>
     </h3>
-    <p className="text-muted">{summary + ''}</p>
+    <p className="text-muted">{String(summary)}</p>
   </div>
 );

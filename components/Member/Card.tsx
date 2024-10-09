@@ -1,45 +1,38 @@
-import { Avatar, Icon, text2color } from 'idea-react';
 import { observer } from 'mobx-react';
 import Link from 'next/link';
 import { FC } from 'react';
-import { Badge, Card, CardProps } from 'react-bootstrap';
 import { Markdown } from 'react-marked-renderer';
 
 import { Member } from '../../models/Member';
+import { Avatar, Card, CardActions, CardContent, CardHeader, CardProps, Chip } from '@mui/material';
+import { GtihubIcon } from '../Layout/Svg';
 
 export type MemberCardProps = Member & Omit<CardProps, 'id'>;
 
 export const MemberCard: FC<MemberCardProps> = observer(
-  ({
-    id,
-    className = 'shadow-sm',
-    nickname,
-    skill,
-    position,
-    summary,
-    github,
-    ...props
-  }) => (
+  ({ id, className = 'shadow-sm', nickname, skill, position, summary, github, ...props }) => (
     <Card className={className} {...props}>
-      <Card.Body className="d-flex flex-column gap-3 position-relative">
-        <Card.Title as="h3" className="h5 d-flex justify-content-between">
-          <Link
-            className="stretched-link"
-            style={{ lineHeight: '3rem' }}
-            href={`/member/${nickname}`}
-          >
-            {nickname + ''}
-          </Link>
-          {github && (
-            <Avatar src={`https://github.com/${github}.png`} size={3} />
-          )}
-        </Card.Title>
-        {position && <Card.Subtitle>{position + ''}</Card.Subtitle>}
+      <CardContent className="d-flex flex-column position-relative gap-3">
+        <CardHeader
+          component="h3"
+          className="h5 d-flex justify-content-between"
+          avatar={github && <Avatar src={`https://github.com/${github}.png`} alt="github avatar" />}
+          action={
+            <Link
+              className="stretched-link"
+              style={{ lineHeight: '3rem' }}
+              href={`/member/${nickname}`}
+            >
+              {nickname + ''}
+            </Link>
+          }
+          subheader={position && position + ''}
+        />
 
         <Markdown markdown={summary + ''} />
-      </Card.Body>
+      </CardContent>
 
-      <Card.Footer>
+      <CardActions>
         {github && (
           <a
             className="fs-2"
@@ -47,24 +40,17 @@ export const MemberCard: FC<MemberCardProps> = observer(
             target="_blank"
             rel="noreferrer"
           >
-            <Icon name={'github'} />
+            <GtihubIcon />
           </a>
         )}
         {skill && (
-          <ul className="list-inline">
+          <ul>
             {(skill as string[]).map(value => (
-              <Badge
-                key={value}
-                as="li"
-                className="list-inline-item"
-                bg={text2color(value, ['light'])}
-              >
-                {value}
-              </Badge>
+              <Chip key={value} component="li" label={value} />
             ))}
           </ul>
         )}
-      </Card.Footer>
+      </CardActions>
     </Card>
-  ),
+  )
 );
