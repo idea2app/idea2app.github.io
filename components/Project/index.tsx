@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import { Col, Row, RowProps } from 'react-bootstrap';
 
 import { Project } from '../../models/Project';
 import { ProjectCard } from './Card';
+import { Grid2, Grid2Props } from '@mui/material';
 
-export interface ProjectListLayoutProps extends RowProps {
+export interface ProjectListLayoutProps extends Grid2Props {
   defaultData: Project[];
 }
 
@@ -13,18 +13,11 @@ export const ProjectListLayout: FC<ProjectListLayoutProps> = ({
   defaultData,
   ...props
 }) => (
-  <Row
-    as="ul"
-    className={`list-unstyled ${className}`}
-    xs={1}
-    md={2}
-    lg={3}
-    {...props}
-  >
+  <Grid2 component="ul" className={`list-unstyled ${className}`} {...props}>
     {defaultData.map(item => (
-      <Col as="li" key={item.id + ''}>
+      <Grid2 component="li" key={item.id + ''}>
         <ProjectCard className="h-100 shadow-sm" {...item} />
-      </Col>
+      </Grid2>
     ))}
-  </Row>
+  </Grid2>
 );

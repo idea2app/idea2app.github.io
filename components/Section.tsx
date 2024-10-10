@@ -1,11 +1,9 @@
 import { FC, PropsWithChildren } from 'react';
-import { Button } from 'react-bootstrap';
 
 import { i18n } from '../models/Translation';
+import { Button } from '@mui/material';
 
-export type SectionProps = PropsWithChildren<
-  Partial<Record<'id' | 'title' | 'link', string>>
->;
+export type SectionProps = PropsWithChildren<Partial<Record<'id' | 'title' | 'link', string>>>;
 
 const { t } = i18n;
 
@@ -19,7 +17,7 @@ export const Section: FC<SectionProps> = ({ id, title, children, link }) => (
 
     {link && (
       <footer className="mt-5 text-center">
-        <Button variant="outline-primary" size="sm" href={link}>
+        <Button variant="outlined" size="small" href={link}>
           {t('load_more')}
         </Button>
       </footer>

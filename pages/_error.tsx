@@ -21,7 +21,7 @@ CustomErrorComponent.getInitialProps = async contextData => {
   const { 'accept-language': acceptLanguage, cookie = '' } =
     contextData.req!.headers;
   const { language } = parseCookie(cookie),
-    languages = parseLanguageHeader(acceptLanguage || '');
+    languages = parseLanguageHeader(acceptLanguage ?? '');
 
   await i18n.loadLanguages([language, ...languages].filter(Boolean));
 
