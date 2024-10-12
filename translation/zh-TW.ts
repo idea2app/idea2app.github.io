@@ -3,13 +3,15 @@ import { IDType } from 'mobx-restful';
 export default {
   idea2app_summary: '全行業資訊化轉型專家',
   idea2app_slogan: '您的每個創意都值得用心實現',
-  IT_transformation_consulting: '📊業務資訊化咨詢',
+  idea2app_slogan_2: '想要與我們一起創造影響力',
+  contact_us: '聯繫我們',
+  IT_transformation_consulting: '業務資訊化咨詢',
   IT_transformation_consulting_summary:
     '幫您梳理業務流程，發掘「提效降本」的痛點，量身定制「資訊化轉型」方案',
-  custom_software_development: '💻客製化軟體開發',
+  custom_software_development: '客製化軟體開發',
   custom_software_development_summary:
     '一線工程師基於業界領先技術高效交付軟體系統，讓您的錢花在刀刃上',
-  agile_team_training: '👩‍💻敏捷團隊培訓',
+  agile_team_training: '敏捷團隊培訓',
   agile_team_training_summary:
     '與您的技術團隊面對面一起從實踐中學習「敏捷開發」方法論，成長為可靠、高效的「現代化工程團隊」',
   consult_immediately: '立即諮詢',
@@ -34,10 +36,8 @@ export default {
   cancel: '取消',
   edit: '編輯',
   delete: '刪除',
-  total_x_rows: ({ totalCount }: { totalCount: number }) =>
-    `共 ${totalCount} 行`,
-  sure_to_delete_x: ({ keys }: { keys: IDType[] }) =>
-    `您確定刪除 ${keys.join('、')} 嗎？`,
+  total_x_rows: ({ totalCount }: { totalCount: number }) => `共 ${totalCount} 行`,
+  sure_to_delete_x: ({ keys }: { keys: IDType[] }) => `您確定刪除 ${keys.join('、')} 嗎？`,
   repository_name: '倉庫名',
   programming_language: '編程語言',
   topic: '話題',
@@ -46,8 +46,22 @@ export default {
   // Member page
   projects_as_leader: '負責的專案',
   projects_as_member: '參與的專案',
+  partner_auix: '艾體驗科技',
+  partner_auxi_slogan: '為企業數位化增長帶來更好創新設計',
+  partner_eth_planet: '以太坊星球',
+  partner_eth_planet_slogan: '共建、互助、互聯，賦能以太坊開發者社群',
+  partner_ic_naming: '區塊鏈域名系統平台',
+  partner_ic_naming_slogan: '構建去中心化數字身份',
+  partner_fcc_cdg: 'fCC 成都社區',
+  partner_fcc_cdg_slogan: '西南地區頂級工程師社群',
+  partner_23_5: '二拾三度五',
+  partner_23_5_slogan: '一個有溫度的品牌運營製造商',
+  partner_creator_1024: '創造 1024',
+  partner_creator_1024_slogan: '微軟最有價值專家工程師天團',
+  partner_kys: '開源社',
+  partner_kys_slogan: '立足中國、貢獻全球，推動開源成為新時代的生活方式',
 
   // Open source project
   load_more: '加載更多……',
-  no_more: '沒有更多',
+  no_more: '沒有更多'
 } as const;

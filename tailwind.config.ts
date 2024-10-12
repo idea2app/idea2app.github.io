@@ -228,6 +228,15 @@ module.exports = {
         focus: 'var(--mui-palette-action-focusOpacity)',
         hover: 'var(--mui-palette-action-hoverOpacity)',
         selected: 'var(--mui-palette-action-selectedOpacity)'
+      },
+      animation: {
+        carousel: 'scrolls 60s linear infinite'
+      },
+      keyframes: {
+        scrolls: {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(-100%)' }
+        }
       }
     }
   },

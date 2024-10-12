@@ -75,7 +75,7 @@ const AppShell = observer(({ Component, pageProps }: AppProps<{}>) => (
       <ThemeProvider theme={theme} defaultMode="system" disableTransitionOnChange>
         <MainNavigator />
 
-        <div>
+        <div className="pt-16">
           <Component {...pageProps} />
         </div>
 

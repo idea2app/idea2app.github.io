@@ -1,45 +1,35 @@
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  CardMedia,
-  Container,
-  Grid2
-} from '@mui/material';
-import { GitRepository } from 'mobx-github';
+import { Button, Card, CardContent, CardHeader, Link, Tooltip } from '@mui/material';
 import { observer } from 'mobx-react';
 import { InferGetServerSidePropsType } from 'next';
 import { cache, compose, errorLogger, translator } from 'next-ssr-middleware';
 import { FC } from 'react';
 
+import { Icon } from '../components/Icon';
 import { PageHead } from '../components/PageHead';
-import { ClientModel } from '../models/Client';
-import { MEMBER_VIEW, MemberModel } from '../models/Member';
-import { Project, ProjectModel } from '../models/Project';
-import { GitRepositoryModel } from '../models/Repository';
 import { i18n } from '../models/Translation';
-import { getTarget } from './api/core';
-import { service } from './api/home';
+import { PARTNERS_INFO, service } from './api/home';
+import { ClientModel } from '../models/Client';
+import { Partner, PartnerOverview } from '../components/Client/Partner';
+import Image from 'next/image';
 
 export const getServerSideProps = compose(cache(), errorLogger, translator(i18n), async () => {
-  // const [
-  // projects,
-  // repositories
-  // partners, members
-  // ] = await Promise.all([
-  // new ProjectModel().getList({}, 1, 9),
-  // new GitRepositoryModel('idea2app').getList()
-  // new ClientModel().getList({ partnership: '战略合作' }),
-  // new MemberModel().getViewList(MEMBER_VIEW)
-  // ]);
+  const [
+    // projects,
+    // repositories
+    // partners
+    //  members
+  ] = await Promise.all([
+    // new ProjectModel().getList({}, 1, 9),
+    // new GitRepositoryModel('idea2app').getList()
+    // new ClientModel().getList({ partnership: '战略合作' })
+    // new MemberModel().getViewList(MEMBER_VIEW)
+  ]);
 
   return {
     props: {
       // projects: JSON.parse(JSON.stringify(projects)) as Project[],
       // repositories: JSON.parse(JSON.stringify(repositories)) as GitRepository[]
-      // partners,
+      // partners
       // members: members.filter(({ github, position, summary }) => github && position && summary)
     }
   };
@@ -52,31 +42,61 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = obs
     <>
       <PageHead />
 
-      <Container>
-        <h1 className="mb-5 text-center">
-          <CardMedia image="/idea2app.svg" component="img" alt="idea2app logo" />
-        </h1>
-        <p className="fs-4 text-center">{t('idea2app_summary')}</p>
-        <p className="fs-4 text-center">{t('idea2app_slogan')}</p>
+      <div className="px-2 py-6">
+        <section className="container mx-auto max-w-screen-lg flex flex-col gap-4">
+          <div className="flex flex-row items-center justify-around py-12">
+            <Image src="/idea2app.svg" width={234} height={220} alt="idea2app logo" />
 
-        <Grid2 className="g-4 mt-5">
-          {service().map(({ title, summary, buttonText, buttonLink }) => (
-            <Grid2 key={title}>
-              <Card className="h-100 rounded-3 border p-4" tabIndex={-1}>
-                <CardHeader component="h2" title={title} />
+            <header className="border-l-2 border-l-black p-4 dark:border-l-white">
+              <p>{t('idea2app_summary')}</p>
+              <p>{t('idea2app_slogan')}</p>
 
-                <CardContent>{summary}</CardContent>
-                <CardActions>
-                  {buttonText && buttonLink && (
-                    <Button href={buttonLink} target={getTarget(buttonLink)}>
-                      {buttonText}
-                    </Button>
-                  )}
-                </CardActions>
-              </Card>
-            </Grid2>
-          ))}
-        </Grid2>
+              <p className="my-4 text-gray-500">{t('idea2app_slogan_2')}?</p>
+
+              <a
+                className="border-b-2 border-b-black py-1 dark:border-b-white"
+                href="https://wenjuan.feishu.cn/m?t=sBih7Nzwkwqi-0l12"
+                target="_blank"
+                rel="noopener"
+              >
+                {t('contact_us')}
+              </a>
+            </header>
+          </div>
+
+          <ul className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {service().map(({ title, summary, icon }) => (
+              <li
+                className="flex flex-col gap-4 rounded-3xl p-4 elevation-1 hover:elevation-8"
+                tabIndex={-1}
+                key={title}
+              >
+                <h5 className="flex items-center gap-4">
+                  <Icon name={icon} /> {title}
+                </h5>
+
+                <p>{summary}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section id="partner" className="relative mx-auto max-w-screen-xl items-center px-8 py-16">
+          <div className="absolute left-0 top-0 z-20 block h-24 w-24 bg-gradient-to-r from-background to-transparent" />
+          <ul className="flex flex-row flex-nowrap items-center justify-center gap-12 overflow-hidden">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <li
+                key="index"
+                className="animate-carousel flex min-w-full flex-shrink-0 flex-row flex-nowrap items-center justify-around gap-12"
+              >
+                {PARTNERS_INFO().map(({ name, ...rest }) => (
+                  <PartnerOverview key={name} name={name} {...rest} />
+                ))}
+              </li>
+            ))}
+          </ul>
+          <div className="absolute right-0 top-0 z-20 block h-24 w-24 bg-gradient-to-l from-background to-transparent" />
+        </section>
 
         {/* <Section title={t('latest_projects')} link="/project">
           <ProjectListLayout defaultData={projects} />
@@ -89,17 +109,7 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = obs
         <Section title={t('member')} link="/member">
           <MemberListLayout defaultData={members} />
         </Section> */}
-
-        {/* <Section title={t('partner')} id="partner">
-          <Grid2 component="ul" className="list-unstyled g-4">
-            {partners.map(item => (
-              <Grid2 key={String(item.id)} component="li">
-                <Partner className="h-100" {...item} />
-              </Grid2>
-            ))}
-          </Grid2>
-        </Section> */}
-      </Container>
+      </div>
     </>
   )
 );
