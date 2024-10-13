@@ -10,47 +10,44 @@ import { GtihubIcon } from '../Layout/Svg';
 export type MemberCardProps = Member & Omit<CardProps, 'id'>;
 
 export const MemberCard: FC<MemberCardProps> = observer(
-  ({ id, className = 'shadow-sm', nickname, skill, position, summary, github, ...props }) => (
-    <Card className={className} {...props}>
-      <CardContent className="d-flex flex-column position-relative gap-3">
-        <CardHeader
-          component="h3"
-          className="h5 d-flex justify-content-between"
-          avatar={github && <Avatar src={`https://github.com/${github}.png`} alt="github avatar" />}
-          action={
-            <Link
-              className="stretched-link"
-              style={{ lineHeight: '3rem' }}
-              href={`/member/${nickname}`}
-            >
-              {nickname + ''}
-            </Link>
-          }
-          subheader={position && position + ''}
-        />
+  ({ id, className, nickname, skill, position, summary, github, ...props }) => (
+    <li
+      className={`relative rounded-2xl p-4 elevation-1 hover:elevation-8 ${className} mb-4 flex break-inside-avoid flex-col gap-3`}
+    >
+      {github && (
+        <a
+          className="absolute right-4 top-4"
+          href={`https://github.com/${github}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <GtihubIcon />
+        </a>
+      )}
 
-        <Markdown markdown={summary + ''} />
-      </CardContent>
-
-      <CardActions>
+      <div className="flex w-auto items-center gap-4">
         {github && (
-          <a
-            className="fs-2"
-            href={`https://github.com/${github}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <GtihubIcon />
-          </a>
+          <img
+            className="w-16 rounded-full object-cover"
+            src={`https://github.com/${github}.png`}
+            alt={`avatar of ${github}`}
+            loading="lazy"
+          />
         )}
-        {skill && (
-          <ul>
-            {(skill as string[]).map(value => (
-              <Chip key={value} component="li" label={value} />
-            ))}
-          </ul>
-        )}
-      </CardActions>
-    </Card>
+
+        <Link href={`/member/${nickname}`}>
+          <h3 className="text-base">{nickname + ''}</h3>
+          <p className="text-sm">{position && position + ''}</p>
+        </Link>
+      </div>
+
+      <ul>
+        {(skill as string[]).map(value => (
+          <Chip size="small" key={value} component="li" label={value} />
+        ))}
+      </ul>
+
+      <Markdown markdown={summary + ''} />
+    </li>
   )
 );

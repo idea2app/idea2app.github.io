@@ -1,18 +1,12 @@
 import { observable } from 'mobx';
-import {
-  githubClient,
-  GitRepository,
-  RepositoryFilter,
-  RepositoryModel,
-} from 'mobx-github';
+import { githubClient, GitRepository, RepositoryFilter, RepositoryModel } from 'mobx-github';
 import { parseCookie } from 'mobx-i18n';
 import { Stream } from 'mobx-restful';
 
 import { API_Host, isServer } from './Base';
 
 const GithubToken =
-  parseCookie(globalThis.document?.cookie || '').token ||
-  process.env.GITHUB_TOKEN;
+  parseCookie(globalThis.document?.cookie || '').token || process.env.GITHUB_TOKEN;
 
 if (!isServer()) githubClient.baseURI = `${API_Host}/api/GitHub/`;
 
@@ -20,15 +14,16 @@ githubClient.use(({ request }, next) => {
   if (GithubToken)
     request.headers = {
       authorization: `Bearer ${GithubToken}`,
-      ...request.headers,
+      ...request.headers
     };
   return next();
 });
 
-export class GitRepositoryModel extends Stream<GitRepository, RepositoryFilter>(
-  RepositoryModel,
-) {
+export class GitRepositoryModel extends Stream<GitRepository, RepositoryFilter>(RepositoryModel) {
   client = githubClient;
+  filter: RepositoryFilter = {
+    relation: ['languages'] as ('contributors' | 'languages' | 'issues')[]
+  };
 
   organizations = ['idea2app', 'IdeaMall', 'EasyWebApp'];
 
@@ -36,9 +31,7 @@ export class GitRepositoryModel extends Stream<GitRepository, RepositoryFilter>(
   accessor currentGroup: GitRepository[] = [];
 
   async getGroup(URIs: string[]) {
-    return (this.currentGroup = await Promise.all(
-      URIs.map(URI => this.getOne(URI)),
-    ));
+    return (this.currentGroup = await Promise.all(URIs.map(URI => this.getOne(URI))));
   }
 
   async *openStream(filter: RepositoryFilter) {
@@ -49,15 +42,10 @@ export class GitRepositoryModel extends Stream<GitRepository, RepositoryFilter>(
       this.baseURI = `orgs/${name}/repos`;
 
       for (let i = 1; ; i++) {
-        const { pageData, totalCount } = await loadPage.call(
-          this,
-          i,
-          this.pageSize,
-          filter,
-        );
+        const { pageData, totalCount } = await loadPage.call(this, i, this.pageSize, filter);
         const list = pageData.filter(
           ({ description, topics, fork, archived }) =>
-            description?.trim() && topics?.[0] && !fork && !archived,
+            description?.trim() && topics?.[0] && !fork && !archived
         );
         const droppedCount = pageData.length - list.length;
 

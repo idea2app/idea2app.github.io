@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { PureComponent } from 'react';
 export interface GitLogoProps {
   name: string;
+  className?: string;
 }
 
 @observer
@@ -40,8 +41,10 @@ export class GitLogo extends PureComponent<GitLogoProps> {
 
   render() {
     const { path } = this;
-    const { name } = this.props;
+    const { name, className } = this.props;
 
-    return path && <Image className="object-fit" loading="lazy" src={path} alt={name} />;
+    return (
+      path && <img className={`${className} object-fill`} loading="lazy" src={path} alt={name} />
+    );
   }
 }

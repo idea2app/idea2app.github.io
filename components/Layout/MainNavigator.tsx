@@ -55,7 +55,7 @@ export class MainNavigator extends Component {
     return (
       <AppBar color="transparent" className="fixed backdrop-blur" style={{ zIndex: 1201 }}>
         <Toolbar>
-          <div className="container mx-auto flex max-w-screen-lg items-center justify-between px-3">
+          <div className="container mx-auto flex max-w-screen-xl items-center justify-between px-3">
             <ul className="flex flex-row items-center gap-3">
               {this.renderDrawer()}
 

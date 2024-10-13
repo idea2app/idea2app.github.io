@@ -4,7 +4,7 @@ import { FC } from 'react';
 
 import { i18n } from '../../models/Translation';
 import { GitLogo } from './Logo';
-import { Card, CardActions, CardContent, CardHeader, Chip, Grid2 } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardHeader, Chip, Grid2 } from '@mui/material';
 import Link from 'next/link';
 
 export interface GitCardProps
@@ -14,51 +14,42 @@ export interface GitCardProps
 }
 
 export const GitCard: FC<GitCardProps> = observer(
-  ({
-    className = 'shadow-sm',
-    full_name,
-    html_url,
-    languages = [],
-    topics = [],
-    description,
-    homepage
-  }) => (
-    <Card className={className}>
-      <CardContent className="flex flex-col gap-4">
-        <CardHeader component="h3">
-          <a target="_blank" href={html_url} rel="noreferrer">
-            {full_name}
-          </a>
-        </CardHeader>
+  ({ className, full_name, html_url, languages = [], topics = [], description, homepage }) => (
+    <li
+      className={`${className} flex flex-col items-start justify-between gap-4 rounded-2xl p-4 elevation-1 hover:elevation-8`}
+    >
+      <h3 className="text-base">
+        <a target="_blank" href={html_url} rel="noreferrer">
+          {full_name}
+        </a>
+      </h3>
 
-        <nav className="flex-fill">
-          {topics.map(topic => (
-            <Chip
-              key={topic}
-              className="mr-1"
-              component="a"
-              target="_blank"
-              href={`https://github.com/topics/${topic}`}
-              label={topic}
-            />
-          ))}
-        </nav>
-        <Grid2 component="ul" className="g-4">
-          {languages.map(language => (
-            <Grid2 component="li" key={language}>
-              <GitLogo name={language} />
-            </Grid2>
-          ))}
-        </Grid2>
-        {description}
-      </CardContent>
-      <CardActions className="flex items-center justify-between">
-        {homepage && (
-          <Link target="_blank" href={homepage}>
-            {i18n.t('home_page')}
-          </Link>
-        )}
-      </CardActions>
-    </Card>
+      <nav className="flex flex-row flex-wrap gap-3">
+        {topics.map(topic => (
+          <Chip
+            key={topic}
+            size="small"
+            component="a"
+            target="_blank"
+            href={`https://github.com/topics/${topic}`}
+            label={topic}
+          />
+        ))}
+      </nav>
+
+      <ul className="flex gap-3">
+        {languages.map(language => (
+          <li key={language}>
+            <GitLogo className="w-6" name={language} />
+          </li>
+        ))}
+      </ul>
+
+      <p className="text-sm">{description}</p>
+
+      <Button component={Link} target="_blank" href={homepage || html_url}>
+        {i18n.t('home_page')}
+      </Button>
+    </li>
   )
 );

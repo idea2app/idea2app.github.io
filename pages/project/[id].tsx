@@ -2,7 +2,6 @@ import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
 import { InferGetServerSidePropsType } from 'next';
 import { cache, compose, errorLogger, translator } from 'next-ssr-middleware';
-import { Col, Container, Image, Row } from 'react-bootstrap';
 
 import { GitCard } from '../../components/Git/Card';
 import { PageHead } from '../../components/PageHead';
@@ -27,37 +26,27 @@ export const getServerSideProps = compose<
       .split(/\s+/)
       .map(path => new URL(path).pathname.slice(1));
 
-    repositories = await new GitRepositoryModel('idea2app').getGroup(
-      openSource,
-    );
+    repositories = await new GitRepositoryModel('idea2app').getGroup(openSource);
   }
   return {
     props: {
       project: JSON.parse(JSON.stringify(project)) as Project,
-      repositories,
-    },
+      repositories
+    }
   };
 });
 
 const ProjectDetailPage = observer(
-  ({
-    project,
-    repositories,
-  }: InferGetServerSidePropsType<typeof getServerSideProps>) => (
-    <Container>
+  ({ project, repositories }: InferGetServerSidePropsType<typeof getServerSideProps>) => (
+    <div className="mx-auto">
       <PageHead title={project.name + ''} />
 
-      <Row className="g-4 my-3">
-        <Col
-          xs={12}
-          sm={8}
-          as="a"
-          className="text-decoration-none"
-          href={project.link || '#'}
-        >
-          <Image fluid src={fileURLOf(project.image)} alt={project.name + ''} />
-        </Col>
-        <Col xs={12} sm={4}>
+      <div className="grid">
+        <a className="text-decoration-none" href={String(project.link) || '#'}>
+          <img className="object-fill" src={fileURLOf(project.image)} alt={project.name + ''} />
+        </a>
+
+        <div>
           <ProjectCard {...project} />
           <hr />
           <h2 className="fs-5 my-3">{t('open_source_project')}</h2>
@@ -69,9 +58,9 @@ const ProjectDetailPage = observer(
               </li>
             ))}
           </ul>
-        </Col>
-      </Row>
-    </Container>
-  ),
+        </div>
+      </div>
+    </div>
+  )
 );
 export default ProjectDetailPage;

@@ -8,6 +8,7 @@ import { ProjectListLayout } from '../../components/Project';
 import { Member, MemberModel } from '../../models/Member';
 import { Project, ProjectModel } from '../../models/Project';
 import { i18n } from '../../models/Translation';
+import { Chip, Tab, Tabs } from '@mui/material';
 
 const { t } = i18n;
 
@@ -39,38 +40,34 @@ export const getServerSideProps = compose<{ nickname: string }>(
 
 const MemberDetailPage: FC<MemberDetailPageProps> = observer(
   ({ member, leaderProjects, memberProjects }) => (
-    <div className="container">
+    <div className="mx-auto">
       <PageHead title={member.nickname as string} />
 
-      <Row>
-        <Col xs={12} md={4}>
+      <div className="grid">
+        <div className="">
           <MemberCard className="sticky-top" style={{ top: '6.5rem' }} {...member} />
-        </Col>
-        <Col xs={12} md={8}>
-          <Tabs variant="pills" justify className="mt-md-0 mt-4">
+        </div>
+        <div className="">
+          <Tabs className="">
             {Object.entries({
               [t('projects_as_leader')]: leaderProjects,
               [t('projects_as_member')]: memberProjects
             }).map(([label, list]) => (
               <Tab
                 key={label}
-                eventKey={label}
-                title={
-                  <Stack direction="horizontal" gap={2} className="justify-content-center">
+                label={
+                  <div className="justify-content-center flex flex-col gap-3">
                     {label}
-                    <Badge pill bg="light" text="dark" className="align-middle">
-                      {list.length}
-                    </Badge>
-                  </Stack>
+                    <Chip label={list.length} />
+                  </div>
                 }
-              >
-                <ProjectListLayout className="g-4 mt-1" defaultData={list} />
-              </Tab>
+              />
             ))}
           </Tabs>
-        </Col>
-      </Row>
-    </Container>
+          <div role='tabpanel'></div>
+        </div>
+      </div>
+    </div>
   )
 );
 

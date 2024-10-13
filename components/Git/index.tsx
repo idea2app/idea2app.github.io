@@ -2,14 +2,11 @@ import { GitRepository } from 'mobx-github';
 import { FC } from 'react';
 
 import { GitCard } from './Card';
-import { Grid2 } from '@mui/material';
 
 export const GitListLayout: FC<{ defaultData: GitRepository[] }> = ({ defaultData }) => (
-  <Grid2 component="ul" className="g-4">
+  <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
     {defaultData.map(item => (
-      <Grid2 component="li" key={item.id}>
-        <GitCard className="h-100 shadow-sm" {...item} />
-      </Grid2>
+      <GitCard key={item.id} className="h-full" {...item} />
     ))}
-  </Grid2>
+  </ul>
 );
