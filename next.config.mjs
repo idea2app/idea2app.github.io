@@ -18,12 +18,7 @@ const nextConfig = withPWA({
     emotion: true
   },
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'github.com'
-      }
-    ]
+    remotePatterns: [{ protocol: 'https', hostname: 'github.com' }]
   },
   webpack: config => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access

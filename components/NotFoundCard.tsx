@@ -10,7 +10,7 @@ export const NotFoundCard: FC<ErrorProps> = ({ title }) =>
   i18n.currentLanguage.startsWith('zh') ? (
     <script
       src="//cdn.dnpw.org/404/v1.min.js"
-      //@ts-ignore
+      // @ts-ignore
       jumptarget="/"
       jumptime="-1"
       error={title}

@@ -32,8 +32,7 @@ export class GitRepositoryModel extends Stream<GitRepository, RepositoryFilter>(
   }
 
   async *openStream(filter: RepositoryFilter) {
-    const loadPage = (page: number, pageSize: number, filter: RepositoryFilter) =>
-      RepositoryModel.prototype.loadPage.call(this, page, pageSize, filter);
+    const { loadPage } = RepositoryModel.prototype;
     let count = 0;
 
     for (const name of this.organizations) {

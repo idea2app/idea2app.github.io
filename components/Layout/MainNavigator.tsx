@@ -1,30 +1,37 @@
-import { AppBar, Drawer, IconButton, PopoverProps, Tab, Tabs, Toolbar } from '@mui/material';
+import { AppBar, Drawer, IconButton, PopoverProps, Toolbar } from '@mui/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Component } from 'react';
+import { Component, SyntheticEvent } from 'react';
 
+import { i18n } from '../../models/Translation';
 import { SymbolIcon } from '../Icon';
 import ColorModeIconDropdown from './ColorModeDropdown';
 
-/**
- * @todo i18n
- */
+const { t } = i18n;
+
 export const mainNavLinks = () => [
-  { title: 'Projects', href: '/projects' },
-  { title: 'Members', href: '/members' },
-  { title: 'Careers', href: '/careers' }
+  { title: t('latest_projects'), href: '/project' },
+  { title: t('member'), href: '/member' },
+  { title: t('open_source_project'), href: '/open-source' }
 ];
 
 @observer
 export class MainNavigator extends Component {
   @observable accessor menuExpand = false;
   @observable accessor menuAnchor: PopoverProps['anchorEl'] = null;
+  @observable accessor eventKey = 0;
+
+  handleChange = (event: SyntheticEvent, newValue: number) => {
+    this.eventKey = newValue;
+  };
 
   renderLinks = () =>
     mainNavLinks().map(({ title, href }) => (
-      <Tab key={title} component={Link} href={href} label={title} value={href} />
+      <Link key={title} className="py-1" href={href}>
+        {title}
+      </Link>
     ));
 
   renderDrawer = () => (
@@ -48,7 +55,7 @@ export class MainNavigator extends Component {
       >
         <Toolbar className="bg-transparent bg-none shadow-none" disableGutters />
         <div className="bg-background-paper py-3 elevation-16">
-          <ul className="flex flex-col items-center">{this.renderLinks()}</ul>
+          <nav className="flex flex-col items-center gap-4">{this.renderLinks()}</nav>
         </div>
       </Drawer>
     </nav>
@@ -68,15 +75,7 @@ export class MainNavigator extends Component {
               </Link>
             </div>
 
-            <Tabs
-              value="/projects"
-              component="ul"
-              aria-label="nav tabs"
-              role="navigation"
-              className="hidden justify-center gap-3 sm:flex"
-            >
-              {this.renderLinks()}
-            </Tabs>
+            <nav className="item-center hidden flex-row gap-4 sm:flex">{this.renderLinks()}</nav>
 
             <div className="flex flex-row items-center gap-4">
               <ColorModeIconDropdown />

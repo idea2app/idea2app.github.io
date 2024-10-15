@@ -51,7 +51,7 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = obs
           <div className="flex flex-row items-center justify-around py-12">
             <Image src="/idea2app.svg" width={234} height={220} alt="idea2app logo" />
 
-            <header className="border-l-2 border-l-black p-4 dark:border-l-white">
+            <header className="border-s-2 border-s-black p-4 dark:border-s-white">
               <p>{t('idea2app_summary')}</p>
               <p>{t('idea2app_slogan')}</p>
 

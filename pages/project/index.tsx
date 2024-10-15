@@ -6,16 +6,17 @@ import { FC } from 'react';
 import { PageHead } from '../../components/PageHead';
 import { ProjectListLayout } from '../../components/Project';
 import { ScrollList } from '../../components/ScrollList';
-import projectStore, { ProjectModel } from '../../models/Project';
+import projectStore, { Project, ProjectModel } from '../../models/Project';
 import { i18n } from '../../models/Translation';
 
 export const getServerSideProps = compose(cache(), errorLogger, translator(i18n), async () => {
   const list = await new ProjectModel().getList({});
 
-  /**
-   *  @todo fix no unsafe assignment
-   */
-  return { props: { list } };
+  return {
+    props: {
+      list: JSON.parse(JSON.stringify({ list })) as Project[]
+    }
+  };
 });
 
 const { t } = i18n;
@@ -25,7 +26,7 @@ const ProjectListPage: FC<InferGetServerSidePropsType<typeof getServerSideProps>
     <div className="container mx-auto">
       <PageHead title={t('custom_software_development')} />
 
-      <h1 className="my-4">{t('custom_software_development')}</h1>
+      <h1 className="my-8">{t('custom_software_development')}</h1>
 
       <ScrollList
         translator={i18n}

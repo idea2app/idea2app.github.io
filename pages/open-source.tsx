@@ -12,10 +12,8 @@ import { i18n } from '../models/Translation';
 export const getServerSideProps = compose(cache(), errorLogger, translator(i18n), async () => {
   const list = await new GitRepositoryModel('idea2app').getList();
 
-  /**
-   * @todo fix no unsafe assignment
-   */
-  return { props: { list } };
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  return { props: JSON.parse(JSON.stringify({ list })) };
 });
 
 const { t } = i18n;
@@ -24,7 +22,7 @@ const GitListPage: FC<{ list: GitRepository[] }> = observer(({ list }) => (
   <div className="container mx-auto">
     <PageHead title={t('open_source_project')} />
 
-    <h1 className="my-4">{t('open_source_project')}</h1>
+    <h1 className="my-8">{t('open_source_project')}</h1>
 
     <ScrollList
       translator={i18n}

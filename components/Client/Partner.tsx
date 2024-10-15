@@ -47,7 +47,13 @@ export const LogoWithLink: FC<Omit<PartnerOverviewProps, 'tooltip'>> = ({
   logoDark,
   className
 }) => (
-  <a key={name} href={address} className="flex items-center justify-center" target="_blank" rel="noreferrer">
+  <a
+    key={name}
+    href={address}
+    className="flex items-center justify-center"
+    target="_blank"
+    rel="noreferrer"
+  >
     <img
       className={`max-h-24 min-h-2 dark:hidden ${className}`}
       loading="lazy"
