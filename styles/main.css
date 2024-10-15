@@ -9,3 +9,9 @@
     'GRAD' 0,
     'opsz' 24;
 }
+
+@layer utilities {
+  .animation-pause-all > * {
+    animation-play-state: paused;
+  }
+}

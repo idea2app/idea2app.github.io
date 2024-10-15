@@ -1,14 +1,13 @@
+import { Chip, Tab, Tabs } from '@mui/material';
 import { observer } from 'mobx-react';
 import { cache, compose, errorLogger, translator } from 'next-ssr-middleware';
 import { FC } from 'react';
 
 import { MemberCard } from '../../components/Member/Card';
 import { PageHead } from '../../components/PageHead';
-import { ProjectListLayout } from '../../components/Project';
 import { Member, MemberModel } from '../../models/Member';
 import { Project, ProjectModel } from '../../models/Project';
 import { i18n } from '../../models/Translation';
-import { Chip, Tab, Tabs } from '@mui/material';
 
 const { t } = i18n;
 
@@ -64,7 +63,7 @@ const MemberDetailPage: FC<MemberDetailPageProps> = observer(
               />
             ))}
           </Tabs>
-          <div role='tabpanel'></div>
+          <div role="tabpanel" />
         </div>
       </div>
     </div>

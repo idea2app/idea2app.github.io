@@ -1,16 +1,15 @@
-import classNames from 'classnames';
+import { Card, CardActions, CardContent, CardHeader, Chip } from '@mui/material';
 import { FC } from 'react';
 import { formatDate } from 'web-utility';
 
 import { Project } from '../../models/Project';
-import { Card, CardActions, CardContent, CardHeader, Chip } from '@mui/material';
 
 export interface ProjectCardProps extends Project {
   className?: string;
 }
 
 export const ProjectCard: FC<ProjectCardProps> = ({
-  className,
+  className = '',
   id,
   name,
   type,
@@ -18,7 +17,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({
   price,
   settlementDate
 }) => (
-  <Card className={classNames('rounded-3 border', className)}>
+  <Card className={`${className} rounded-3 border`}>
     <CardContent className="d-flex flex-column">
       <CardHeader
         component="h3"
@@ -26,23 +25,23 @@ export const ProjectCard: FC<ProjectCardProps> = ({
         actions={
           <a
             className="stretched-link text-truncate mr-auto"
-            title={name + ''}
-            href={`/project/${id}`}
+            title={String(name)}
+            href={`/project/${String(id)}`}
           >
-            {name + ''}
+            {String(name)}
           </a>
         }
-        title={<Chip label={workForm + ''} />}
+        title={<Chip label={String(workForm)} />}
       />
       <ul className="list-inline">
         {(type as string[])?.map(value => (
-          <Chip component="li" className="list-inline-item" label={value} key={value} />
+          <Chip key={value} component="li" className="list-inline-item" label={value} />
         ))}
       </ul>
     </CardContent>
     <CardActions className="flex">
       <strong className="flex-fill">
-        ￥{(price + '').replace(/\d/g, (matched, offset) => (offset ? '0' : matched))}+
+        ￥{String(price).replace(/\d/g, (matched, offset) => (offset ? '0' : matched))}+
       </strong>
 
       <time>🏁 {formatDate(+settlementDate!, 'YYYY-MM-DD')}</time>

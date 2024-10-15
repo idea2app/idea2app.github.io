@@ -1,24 +1,21 @@
-import { Button, Card, CardContent, CardHeader, Link, Tooltip } from '@mui/material';
+import Masonry from '@mui/lab/Masonry';
+import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
 import { InferGetServerSidePropsType } from 'next';
+import Image from 'next/image';
 import { cache, compose, errorLogger, translator } from 'next-ssr-middleware';
 import { FC } from 'react';
-import Masonry from '@mui/lab/Masonry';
 
-import { Icon } from '../components/Icon';
+import { PartnerOverview } from '../components/Client/Partner';
+import { GitListLayout } from '../components/Git';
+import { SymbolIcon } from '../components/Icon';
+import { MemberCard } from '../components/Member/Card';
 import { PageHead } from '../components/PageHead';
+import { Section } from '../components/Section';
+import { MEMBER_VIEW, MemberModel } from '../models/Member';
+import { GitRepositoryModel } from '../models/Repository';
 import { i18n } from '../models/Translation';
 import { PARTNERS_INFO, service } from './api/home';
-import { ClientModel } from '../models/Client';
-import { Partner, PartnerOverview } from '../components/Client/Partner';
-import Image from 'next/image';
-import { MemberListLayout } from '../components/Member/List';
-import { MEMBER_VIEW, MemberModel } from '../models/Member';
-import { Section } from '../components/Section';
-import { MemberCard } from '../components/Member/Card';
-import { GitListLayout } from '../components/Git';
-import { GitRepositoryModel } from '../models/Repository';
-import { GitRepository } from 'mobx-github';
 
 export const getServerSideProps = compose(cache(), errorLogger, translator(i18n), async () => {
   const [
@@ -28,7 +25,7 @@ export const getServerSideProps = compose(cache(), errorLogger, translator(i18n)
     members
   ] = await Promise.all([
     // new ProjectModel().getList({}, 1, 9),
-    new GitRepositoryModel('idea2app').getList({}, 1, 9),
+    new GitRepositoryModel('idea2app').getList({ relation: [] }, 1, 9),
     new MemberModel().getViewList(MEMBER_VIEW)
   ]);
 
@@ -45,7 +42,7 @@ export const getServerSideProps = compose(cache(), errorLogger, translator(i18n)
 const { t } = i18n;
 
 const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = observer(
-  ({ projects, repositories, members }) => (
+  ({ repositories, members }) => (
     <>
       <PageHead />
 
@@ -64,7 +61,7 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = obs
                 className="border-b-2 border-b-black py-1 dark:border-b-white"
                 href="https://wenjuan.feishu.cn/m?t=sBih7Nzwkwqi-0l12"
                 target="_blank"
-                rel="noopener"
+                rel="noopener noreferrer"
               >
                 {t('contact_us')}
               </a>
@@ -74,12 +71,12 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = obs
           <ul className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {service().map(({ title, summary, icon }) => (
               <li
+                key={title}
                 className="flex flex-col gap-4 rounded-3xl p-4 elevation-1 hover:elevation-8"
                 tabIndex={-1}
-                key={title}
               >
                 <h5 className="flex items-center gap-4">
-                  <Icon name={icon} /> {title}
+                  <SymbolIcon name={icon} /> {title}
                 </h5>
 
                 <p>{summary}</p>
@@ -90,7 +87,10 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = obs
 
         <section id="partner" className="relative mx-auto max-w-screen-xl px-8 py-16">
           <div className="absolute left-0 top-0 z-20 block h-24 w-24 bg-gradient-to-r from-background to-transparent" />
-          <ul className="flex flex-row flex-nowrap items-center justify-center gap-12 overflow-hidden">
+          <ul className="hover:animation-pause-all flex flex-row flex-nowrap items-center justify-center gap-12 overflow-hidden">
+            {/**
+             * @todo: polish the carousel animation
+             */}
             {Array.from({ length: 3 }).map((_, index) => (
               <li
                 key={index}
@@ -123,7 +123,7 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = obs
                 <MemberCard key={String(item.id)} {...item} />
               ))}
             </Masonry>
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-background pb-8 pt-32"></div>
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-background pb-8 pt-32" />
           </div>
         </Section>
 

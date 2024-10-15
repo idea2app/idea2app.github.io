@@ -47,7 +47,7 @@ export default {
   projects_as_leader: '负责的项目',
   projects_as_member: '参与的项目',
   partner_aiux: '艾体验科技',
-  partner_auxi_slogan: '为企业数字化增长带来更好创新设计',
+  partner_aiux_slogan: '为企业数字化增长带来更好创新设计',
   partner_eth_planet: '以太坊星球',
   partner_eth_planet_slogan: '共建、互助、互联，赋能以太坊开发者社群',
   partner_ic_naming: '区块链域名系统平台',

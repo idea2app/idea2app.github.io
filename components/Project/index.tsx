@@ -11,7 +11,7 @@ export interface ProjectListLayoutProps {
 export const ProjectListLayout: FC<ProjectListLayoutProps> = ({ className = '', defaultData }) => (
   <ul className={`list-unstyled ${className}`}>
     {defaultData.map(item => (
-      <li key={item.id + ''}>
+      <li key={String(item.id)}>
         <ProjectCard className="h-100 shadow-sm" {...item} />
       </li>
     ))}

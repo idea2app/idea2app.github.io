@@ -46,8 +46,8 @@ export default {
   // Member page
   projects_as_leader: '負責的專案',
   projects_as_member: '參與的專案',
-  partner_auix: '艾體驗科技',
-  partner_auxi_slogan: '為企業數位化增長帶來更好創新設計',
+  partner_aiux: '艾體驗科技',
+  partner_aiux_slogan: '為企業數位化增長帶來更好創新設計',
   partner_eth_planet: '以太坊星球',
   partner_eth_planet_slogan: '共建、互助、互聯，賦能以太坊開發者社群',
   partner_ic_naming: '區塊鏈域名系統平台',

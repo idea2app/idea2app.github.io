@@ -17,12 +17,12 @@ export const getServerSideProps = compose<
   { id: string },
   { project: Project; repositories: GitRepository[] }
 >(cache(), errorLogger, translator(i18n), async ({ params: { id } = {} }) => {
-  var repositories: GitRepository[] = [];
+  let repositories: GitRepository[] = [];
 
   const project = await new ProjectModel().getOne(id!);
 
   if (project.openSource) {
-    const openSource = (project.openSource + '')
+    const openSource = String(project.openSource)
       .split(/\s+/)
       .map(path => new URL(path).pathname.slice(1));
 
@@ -39,11 +39,11 @@ export const getServerSideProps = compose<
 const ProjectDetailPage = observer(
   ({ project, repositories }: InferGetServerSidePropsType<typeof getServerSideProps>) => (
     <div className="mx-auto">
-      <PageHead title={project.name + ''} />
+      <PageHead title={String(project.name)} />
 
       <div className="grid">
         <a className="text-decoration-none" href={String(project.link) || '#'}>
-          <img className="object-fill" src={fileURLOf(project.image)} alt={project.name + ''} />
+          <img className="object-fill" src={fileURLOf(project.image)} alt={String(project.name)} />
         </a>
 
         <div>

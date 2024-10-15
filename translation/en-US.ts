@@ -47,7 +47,7 @@ export default {
   projects_as_leader: 'Projects as leader',
   projects_as_member: 'Projects as member',
   partner_aiux: 'AIUX',
-  partner_auiux_slogan: 'Bringing better innovative design to enterprise digital growth',
+  partner_aiux_slogan: 'Bringing better innovative design to enterprise digital growth',
   partner_eth_planet: 'Ethereum Planet',
   partner_eth_planet_slogan: 'Building a decentralized digital identity',
   partner_ic_naming: 'IC Naming',
@@ -59,7 +59,8 @@ export default {
   partner_creator_1024: 'Creator 1024',
   partner_creator_1024_slogan: 'Microsoft Most Valuable Expert Engineer Team',
   partner_kys: 'KAIYUANSHE',
-  partner_kys_slogan: 'Based in China, contributing to the world, promoting open source as a new way of life',
+  partner_kys_slogan:
+    'Based in China, contributing to the world, promoting open source as a new way of life',
 
   // Open source project
   load_more: 'Load more...',

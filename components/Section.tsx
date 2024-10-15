@@ -1,8 +1,8 @@
+import { Button } from '@mui/material';
+import Link from 'next/link';
 import { FC, PropsWithChildren } from 'react';
 
 import { i18n } from '../models/Translation';
-import { Button } from '@mui/material';
-import Link from 'next/link';
 
 export type SectionProps = PropsWithChildren<
   Partial<Record<'id' | 'title' | 'link' | 'className', string>>

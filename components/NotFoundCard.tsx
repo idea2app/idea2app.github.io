@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable react/no-unknown-property */
+/* eslint-disable @next/next/no-sync-scripts */
 import { ErrorProps } from 'next/error';
 import { FC } from 'react';
 
@@ -7,7 +10,7 @@ export const NotFoundCard: FC<ErrorProps> = ({ title }) =>
   i18n.currentLanguage.startsWith('zh') ? (
     <script
       src="//cdn.dnpw.org/404/v1.min.js"
-      // @ts-ignore
+      //@ts-ignore
       jumptarget="/"
       jumptime="-1"
       error={title}

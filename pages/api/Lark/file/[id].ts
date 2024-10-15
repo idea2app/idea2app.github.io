@@ -8,8 +8,8 @@ export const fileURLOf = (field: TableCellValue) =>
   field instanceof Array
     ? field[0]
       ? `/api/Lark/file/${(field[0] as TableCellMedia).file_token}`
-      : field + ''
-    : field + '';
+      : String(field)
+    : String(field);
 
 export default safeAPI(async (req, res) => {
   switch (req.method) {
@@ -25,7 +25,7 @@ export default safeAPI(async (req, res) => {
 
       for (let i = 0; i < buffer.length; i++) buffer[i] = view[i];
 
-      const { mime } = (await fileTypeFromBuffer(buffer)) || {};
+      const { mime } = (await fileTypeFromBuffer(buffer)) ?? {};
 
       res.setHeader('Content-Type', mime as string);
       res.send(buffer);

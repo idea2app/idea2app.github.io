@@ -1,6 +1,6 @@
+import { Tooltip } from '@mui/material';
 import { FC, ReactNode } from 'react';
 
-import { Tooltip } from '@mui/material';
 import { Client } from '../../models/Client';
 import { fileURLOf } from '../../pages/api/Lark/file/[id]';
 
@@ -19,8 +19,8 @@ export const Partner: FC<PartnerProps> = ({ className = '', name, image, summary
     <img
       className="h-20 object-fill"
       loading="lazy"
-      src={fileURLOf(image)}
-      alt={`partner ${String(name)} logo`}
+      src={fileURLOf(String(image))}
+      alt={String(name)}
     />
     <h3>
       <a className="stretched-link" target="_blank" href={String(address)} rel="noreferrer">
@@ -47,18 +47,18 @@ export const LogoWithLink: FC<Omit<PartnerOverviewProps, 'tooltip'>> = ({
   logoDark,
   className
 }) => (
-  <a key={name} href={address} className="flex items-center justify-center" target="_blank">
+  <a key={name} href={address} className="flex items-center justify-center" target="_blank" rel="noreferrer">
     <img
       className={`max-h-24 min-h-2 dark:hidden ${className}`}
       loading="lazy"
-      src={logoDark || logo}
-      alt={`dark logo of ${name}`}
+      src={logoDark ?? logo}
+      alt={name}
     />
     <img
       className={`hidden max-h-24 min-h-2 dark:block ${className}`}
       loading="lazy"
       src={logo}
-      alt={`light logo of ${name}`}
+      alt={name}
     />
   </a>
 );

@@ -2,12 +2,15 @@ import { AppBar, Drawer, IconButton, PopoverProps, Tab, Tabs, Toolbar } from '@m
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Component } from 'react';
 
-import Link from 'next/link';
-import { Icon } from '../Icon';
+import { SymbolIcon } from '../Icon';
 import ColorModeIconDropdown from './ColorModeDropdown';
 
+/**
+ * @todo i18n
+ */
 export const mainNavLinks = () => [
   { title: 'Projects', href: '/projects' },
   { title: 'Members', href: '/members' },
@@ -21,7 +24,7 @@ export class MainNavigator extends Component {
 
   renderLinks = () =>
     mainNavLinks().map(({ title, href }) => (
-      <Tab component={Link} key={title} href={href} label={title} value={href} />
+      <Tab key={title} component={Link} href={href} label={title} value={href} />
     ));
 
   renderDrawer = () => (
@@ -32,7 +35,7 @@ export class MainNavigator extends Component {
         aria-haspopup="true"
         onClick={() => (this.menuExpand = true)}
       >
-        <Icon name="menu" />
+        <SymbolIcon name="menu" />
       </IconButton>
 
       <Drawer
@@ -43,7 +46,7 @@ export class MainNavigator extends Component {
         open={this.menuExpand}
         onClose={() => (this.menuExpand = false)}
       >
-        <Toolbar disableGutters className="bg-transparent bg-none shadow-none" />
+        <Toolbar className="bg-transparent bg-none shadow-none" disableGutters />
         <div className="bg-background-paper py-3 elevation-16">
           <ul className="flex flex-col items-center">{this.renderLinks()}</ul>
         </div>
@@ -56,14 +59,14 @@ export class MainNavigator extends Component {
       <AppBar color="transparent" className="fixed backdrop-blur" style={{ zIndex: 1201 }}>
         <Toolbar>
           <div className="container mx-auto flex max-w-screen-xl items-center justify-between px-3">
-            <ul className="flex flex-row items-center gap-3">
+            <div className="flex flex-row items-center gap-3">
               {this.renderDrawer()}
 
               <Image src="/idea2app.svg" alt="brand logo" width={32} height={40} />
-              <a className="font-bold uppercase" href="/">
+              <Link translate="no" className="font-bold uppercase" href="/">
                 idea2app
-              </a>
-            </ul>
+              </Link>
+            </div>
 
             <Tabs
               value="/projects"
@@ -75,9 +78,9 @@ export class MainNavigator extends Component {
               {this.renderLinks()}
             </Tabs>
 
-            <ul className="flex flex-row items-center gap-4">
+            <div className="flex flex-row items-center gap-4">
               <ColorModeIconDropdown />
-            </ul>
+            </div>
           </div>
         </Toolbar>
       </AppBar>

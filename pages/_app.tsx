@@ -5,11 +5,11 @@ import { HTTPError } from 'koajax';
 import { configure } from 'mobx';
 import { enableStaticRendering, observer } from 'mobx-react';
 import { AppProps } from 'next/app';
+import Head from 'next/head';
 
 import { Footer } from '../components/Layout/Footer';
 import { MainNavigator } from '../components/Layout/MainNavigator';
 import { isServer } from '../models/Base';
-import Head from 'next/head';
 
 configure({ enforceActions: 'never' });
 
@@ -24,7 +24,7 @@ globalThis.addEventListener?.('unhandledrejection', ({ reason }) => {
   if (errorMessage) alert(errorMessage);
 });
 
-const rootElement = isServer() ? null : document.getElementById('__next');
+const container = isServer() ? null : document.getElementById('__next');
 
 export const theme = createTheme({
   colorSchemes: { dark: true, light: true },
@@ -40,26 +40,10 @@ export const theme = createTheme({
     /**
      * target root element for Portal-related elements, for tailwind support @see {@link  https://mui.com/material-ui/integrations/interoperability/#setup}
      * */
-    MuiPopover: {
-      defaultProps: {
-        container: rootElement
-      }
-    },
-    MuiPopper: {
-      defaultProps: {
-        container: rootElement
-      }
-    },
-    MuiDialog: {
-      defaultProps: {
-        container: rootElement
-      }
-    },
-    MuiModal: {
-      defaultProps: {
-        container: rootElement
-      }
-    }
+    MuiPopover: { defaultProps: { container } },
+    MuiPopper: { defaultProps: { container } },
+    MuiDialog: { defaultProps: { container } },
+    MuiModal: { defaultProps: { container } }
   }
 });
 

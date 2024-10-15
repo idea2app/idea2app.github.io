@@ -28,7 +28,7 @@ export const PARTNERS_INFO = () => [
     logoDark: '/aiux-dark.png',
     name: t('partner_aiux'),
     address: 'https://www.aiuxdesign.com/',
-    summary: t('partner_auxi_slogan')
+    summary: t('partner_aiux_slogan')
   },
 
   {
@@ -40,7 +40,6 @@ export const PARTNERS_INFO = () => [
   },
   {
     logo: '/fcc-cdg.png',
-    logoDark: '',
     name: t('partner_fcc_cdg'),
     address: 'https://fcc-cd.dev/',
     summary: t('partner_fcc_cdg_slogan')
@@ -48,7 +47,6 @@ export const PARTNERS_INFO = () => [
 
   {
     logo: '/ic-naming.svg',
-    logoDark: '',
     name: t('partner_ic_naming'),
     address: 'https://icnaming.com/',
     summary: t('partner_ic_naming_slogan')
@@ -63,14 +61,12 @@ export const PARTNERS_INFO = () => [
   },
   {
     logo: '/kys.png',
-    logoDark: '',
     name: t('partner_kys'),
     address: 'https://kaiyuanshe.cn/',
     summary: t('partner_kys_slogan')
   },
   {
     logo: '/eth-planet.png',
-    logoDark: '',
     name: t('partner_eth_planet'),
     address: 'https://x.com/ethplanet/',
     summary: t('partner_eth_planet_slogan')

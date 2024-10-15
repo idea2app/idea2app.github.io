@@ -1,12 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import { HTTPError } from 'koajax';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { VercelHost } from '../../models/Base';
 
-export type NextAPI = (
-  req: NextApiRequest,
-  res: NextApiResponse,
-) => Promise<any>;
+export type NextAPI = (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
 
 export function safeAPI(handler: NextAPI): NextAPI {
   return async (req, res) => {
@@ -20,19 +19,22 @@ export function safeAPI(handler: NextAPI): NextAPI {
         return res.send({ message: (error as Error).message });
       }
       const { message, response } = error;
-      let { status, body } = response;
+      const { status } = response;
+      let { body } = response;
 
       res.status(status);
       res.statusMessage = message;
 
       if (body instanceof ArrayBuffer)
         try {
-          body = new TextDecoder().decode(new Uint8Array(body));
-          console.error(body);
+          const data = new TextDecoder().decode(new Uint8Array(body));
+          console.error(data);
 
-          body = JSON.parse(body);
+          body = JSON.parse(data);
           console.error(body);
-        } catch {}
+        } catch {
+          //
+        }
 
       res.send(body);
     }

@@ -21,9 +21,6 @@ githubClient.use(({ request }, next) => {
 
 export class GitRepositoryModel extends Stream<GitRepository, RepositoryFilter>(RepositoryModel) {
   client = githubClient;
-  filter: RepositoryFilter = {
-    relation: ['languages'] as ('contributors' | 'languages' | 'issues')[]
-  };
 
   organizations = ['idea2app', 'IdeaMall', 'EasyWebApp'];
 
@@ -35,8 +32,9 @@ export class GitRepositoryModel extends Stream<GitRepository, RepositoryFilter>(
   }
 
   async *openStream(filter: RepositoryFilter) {
-    const { loadPage } = RepositoryModel.prototype;
-    var count = 0;
+    const loadPage = (page: number, pageSize: number, filter: RepositoryFilter) =>
+      RepositoryModel.prototype.loadPage.call(this, page, pageSize, filter);
+    let count = 0;
 
     for (const name of this.organizations) {
       this.baseURI = `orgs/${name}/repos`;
