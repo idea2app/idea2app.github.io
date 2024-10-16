@@ -9,17 +9,13 @@ import { ScrollList } from '../../components/ScrollList';
 import projectStore, { Project, ProjectModel } from '../../models/Project';
 import { i18n } from '../../models/Translation';
 
+const { t } = i18n;
+
 export const getServerSideProps = compose(cache(), errorLogger, translator(i18n), async () => {
   const list = await new ProjectModel().getList({});
 
-  return {
-    props: {
-      list: JSON.parse(JSON.stringify({ list })) as Project[]
-    }
-  };
+  return { props: { list: JSON.parse(JSON.stringify(list)) as Project[] } };
 });
-
-const { t } = i18n;
 
 const ProjectListPage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = observer(
   ({ list }) => (

@@ -13,7 +13,7 @@ export type MemberCardProps = Member & Omit<CardProps, 'id'>;
 export const MemberCard: FC<MemberCardProps> = observer(
   ({ className = '', nickname, skill, position, summary, github }) => (
     <li
-      className={`relative rounded-2xl p-4 elevation-1 hover:elevation-8 ${className} mb-4 flex break-inside-avoid flex-col gap-3`}
+      className={`relative rounded-2xl border p-4 elevation-1 hover:elevation-8 dark:border-0 ${className} mb-4 flex break-inside-avoid flex-col gap-3`}
     >
       {github && (
         <a
@@ -43,7 +43,7 @@ export const MemberCard: FC<MemberCardProps> = observer(
         </Link>
       </div>
 
-      <ul>
+      <ul className="flex flex-wrap items-center gap-2">
         {(skill as string[]).map(value => (
           <Chip key={value} size="small" component="li" label={value} />
         ))}

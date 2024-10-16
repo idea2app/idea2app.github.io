@@ -72,7 +72,7 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = obs
             {service().map(({ title, summary, icon }) => (
               <li
                 key={title}
-                className="flex flex-col gap-4 rounded-3xl p-4 elevation-1 hover:elevation-8"
+                className="flex flex-col gap-4 rounded-3xl border p-4 elevation-1 hover:elevation-8 dark:border-0"
                 tabIndex={-1}
               >
                 <h5 className="flex items-center gap-4">

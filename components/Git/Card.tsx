@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { FC } from 'react';
 
 import { i18n } from '../../models/Translation';
-import { GitLogo } from './Logo';
 
 export interface GitCardProps
   extends Pick<GitRepository, 'full_name' | 'html_url' | 'languages'>,
@@ -14,17 +13,17 @@ export interface GitCardProps
 }
 
 export const GitCard: FC<GitCardProps> = observer(
-  ({ className = '', full_name, html_url, languages = [], topics = [], description, homepage }) => (
+  ({ className = '', full_name, html_url, topics = [], description, homepage }) => (
     <li
-      className={`${className} flex flex-col items-start justify-between gap-4 rounded-2xl p-4 elevation-1 hover:elevation-8`}
+      className={`${className} grid grid-cols-1 grid-rows-10 gap-2 rounded-2xl border p-4 elevation-1 hover:elevation-8 dark:border-0`}
     >
-      <h3 className="text-base">
+      <h3 className="row-span-2 text-lg">
         <a target="_blank" href={html_url} rel="noreferrer">
           {full_name}
         </a>
       </h3>
 
-      <nav className="flex flex-row flex-wrap gap-3">
+      <nav className="row-span-3 flex flex-row flex-wrap gap-2">
         {topics.map(topic => (
           <Chip
             key={topic}
@@ -37,17 +36,14 @@ export const GitCard: FC<GitCardProps> = observer(
         ))}
       </nav>
 
-      <ul className="flex gap-3">
-        {languages.map(language => (
-          <li key={language}>
-            <GitLogo name={language} />
-          </li>
-        ))}
-      </ul>
+      <p className="row-span-3 text-sm">{description}</p>
 
-      <p className="text-sm">{description}</p>
-
-      <Button component={Link} target="_blank" href={homepage ?? html_url}>
+      <Button
+        className="row-span-2 place-self-center"
+        component={Link}
+        target="_blank"
+        href={homepage ?? html_url}
+      >
         {i18n.t('home_page')}
       </Button>
     </li>

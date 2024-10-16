@@ -18,7 +18,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({
   settlementDate
 }) => (
   <div
-    className={`${className} flex flex-col justify-between gap-4 rounded-2xl p-4 elevation-1 hover:elevation-8`}
+    className={`${className} flex flex-col justify-between gap-4 rounded-2xl border p-4 elevation-1 hover:elevation-8 dark:border-0`}
   >
     <h3 className="flex items-center justify-between">
       <a className="text-lg" title={String(name)} href={`/project/${id}`}>

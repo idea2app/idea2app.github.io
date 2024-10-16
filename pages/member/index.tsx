@@ -12,7 +12,7 @@ import { i18n } from '../../models/Translation';
 export const getServerSideProps = compose(cache(), errorLogger, translator(i18n), async () => {
   const list = await new MemberModel().getList();
 
-  return { props: { list: JSON.parse(JSON.stringify({ list })) as Member[] } };
+  return { props: { list: JSON.parse(JSON.stringify(list)) as Member[] } };
 });
 
 const { t } = i18n;
