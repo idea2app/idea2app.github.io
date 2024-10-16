@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   presets: [
     // https://babeljs.io/docs/babel-preset-react
     [

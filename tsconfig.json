@@ -16,8 +16,7 @@
     "downlevelIteration": true,
     "useDefineForClassFields": true,
     "jsx": "preserve",
-    "incremental": true,
-    "plugins": [{ "name": "next" }]
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",
@@ -25,9 +24,7 @@
     "*.mjs",
     "*.js",
     "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "babel.config.js"
+    "**/*.tsx"
   ],
   "exclude": ["node_modules"]
 }
