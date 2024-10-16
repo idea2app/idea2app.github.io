@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable react/no-unknown-property */
+/* eslint-disable @next/next/no-sync-scripts */
 import { ErrorProps } from 'next/error';
 import { FC } from 'react';
 

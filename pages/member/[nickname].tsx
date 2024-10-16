@@ -1,11 +1,10 @@
+import { Chip, Tab, Tabs } from '@mui/material';
 import { observer } from 'mobx-react';
 import { cache, compose, errorLogger, translator } from 'next-ssr-middleware';
 import { FC } from 'react';
-import { Badge, Col, Container, Row, Stack, Tab, Tabs } from 'react-bootstrap';
 
 import { MemberCard } from '../../components/Member/Card';
 import { PageHead } from '../../components/PageHead';
-import { ProjectListLayout } from '../../components/Project';
 import { Member, MemberModel } from '../../models/Member';
 import { Project, ProjectModel } from '../../models/Project';
 import { i18n } from '../../models/Translation';
@@ -29,58 +28,46 @@ export const getServerSideProps = compose<{ nickname: string }>(
 
     const [leaderProjects, memberProjects] = await Promise.all([
       new ProjectModel().getAll({ leader: params?.nickname }),
-      new ProjectModel().getAll({ members: params?.nickname }),
+      new ProjectModel().getAll({ members: params?.nickname })
     ]);
 
     return {
-      props: { member, leaderProjects, memberProjects },
+      props: { member, leaderProjects, memberProjects }
     };
-  },
+  }
 );
 
 const MemberDetailPage: FC<MemberDetailPageProps> = observer(
   ({ member, leaderProjects, memberProjects }) => (
-    <Container className="mt-5 pb-4">
+    <div className="mx-auto">
       <PageHead title={member.nickname as string} />
 
-      <Row>
-        <Col xs={12} md={4}>
-          <MemberCard
-            className="sticky-top"
-            style={{ top: '6.5rem' }}
-            {...member}
-          />
-        </Col>
-        <Col xs={12} md={8}>
-          <Tabs variant="pills" justify className="mt-4 mt-md-0">
+      <div className="grid">
+        <div className="">
+          <MemberCard className="sticky-top" style={{ top: '6.5rem' }} {...member} />
+        </div>
+        <div className="">
+          <Tabs className="">
             {Object.entries({
               [t('projects_as_leader')]: leaderProjects,
-              [t('projects_as_member')]: memberProjects,
+              [t('projects_as_member')]: memberProjects
             }).map(([label, list]) => (
               <Tab
                 key={label}
-                eventKey={label}
-                title={
-                  <Stack
-                    direction="horizontal"
-                    gap={2}
-                    className="justify-content-center"
-                  >
+                label={
+                  <div className="justify-content-center flex flex-col gap-3">
                     {label}
-                    <Badge pill bg="light" text="dark" className="align-middle">
-                      {list.length}
-                    </Badge>
-                  </Stack>
+                    <Chip label={list.length} />
+                  </div>
                 }
-              >
-                <ProjectListLayout className="mt-1 g-4" defaultData={list} />
-              </Tab>
+              />
             ))}
           </Tabs>
-        </Col>
-      </Row>
-    </Container>
-  ),
+          <div role="tabpanel" />
+        </div>
+      </div>
+    </div>
+  )
 );
 
 export default MemberDetailPage;

@@ -1,70 +1,55 @@
-import { Avatar, Icon, text2color } from 'idea-react';
+import { CardProps, Chip } from '@mui/material';
 import { observer } from 'mobx-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
-import { Badge, Card, CardProps } from 'react-bootstrap';
 import { Markdown } from 'react-marked-renderer';
 
 import { Member } from '../../models/Member';
+import { GithubIcon } from '../Layout/Svg';
 
 export type MemberCardProps = Member & Omit<CardProps, 'id'>;
 
 export const MemberCard: FC<MemberCardProps> = observer(
-  ({
-    id,
-    className = 'shadow-sm',
-    nickname,
-    skill,
-    position,
-    summary,
-    github,
-    ...props
-  }) => (
-    <Card className={className} {...props}>
-      <Card.Body className="d-flex flex-column gap-3 position-relative">
-        <Card.Title as="h3" className="h5 d-flex justify-content-between">
-          <Link
-            className="stretched-link"
-            style={{ lineHeight: '3rem' }}
-            href={`/member/${nickname}`}
-          >
-            {nickname + ''}
-          </Link>
-          {github && (
-            <Avatar src={`https://github.com/${github}.png`} size={3} />
-          )}
-        </Card.Title>
-        {position && <Card.Subtitle>{position + ''}</Card.Subtitle>}
+  ({ className = '', nickname, skill, position, summary, github }) => (
+    <li
+      className={`relative rounded-2xl border p-4 elevation-1 hover:elevation-8 dark:border-0 ${className} mb-4 flex break-inside-avoid flex-col gap-3`}
+    >
+      {github && (
+        <a
+          className="absolute right-4 top-4"
+          href={`https://github.com/${String(github)}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <GithubIcon />
+        </a>
+      )}
 
-        <Markdown markdown={summary + ''} />
-      </Card.Body>
-
-      <Card.Footer>
+      <div className="flex w-auto items-center gap-4">
         {github && (
-          <a
-            className="fs-2"
-            href={`https://github.com/${github}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <Icon name={'github'} />
-          </a>
+          <Image
+            width={64}
+            height={64}
+            className="rounded-full object-cover"
+            src={`https://github.com/${String(github)}.png`}
+            alt={String(github)}
+          />
         )}
-        {skill && (
-          <ul className="list-inline">
-            {(skill as string[]).map(value => (
-              <Badge
-                key={value}
-                as="li"
-                className="list-inline-item"
-                bg={text2color(value, ['light'])}
-              >
-                {value}
-              </Badge>
-            ))}
-          </ul>
-        )}
-      </Card.Footer>
-    </Card>
-  ),
+
+        <Link href={`/member/${String(nickname)}`}>
+          <h3 className="text-base">{String(nickname)}</h3>
+          <p className="text-sm">{String(position ?? '')}</p>
+        </Link>
+      </div>
+
+      <ul className="flex flex-wrap items-center gap-2">
+        {(skill as string[]).map(value => (
+          <Chip key={value} size="small" component="li" label={value} />
+        ))}
+      </ul>
+
+      <Markdown markdown={String(summary)} />
+    </li>
+  )
 );

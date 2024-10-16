@@ -1,25 +1,26 @@
+import { Button } from '@mui/material';
+import Link from 'next/link';
 import { FC, PropsWithChildren } from 'react';
-import { Button } from 'react-bootstrap';
 
 import { i18n } from '../models/Translation';
 
 export type SectionProps = PropsWithChildren<
-  Partial<Record<'id' | 'title' | 'link', string>>
+  Partial<Record<'id' | 'title' | 'link' | 'className', string>>
 >;
 
 const { t } = i18n;
 
-export const Section: FC<SectionProps> = ({ id, title, children, link }) => (
-  <section>
-    <h2 className="my-5 text-center" id={id}>
+export const Section: FC<SectionProps> = ({ id, title, children, link, className }) => (
+  <section className={`mx-auto flex max-w-screen-xl flex-col gap-6 py-8 ${className}`}>
+    <h2 className="text-center" id={id}>
       {title}
     </h2>
 
     {children}
 
     {link && (
-      <footer className="mt-5 text-center">
-        <Button variant="outline-primary" size="sm" href={link}>
+      <footer className="text-center">
+        <Button component={Link} href={link} aria-label={`load more ${title}`}>
           {t('load_more')}
         </Button>
       </footer>

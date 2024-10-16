@@ -1,11 +1,10 @@
-import { text2color } from 'idea-react';
+import { Button, Chip } from '@mui/material';
 import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
+import Link from 'next/link';
 import { FC } from 'react';
-import { Badge, Button, Card, Col, Row } from 'react-bootstrap';
 
 import { i18n } from '../../models/Translation';
-import { GitLogo } from './Logo';
 
 export interface GitCardProps
   extends Pick<GitRepository, 'full_name' | 'html_url' | 'languages'>,
@@ -14,53 +13,39 @@ export interface GitCardProps
 }
 
 export const GitCard: FC<GitCardProps> = observer(
-  ({
-    className = 'shadow-sm',
-    full_name,
-    html_url,
-    languages = [],
-    topics = [],
-    description,
-    homepage,
-  }) => (
-    <Card className={className}>
-      <Card.Body className="d-flex flex-column gap-3">
-        <Card.Title as="h3" className="h5">
-          <a target="_blank" href={html_url} rel="noreferrer">
-            {full_name}
-          </a>
-        </Card.Title>
+  ({ className = '', full_name, html_url, topics = [], description, homepage }) => (
+    <li
+      className={`${className} grid grid-cols-1 grid-rows-10 gap-2 rounded-2xl border p-4 elevation-1 hover:elevation-8 dark:border-0`}
+    >
+      <h3 className="row-span-2 text-lg">
+        <a target="_blank" href={html_url} rel="noreferrer">
+          {full_name}
+        </a>
+      </h3>
 
-        <nav className="flex-fill">
-          {topics.map(topic => (
-            <Badge
-              key={topic}
-              className="me-1"
-              bg={text2color(topic, ['light'])}
-              as="a"
-              target="_blank"
-              href={`https://github.com/topics/${topic}`}
-            >
-              {topic}
-            </Badge>
-          ))}
-        </nav>
-        <Row as="ul" className="list-unstyled g-4" xs={4}>
-          {languages.map(language => (
-            <Col as="li" key={language}>
-              <GitLogo name={language} />
-            </Col>
-          ))}
-        </Row>
-        <Card.Text>{description}</Card.Text>
-      </Card.Body>
-      <Card.Footer className="d-flex justify-content-between align-items-center">
-        {homepage && (
-          <Button variant="success" target="_blank" href={homepage}>
-            {i18n.t('home_page')}
-          </Button>
-        )}
-      </Card.Footer>
-    </Card>
-  ),
+      <nav className="row-span-3 flex flex-row flex-wrap gap-2">
+        {topics.map(topic => (
+          <Chip
+            key={topic}
+            size="small"
+            component="a"
+            target="_blank"
+            href={`https://github.com/topics/${topic}`}
+            label={topic}
+          />
+        ))}
+      </nav>
+
+      <p className="row-span-3 text-sm">{description}</p>
+
+      <Button
+        className="row-span-2 place-self-center"
+        component={Link}
+        target="_blank"
+        href={homepage ?? html_url}
+      >
+        {i18n.t('home_page')}
+      </Button>
+    </li>
+  )
 );
