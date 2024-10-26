@@ -63,7 +63,7 @@ export class ScrollList<
         <div>
           {renderList(allItems)}
 
-          <footer style={{ marginTop: '1.5rem' }}>
+          <footer style={{ marginTop: '1.5rem', textAlign: 'center' }}>
             {noMore || !allItems.length ? t('no_more') : t('load_more')}
           </footer>
         </div>

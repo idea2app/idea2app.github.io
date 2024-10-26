@@ -1,13 +1,23 @@
-import { AppBar, Drawer, IconButton, PopoverProps, Toolbar } from '@mui/material';
+import {
+  AppBar,
+  Button,
+  Drawer,
+  IconButton,
+  Menu,
+  MenuItem,
+  PopoverProps,
+  Toolbar
+} from '@mui/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Component, SyntheticEvent } from 'react';
+import { Component } from 'react';
 
-import { i18n } from '../../models/Translation';
+import { i18n, LanguageName } from '../../models/Translation';
 import { SymbolIcon } from '../Icon';
 import ColorModeIconDropdown from './ColorModeDropdown';
+import { GithubIcon } from './Svg';
 
 const { t } = i18n;
 
@@ -21,10 +31,10 @@ export const mainNavLinks = () => [
 export class MainNavigator extends Component {
   @observable accessor menuExpand = false;
   @observable accessor menuAnchor: PopoverProps['anchorEl'] = null;
-  @observable accessor eventKey = 0;
 
-  handleChange = (event: SyntheticEvent, newValue: number) => {
-    this.eventKey = newValue;
+  switchI18n = (key: string) => {
+    i18n.changeLanguage(key as keyof typeof LanguageName);
+    this.menuAnchor = null;
   };
 
   renderLinks = () =>
@@ -33,6 +43,49 @@ export class MainNavigator extends Component {
         {title}
       </Link>
     ));
+
+  renderI18nSwitch = () => {
+    const { currentLanguage } = i18n,
+      { menuAnchor } = this;
+
+    return (
+      <>
+        <Button
+          color="inherit"
+          aria-controls="i18n-menu"
+          size="small"
+          id="i18n-selector"
+          startIcon={<SymbolIcon name="translate" />}
+          onClick={event => (this.menuAnchor = event.currentTarget)}
+        >
+          {LanguageName[currentLanguage]}
+        </Button>
+        <Menu
+          anchorEl={menuAnchor}
+          id="i18n-menu"
+          slotProps={{
+            paper: {
+              variant: 'outlined',
+              sx: { my: '4px' }
+            }
+          }}
+          open={Boolean(menuAnchor)}
+          onClose={() => (this.menuAnchor = null)}
+        >
+          {Object.entries(LanguageName).map(([key, name]) => (
+            <MenuItem
+              key={key}
+              value={key}
+              selected={key === currentLanguage}
+              onClick={() => this.switchI18n(key)}
+            >
+              {name}
+            </MenuItem>
+          ))}
+        </Menu>
+      </>
+    );
+  };
 
   renderDrawer = () => (
     <nav className="sm:hidden">
@@ -77,8 +130,12 @@ export class MainNavigator extends Component {
 
             <nav className="item-center hidden flex-row gap-4 sm:flex">{this.renderLinks()}</nav>
 
-            <div className="flex flex-row items-center gap-4">
+            <div className="flex flex-row items-center gap-3 sm:gap-6">
+              <Link href="https://github.com/idea2app" target="_blank" rel="noopener noreferrer">
+                <GithubIcon />
+              </Link>
               <ColorModeIconDropdown />
+              {this.renderI18nSwitch()}
             </div>
           </div>
         </Toolbar>

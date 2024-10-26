@@ -4,6 +4,8 @@ import { TableCellMedia, TableCellValue } from 'mobx-lark';
 import { safeAPI } from '../../core';
 import { lark } from '../core';
 
+export const DefaultImage = '/idea2app.svg';
+
 export const fileURLOf = (field: TableCellValue) =>
   field instanceof Array
     ? field[0]

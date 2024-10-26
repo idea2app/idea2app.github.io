@@ -57,13 +57,13 @@ const AppShell = observer(({ Component, pageProps }: AppProps<{}>) => (
        * @see {@link https://mui.com/material-ui/integrations/interoperability/#tailwind-css}
        */}
       <ThemeProvider theme={theme} defaultMode="system" disableTransitionOnChange>
-        <MainNavigator />
+        <div className="flex min-h-screen flex-col justify-between">
+          <MainNavigator />
 
-        <div className="pt-16">
           <Component {...pageProps} />
-        </div>
 
-        <Footer />
+          <Footer />
+        </div>
       </ThemeProvider>
     </StyledEngineProvider>
   </>
