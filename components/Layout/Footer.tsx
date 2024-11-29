@@ -19,7 +19,7 @@ export const Footer = () => (
           target="_blank"
           rel="noreferrer"
         >
-          Tech Query
+          TechQuery
         </a>
       </li>
     </ul>

@@ -18,22 +18,14 @@ import { i18n } from '../models/Translation';
 import { PARTNERS_INFO, service } from './api/home';
 
 export const getServerSideProps = compose(cache(), errorLogger, translator(i18n), async () => {
-  const [
-    // projects,
-    repositories,
-    // partners
-    members
-  ] = await Promise.all([
-    // new ProjectModel().getList({}, 1, 9),
+  const [repositories, members] = await Promise.all([
     new GitRepositoryModel('idea2app').getList({ relation: [] }, 1, 9),
     new MemberModel().getViewList(MEMBER_VIEW)
   ]);
 
   return {
     props: {
-      // projects: JSON.parse(JSON.stringify(projects)) as Project[],
       repositories: JSON.parse(JSON.stringify(repositories)) as GitRepository[],
-
       members: members.filter(({ github, position, summary }) => github && position && summary)
     }
   };

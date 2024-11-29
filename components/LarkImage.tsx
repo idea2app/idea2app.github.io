@@ -9,25 +9,23 @@ export interface LarkImageProps extends Omit<ImageProps, 'src'> {
   src?: TableCellValue;
 }
 
-export const LarkImage: FC<LarkImageProps> = ({ className = '', src = '', alt, ...props }) => (
+export const LarkImage: FC<LarkImageProps> = ({ src = DefaultImage, alt, ...props }) => (
   <img
-    className={className}
     loading="lazy"
     {...props}
     src={blobURLOf(src)}
     alt={alt}
     onError={({ currentTarget: image }) => {
-      const path = fileURLOf(src);
+      const path = fileURLOf(src),
+        errorURL = decodeURI(image.src);
 
-      if (alt || !path) return;
+      if (!path) return;
 
-      const errorURL = decodeURI(image.src);
-
-      image.src = errorURL.endsWith(path)
-        ? errorURL.endsWith(DefaultImage)
-          ? ''
-          : DefaultImage
-        : path;
+      if (errorURL.endsWith(path)) {
+        if (!alt) image.src = DefaultImage;
+      } else if (!errorURL.endsWith(DefaultImage)) {
+        image.src = path;
+      }
     }}
   />
 );

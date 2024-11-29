@@ -3,7 +3,7 @@ import { Badge, Tab } from '@mui/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { cache, compose, errorLogger, translator } from 'next-ssr-middleware';
-import { Component } from 'react';
+import { Component, SyntheticEvent } from 'react';
 
 import { MemberCard } from '../../components/Member/Card';
 import { PageHead } from '../../components/PageHead';
@@ -35,11 +35,13 @@ export const getServerSideProps = compose<{ nickname: string }>(
     ]);
 
     return {
-      props: {
-        member: JSON.parse(JSON.stringify(member)),
-        leaderProjects: JSON.parse(JSON.stringify(leaderProjects)),
-        memberProjects: JSON.parse(JSON.stringify(memberProjects))
-      }
+      props: JSON.parse(
+        JSON.stringify({
+          member,
+          leaderProjects,
+          memberProjects
+        })
+      )
     };
   }
 );
@@ -47,7 +49,7 @@ export const getServerSideProps = compose<{ nickname: string }>(
 class MemberDetailPage extends Component<MemberDetailPageProps> {
   @observable accessor eventKey = '0';
 
-  handleChange = (event: React.SyntheticEvent, newValue: string) => (this.eventKey = newValue);
+  handleChange = (event: SyntheticEvent, newValue: string) => (this.eventKey = newValue);
 
   render() {
     const { member, leaderProjects, memberProjects } = this.props;
