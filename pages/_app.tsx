@@ -9,24 +9,23 @@ import Head from 'next/head';
 import { Container, Image, Nav, Navbar } from 'react-bootstrap';
 
 import { isServer } from '../models/Base';
-import { i18n } from '../models/Translation';
+import { t } from '../models/Translation';
 
 const LanguageMenu = dynamic(() => import('../components/LanguageMenu'), {
-    ssr: false,
-  }),
-  { t } = i18n;
+  ssr: false,
+});
 
 configure({ enforceActions: 'never' });
 
 enableStaticRendering(isServer());
 
 globalThis.addEventListener?.('unhandledrejection', ({ reason }) => {
-  var { message, response } = reason as HTTPError;
+  const { message, response } = reason as HTTPError;
   const { statusText, body } = response || {};
 
-  message = body?.message || statusText || message;
+  const tips = body?.message || statusText || message;
 
-  if (message) alert(message);
+  if (tips) alert(tips);
 });
 
 const Name = process.env.NEXT_PUBLIC_SITE_NAME || '';

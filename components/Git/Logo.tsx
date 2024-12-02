@@ -1,4 +1,4 @@
-import { makeObservable, observable } from 'mobx';
+import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { PureComponent } from 'react';
 import { Image } from 'react-bootstrap';

@@ -9,7 +9,7 @@ import { Container } from 'react-bootstrap';
 import { GitListLayout } from '../components/Git';
 import { PageHead } from '../components/PageHead';
 import repositoryStore, { GitRepositoryModel } from '../models/Repository';
-import { i18n } from '../models/Translation';
+import { i18n, t } from '../models/Translation';
 
 export const getServerSideProps = compose(
   cache(),
@@ -21,8 +21,6 @@ export const getServerSideProps = compose(
     return { props: JSON.parse(JSON.stringify({ list })) };
   },
 );
-
-const { t } = i18n;
 
 const GitListPage: FC<{ list: GitRepository[] }> = observer(({ list }) => (
   <Container>

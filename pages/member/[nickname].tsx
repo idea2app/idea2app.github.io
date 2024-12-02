@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import { cache, compose, errorLogger, translator } from 'next-ssr-middleware';
+import { compose, errorLogger, translator } from 'next-ssr-middleware';
 import { FC } from 'react';
 import { Badge, Col, Container, Row, Stack, Tab, Tabs } from 'react-bootstrap';
 
@@ -8,9 +8,8 @@ import { PageHead } from '../../components/PageHead';
 import { ProjectListLayout } from '../../components/Project';
 import { Member, MemberModel } from '../../models/Member';
 import { Project, ProjectModel } from '../../models/Project';
-import { i18n } from '../../models/Translation';
-
-const { t } = i18n;
+import { i18n, t } from '../../models/Translation';
+import { solidCache } from '../api/core';
 
 interface MemberDetailPageProps {
   member: Member;
@@ -19,7 +18,7 @@ interface MemberDetailPageProps {
 }
 
 export const getServerSideProps = compose<{ nickname: string }>(
-  cache(),
+  solidCache,
   errorLogger,
   translator(i18n),
   async ({ params }) => {

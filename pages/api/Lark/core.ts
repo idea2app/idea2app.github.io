@@ -18,10 +18,10 @@ export const proxyLark = <T extends LarkData>(
     const path = url!.slice(`/api/Lark/`.length);
 
     const { status, body: data } = await lark.client.request<T>({
-      // @ts-ignore
+      // @ts-expect-error KoAJAX type compatibility
       method,
       path,
-      // @ts-ignore
+      // @ts-expect-error KoAJAX type compatibility
       headers,
       body: body || undefined,
     });
