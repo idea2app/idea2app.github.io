@@ -1,6 +1,6 @@
 import { withSentryConfig } from '@sentry/nextjs';
 import setPWA from 'next-pwa';
-// @ts-ignore
+// @ts-expect-error no official types
 import withLess from 'next-with-less';
 import webpack from 'webpack';
 

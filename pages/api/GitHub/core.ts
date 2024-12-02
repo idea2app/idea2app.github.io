@@ -9,10 +9,10 @@ export const proxyGithub = <T>(dataFilter?: (path: string, data: T) => T) =>
     const path = url!.slice(`/api/GitHub/`.length);
 
     const { status, body: data } = await githubClient.request<T>({
-      // @ts-ignore
+      // @ts-expect-error KoAJAX type compatibility
       method,
       path,
-      // @ts-ignore
+      // @ts-expect-error KoAJAX type compatibility
       headers,
       body: body || undefined,
     });

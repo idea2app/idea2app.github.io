@@ -32,13 +32,13 @@ export const ProjectCard: FC<ProjectCardProps> = ({
         </a>
         <Badge bg={text2color(workForm + '', ['light'])}>{workForm + ''}</Badge>
       </Card.Title>
-      <ul className="list-inline ">
+      <ul className="list-inline">
         {(type as string[])?.map(value => (
           <Badge
+            key={value}
             as="li"
             className="list-inline-item"
             bg={text2color(value, ['light'])}
-            key={value}
           >
             {value}
           </Badge>

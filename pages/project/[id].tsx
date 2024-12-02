@@ -1,7 +1,7 @@
 import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
-import { InferGetServerSidePropsType } from 'next';
-import { cache, compose, errorLogger, translator } from 'next-ssr-middleware';
+import { compose, errorLogger, translator } from 'next-ssr-middleware';
+import { FC } from 'react';
 import { Col, Container, Image, Row } from 'react-bootstrap';
 
 import { GitCard } from '../../components/Git/Card';
@@ -9,41 +9,47 @@ import { PageHead } from '../../components/PageHead';
 import { ProjectCard } from '../../components/Project/Card';
 import { Project, ProjectModel } from '../../models/Project';
 import { GitRepositoryModel } from '../../models/Repository';
-import { i18n } from '../../models/Translation';
+import { i18n, t } from '../../models/Translation';
+import { solidCache } from '../api/core';
 import { fileURLOf } from '../api/Lark/file/[id]';
 
-const { t } = i18n;
+interface ProjectDetailPageProps {
+  project: Project;
+  repositories: GitRepository[];
+}
 
 export const getServerSideProps = compose<
   { id: string },
-  { project: Project; repositories: GitRepository[] }
->(cache(), errorLogger, translator(i18n), async ({ params: { id } = {} }) => {
-  var repositories: GitRepository[] = [];
+  ProjectDetailPageProps
+>(
+  solidCache,
+  errorLogger,
+  translator(i18n),
+  async ({ params: { id } = {} }) => {
+    let repositories: GitRepository[] = [];
 
-  const project = await new ProjectModel().getOne(id!);
+    const project = await new ProjectModel().getOne(id!);
 
-  if (project.openSource) {
-    const openSource = (project.openSource + '')
-      .split(/\s+/)
-      .map(path => new URL(path).pathname.slice(1));
+    if (project.openSource) {
+      const openSource = (project.openSource + '')
+        .split(/\s+/)
+        .map(path => new URL(path).pathname.slice(1));
 
-    repositories = await new GitRepositoryModel('idea2app').getGroup(
-      openSource,
-    );
-  }
-  return {
-    props: {
-      project: JSON.parse(JSON.stringify(project)) as Project,
-      repositories,
-    },
-  };
-});
+      repositories = await new GitRepositoryModel('idea2app').getGroup(
+        openSource,
+      );
+    }
+    return {
+      props: {
+        project: JSON.parse(JSON.stringify(project)),
+        repositories,
+      },
+    };
+  },
+);
 
-const ProjectDetailPage = observer(
-  ({
-    project,
-    repositories,
-  }: InferGetServerSidePropsType<typeof getServerSideProps>) => (
+const ProjectDetailPage: FC<ProjectDetailPageProps> = observer(
+  ({ project, repositories }) => (
     <Container>
       <PageHead title={project.name + ''} />
 

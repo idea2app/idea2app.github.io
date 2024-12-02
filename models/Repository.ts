@@ -43,7 +43,7 @@ export class GitRepositoryModel extends Stream<GitRepository, RepositoryFilter>(
 
   async *openStream(filter: RepositoryFilter) {
     const { loadPage } = RepositoryModel.prototype;
-    var count = 0;
+    let count = 0;
 
     for (const name of this.organizations) {
       this.baseURI = `orgs/${name}/repos`;

@@ -1,7 +1,6 @@
 import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
-import { InferGetServerSidePropsType } from 'next';
-import { cache, compose, errorLogger, translator } from 'next-ssr-middleware';
+import { compose, errorLogger, translator } from 'next-ssr-middleware';
 import { FC } from 'react';
 import { Button, Card, Col, Container, Image, Row } from 'react-bootstrap';
 
@@ -11,17 +10,24 @@ import { MemberListLayout } from '../components/Member/List';
 import { PageHead } from '../components/PageHead';
 import { ProjectListLayout } from '../components/Project';
 import { Section } from '../components/Section';
-import { ClientModel } from '../models/Client';
-import { MEMBER_VIEW, MemberModel } from '../models/Member';
+import { Client, ClientModel } from '../models/Client';
+import { Member, MEMBER_VIEW, MemberModel } from '../models/Member';
 import { Project, ProjectModel } from '../models/Project';
 import { GitRepositoryModel } from '../models/Repository';
-import { i18n } from '../models/Translation';
+import { i18n, t } from '../models/Translation';
 import styles from '../styles/Home.module.less';
-import { getTarget } from './api/core';
+import { getTarget, solidCache } from './api/core';
 import { service } from './api/home';
 
+interface HomePageProps {
+  projects: Project[];
+  repositories: GitRepository[];
+  partners: Client[];
+  members: Member[];
+}
+
 export const getServerSideProps = compose(
-  cache(),
+  solidCache,
   errorLogger,
   translator(i18n),
   async () => {
@@ -34,10 +40,8 @@ export const getServerSideProps = compose(
 
     return {
       props: {
-        projects: JSON.parse(JSON.stringify(projects)) as Project[],
-        repositories: JSON.parse(
-          JSON.stringify(repositories),
-        ) as GitRepository[],
+        projects: JSON.parse(JSON.stringify(projects)),
+        repositories: JSON.parse(JSON.stringify(repositories)),
         partners,
         members: members.filter(
           ({ github, position, summary }) => github && position && summary,
@@ -47,10 +51,8 @@ export const getServerSideProps = compose(
   },
 );
 
-const { t } = i18n;
-
-const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
-  observer(({ projects, repositories, partners, members }) => (
+const HomePage: FC<HomePageProps> = observer(
+  ({ projects, repositories, partners, members }) => (
     <>
       <PageHead />
 
@@ -104,7 +106,7 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
         <Section title={t('partner')} id="partner">
           <Row as="ul" className="list-unstyled g-4" xs={1} sm={2} md={4}>
             {partners.map(item => (
-              <Col as="li" key={item.id + ''}>
+              <Col key={item.id + ''} as="li">
                 <Partner className="h-100" {...item} />
               </Col>
             ))}
@@ -112,6 +114,7 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
         </Section>
       </Container>
     </>
-  ));
+  ),
+);
 
 export default HomePage;

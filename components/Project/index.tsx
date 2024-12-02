@@ -22,7 +22,7 @@ export const ProjectListLayout: FC<ProjectListLayoutProps> = ({
     {...props}
   >
     {defaultData.map(item => (
-      <Col as="li" key={item.id + ''}>
+      <Col key={item.id + ''} as="li">
         <ProjectCard className="h-100 shadow-sm" {...item} />
       </Col>
     ))}
