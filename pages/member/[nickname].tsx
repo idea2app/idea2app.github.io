@@ -1,10 +1,13 @@
-import { Chip, Tab, Tabs } from '@mui/material';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
+import { Badge, Tab } from '@mui/material';
+import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { cache, compose, errorLogger, translator } from 'next-ssr-middleware';
-import { FC } from 'react';
+import { Component, SyntheticEvent } from 'react';
 
 import { MemberCard } from '../../components/Member/Card';
 import { PageHead } from '../../components/PageHead';
+import { ProjectListLayout } from '../../components/Project';
 import { Member, MemberModel } from '../../models/Member';
 import { Project, ProjectModel } from '../../models/Project';
 import { i18n } from '../../models/Translation';
@@ -32,42 +35,69 @@ export const getServerSideProps = compose<{ nickname: string }>(
     ]);
 
     return {
-      props: { member, leaderProjects, memberProjects }
+      props: JSON.parse(
+        JSON.stringify({
+          member,
+          leaderProjects,
+          memberProjects
+        })
+      )
     };
   }
 );
+@observer
+class MemberDetailPage extends Component<MemberDetailPageProps> {
+  @observable accessor eventKey = '0';
 
-const MemberDetailPage: FC<MemberDetailPageProps> = observer(
-  ({ member, leaderProjects, memberProjects }) => (
-    <div className="mx-auto">
-      <PageHead title={member.nickname as string} />
+  handleChange = (event: SyntheticEvent, newValue: string) => (this.eventKey = newValue);
 
-      <div className="grid">
-        <div className="">
-          <MemberCard className="sticky-top" style={{ top: '6.5rem' }} {...member} />
-        </div>
-        <div className="">
-          <Tabs className="">
-            {Object.entries({
-              [t('projects_as_leader')]: leaderProjects,
-              [t('projects_as_member')]: memberProjects
-            }).map(([label, list]) => (
-              <Tab
-                key={label}
-                label={
-                  <div className="justify-content-center flex flex-col gap-3">
-                    {label}
-                    <Chip label={list.length} />
-                  </div>
-                }
-              />
-            ))}
-          </Tabs>
-          <div role="tabpanel" />
+  render() {
+    const { member, leaderProjects, memberProjects } = this.props;
+
+    const entries = Object.entries({
+      [t('projects_as_leader')]: leaderProjects,
+      [t('projects_as_member')]: memberProjects
+    });
+    return (
+      <div className="container mx-auto mt-16 max-w-screen-xl px-4 py-6">
+        <PageHead title={member.nickname as string} />
+
+        <div className="flex flex-col gap-4 md:flex-row">
+          <ul className="w-full md:w-1/3">
+            <MemberCard {...member} />
+          </ul>
+
+          <div className="flex w-full flex-col items-center rounded-2xl border-2 md:w-2/3">
+            <TabContext value={this.eventKey}>
+              <TabList aria-label="project tab" onChange={this.handleChange}>
+                {entries.map(([label, list], index) => (
+                  <Tab
+                    key={label}
+                    label={
+                      <Badge
+                        className="px-2"
+                        badgeContent={list.length}
+                        color="primary"
+                        aria-label={`${list.length} ${label}`}
+                      >
+                        {label}
+                      </Badge>
+                    }
+                    value={index + ''}
+                  />
+                ))}
+              </TabList>
+              {entries.map(([label, list], index) => (
+                <TabPanel key={label} value={index + ''}>
+                  <ProjectListLayout defaultData={list} />
+                </TabPanel>
+              ))}
+            </TabContext>
+          </div>
         </div>
       </div>
-    </div>
-  )
-);
+    );
+  }
+}
 
 export default MemberDetailPage;

@@ -31,31 +31,32 @@ export const getServerSideProps = compose<
   return {
     props: {
       project: JSON.parse(JSON.stringify(project)) as Project,
-      repositories
+      repositories: JSON.parse(JSON.stringify(repositories))
     }
   };
 });
 
 const ProjectDetailPage = observer(
   ({ project, repositories }: InferGetServerSidePropsType<typeof getServerSideProps>) => (
-    <div className="mx-auto">
+    <div className="container mx-auto mt-16 max-w-screen-xl px-4 py-6">
       <PageHead title={String(project.name)} />
 
-      <div className="grid">
-        <a className="text-decoration-none" href={String(project.link) || '#'}>
+      <div className="flex flex-col md:flex-row">
+        <a className="w-full md:w-2/3" href={String(project.link) || '#'}>
+          {/**
+           * @todo replace with LarkImage after R2 is ready
+           */}
           <img className="object-fill" src={fileURLOf(project.image)} alt={String(project.name)} />
         </a>
 
-        <div>
+        <div className="flex w-full flex-col gap-4 md:w-1/3">
           <ProjectCard {...project} />
           <hr />
-          <h2 className="fs-5 my-3">{t('open_source_project')}</h2>
+          <h2 className="text-xl">{t('open_source_project')}</h2>
 
-          <ul className="list-unstyled">
+          <ul>
             {repositories.map(repository => (
-              <li key={repository.id} className="mb-3">
-                <GitCard {...repository} />
-              </li>
+              <GitCard key={repository.id} {...repository} />
             ))}
           </ul>
         </div>

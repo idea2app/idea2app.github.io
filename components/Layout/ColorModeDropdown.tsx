@@ -17,7 +17,13 @@ export default function ColorModeIconDropdown() {
   const toggleMode = () => setMode(resolvedMode === 'light' ? 'dark' : 'light');
 
   return (
-    <IconButton data-screenshot="toggle-mode" size="small" disableRipple onClick={toggleMode}>
+    <IconButton
+      color="inherit"
+      data-screenshot="toggle-mode"
+      size="small"
+      disableRipple
+      onClick={toggleMode}
+    >
       {icon}
     </IconButton>
   );

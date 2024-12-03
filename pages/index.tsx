@@ -9,31 +9,23 @@ import { FC } from 'react';
 import { PartnerOverview } from '../components/Client/Partner';
 import { GitListLayout } from '../components/Git';
 import { SymbolIcon } from '../components/Icon';
+import { Section } from '../components/Layout/Section';
 import { MemberCard } from '../components/Member/Card';
 import { PageHead } from '../components/PageHead';
-import { Section } from '../components/Section';
 import { MEMBER_VIEW, MemberModel } from '../models/Member';
 import { GitRepositoryModel } from '../models/Repository';
 import { i18n } from '../models/Translation';
 import { PARTNERS_INFO, service } from './api/home';
 
 export const getServerSideProps = compose(cache(), errorLogger, translator(i18n), async () => {
-  const [
-    // projects,
-    repositories,
-    // partners
-    members
-  ] = await Promise.all([
-    // new ProjectModel().getList({}, 1, 9),
+  const [repositories, members] = await Promise.all([
     new GitRepositoryModel('idea2app').getList({ relation: [] }, 1, 9),
     new MemberModel().getViewList(MEMBER_VIEW)
   ]);
 
   return {
     props: {
-      // projects: JSON.parse(JSON.stringify(projects)) as Project[],
       repositories: JSON.parse(JSON.stringify(repositories)) as GitRepository[],
-
       members: members.filter(({ github, position, summary }) => github && position && summary)
     }
   };
@@ -46,7 +38,7 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = obs
     <>
       <PageHead />
 
-      <div className="px-2 py-6">
+      <div className="px-4 py-6 pt-16">
         <section className="container mx-auto flex max-w-screen-lg flex-col gap-4">
           <div className="flex flex-row items-center justify-around py-12">
             <Image src="/idea2app.svg" width={234} height={220} alt="idea2app logo" />
@@ -104,10 +96,6 @@ const HomePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = obs
           </ul>
           <div className="absolute right-0 top-0 z-20 block h-24 w-24 bg-gradient-to-l from-background to-transparent" />
         </section>
-
-        {/* <Section title={t('latest_projects')} link="/project">
-          <ProjectListLayout defaultData={projects} />
-        </Section>*/}
 
         <Section title={t('member')} link="/member">
           <div className="relative max-h-[45rem] overflow-hidden">
