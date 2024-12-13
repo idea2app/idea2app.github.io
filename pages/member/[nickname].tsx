@@ -32,7 +32,9 @@ export const getServerSideProps = compose<{ nickname: string }>(
     ]);
 
     return {
-      props: { member, leaderProjects, memberProjects },
+      props: JSON.parse(
+        JSON.stringify({ member, leaderProjects, memberProjects }),
+      ),
     };
   },
 );

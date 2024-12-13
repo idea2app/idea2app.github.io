@@ -40,10 +40,7 @@ export const getServerSideProps = compose<
       );
     }
     return {
-      props: {
-        project: JSON.parse(JSON.stringify(project)),
-        repositories,
-      },
+      props: JSON.parse(JSON.stringify({ project, repositories })),
     };
   },
 );

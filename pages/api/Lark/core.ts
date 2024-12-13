@@ -3,6 +3,7 @@ import { LarkApp, LarkData } from 'mobx-lark';
 import { safeAPI } from '../core';
 
 export const lark = new LarkApp({
+  host: process.env.LARK_API_HOST,
   id: process.env.LARK_APP_ID!,
   secret: process.env.LARK_APP_SECRET!,
 });
