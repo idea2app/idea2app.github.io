@@ -1,16 +1,24 @@
 import { fileTypeFromBuffer } from 'file-type';
+import MIME from 'mime';
 import { TableCellMedia, TableCellValue } from 'mobx-lark';
 import { parse } from 'path';
 
 import { safeAPI } from '../../core';
 import { lark } from '../core';
 
-export const fileURLOf = (field: TableCellValue) =>
-  field instanceof Array
-    ? field[0]
-      ? `/api/Lark/file/${(field[0] as TableCellMedia).file_token}`
-      : field + ''
-    : field + '';
+export const DefaultImage = process.env.NEXT_PUBLIC_LOGO!;
+
+export function fileURLOf(field: TableCellValue, cache = false) {
+  if (!(field instanceof Array) || !field[0]) return field + '';
+
+  const { file_token, type } = field[0] as TableCellMedia;
+
+  let URI = `/api/Lark/file/${file_token}`;
+
+  if (cache) URI += '.' + MIME.getExtension(type);
+
+  return URI;
+}
 
 export const CACHE_HOST = process.env.NEXT_PUBLIC_CACHE_HOST!;
 
@@ -18,10 +26,10 @@ export default safeAPI(async ({ method, url, query, headers }, res) => {
   const { ext } = parse(url!);
 
   if (ext)
-    return res.redirect(
-      new URL(new URL(url!, headers.host).pathname, CACHE_HOST) + '',
+    return void res.redirect(
+      new URL(new URL(url!, `http://${headers.host}`).pathname, CACHE_HOST) +
+        '',
     );
-
   switch (method) {
     case 'HEAD':
     case 'GET': {
@@ -35,7 +43,7 @@ export default safeAPI(async ({ method, url, query, headers }, res) => {
 
       res.setHeader('Content-Type', mime as string);
 
-      return method === 'GET' ? res.send(Buffer.from(file)) : res.end();
+      return void (method === 'GET' ? res.send(Buffer.from(file)) : res.end());
     }
   }
   res.status(405).end();

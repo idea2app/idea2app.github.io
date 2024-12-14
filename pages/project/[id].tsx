@@ -2,8 +2,9 @@ import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
 import { compose, errorLogger, translator } from 'next-ssr-middleware';
 import { FC } from 'react';
-import { Col, Container, Image, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 
+import { LarkImage } from '../../components/Base/LarkImage';
 import { GitCard } from '../../components/Git/Card';
 import { PageHead } from '../../components/PageHead';
 import { ProjectCard } from '../../components/Project/Card';
@@ -11,7 +12,6 @@ import { Project, ProjectModel } from '../../models/Project';
 import { GitRepositoryModel } from '../../models/Repository';
 import { i18n, t } from '../../models/Translation';
 import { solidCache } from '../api/core';
-import { fileURLOf } from '../api/Lark/file/[id]';
 
 interface ProjectDetailPageProps {
   project: Project;
@@ -58,7 +58,7 @@ const ProjectDetailPage: FC<ProjectDetailPageProps> = observer(
           className="text-decoration-none"
           href={project.link || '#'}
         >
-          <Image fluid src={fileURLOf(project.image)} alt={project.name + ''} />
+          <LarkImage fluid src={project.image} alt={project.name + ''} />
         </Col>
         <Col xs={12} sm={4}>
           <ProjectCard {...project} />

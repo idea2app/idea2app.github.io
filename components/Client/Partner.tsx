@@ -1,8 +1,7 @@
 import { FC } from 'react';
-import { Image } from 'react-bootstrap';
 
 import { Client } from '../../models/Client';
-import { fileURLOf } from '../../pages/api/Lark/file/[id]';
+import { LarkImage } from '../Base/LarkImage';
 
 export interface PartnerProps extends Client {
   className?: string;
@@ -18,18 +17,18 @@ export const Partner: FC<PartnerProps> = ({
   <div
     className={`d-flex flex-column align-items-center justify-content-center gap-3 position-relative ${className}`}
   >
-    <Image
+    <LarkImage
       fluid
       className="object-fit-contain"
       style={{ height: '5rem' }}
       loading="lazy"
-      src={fileURLOf(image)}
+      src={image}
     />
     <h3>
       <a
         className="stretched-link"
         target="_blank"
-        href={address + ''}
+        href={address?.toString()}
         rel="noreferrer"
       >
         {name + ''}

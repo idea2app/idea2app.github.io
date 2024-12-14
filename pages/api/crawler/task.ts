@@ -7,8 +7,16 @@ export interface CrawlerTask {
   title?: string;
 }
 
-export default safeAPI(async ({ method, body }, response) => {
-  if (method !== 'POST') return response.status(405).end();
+const CRAWLER_TOKEN = process.env.CRAWLER_TOKEN;
+
+export default safeAPI(async ({ method, headers, body }, response) => {
+  if (
+    !CRAWLER_TOKEN ||
+    CRAWLER_TOKEN !== headers.authorization?.split(/\s+/)[1]
+  )
+    return void response.status(401).end();
+
+  if (method !== 'POST') return void response.status(405).end();
 
   const { URI, title = URI } = body as CrawlerTask;
 
