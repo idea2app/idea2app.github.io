@@ -1,34 +1,50 @@
 import { fileTypeFromBuffer } from 'file-type';
+import MIME from 'mime';
 import { TableCellMedia, TableCellValue } from 'mobx-lark';
+import { parse } from 'path';
 
 import { safeAPI } from '../../core';
 import { lark } from '../core';
 
-export const fileURLOf = (field: TableCellValue) =>
-  field instanceof Array
-    ? field[0]
-      ? `/api/Lark/file/${(field[0] as TableCellMedia).file_token}`
-      : field + ''
-    : field + '';
+export const DefaultImage = process.env.NEXT_PUBLIC_LOGO!;
 
-export default safeAPI(async (req, res) => {
-  switch (req.method) {
+export function fileURLOf(field: TableCellValue, cache = false) {
+  if (!(field instanceof Array) || !field[0]) return field + '';
+
+  const { file_token, type } = field[0] as TableCellMedia;
+
+  let URI = `/api/Lark/file/${file_token}`;
+
+  if (cache) URI += '.' + MIME.getExtension(type);
+
+  return URI;
+}
+
+export const CACHE_HOST = process.env.NEXT_PUBLIC_CACHE_HOST!;
+
+export default safeAPI(async ({ method, url, query, headers }, res) => {
+  const { ext } = parse(url!);
+
+  if (ext)
+    return void res.redirect(
+      new URL(new URL(url!, `http://${headers.host}`).pathname, CACHE_HOST) +
+        '',
+    );
+  switch (method) {
+    case 'HEAD':
     case 'GET': {
-      const { id } = req.query;
+      const { id } = query;
 
       await lark.getAccessToken();
 
       const file = await lark.downloadFile(id as string);
 
-      const buffer = Buffer.alloc(file.byteLength),
-        view = new Uint8Array(file);
-
-      for (let i = 0; i < buffer.length; i++) buffer[i] = view[i];
-
-      const { mime } = (await fileTypeFromBuffer(buffer)) || {};
+      const { mime } = (await fileTypeFromBuffer(file)) || {};
 
       res.setHeader('Content-Type', mime as string);
-      res.send(buffer);
+
+      return void (method === 'GET' ? res.send(Buffer.from(file)) : res.end());
     }
   }
+  res.status(405).end();
 });

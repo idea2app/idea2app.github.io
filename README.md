@@ -68,6 +68,7 @@ You can check out [the Next.js GitHub repository][27] - your feedback and contri
 
 |           name           |     file     |       description       |
 | :----------------------: | :----------: | :---------------------: |
+|     `CRAWLER_TOKEN`      | `.env.local` | Web hooks authorization |
 |   `SENTRY_AUTH_TOKEN`    | `.env.local` | [Official document][28] |
 |       `SENTRY_ORG`       |    `.env`    | [Official document][29] |
 |     `SENTRY_PROJECT`     |    `.env`    | [Official document][29] |
