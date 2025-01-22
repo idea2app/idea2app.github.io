@@ -2,7 +2,6 @@ import { TableCellValue } from 'mobx-lark';
 import { ImageProps } from 'next/image';
 import { FC } from 'react';
 
-import { blobURLOf } from '../models/Base';
 import { DefaultImage, fileURLOf } from '../pages/api/Lark/file/[id]';
 
 export interface LarkImageProps extends Omit<ImageProps, 'src'> {
@@ -13,7 +12,7 @@ export const LarkImage: FC<LarkImageProps> = ({ src = DefaultImage, alt, ...prop
   <img
     loading="lazy"
     {...props}
-    src={blobURLOf(src)}
+    src={fileURLOf(src, true)}
     alt={alt}
     onError={({ currentTarget: image }) => {
       const path = fileURLOf(src),

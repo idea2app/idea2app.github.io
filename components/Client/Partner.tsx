@@ -3,6 +3,7 @@ import { FC, ReactNode } from 'react';
 
 import { Client } from '../../models/Client';
 import { fileURLOf } from '../../pages/api/Lark/file/[id]';
+import { LarkImage } from '../LarkImage';
 
 export interface PartnerProps extends Client {
   className?: string;
@@ -16,12 +17,7 @@ export interface PartnerOverviewProps extends Record<'name' | 'logo' | 'address'
 
 export const Partner: FC<PartnerProps> = ({ className = '', name, image, summary, address }) => (
   <div className={`relative flex flex-col items-center justify-center gap-4 ${className}`}>
-    <img
-      className="h-20 object-fill"
-      loading="lazy"
-      src={fileURLOf(String(image))}
-      alt={String(name)}
-    />
+    <LarkImage className="h-20 object-fill" src={fileURLOf(String(image))} alt={String(name)} />
     <h3>
       <a className="stretched-link" target="_blank" href={String(address)} rel="noreferrer">
         {String(name)}

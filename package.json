@@ -1,6 +1,6 @@
 {
   "name": "@idea2app/ows",
-  "version": "2.0.0-rc",
+  "version": "2.0.0",
   "description": "React project scaffold based on TypeScript, Next.js, Bootstrap & Workbox.",
   "private": true,
   "dependencies": {
@@ -12,6 +12,7 @@
     "file-type": "^19.6.0",
     "koajax": "^3.0.2",
     "lodash": "^4.17.21",
+    "mime": "^4.0.4",
     "mobx": "^6.13.4",
     "mobx-github": "^0.3.4",
     "mobx-i18n": "^0.6.0",
@@ -37,6 +38,7 @@
     "@next/eslint-plugin-next": "^14.2.15",
     "@softonus/prettier-plugin-duplicate-remover": "^1.0.1",
     "@types/eslint-config-prettier": "^6.11.3",
+    "@types/eslint__eslintrc": "^2.1.2",
     "@types/eslint__js": "^8.42.3",
     "@types/lodash": "^4.17.10",
     "@types/next-pwa": "^5.6.9",
@@ -79,16 +81,15 @@
     "printWidth": 100
   },
   "lint-staged": {
-    "*.{html,md,less,json,yml,js,mjs,ts,tsx}": "prettier --write",
-    "*.{js,mjs,ts,tsx}": "eslint --fix"
+    "*.{html,md,less,json,yml,js,mjs,ts,tsx}": "prettier --write"
   },
   "scripts": {
-    "prepare": "husky",
+    "prepare": "husky  &&  touch .env.local",
     "dev": "next dev",
     "build": "next build",
     "export": "next build  &&  next export",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "next lint --fix  &&  git add .",
     "test": "lint-staged  &&  npm run lint  &&  tsc --noEmit",
     "pack-image": "docker build -t idea2app/web-server .",
     "container": "docker rm -f web-server  &&  docker run --name web-server -p 3000:3000 -d idea2app/web-server"

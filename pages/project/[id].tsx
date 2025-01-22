@@ -4,14 +4,12 @@ import { InferGetServerSidePropsType } from 'next';
 import { cache, compose, errorLogger, translator } from 'next-ssr-middleware';
 
 import { GitCard } from '../../components/Git/Card';
+import { LarkImage } from '../../components/LarkImage';
 import { PageHead } from '../../components/PageHead';
 import { ProjectCard } from '../../components/Project/Card';
 import { Project, ProjectModel } from '../../models/Project';
 import { GitRepositoryModel } from '../../models/Repository';
-import { i18n } from '../../models/Translation';
-import { fileURLOf } from '../api/Lark/file/[id]';
-
-const { t } = i18n;
+import { i18n, t } from '../../models/Translation';
 
 export const getServerSideProps = compose<
   { id: string },
@@ -46,7 +44,7 @@ const ProjectDetailPage = observer(
           {/**
            * @todo replace with LarkImage after R2 is ready
            */}
-          <img className="object-fill" src={fileURLOf(project.image)} alt={String(project.name)} />
+          <LarkImage className="object-fill" src={project.image} alt={String(project.name)} />
         </a>
 
         <div className="flex w-full flex-col gap-4 md:w-1/3">

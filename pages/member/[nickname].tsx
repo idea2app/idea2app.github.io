@@ -2,7 +2,7 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Badge, Tab } from '@mui/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
-import { cache, compose, errorLogger, translator } from 'next-ssr-middleware';
+import { compose, errorLogger, translator } from 'next-ssr-middleware';
 import { Component, SyntheticEvent } from 'react';
 
 import { MemberCard } from '../../components/Member/Card';
@@ -10,9 +10,8 @@ import { PageHead } from '../../components/PageHead';
 import { ProjectListLayout } from '../../components/Project';
 import { Member, MemberModel } from '../../models/Member';
 import { Project, ProjectModel } from '../../models/Project';
-import { i18n } from '../../models/Translation';
-
-const { t } = i18n;
+import { i18n, t } from '../../models/Translation';
+import { solidCache } from '../api/core';
 
 interface MemberDetailPageProps {
   member: Member;
@@ -21,7 +20,7 @@ interface MemberDetailPageProps {
 }
 
 export const getServerSideProps = compose<{ nickname: string }>(
-  cache(),
+  solidCache,
   errorLogger,
   translator(i18n),
   async ({ params }) => {
@@ -35,13 +34,7 @@ export const getServerSideProps = compose<{ nickname: string }>(
     ]);
 
     return {
-      props: JSON.parse(
-        JSON.stringify({
-          member,
-          leaderProjects,
-          memberProjects
-        })
-      )
+      props: JSON.parse(JSON.stringify({ member, leaderProjects, memberProjects }))
     };
   }
 );

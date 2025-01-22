@@ -1,3 +1,5 @@
+import 'core-js/full/array/from-async';
+
 import { HTTPClient } from 'koajax';
 import { TableCellValue } from 'mobx-lark';
 

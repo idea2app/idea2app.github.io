@@ -10,7 +10,7 @@
 ## Technology stack
 
 - Language: [TypeScript v5][2] + [MDX v3][10]
-- Component engine: [Next.js v14][3]
+- Component engine: [Next.js v15][3]
 - Component suite: [Bootstrap v5][4]
 - PWA framework: [Workbox v6][5]
 - State management: [MobX v6][11]
@@ -68,16 +68,20 @@ You can check out [the Next.js GitHub repository][27] - your feedback and contri
 
 |           name           |     file     |       description       |
 | :----------------------: | :----------: | :---------------------: |
+|     `CRAWLER_TOKEN`      | `.env.local` | Web hooks authorization |
 |   `SENTRY_AUTH_TOKEN`    | `.env.local` | [Official document][28] |
 |       `SENTRY_ORG`       |    `.env`    | [Official document][29] |
 |     `SENTRY_PROJECT`     |    `.env`    | [Official document][29] |
 | `NEXT_PUBLIC_SENTRY_DSN` |    `.env`    | [Official document][30] |
+|      `GITHUB_TOKEN`      | `.env.local` | [Official document][31] |
+|      `LARK_APP_ID`       | `.env.local` | [Official document][32] |
+|    `LARK_APP_SECRET`     | `.env.local` | [Official document][32] |
 
 ### Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform][13] from the creators of Next.js.
 
-Check out our [Next.js deployment documentation][31] for more details.
+Check out our [Next.js deployment documentation][33] for more details.
 
 ### Docker
 
@@ -116,4 +120,6 @@ pnpm container
 [28]: https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#use-configuration-files-for-source-map-upload
 [29]: https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#use-environment-variables
 [30]: https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#create-initialization-config-files
-[31]: https://nextjs.org/docs/deployment
+[31]: https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api#authenticating-with-a-personal-access-token
+[32]: https://open.larksuite.com/document/server-docs/getting-started/api-access-token/app-access-token-development-guide#95c7f5f5
+[33]: https://nextjs.org/docs/deployment

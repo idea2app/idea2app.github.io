@@ -15,3 +15,16 @@
     animation-play-state: paused;
   }
 }
+
+/* custom 404 page (Global edition) */
+div:has(.next-error-h1) {
+  height: auto !important;
+}
+
+/* custom 404 page (Chinese edition) */
+.wrap_404 .wrap_right {
+  width: 80vw !important;
+  .container {
+    width: auto !important;
+  }
+}
