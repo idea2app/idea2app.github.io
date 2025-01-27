@@ -179,7 +179,9 @@ export default {
         DEFAULT: 'var(--mui-shape-borderRadius)',
         lg: 'calc(var(--mui-shape-borderRadius) * 2)',
       },
-      boxShadow: Array.from({ length: 24 }, (_, i) => `var(--mui-shadows-${++i})`),
+      boxShadow: new Array(24)
+        .fill(0)
+        .reduce((acc, _, i) => ({ ...acc, [++i]: `var(--mui-shadows-${i})` }), {}),
       opacity: states.reduce(
         (acc, state) => ({ ...acc, [state]: `var(--mui-palette-action-${state}Opacity)` }),
         {},
@@ -216,17 +218,25 @@ export default {
           }),
           {},
         ),
-        ...Array.from({ length: 24 }, (_, i) => ({
-          [`.overlay-${i}`]: {
-            backgroundImage: `var(--mui-overlays-${++i})`,
-          },
-        })),
-        ...Array.from({ length: 24 }, (_, i) => ({
-          [`.elevation-${i}`]: {
-            backgroundImage: `var(--mui-overlays-${++i})`,
-            boxShadow: `var(--mui-shadows-${i})`,
-          },
-        })),
+        ...new Array(24)
+          .fill(0)
+          .reduce(
+            (acc, _, i) => ({
+              ...acc,
+              [`.overlay-${++i}`]: { backgroundImage: `var(--mui-overlays-${i})` },
+            }),
+            {},
+          ),
+        ...new Array(24).fill(0).reduce(
+          (acc, _, i) => ({
+            ...acc,
+            [`.elevation-${++i}`]: {
+              backgroundImage: `var(--mui-overlays-${i})`,
+              boxShadow: `var(--mui-shadows-${i})`,
+            },
+          }),
+          {},
+        ),
       });
     }),
   ],
