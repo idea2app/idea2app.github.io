@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-sync-scripts */
 import { ErrorProps } from 'next/error';
 import { FC } from 'react';
 

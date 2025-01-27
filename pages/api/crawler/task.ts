@@ -10,23 +10,17 @@ export interface CrawlerTask {
 const CRAWLER_TOKEN = process.env.CRAWLER_TOKEN;
 
 export default safeAPI(async ({ method, headers, body }, response) => {
-  if (
-    !CRAWLER_TOKEN ||
-    CRAWLER_TOKEN !== headers.authorization?.split(/\s+/)[1]
-  )
+  if (!CRAWLER_TOKEN || CRAWLER_TOKEN !== headers.authorization?.split(/\s+/)[1])
     return void response.status(401).end();
 
   if (method !== 'POST') return void response.status(405).end();
 
   const { URI, title = URI } = body as CrawlerTask;
 
-  const { status, body: data } = await githubClient.post(
-    'repos/idea2app/OWS-cache/issues',
-    {
-      title,
-      body: `### URL\n\n${URI}`,
-      labels: ['crawler'],
-    },
-  );
+  const { status, body: data } = await githubClient.post('repos/idea2app/OWS-cache/issues', {
+    title,
+    body: `### URL\n\n${URI}`,
+    labels: ['crawler']
+  });
   response.status(status).send(data);
 });

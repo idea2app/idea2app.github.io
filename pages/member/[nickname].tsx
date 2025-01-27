@@ -1,7 +1,9 @@
+import { TabContext, TabList, TabPanel } from '@mui/lab';
+import { Badge, Tab } from '@mui/material';
+import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { compose, errorLogger, translator } from 'next-ssr-middleware';
-import { FC } from 'react';
-import { Badge, Col, Container, Row, Stack, Tab, Tabs } from 'react-bootstrap';
+import { Component, SyntheticEvent } from 'react';
 
 import { MemberCard } from '../../components/Member/Card';
 import { PageHead } from '../../components/PageHead';
@@ -32,56 +34,61 @@ export const getServerSideProps = compose<{ nickname: string }>(
     ]);
 
     return {
-      props: JSON.parse(
-        JSON.stringify({ member, leaderProjects, memberProjects }),
-      ),
+      props: JSON.parse(JSON.stringify({ member, leaderProjects, memberProjects })),
     };
   },
 );
+@observer
+export default class MemberDetailPage extends Component<MemberDetailPageProps> {
+  @observable accessor eventKey = '0';
 
-const MemberDetailPage: FC<MemberDetailPageProps> = observer(
-  ({ member, leaderProjects, memberProjects }) => (
-    <Container className="mt-5 pb-4">
-      <PageHead title={member.nickname as string} />
+  handleChange = (event: SyntheticEvent, newValue: string) => (this.eventKey = newValue);
 
-      <Row>
-        <Col xs={12} md={4}>
-          <MemberCard
-            className="sticky-top"
-            style={{ top: '6.5rem' }}
-            {...member}
-          />
-        </Col>
-        <Col xs={12} md={8}>
-          <Tabs variant="pills" justify className="mt-4 mt-md-0">
-            {Object.entries({
-              [t('projects_as_leader')]: leaderProjects,
-              [t('projects_as_member')]: memberProjects,
-            }).map(([label, list]) => (
-              <Tab
-                key={label}
-                eventKey={label}
-                title={
-                  <Stack
-                    direction="horizontal"
-                    gap={2}
-                    className="justify-content-center"
-                  >
-                    {label}
-                    <Badge pill bg="light" text="dark" className="align-middle">
-                      {list.length}
-                    </Badge>
-                  </Stack>
-                }
-              >
-                <ProjectListLayout className="mt-1 g-4" defaultData={list} />
-              </Tab>
-            ))}
-          </Tabs>
-        </Col>
-      </Row>
-    </Container>
-  ),
-);
+  render() {
+    const { member, leaderProjects, memberProjects } = this.props;
 
-export default MemberDetailPage;
+    const entries = Object.entries({
+      [t('projects_as_leader')]: leaderProjects,
+      [t('projects_as_member')]: memberProjects,
+    });
+    return (
+      <div className="container mx-auto mt-16 max-w-screen-xl px-4 py-6">
+        <PageHead title={member.nickname as string} />
+
+        <div className="flex flex-col gap-4 md:flex-row">
+          <ul className="w-full md:w-1/3">
+            <MemberCard {...member} />
+          </ul>
+
+          <div className="flex w-full flex-col items-center rounded-2xl border-2 md:w-2/3">
+            <TabContext value={this.eventKey}>
+              <TabList aria-label="project tab" onChange={this.handleChange}>
+                {entries.map(([label, list], index) => (
+                  <Tab
+                    key={label}
+                    label={
+                      <Badge
+                        className="px-2"
+                        badgeContent={list.length}
+                        color="primary"
+                        aria-label={`${list.length} ${label}`}
+                      >
+                        {label}
+                      </Badge>
+                    }
+                    value={index + ''}
+                  />
+                ))}
+              </TabList>
+              {entries.map(([label, list], index) => (
+                <TabPanel key={label} value={index + ''}>
+                  <ProjectListLayout defaultData={list} />
+                </TabPanel>
+              ))}
+            </TabContext>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}

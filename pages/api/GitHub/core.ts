@@ -18,5 +18,5 @@ export const proxyGithub = <T>(dataFilter?: (path: string, data: T) => T) =>
     });
 
     response.status(status);
-    response.send(dataFilter?.(path, data as T) || data);
+    response.send(dataFilter?.(path, data as T) ?? data);
   });

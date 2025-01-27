@@ -5,10 +5,7 @@ import { Month } from 'web-utility';
 
 import { VercelHost } from '../../models/Base';
 
-export type NextAPI = (
-  req: NextApiRequest,
-  res: NextApiResponse,
-) => Promise<any>;
+export type NextAPI = (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
 
 export function safeAPI(handler: NextAPI): NextAPI {
   return async (req, res) => {
@@ -29,10 +26,10 @@ export function safeAPI(handler: NextAPI): NextAPI {
 
       if (body instanceof ArrayBuffer)
         try {
-          body = new TextDecoder().decode(new Uint8Array(body));
-          console.error(body);
+          const data = new TextDecoder().decode(new Uint8Array(body));
+          console.error(data);
 
-          body = JSON.parse(body);
+          body = JSON.parse(data);
           console.error(body);
         } catch {
           //
@@ -49,4 +46,5 @@ export function getTarget(link: URL | string): string {
   return origin !== new URL(link, href).origin ? '_blank' : '_self';
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const solidCache = cache<any, any>(Month, Month);

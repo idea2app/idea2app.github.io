@@ -1,60 +1,42 @@
-import classNames from 'classnames';
-import { text2color } from 'idea-react';
+import { Chip } from '@mui/material';
 import { FC } from 'react';
-import { Badge, Card } from 'react-bootstrap';
 import { formatDate } from 'web-utility';
 
 import { Project } from '../../models/Project';
-import styles from './Card.module.less';
 
 export interface ProjectCardProps extends Project {
   className?: string;
 }
 
 export const ProjectCard: FC<ProjectCardProps> = ({
-  className,
+  className = '',
   id,
   name,
   type,
   workForm,
   price,
-  settlementDate,
+  settlementDate
 }) => (
-  <Card className={classNames('rounded-3 border', styles.card, className)}>
-    <Card.Body className="d-flex flex-column">
-      <Card.Title as="h3" className="flex-fill fs-5 d-flex align-items-center">
-        <a
-          className="stretched-link text-truncate me-auto"
-          title={name + ''}
-          href={`/project/${id}`}
-        >
-          {name + ''}
-        </a>
-        <Badge bg={text2color(workForm + '', ['light'])}>{workForm + ''}</Badge>
-      </Card.Title>
-      <ul className="list-inline">
-        {(type as string[])?.map(value => (
-          <Badge
-            key={value}
-            as="li"
-            className="list-inline-item"
-            bg={text2color(value, ['light'])}
-          >
-            {value}
-          </Badge>
-        ))}
-      </ul>
-    </Card.Body>
-    <Card.Footer className="d-flex">
+  <div
+    className={`${className} flex flex-col justify-between gap-4 rounded-2xl border p-4 elevation-1 hover:elevation-8 dark:border-0`}
+  >
+    <h3 className="flex items-center justify-between">
+      <a className="text-lg" title={String(name)} href={`/project/${id}`}>
+        {String(name)}
+      </a>
+      <Chip label={String(workForm)} />
+    </h3>
+    <ul className="flex flex-row flex-wrap gap-3">
+      {(type as string[])?.map(value => (
+        <Chip key={value} component="li" size="small" label={value} />
+      ))}
+    </ul>
+    <div className="flex items-center justify-between">
       <strong className="flex-fill">
-        ￥
-        {(price + '').replace(/\d/g, (matched, offset) =>
-          offset ? '0' : matched,
-        )}
-        +
+        ￥{String(price).replace(/\d/g, (matched, offset) => (offset ? '0' : matched))}+
       </strong>
 
       <time>🏁 {formatDate(+settlementDate!, 'YYYY-MM-DD')}</time>
-    </Card.Footer>
-  </Card>
+    </div>
+  </div>
 );

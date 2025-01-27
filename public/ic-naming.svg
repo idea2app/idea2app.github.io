@@ -1,0 +1,40 @@
+<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#0093FF" stop-opacity="0" offset="0%" />
+            <stop stop-color="#0093FF" offset="20%" />
+            <stop stop-color="#0093FF" offset="80%" />
+            <stop stop-color="#0093FF" stop-opacity="0" offset="100%" />
+        </linearGradient>
+        <linearGradient x1="30.432%" y1="91.781%" x2="50%" y2="36.978%" id="linearGradient-2">
+            <stop stop-color="#00CF68" offset="0%" />
+            <stop stop-color="#00CF68" offset="33.998%" />
+            <stop stop-color="#00CF68" stop-opacity="0" offset="100%" />
+        </linearGradient>
+        <linearGradient x1="64.072%" y1="8.892%" x2="40.109%" y2="52.152%" id="linearGradient-3">
+            <stop stop-color="#50F" offset="0%" />
+            <stop stop-color="#50F" offset="33.447%" />
+            <stop stop-color="#50F" stop-opacity="0" offset="100%" />
+        </linearGradient>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Deland-Labs" transform="translate(-1255 -4952)">
+            <g id="编组-7备份-7" transform="translate(1005 4802)">
+                <g id="ICNAMING2_300" transform="translate(250 150)">
+                    <path id="矩形" d="M0 0h300v299.707H0z" />
+                    <g id="编组-15备份" fill-rule="nonzero">
+                        <path
+                            d="M207.857 22.5v169.105c0 14.23-17.08 21.375-27.213 11.583l-.305-.302-58.197-59.048v132.59H90v-171.79c0-14.231 17.08-21.376 27.213-11.584l.305.302 58.195 59.046.001-129.902h32.143Z"
+                            id="路径" fill="url('#linearGradient-1')" />
+                        <path
+                            d="M150 0v32.143c-30.932 0-59.943 11.946-81.77 32.981C45.31 87.21 32.142 117.536 32.142 150c0 41.78 22.224 79.51 56.645 100.546l1.212.73V104.637h32.143v171.79c0 11.074-10.937 18.83-21.387 15.168C41.018 270.66 0 214.135 0 150c0-41.286 16.783-79.937 45.925-108.02C73.407 15.495 109.926.305 148.821.004L150 0Z"
+                            id="路径" fill="url('#linearGradient-2')" />
+                        <path
+                            d="M175.714 22.5c0-10.94 10.694-18.683 21.087-15.269C257.835 27.28 300 84.682 300 150c0 40.136-15.857 77.804-43.582 105.713-27.687 27.87-65.175 43.963-105.204 44.282L150 300v-32.143c31.834 0 61.622-12.659 83.615-34.798 21.802-21.946 34.242-51.498 34.242-83.059 0-43.127-23.4-81.883-59.293-102.512l-.707-.4v144.517h-32.143V22.5Z"
+                            id="路径" fill="url('#linearGradient-3')" />
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

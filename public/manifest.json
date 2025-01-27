@@ -8,8 +8,6 @@
   "orientation": "any",
   "lang": "en-US",
   "dir": "ltr",
-  "theme_color": "rgba(0,0,0,0.5)",
-  "background_color": "transparent",
   "icons": [
     {
       "src": "https://github.com/idea2app.png",

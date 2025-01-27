@@ -8,9 +8,7 @@ export const lark = new LarkApp({
   secret: process.env.LARK_APP_SECRET!,
 });
 
-export const proxyLark = <T extends LarkData>(
-  dataFilter?: (path: string, data: T) => T,
-) =>
+export const proxyLark = <T extends LarkData>(dataFilter?: (path: string, data: T) => T) =>
   safeAPI(async ({ method, url, headers, body }, response) => {
     await lark.getAccessToken();
 
@@ -29,5 +27,5 @@ export const proxyLark = <T extends LarkData>(
 
     response.status(status);
 
-    response.send(dataFilter?.(path, data!) || data);
+    response.send(dataFilter?.(path, data!) ?? data);
   });

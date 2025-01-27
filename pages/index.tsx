@@ -1,120 +1,129 @@
+import Masonry from '@mui/lab/Masonry';
 import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
+import Image from 'next/image';
 import { compose, errorLogger, translator } from 'next-ssr-middleware';
 import { FC } from 'react';
-import { Button, Card, Col, Container, Image, Row } from 'react-bootstrap';
 
-import { Partner } from '../components/Client/Partner';
+import { PartnerOverview } from '../components/Client/Partner';
 import { GitListLayout } from '../components/Git';
-import { MemberListLayout } from '../components/Member/List';
+import { SymbolIcon } from '../components/Icon';
+import { Section } from '../components/Layout/Section';
+import { MemberCard } from '../components/Member/Card';
 import { PageHead } from '../components/PageHead';
-import { ProjectListLayout } from '../components/Project';
-import { Section } from '../components/Section';
-import { Client, ClientModel } from '../models/Client';
 import { Member, MEMBER_VIEW, MemberModel } from '../models/Member';
-import { Project, ProjectModel } from '../models/Project';
 import { GitRepositoryModel } from '../models/Repository';
 import { i18n, t } from '../models/Translation';
-import styles from '../styles/Home.module.less';
-import { getTarget, solidCache } from './api/core';
-import { service } from './api/home';
+import { solidCache } from './api/core';
+import { PARTNERS_INFO, service } from './api/home';
 
 interface HomePageProps {
-  projects: Project[];
   repositories: GitRepository[];
-  partners: Client[];
   members: Member[];
 }
 
-export const getServerSideProps = compose(
-  solidCache,
-  errorLogger,
-  translator(i18n),
-  async () => {
-    const [projects, repositories, partners, members] = await Promise.all([
-      new ProjectModel().getList({}, 1, 9),
-      new GitRepositoryModel('idea2app').getList(),
-      new ClientModel().getList({ partnership: '战略合作' }),
-      new MemberModel().getViewList(MEMBER_VIEW),
-    ]);
+export const getServerSideProps = compose(solidCache, errorLogger, translator(i18n), async () => {
+  const [repositories, members] = await Promise.all([
+    new GitRepositoryModel('idea2app').getList({ relation: [] }, 1, 9),
+    new MemberModel().getViewList(MEMBER_VIEW),
+  ]);
 
-    return {
-      props: {
-        projects: JSON.parse(JSON.stringify(projects)),
-        repositories: JSON.parse(JSON.stringify(repositories)),
-        partners,
-        members: members.filter(
-          ({ github, position, summary }) => github && position && summary,
-        ),
-      },
-    };
-  },
-);
+  return {
+    props: JSON.parse(
+      JSON.stringify({
+        repositories,
+        members: members.filter(({ github, position, summary }) => github && position && summary),
+      }),
+    ),
+  };
+});
 
-const HomePage: FC<HomePageProps> = observer(
-  ({ projects, repositories, partners, members }) => (
-    <>
-      <PageHead />
+const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => (
+  <>
+    <PageHead />
 
-      <Container as="main" className={styles.main}>
-        <h1 className={`mb-5 text-center ${styles.title}`}>
-          <span className="visually-hidden">idea2app</span>
-          <Image src="https://github.com/idea2app.png" alt="idea2app logo" />
-        </h1>
-        <p className={`text-center fs-4 ${styles.description}`}>
-          {t('idea2app_summary')}
-        </p>
-        <p className={`text-center fs-4 ${styles.description}`}>
-          {t('idea2app_slogan')}
-        </p>
+    <div className="px-4 py-6 pt-16">
+      <section className="container mx-auto flex max-w-screen-lg flex-col gap-4">
+        <div className="flex flex-row items-center justify-around py-12">
+          <Image src="/idea2app.svg" width={234} height={220} alt="idea2app logo" />
 
-        <Row className="mt-5 g-4" xs={1} lg={3}>
-          {service().map(({ title, summary, buttonText, buttonLink }) => (
-            <Col key={title}>
-              <Card
-                className={`h-100 p-4 rounded-3 border ${styles.card}`}
-                tabIndex={-1}
-              >
-                <Card.Body>
-                  <Card.Title as="h2" className="fs-4 mb-3">
-                    {title}
-                  </Card.Title>
-                  <Card.Text className="fs-5">{summary}</Card.Text>
-                  {buttonText && buttonLink && (
-                    <Button href={buttonLink} target={getTarget(buttonLink)}>
-                      {buttonText}
-                    </Button>
-                  )}
-                </Card.Body>
-              </Card>
-            </Col>
+          <header className="border-s-2 border-s-black p-4 dark:border-s-white">
+            <p>{t('idea2app_summary')}</p>
+            <p>{t('idea2app_slogan')}</p>
+
+            <p className="my-4 text-gray-500">{t('idea2app_slogan_2')}?</p>
+
+            <a
+              className="border-b-2 border-b-black py-1 dark:border-b-white"
+              href="https://wenjuan.feishu.cn/m?t=sBih7Nzwkwqi-0l12"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('contact_us')}
+            </a>
+          </header>
+        </div>
+
+        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {service().map(({ title, summary, icon }) => (
+            <li
+              key={title}
+              className="flex flex-col gap-4 rounded-3xl border p-4 elevation-1 hover:elevation-8 dark:border-0"
+              tabIndex={-1}
+            >
+              <h5 className="flex items-center gap-4">
+                <SymbolIcon name={icon} /> {title}
+              </h5>
+
+              <p>{summary}</p>
+            </li>
           ))}
-        </Row>
+        </ul>
+      </section>
 
-        <Section title={t('latest_projects')} link="/project">
-          <ProjectListLayout defaultData={projects} />
-        </Section>
+      <section id="partner" className="relative mx-auto max-w-screen-xl px-8 py-16">
+        <div className="absolute left-0 top-0 z-20 block h-24 w-24 bg-gradient-to-r from-background to-transparent" />
+        <ul className="hover:animation-pause-all flex flex-row flex-nowrap items-center justify-center gap-12 overflow-hidden">
+          {/**
+           * @todo: polish the carousel animation
+           */}
+          {Array.from({ length: 3 }).map((_, index) => (
+            <li
+              key={index}
+              className="flex min-w-full flex-shrink-0 animate-carousel flex-row flex-nowrap items-center justify-around gap-12"
+            >
+              {PARTNERS_INFO().map(({ name, ...rest }) => (
+                <PartnerOverview key={name} name={name} {...rest} />
+              ))}
+            </li>
+          ))}
+        </ul>
+        <div className="absolute right-0 top-0 z-20 block h-24 w-24 bg-gradient-to-l from-background to-transparent" />
+      </section>
 
-        <Section title={t('open_source_project')} link="/open-source">
-          <GitListLayout defaultData={repositories} />
-        </Section>
-
-        <Section title={t('member')} link="/member">
-          <MemberListLayout defaultData={members} />
-        </Section>
-
-        <Section title={t('partner')} id="partner">
-          <Row as="ul" className="list-unstyled g-4" xs={1} sm={2} md={4}>
-            {partners.map(item => (
-              <Col key={item.id + ''} as="li">
-                <Partner className="h-100" {...item} />
-              </Col>
+      <Section title={t('member')} link="/member">
+        <div className="relative max-h-[45rem] overflow-hidden">
+          <Masonry
+            className="overflow-hidden"
+            columns={{ xs: 2, md: 3 }}
+            spacing={2}
+            defaultHeight={720}
+            defaultColumns={4}
+            defaultSpacing={1}
+          >
+            {members.map(item => (
+              <MemberCard key={String(item.id)} {...item} />
             ))}
-          </Row>
-        </Section>
-      </Container>
-    </>
-  ),
-);
+          </Masonry>
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-background pb-8 pt-32" />
+        </div>
+      </Section>
+
+      <Section title={t('open_source_project')} link="/open-source">
+        <GitListLayout defaultData={repositories} />
+      </Section>
+    </div>
+  </>
+));
 
 export default HomePage;

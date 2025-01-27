@@ -1,96 +1,71 @@
-import '../styles/globals.less';
+import '../styles/main.css';
 
+import { createTheme, StyledEngineProvider, ThemeProvider } from '@mui/material';
 import { HTTPError } from 'koajax';
 import { configure } from 'mobx';
 import { enableStaticRendering, observer } from 'mobx-react';
-import type { AppProps } from 'next/app';
-import dynamic from 'next/dynamic';
+import { AppProps } from 'next/app';
 import Head from 'next/head';
-import { Container, Image, Nav, Navbar } from 'react-bootstrap';
 
+import { Footer } from '../components/Layout/Footer';
+import { MainNavigator } from '../components/Layout/MainNavigator';
 import { isServer } from '../models/Base';
-import { t } from '../models/Translation';
-
-const LanguageMenu = dynamic(() => import('../components/LanguageMenu'), {
-  ssr: false,
-});
 
 configure({ enforceActions: 'never' });
 
 enableStaticRendering(isServer());
 
 globalThis.addEventListener?.('unhandledrejection', ({ reason }) => {
-  const { message, response } = reason as HTTPError;
+  const { message, response } = reason as HTTPError<{ message?: string }>;
   const { statusText, body } = response || {};
 
-  const tips = body?.message || statusText || message;
+  const errorMessage = body?.message ?? statusText ?? message;
 
-  if (tips) alert(tips);
+  if (errorMessage) alert(errorMessage);
 });
 
-const Name = process.env.NEXT_PUBLIC_SITE_NAME || '';
+const container = isServer() ? null : document.getElementById('__next');
 
-const AppShell = observer(({ Component, pageProps }: AppProps) => (
+export const theme = createTheme({
+  colorSchemes: { dark: true, light: true },
+  /**
+   * @see {@link  https://mui.com/material-ui/customization/css-theme-variables/usage/#adding-new-theme-tokens}
+   * @see {@link  https://mui.com/material-ui/customization/css-theme-variables/configuration/#toggling-dark-mode-manually}
+   */
+  cssVariables: { colorSchemeSelector: 'class' },
+  /**
+   * add your custom token here, Palette, Typography, etc. @see {@link  https://mui.com/material-ui/customization/palette/} for more details
+   */
+  components: {
+    /**
+     * target root element for Portal-related elements, for tailwind support @see {@link  https://mui.com/material-ui/integrations/interoperability/#setup}
+     * */
+    MuiPopover: { defaultProps: { container } },
+    MuiPopper: { defaultProps: { container } },
+    MuiDialog: { defaultProps: { container } },
+    MuiModal: { defaultProps: { container } },
+  },
+});
+
+const AppShell = observer(({ Component, pageProps }: AppProps<{}>) => (
   <>
     <Head>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
     </Head>
-    <Navbar bg="white" variant="light" fixed="top" expand="md" collapseOnSelect>
-      <Container>
-        <Navbar.Brand href="/">
-          <span className="visually-hidden">{Name}</span>
-          <Image
-            style={{ width: '3rem' }}
-            src="https://github.com/idea2app.png"
-          />
-        </Navbar.Brand>
+    <StyledEngineProvider injectFirst>
+      {/**
+       * @see {@link https://mui.com/material-ui/integrations/interoperability/#tailwind-css}
+       */}
+      <ThemeProvider theme={theme} defaultMode="system" disableTransitionOnChange>
+        <div className="flex min-h-screen flex-col justify-between">
+          <MainNavigator />
 
-        <Navbar.Toggle aria-controls="navbar-inner" />
+          <Component {...pageProps} />
 
-        <Navbar.Collapse id="navbar-inner">
-          <Nav className="ms-auto me-3">
-            <Nav.Link href="/project">{t('latest_projects')}</Nav.Link>
-
-            <Nav.Link
-              target="_blank"
-              href="https://idea2app.feishu.cn/docx/THOEdTXzGopJnGxFlLocb8wVnkf"
-            >
-              {t('careers')}
-            </Nav.Link>
-
-            <Nav.Link href="/open-source">{t('open_source_project')}</Nav.Link>
-
-            <Nav.Link href="/member">{t('member')}</Nav.Link>
-
-            <Nav.Link href="/#partner">{t('partner')}</Nav.Link>
-
-            <Nav.Link target="_blank" href="https://github.com/idea2app">
-              GitHub
-            </Nav.Link>
-          </Nav>
-
-          <LanguageMenu />
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
-
-    <div className="mt-5 pt-2">
-      <Component {...pageProps} />
-    </div>
-
-    <footer className="flex-fill d-flex justify-content-center align-items-center border-top py-4">
-      <a
-        className="flex-fill d-flex justify-content-center align-items-center"
-        href="https://vercel.com?utm_source=create-next-app&amp;utm_medium=default-template&amp;utm_campaign=create-next-app"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {t('powered_by')}
-        <span className="mx-2">
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-        </span>
-      </a>
-    </footer>
+          <Footer />
+        </div>
+      </ThemeProvider>
+    </StyledEngineProvider>
   </>
 ));
 

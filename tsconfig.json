@@ -18,6 +18,13 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.mjs", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "material-ui-pigment-css.d.ts",
+    "*.mjs",
+    "*.js",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
   "exclude": ["node_modules"]
 }
