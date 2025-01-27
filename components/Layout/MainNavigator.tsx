@@ -6,7 +6,7 @@ import {
   Menu,
   MenuItem,
   PopoverProps,
-  Toolbar
+  Toolbar,
 } from '@mui/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
@@ -14,17 +14,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Component } from 'react';
 
-import { i18n, LanguageName } from '../../models/Translation';
+import { i18n, LanguageName, t } from '../../models/Translation';
 import { SymbolIcon } from '../Icon';
-import ColorModeIconDropdown from './ColorModeDropdown';
+import { ColorModeIconDropdown } from './ColorModeDropdown';
 import { GithubIcon } from './Svg';
-
-const { t } = i18n;
 
 export const mainNavLinks = () => [
   { title: t('latest_projects'), href: '/project' },
   { title: t('member'), href: '/member' },
-  { title: t('open_source_project'), href: '/open-source' }
+  { title: t('open_source_project'), href: '/open-source' },
 ];
 
 @observer
@@ -66,8 +64,8 @@ export class MainNavigator extends Component {
           slotProps={{
             paper: {
               variant: 'outlined',
-              sx: { my: '4px' }
-            }
+              sx: { my: '4px' },
+            },
           }}
           open={Boolean(menuAnchor)}
           onClose={() => (this.menuAnchor = null)}

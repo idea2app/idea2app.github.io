@@ -5,10 +5,10 @@ import { SymbolIcon } from '../Icon';
 
 export const themeSwitchIcons = {
   light: <SymbolIcon name="light_mode" />,
-  dark: <SymbolIcon name="dark_mode" />
+  dark: <SymbolIcon name="dark_mode" />,
 };
 
-export default function ColorModeIconDropdown() {
+export function ColorModeIconDropdown() {
   const { mode, systemMode, setMode } = useColorScheme();
 
   const resolvedMode = (systemMode ?? mode) as 'light' | 'dark';

@@ -2,6 +2,8 @@ import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import { Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 
+import { DefaultImage } from './api/Lark/file/[id]';
+
 /**
  * Influence Google Search to display search results with the name "idea2app" instead of idea2.app
  * @see {@link https://developers.google.com/search/docs/appearance/site-names#how-site-names-in-google-search-are-created}
@@ -10,18 +12,18 @@ const siteNameJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: 'Ameliorate',
-  url: 'https://idea2.app/'
+  url: 'https://idea2.app/',
 };
 
 export default function Document() {
   return (
     <Html>
       <Head>
-        <link rel="icon" href="/idea2app.svg" />
+        <link rel="icon" href={DefaultImage} />
         <link rel="manifest" href="/manifest.json" />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="idea2app" />
-        <meta property="og:url" content="https://idea2.app/" />
+        <meta property="og:url" content={siteNameJsonLd.url} />
 
         <Script src="https://polyfill.web-cell.dev/feature/PWAManifest.js" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />

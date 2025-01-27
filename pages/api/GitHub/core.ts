@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { githubClient } from 'mobx-github';
 
 import { safeAPI } from '../core';
@@ -15,8 +14,7 @@ export const proxyGithub = <T>(dataFilter?: (path: string, data: T) => T) =>
       path,
       // @ts-expect-error KoAJAX type compatibility
       headers,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      body: body || undefined
+      body: body || undefined,
     });
 
     response.status(status);

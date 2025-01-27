@@ -9,7 +9,7 @@ export const Footer = () => (
           target="_blank"
           rel="noreferrer"
         >
-          Web Cell
+          WebCell
         </a>
       </li>
       <li>

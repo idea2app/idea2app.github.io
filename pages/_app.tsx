@@ -43,8 +43,8 @@ export const theme = createTheme({
     MuiPopover: { defaultProps: { container } },
     MuiPopper: { defaultProps: { container } },
     MuiDialog: { defaultProps: { container } },
-    MuiModal: { defaultProps: { container } }
-  }
+    MuiModal: { defaultProps: { container } },
+  },
 });
 
 const AppShell = observer(({ Component, pageProps }: AppProps<{}>) => (

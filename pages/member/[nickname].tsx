@@ -30,16 +30,16 @@ export const getServerSideProps = compose<{ nickname: string }>(
 
     const [leaderProjects, memberProjects] = await Promise.all([
       new ProjectModel().getAll({ leader: params?.nickname }),
-      new ProjectModel().getAll({ members: params?.nickname })
+      new ProjectModel().getAll({ members: params?.nickname }),
     ]);
 
     return {
-      props: JSON.parse(JSON.stringify({ member, leaderProjects, memberProjects }))
+      props: JSON.parse(JSON.stringify({ member, leaderProjects, memberProjects })),
     };
-  }
+  },
 );
 @observer
-class MemberDetailPage extends Component<MemberDetailPageProps> {
+export default class MemberDetailPage extends Component<MemberDetailPageProps> {
   @observable accessor eventKey = '0';
 
   handleChange = (event: SyntheticEvent, newValue: string) => (this.eventKey = newValue);
@@ -49,7 +49,7 @@ class MemberDetailPage extends Component<MemberDetailPageProps> {
 
     const entries = Object.entries({
       [t('projects_as_leader')]: leaderProjects,
-      [t('projects_as_member')]: memberProjects
+      [t('projects_as_member')]: memberProjects,
     });
     return (
       <div className="container mx-auto mt-16 max-w-screen-xl px-4 py-6">
@@ -92,5 +92,3 @@ class MemberDetailPage extends Component<MemberDetailPageProps> {
     );
   }
 }
-
-export default MemberDetailPage;

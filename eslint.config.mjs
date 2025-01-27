@@ -17,14 +17,13 @@ export default tsEslint.config(
   {
     plugins: {
       '@typescript-eslint': tsEslint.plugin,
-      // @ts-expect-error https://github.com/jsx-eslint/eslint-plugin-react/issues/3699
       react: fixupPluginRules(reactPlugin),
-      'simple-import-sort': simpleImportSortPlugin
-    }
+      'simple-import-sort': simpleImportSortPlugin,
+    },
   },
   {
     // config with just ignores is the replacement for `.eslintignore`
-    ignores: ['**/node_modules/**', '**/public/**', '**/.next/**']
+    ignores: ['**/node_modules/**', '**/public/**', '**/.next/**'],
   },
 
   // extends ...
@@ -39,8 +38,8 @@ export default tsEslint.config(
       parserOptions: {
         projectService: true,
         tsconfigRootDir,
-        warnOnUnsupportedTypeScriptVersion: false
-      }
+        warnOnUnsupportedTypeScriptVersion: false,
+      },
     },
     rules: {
       'no-empty-pattern': 'warn',
@@ -56,11 +55,11 @@ export default tsEslint.config(
         {
           reservedFirst: true,
           callbacksLast: true,
-          noSortAlphabetically: true
-        }
+          noSortAlphabetically: true,
+        },
       ],
-      '@next/next/no-sync-scripts': 'warn'
-    }
+      '@next/next/no-sync-scripts': 'warn',
+    },
   },
   {
     files: ['**/*.js'],
@@ -70,8 +69,8 @@ export default tsEslint.config(
       '@typescript-eslint/internal/no-poorly-typed-ts-props': 'off',
 
       // turn off rules that don't apply to JS code
-      '@typescript-eslint/explicit-function-return-type': 'off'
-    }
+      '@typescript-eslint/explicit-function-return-type': 'off',
+    },
   },
-  eslintConfigPrettier
+  eslintConfigPrettier,
 );

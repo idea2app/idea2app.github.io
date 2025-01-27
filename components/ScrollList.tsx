@@ -19,7 +19,7 @@ export interface ScrollListProps<D extends DataObject, F extends Filter<D> = Fil
 @observer
 export class ScrollList<
   D extends DataObject = DataObject,
-  F extends Filter<D> = Filter<D>
+  F extends Filter<D> = Filter<D>,
 > extends Component<ScrollListProps<D, F>> {
   componentDidMount() {
     void this.init();
@@ -45,7 +45,6 @@ export class ScrollList<
     this.props.store.clear();
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
   loadMore = debounce((edge: EdgePosition) => {
     const { store } = this.props;
 
@@ -58,7 +57,6 @@ export class ScrollList<
       { noMore, allItems } = store;
 
     return (
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       <ScrollBoundary className={className} onTouch={this.loadMore}>
         <div>
           {renderList(allItems)}

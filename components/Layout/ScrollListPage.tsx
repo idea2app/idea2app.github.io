@@ -5,7 +5,7 @@ import { i18n } from '../../models/Translation';
 import { PageHead } from '../PageHead';
 import { ScrollList } from '../ScrollList';
 
-export interface FrameProps<D extends DataObject, F extends Filter<D> = Filter<D>> {
+export interface ScrollListPageProps<D extends DataObject, F extends Filter<D> = Filter<D>> {
   store: ListModel<D, F>;
   filter?: F;
   defaultData?: D[];
@@ -20,7 +20,7 @@ export interface FrameProps<D extends DataObject, F extends Filter<D> = Filter<D
 /**
  * @todo remove ScrollList and use children instead?
  */
-export const Frame = <D extends DataObject, F extends Filter<D> = Filter<D>>({
+export const ScrollListPage = <D extends DataObject, F extends Filter<D> = Filter<D>>({
   className = '',
   scrollList = true,
   children,
@@ -28,7 +28,7 @@ export const Frame = <D extends DataObject, F extends Filter<D> = Filter<D>>({
   header,
   Layout,
   ...rest
-}: FrameProps<D, F>) => (
+}: ScrollListPageProps<D, F>) => (
   <div className={`container mx-auto max-w-screen-xl px-4 pb-6 pt-16 ${className}`}>
     <PageHead title={title} />
     <h1 className="my-8 text-4xl">{header}</h1>

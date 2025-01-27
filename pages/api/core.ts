@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 import { HTTPError } from 'koajax';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { cache } from 'next-ssr-middleware';

@@ -1,31 +1,27 @@
 import { observer } from 'mobx-react';
-import { InferGetServerSidePropsType } from 'next';
-import { cache, compose, errorLogger, translator } from 'next-ssr-middleware';
+import { compose, errorLogger, translator } from 'next-ssr-middleware';
 import { FC } from 'react';
 
-import { Frame } from '../../components/Layout/Frame';
+import { ScrollListPage } from '../../components/Layout/ScrollListPage';
 import { MemberListLayout } from '../../components/Member/List';
 import memberStore, { Member, MemberModel } from '../../models/Member';
-import { i18n } from '../../models/Translation';
+import { i18n, t } from '../../models/Translation';
+import { solidCache } from '../api/core';
 
-export const getServerSideProps = compose(cache(), errorLogger, translator(i18n), async () => {
+export const getServerSideProps = compose(solidCache, errorLogger, translator(i18n), async () => {
   const list = await new MemberModel().getList();
 
-  return { props: { list: JSON.parse(JSON.stringify(list)) as Member[] } };
+  return { props: JSON.parse(JSON.stringify({ list })) };
 });
 
-const { t } = i18n;
-
-const MemberListPage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = observer(
-  ({ list }) => (
-    <Frame
-      title={t('member')}
-      header={t('member')}
-      store={memberStore}
-      Layout={MemberListLayout}
-      defaultData={list}
-    />
-  )
-);
+const MemberListPage: FC<{ list: Member[] }> = observer(({ list }) => (
+  <ScrollListPage
+    title={t('member')}
+    header={t('member')}
+    store={memberStore}
+    Layout={MemberListLayout}
+    defaultData={list}
+  />
+));
 
 export default MemberListPage;
