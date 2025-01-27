@@ -1,6 +1,6 @@
 {
   "name": "@idea2app/ows",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "React project scaffold based on TypeScript, Next.js, Bootstrap & Workbox.",
   "private": true,
   "engines": {

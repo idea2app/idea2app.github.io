@@ -17,11 +17,11 @@ export const GitCard: FC<GitCardProps> = observer(
     <li
       className={`${className} grid grid-cols-1 grid-rows-10 gap-2 rounded-2xl border p-4 elevation-1 hover:elevation-8 dark:border-0`}
     >
-      <h3 className="row-span-2 text-lg">
+      <h2 className="row-span-2 text-lg">
         <a target="_blank" href={html_url} rel="noreferrer">
           {full_name}
         </a>
-      </h3>
+      </h2>
 
       <nav className="row-span-3 flex flex-row flex-wrap gap-2">
         {topics.map(topic => (
@@ -47,5 +47,5 @@ export const GitCard: FC<GitCardProps> = observer(
         {i18n.t('home_page')}
       </Button>
     </li>
-  )
+  ),
 );

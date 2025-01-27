@@ -62,10 +62,16 @@ export default class MemberDetailPage extends Component<MemberDetailPageProps> {
 
           <div className="flex w-full flex-col items-center rounded-2xl border-2 md:w-2/3">
             <TabContext value={this.eventKey}>
-              <TabList aria-label="project tab" onChange={this.handleChange}>
+              <TabList
+                component="ul"
+                aria-label="project tab"
+                variant="fullWidth"
+                onChange={this.handleChange}
+              >
                 {entries.map(([label, list], index) => (
                   <Tab
                     key={label}
+                    component="li"
                     label={
                       <Badge
                         className="px-2"

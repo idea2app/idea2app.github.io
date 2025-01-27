@@ -39,7 +39,7 @@ export const MemberCard: FC<MemberCardProps> = observer(
         )}
 
         <Link href={`/member/${String(nickname)}`} aria-label={String(nickname)}>
-          <h3 className="text-base">{String(nickname)}</h3>
+          <h2 className="text-base">{String(nickname)}</h2>
           <p className="text-sm">{String(position ?? '')}</p>
         </Link>
       </div>

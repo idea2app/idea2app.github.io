@@ -17,7 +17,7 @@ import { Component } from 'react';
 import { i18n, LanguageName, t } from '../../models/Translation';
 import { SymbolIcon } from '../Icon';
 import { ColorModeIconDropdown } from './ColorModeDropdown';
-import { GithubIcon } from './Svg';
+import { BrandLogo, GithubIcon } from './Svg';
 
 export const mainNavLinks = () => [
   { title: t('latest_projects'), href: '/project' },
@@ -50,7 +50,7 @@ export class MainNavigator extends Component {
       <>
         <IconButton
           color="inherit"
-          aria-controls="i18n-menu"
+          aria-label="language selector"
           id="i18n-selector"
           onClick={event => (this.menuAnchor = event.currentTarget)}
         >
@@ -118,7 +118,7 @@ export class MainNavigator extends Component {
             <div className="flex flex-row items-center gap-3">
               {this.renderDrawer()}
 
-              <Image src="/idea2app.svg" alt="brand logo" width={32} height={40} />
+              <BrandLogo />
               <Link translate="no" className="font-bold uppercase" href="/" rel="home">
                 idea2app
               </Link>
