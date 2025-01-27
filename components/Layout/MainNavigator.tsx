@@ -48,16 +48,14 @@ export class MainNavigator extends Component {
 
     return (
       <>
-        <Button
+        <IconButton
           color="inherit"
           aria-controls="i18n-menu"
-          size="small"
           id="i18n-selector"
-          startIcon={<SymbolIcon name="translate" />}
           onClick={event => (this.menuAnchor = event.currentTarget)}
         >
-          {LanguageName[currentLanguage]}
-        </Button>
+          <SymbolIcon name="language" />
+        </IconButton>
         <Menu
           anchorEl={menuAnchor}
           id="i18n-menu"
@@ -104,7 +102,7 @@ export class MainNavigator extends Component {
         open={this.menuExpand}
         onClose={() => (this.menuExpand = false)}
       >
-        <Toolbar className="bg-transparent bg-none shadow-none" disableGutters />
+        <Toolbar disableGutters />
         <div className="bg-background-paper py-3 elevation-16">
           <nav className="flex flex-col items-center gap-4">{this.renderLinks()}</nav>
         </div>
@@ -121,7 +119,7 @@ export class MainNavigator extends Component {
               {this.renderDrawer()}
 
               <Image src="/idea2app.svg" alt="brand logo" width={32} height={40} />
-              <Link translate="no" className="font-bold uppercase" href="/">
+              <Link translate="no" className="font-bold uppercase" href="/" rel="home">
                 idea2app
               </Link>
             </div>
@@ -129,7 +127,12 @@ export class MainNavigator extends Component {
             <nav className="item-center hidden flex-row gap-4 sm:flex">{this.renderLinks()}</nav>
 
             <div className="flex flex-row items-center gap-3 sm:gap-6">
-              <Link href="https://github.com/idea2app" target="_blank" rel="noopener noreferrer">
+              <Link
+                href="https://github.com/idea2app"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="idea2app's GitHub account"
+              >
                 <GithubIcon />
               </Link>
               <ColorModeIconDropdown />

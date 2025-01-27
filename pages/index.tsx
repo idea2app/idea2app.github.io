@@ -51,7 +51,7 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => (
             <p>{t('idea2app_summary')}</p>
             <p>{t('idea2app_slogan')}</p>
 
-            <p className="my-4 text-gray-500">{t('idea2app_slogan_2')}?</p>
+            <p className="my-4 text-neutral-500">{t('idea2app_slogan_2')}?</p>
 
             <a
               className="border-b-2 border-b-black py-1 dark:border-b-white"
@@ -104,8 +104,9 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => (
       <Section title={t('member')} link="/member">
         <div className="relative max-h-[45rem] overflow-hidden">
           <Masonry
+            component="ul"
             className="overflow-hidden"
-            columns={{ xs: 2, md: 3 }}
+            columns={{ xs: 1, sm: 2, md: 3 }}
             spacing={2}
             defaultHeight={720}
             defaultColumns={4}
