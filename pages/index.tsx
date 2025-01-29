@@ -1,7 +1,6 @@
 import Masonry from '@mui/lab/Masonry';
 import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
-import Image from 'next/image';
 import { compose, errorLogger, translator } from 'next-ssr-middleware';
 import { FC } from 'react';
 
@@ -9,6 +8,7 @@ import { PartnerOverview } from '../components/Client/Partner';
 import { GitListLayout } from '../components/Git';
 import { SymbolIcon } from '../components/Icon';
 import { Section } from '../components/Layout/Section';
+import { BrandLogo } from '../components/Layout/Svg';
 import { MemberCard } from '../components/Member/Card';
 import { PageHead } from '../components/PageHead';
 import { Member, MEMBER_VIEW, MemberModel } from '../models/Member';
@@ -45,13 +45,13 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => (
     <div className="px-4 py-6 pt-16">
       <section className="container mx-auto flex max-w-screen-lg flex-col gap-4">
         <div className="flex flex-row items-center justify-around py-12">
-          <Image src="/idea2app.svg" width={234} height={220} alt="idea2app logo" />
+          <BrandLogo className="h-48 w-48" />
 
           <header className="border-s-2 border-s-black p-4 dark:border-s-white">
             <p>{t('idea2app_summary')}</p>
             <p>{t('idea2app_slogan')}</p>
 
-            <p className="my-4 text-gray-500">{t('idea2app_slogan_2')}?</p>
+            <p className="my-4 text-neutral-500">{t('idea2app_slogan_2')}?</p>
 
             <a
               className="border-b-2 border-b-black py-1 dark:border-b-white"
@@ -104,8 +104,9 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => (
       <Section title={t('member')} link="/member">
         <div className="relative max-h-[45rem] overflow-hidden">
           <Masonry
+            component="ul"
             className="overflow-hidden"
-            columns={{ xs: 2, md: 3 }}
+            columns={{ xs: 1, sm: 2, md: 3 }}
             spacing={2}
             defaultHeight={720}
             defaultColumns={4}

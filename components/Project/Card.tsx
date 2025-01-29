@@ -1,11 +1,12 @@
-import { Chip } from '@mui/material';
-import { FC } from 'react';
+import { Box, Chip } from '@mui/material';
+import { ElementType, FC } from 'react';
 import { formatDate } from 'web-utility';
 
 import { Project } from '../../models/Project';
 
 export interface ProjectCardProps extends Project {
   className?: string;
+  component?: ElementType;
 }
 
 export const ProjectCard: FC<ProjectCardProps> = ({
@@ -15,17 +16,19 @@ export const ProjectCard: FC<ProjectCardProps> = ({
   type,
   workForm,
   price,
-  settlementDate
+  settlementDate,
+  component = 'li',
 }) => (
-  <div
+  <Box
+    component={component}
     className={`${className} flex flex-col justify-between gap-4 rounded-2xl border p-4 elevation-1 hover:elevation-8 dark:border-0`}
   >
-    <h3 className="flex items-center justify-between">
+    <h2 className="flex items-center justify-between">
       <a className="text-lg" title={String(name)} href={`/project/${id}`}>
         {String(name)}
       </a>
       <Chip label={String(workForm)} />
-    </h3>
+    </h2>
     <ul className="flex flex-row flex-wrap gap-3">
       {(type as string[])?.map(value => (
         <Chip key={value} component="li" size="small" label={value} />
@@ -38,5 +41,5 @@ export const ProjectCard: FC<ProjectCardProps> = ({
 
       <time>🏁 {formatDate(+settlementDate!, 'YYYY-MM-DD')}</time>
     </div>
-  </div>
+  </Box>
 );

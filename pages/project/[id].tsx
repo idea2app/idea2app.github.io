@@ -41,7 +41,7 @@ const ProjectDetailPage: FC<ProjectDetailPageProps> = observer(({ project, repos
   <div className="container mx-auto mt-16 max-w-screen-xl px-4 py-6">
     <PageHead title={String(project.name)} />
 
-    <div className="flex flex-col md:flex-row">
+    <div className="flex flex-col gap-4 md:flex-row">
       <a className="w-full md:w-2/3" href={String(project.link) || '#'}>
         {/**
          * @todo replace with LarkImage after R2 is ready
@@ -50,7 +50,7 @@ const ProjectDetailPage: FC<ProjectDetailPageProps> = observer(({ project, repos
       </a>
 
       <div className="flex w-full flex-col gap-4 md:w-1/3">
-        <ProjectCard {...project} />
+        <ProjectCard {...project} component="div" />
         <hr />
         <h2 className="text-xl">{t('open_source_project')}</h2>
 

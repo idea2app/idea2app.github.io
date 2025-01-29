@@ -218,15 +218,13 @@ export default {
           }),
           {},
         ),
-        ...new Array(24)
-          .fill(0)
-          .reduce(
-            (acc, _, i) => ({
-              ...acc,
-              [`.overlay-${++i}`]: { backgroundImage: `var(--mui-overlays-${i})` },
-            }),
-            {},
-          ),
+        ...new Array(24).fill(0).reduce(
+          (acc, _, i) => ({
+            ...acc,
+            [`.overlay-${++i}`]: { backgroundImage: `var(--mui-overlays-${i})` },
+          }),
+          {},
+        ),
         ...new Array(24).fill(0).reduce(
           (acc, _, i) => ({
             ...acc,
