@@ -1,24 +1,30 @@
-// @ts-check
-import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
-import { FlatCompat } from '@eslint/eslintrc';
+import cspellPlugin from '@cspell/eslint-plugin';
 import eslint from '@eslint/js';
+// @ts-expect-error eslint-plugin-next doesn't come with TypeScript definitions
+import nextPlugin from '@next/eslint-plugin-next';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import reactPlugin from 'eslint-plugin-react';
+import react from 'eslint-plugin-react';
 import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
 import globals from 'globals';
 import tsEslint from 'typescript-eslint';
 import { fileURLToPath } from 'url';
 
-const tsconfigRootDir = fileURLToPath(new URL('.', import.meta.url)),
-  flatCompat = new FlatCompat();
+/**
+ * @see{@link https://github.com/typescript-eslint/typescript-eslint/blob/main/eslint.config.mjs}
+ * @see{@link https://github.com/vercel/next.js/issues/71763#issuecomment-2476838298}
+ */
+
+const tsconfigRootDir = fileURLToPath(new URL('.', import.meta.url));
 
 export default tsEslint.config(
   // register all of the plugins up-front
   {
     plugins: {
-      '@typescript-eslint': tsEslint.plugin,
-      react: fixupPluginRules(reactPlugin),
       'simple-import-sort': simpleImportSortPlugin,
+      '@typescript-eslint': tsEslint.plugin,
+      react,
+      '@next/next': nextPlugin,
+      '@cspell': cspellPlugin,
     },
   },
   {
@@ -29,7 +35,6 @@ export default tsEslint.config(
   // extends ...
   eslint.configs.recommended,
   ...tsEslint.configs.recommended,
-  ...fixupConfigRules(flatCompat.extends('plugin:@next/next/core-web-vitals')),
 
   // base config
   {
@@ -42,13 +47,33 @@ export default tsEslint.config(
       },
     },
     rules: {
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs['core-web-vitals'].rules,
+      'arrow-body-style': ['error', 'as-needed'],
       'no-empty-pattern': 'warn',
+      'no-console': ['error', { allow: ['warn', 'error', 'info'] }],
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: "TSPropertySignature[key.name='children']",
+          message: 'Please use PropsWithChildren<T> instead of defining children manually',
+        },
+      ],
+      'consistent-return': 'warn',
+      'prefer-destructuring': ['error', { object: true, array: true }],
+      // simple-import-sort
       'simple-import-sort/exports': 'error',
       'simple-import-sort/imports': 'error',
+      // typescript
       '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-empty-object-type': 'off',
       '@typescript-eslint/no-unsafe-declaration-merging': 'warn',
+      '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
+      // react
+      'react/no-unescaped-entities': 'off',
+      'react/self-closing-comp': ['error', { component: true, html: true }],
+      'react/jsx-curly-brace-presence': ['error', { props: 'never', children: 'never' }],
       'react/jsx-no-target-blank': 'warn',
       'react/jsx-sort-props': [
         'error',
@@ -58,18 +83,18 @@ export default tsEslint.config(
           noSortAlphabetically: true,
         },
       ],
+      // next
       '@next/next/no-sync-scripts': 'warn',
-    },
-  },
-  {
-    files: ['**/*.js'],
-    extends: [tsEslint.configs.disableTypeChecked],
-    rules: {
-      // turn off other type-aware rules
-      '@typescript-eslint/internal/no-poorly-typed-ts-props': 'off',
-
-      // turn off rules that don't apply to JS code
-      '@typescript-eslint/explicit-function-return-type': 'off',
+      // spellchecker
+      '@cspell/spellchecker': [
+        'warn',
+        {
+          cspell: {
+            language: 'en',
+            dictionaries: ['typescript', 'node', 'html', 'css', 'bash', 'npm', 'pnpm'],
+          },
+        },
+      ],
     },
   },
   eslintConfigPrettier,
