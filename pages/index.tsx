@@ -1,4 +1,5 @@
 import Masonry from '@mui/lab/Masonry';
+import { Button } from '@mui/material';
 import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
 import { compose, errorLogger, translator } from 'next-ssr-middleware';
@@ -52,20 +53,11 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => (
             <p>{t('idea2app_slogan')}</p>
 
             <p className="my-4 text-neutral-500">{t('idea2app_slogan_2')}?</p>
-
-            <a
-              className="border-b-2 border-b-black py-1 dark:border-b-white"
-              href="https://wenjuan.feishu.cn/m?t=sBih7Nzwkwqi-0l12"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t('contact_us')}
-            </a>
           </header>
         </div>
 
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {service().map(({ title, summary, icon }) => (
+          {service().map(({ title, summary, icon, buttonText, buttonLink }) => (
             <li
               key={title}
               className="elevation-1 hover:elevation-8 flex flex-col gap-4 rounded-3xl border p-4 dark:border-0"
@@ -76,6 +68,14 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => (
               </h5>
 
               <p>{summary}</p>
+
+              <Button
+                variant="contained"
+                href={buttonLink}
+                target={buttonLink.startsWith('http') ? '_blank' : undefined}
+              >
+                {buttonText}
+              </Button>
             </li>
           ))}
         </ul>

@@ -1,20 +1,22 @@
 import { IDType } from 'mobx-restful';
 
 export default {
-  idea2app_summary: '全行業資訊化轉型專家',
+  idea2app_summary: '全行業智慧化轉型專家',
   idea2app_slogan: '您的每個創意都值得用心實現',
   idea2app_slogan_2: '想要與我們一起創造影響力',
   contact_us: '聯繫我們',
-  IT_transformation_consulting: '業務資訊化咨詢',
+  IT_transformation_consulting: '業務智慧化咨詢',
   IT_transformation_consulting_summary:
-    '幫您梳理業務流程，發掘「提效降本」的痛點，量身定制「資訊化轉型」方案',
+    '幫您梳理業務流程，發掘「提效降本」的痛點，量身定制「智慧化轉型」方案',
+  read_resolution: '閱讀解決方案',
   custom_software_development: '客製化軟體開發',
   custom_software_development_summary:
     '一線工程師基於業界領先技術高效交付軟體系統，讓您的錢花在刀刃上',
+  consult_immediately: '立即諮詢',
   agile_team_training: '敏捷團隊培訓',
   agile_team_training_summary:
     '與您的技術團隊面對面一起從實踐中學習「敏捷開發」方法論，成長為可靠、高效的「現代化工程團隊」',
-  consult_immediately: '立即諮詢',
+  read_tutorial: '閱讀教程',
   latest_projects: '近期專案',
   welcome_to: '歡迎使用',
   get_started_by_editing: '開始你的專案吧，編輯',
@@ -63,5 +65,10 @@ export default {
 
   // Open source project
   load_more: '加載更多……',
-  no_more: '沒有更多'
+  no_more: '沒有更多',
+
+  // Requirement Evaluation
+  AI_requirement_evaluation: '🤖 需求評估',
+  information_security_alert: '本服務免費，但僅接受與估價有關的<strong>可公開资讯</strong>。',
+  project_name: '專案名稱',
 } as const;
