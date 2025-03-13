@@ -1,9 +1,9 @@
 import { CardProps, Chip } from '@mui/material';
+import { marked } from 'marked';
 import { observer } from 'mobx-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
-import { Markdown } from 'react-marked-renderer';
 
 import { Member } from '../../models/Member';
 import { GithubIcon } from '../Layout/Svg';
@@ -13,11 +13,11 @@ export type MemberCardProps = Member & Omit<CardProps, 'id'>;
 export const MemberCard: FC<MemberCardProps> = observer(
   ({ className = '', nickname, skill, position, summary, github }) => (
     <li
-      className={`relative rounded-2xl border p-4 elevation-1 hover:elevation-8 dark:border-0 ${className} mb-4 flex break-inside-avoid flex-col gap-3`}
+      className={`elevation-1 hover:elevation-8 relative rounded-2xl border p-4 dark:border-0 ${className} mb-4 flex break-inside-avoid flex-col gap-3`}
     >
       {github && (
         <a
-          className="absolute right-4 top-4"
+          className="absolute top-4 right-4"
           href={`https://github.com/${String(github)}`}
           target="_blank"
           rel="noreferrer"
@@ -50,7 +50,7 @@ export const MemberCard: FC<MemberCardProps> = observer(
         ))}
       </ul>
 
-      <Markdown markdown={String(summary)} />
+      <div dangerouslySetInnerHTML={{ __html: marked(summary as string) }} />
     </li>
   ),
 );
