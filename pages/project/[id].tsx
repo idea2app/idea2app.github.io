@@ -38,7 +38,7 @@ export const getServerSideProps = compose<{ id: string }, ProjectDetailPageProps
 );
 
 const ProjectDetailPage: FC<ProjectDetailPageProps> = observer(({ project, repositories }) => (
-  <div className="container mx-auto mt-16 max-w-screen-xl px-4 py-6">
+  <div className="container mx-auto mt-16 max-w-(--breakpoint-xl) px-4 py-6">
     <PageHead title={String(project.name)} />
 
     <div className="flex flex-col gap-4 md:flex-row">

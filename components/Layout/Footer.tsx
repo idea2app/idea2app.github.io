@@ -1,5 +1,5 @@
 export const Footer = () => (
-  <div className="container mx-auto flex max-w-screen-xl items-center justify-between border-t-2 px-4 py-12 text-center">
+  <div className="container mx-auto flex max-w-(--breakpoint-xl) items-center justify-between border-t-2 px-4 py-12 text-center">
     © 2024 idea2app
     <ul className="flex gap-4">
       <li>

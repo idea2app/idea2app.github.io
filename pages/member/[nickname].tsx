@@ -52,7 +52,7 @@ export default class MemberDetailPage extends Component<MemberDetailPageProps> {
       [t('projects_as_member')]: memberProjects,
     });
     return (
-      <div className="container mx-auto mt-16 max-w-screen-xl px-4 py-6">
+      <div className="container mx-auto mt-16 max-w-(--breakpoint-xl) px-4 py-6">
         <PageHead title={member.nickname as string} />
 
         <div className="flex flex-col gap-4 md:flex-row">

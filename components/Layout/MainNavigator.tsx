@@ -103,7 +103,7 @@ export class MainNavigator extends Component {
         onClose={() => (this.menuExpand = false)}
       >
         <Toolbar disableGutters />
-        <div className="bg-background-paper py-3 elevation-16">
+        <div className="bg-background-paper elevation-16 py-3">
           <nav className="flex flex-col items-center gap-4">{this.renderLinks()}</nav>
         </div>
       </Drawer>
@@ -112,9 +112,9 @@ export class MainNavigator extends Component {
 
   render() {
     return (
-      <AppBar color="transparent" className="fixed backdrop-blur" style={{ zIndex: 1201 }}>
+      <AppBar color="transparent" className="fixed backdrop-blur-sm" style={{ zIndex: 1201 }}>
         <Toolbar>
-          <div className="container mx-auto flex max-w-screen-xl items-center justify-between px-3">
+          <div className="container mx-auto flex max-w-(--breakpoint-xl) items-center justify-between px-3">
             <div className="flex flex-row items-center gap-3">
               {this.renderDrawer()}
 

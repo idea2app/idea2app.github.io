@@ -43,9 +43,9 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => (
     <PageHead />
 
     <div className="px-4 py-6 pt-16">
-      <section className="container mx-auto flex max-w-screen-lg flex-col gap-4">
+      <section className="container mx-auto flex max-w-(--breakpoint-lg) flex-col gap-4">
         <div className="flex flex-row items-center justify-around py-12">
-          <BrandLogo className="h-48 w-48" />
+          <BrandLogo style={{ width: '12rem', height: '12rem' }} />
 
           <header className="border-s-2 border-s-black p-4 dark:border-s-white">
             <p>{t('idea2app_summary')}</p>
@@ -68,7 +68,7 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => (
           {service().map(({ title, summary, icon }) => (
             <li
               key={title}
-              className="flex flex-col gap-4 rounded-3xl border p-4 elevation-1 hover:elevation-8 dark:border-0"
+              className="elevation-1 hover:elevation-8 flex flex-col gap-4 rounded-3xl border p-4 dark:border-0"
               tabIndex={-1}
             >
               <h5 className="flex items-center gap-4">
@@ -81,8 +81,8 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => (
         </ul>
       </section>
 
-      <section id="partner" className="relative mx-auto max-w-screen-xl px-8 py-16">
-        <div className="absolute left-0 top-0 z-20 block h-24 w-24 bg-gradient-to-r from-background to-transparent" />
+      <section id="partner" className="relative mx-auto max-w-(--breakpoint-xl) px-8 py-16">
+        <div className="from-background absolute top-0 left-0 z-20 block h-24 w-24 bg-linear-to-r to-transparent" />
         <ul className="hover:animation-pause-all flex flex-row flex-nowrap items-center justify-center gap-12 overflow-hidden">
           {/**
            * @todo: polish the carousel animation
@@ -90,7 +90,7 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => (
           {Array.from({ length: 3 }).map((_, index) => (
             <li
               key={index}
-              className="flex min-w-full flex-shrink-0 animate-carousel flex-row flex-nowrap items-center justify-around gap-12"
+              className="animate-carousel flex min-w-full shrink-0 flex-row flex-nowrap items-center justify-around gap-12"
             >
               {PARTNERS_INFO().map(({ name, ...rest }) => (
                 <PartnerOverview key={name} name={name} {...rest} />
@@ -98,7 +98,7 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => (
             </li>
           ))}
         </ul>
-        <div className="absolute right-0 top-0 z-20 block h-24 w-24 bg-gradient-to-l from-background to-transparent" />
+        <div className="from-background absolute top-0 right-0 z-20 block h-24 w-24 bg-linear-to-l to-transparent" />
       </section>
 
       <Section title={t('member')} link="/member">
@@ -116,7 +116,7 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => (
               <MemberCard key={String(item.id)} {...item} />
             ))}
           </Masonry>
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-background pb-8 pt-32" />
+          <div className="from-background pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-linear-to-t pt-32 pb-8" />
         </div>
       </Section>
 

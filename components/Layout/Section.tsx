@@ -11,7 +11,7 @@ export type SectionProps = PropsWithChildren<
 
 export const Section: FC<SectionProps> = observer(
   ({ id, title, children, link, className = '' }) => (
-    <section className={`mx-auto flex max-w-screen-xl flex-col gap-6 py-8 ${className}`}>
+    <section className={`mx-auto flex max-w-(--breakpoint-xl) flex-col gap-6 py-8 ${className}`}>
       <h2 className="text-center" id={id}>
         {title}
       </h2>
