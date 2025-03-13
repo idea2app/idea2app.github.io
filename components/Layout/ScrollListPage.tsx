@@ -1,19 +1,18 @@
 import { DataObject, Filter, ListModel } from 'mobx-restful';
-import { FC, ReactNode } from 'react';
+import { FC, HTMLAttributes } from 'react';
 
 import { i18n } from '../../models/Translation';
 import { PageHead } from '../PageHead';
 import { ScrollList } from '../ScrollList';
 
-export interface ScrollListPageProps<D extends DataObject, F extends Filter<D> = Filter<D>> {
+export interface ScrollListPageProps<D extends DataObject, F extends Filter<D> = Filter<D>>
+  extends HTMLAttributes<HTMLDivElement> {
   store: ListModel<D, F>;
   filter?: F;
   defaultData?: D[];
   title: string;
   header: string;
-  className?: string;
   scrollList?: boolean;
-  children?: ReactNode;
   Layout: FC<{ defaultData: D[]; className?: string }>;
 }
 
