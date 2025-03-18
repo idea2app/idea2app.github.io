@@ -51,6 +51,7 @@ export default class MemberDetailPage extends Component<MemberDetailPageProps> {
       [t('projects_as_leader')]: leaderProjects,
       [t('projects_as_member')]: memberProjects,
     });
+
     return (
       <div className="container mx-auto mt-16 max-w-(--breakpoint-xl) px-4 py-6">
         <PageHead title={member.nickname as string} />

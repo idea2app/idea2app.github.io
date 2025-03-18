@@ -11,7 +11,8 @@ export const getServerSideProps = compose(router, translator(i18n));
 
 const RequirementDetailPage: NextPage<RouteProps<{ title: string }>> = observer(
   ({ route: { params } }) => {
-    const title = `${params!.title} - ${t('AI_requirement_evaluation')}`;
+    const { currentLanguage } = i18n,
+      title = `${params!.title} - ${t('AI_requirement_evaluation')}`;
 
     return (
       <div className="container mx-auto flex max-w-(--breakpoint-xl) flex-col gap-4 px-4 pt-16 pb-6">
@@ -32,7 +33,7 @@ const RequirementDetailPage: NextPage<RouteProps<{ title: string }>> = observer(
           categoryId="DIC_kwDOOHPqjc4Cn5sg"
           mapping="og:title"
           emitMetadata="1"
-          lang={i18n.currentLanguage}
+          lang={currentLanguage.startsWith('zh-') ? currentLanguage : currentLanguage.split('-')[0]}
         />
       </div>
     );

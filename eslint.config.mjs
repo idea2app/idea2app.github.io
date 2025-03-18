@@ -2,6 +2,7 @@ import cspellPlugin from '@cspell/eslint-plugin';
 import eslint from '@eslint/js';
 // @ts-expect-error eslint-plugin-next doesn't come with TypeScript definitions
 import nextPlugin from '@next/eslint-plugin-next';
+import stylistic from '@stylistic/eslint-plugin';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import react from 'eslint-plugin-react';
 import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
@@ -20,11 +21,12 @@ export default tsEslint.config(
   // register all of the plugins up-front
   {
     plugins: {
+      '@cspell': cspellPlugin,
+      '@stylistic': stylistic,
       'simple-import-sort': simpleImportSortPlugin,
       '@typescript-eslint': tsEslint.plugin,
       react,
       '@next/next': nextPlugin,
-      '@cspell': cspellPlugin,
     },
   },
   {
@@ -47,8 +49,28 @@ export default tsEslint.config(
       },
     },
     rules: {
-      ...nextPlugin.configs.recommended.rules,
-      ...nextPlugin.configs['core-web-vitals'].rules,
+      // spellchecker
+      '@cspell/spellchecker': [
+        'warn',
+        {
+          cspell: {
+            language: 'en',
+            dictionaries: ['typescript', 'node', 'html', 'css', 'bash', 'npm', 'pnpm'],
+          },
+        },
+      ],
+      // stylistic
+      '@stylistic/padding-line-between-statements': [
+        'error',
+        { blankLine: 'always', prev: '*', next: 'return' },
+        { blankLine: 'always', prev: 'directive', next: '*' },
+        { blankLine: 'any', prev: 'directive', next: 'directive' },
+        {
+          blankLine: 'always',
+          prev: '*',
+          next: ['enum', 'interface', 'type'],
+        },
+      ],
       'arrow-body-style': ['error', 'as-needed'],
       'no-empty-pattern': 'warn',
       'no-console': ['error', { allow: ['warn', 'error', 'info'] }],
@@ -64,13 +86,13 @@ export default tsEslint.config(
       // simple-import-sort
       'simple-import-sort/exports': 'error',
       'simple-import-sort/imports': 'error',
-      // typescript
+      // TypeScript
       '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-empty-object-type': 'off',
       '@typescript-eslint/no-unsafe-declaration-merging': 'warn',
       '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
-      // react
+      // React
       'react/no-unescaped-entities': 'off',
       'react/self-closing-comp': ['error', { component: true, html: true }],
       'react/jsx-curly-brace-presence': ['error', { props: 'never', children: 'never' }],
@@ -83,18 +105,10 @@ export default tsEslint.config(
           noSortAlphabetically: true,
         },
       ],
-      // next
+      // Next.js
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs['core-web-vitals'].rules,
       '@next/next/no-sync-scripts': 'warn',
-      // spellchecker
-      '@cspell/spellchecker': [
-        'warn',
-        {
-          cspell: {
-            language: 'en',
-            dictionaries: ['typescript', 'node', 'html', 'css', 'bash', 'npm', 'pnpm'],
-          },
-        },
-      ],
     },
   },
   eslintConfigPrettier,

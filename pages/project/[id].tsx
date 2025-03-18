@@ -33,6 +33,7 @@ export const getServerSideProps = compose<{ id: string }, ProjectDetailPageProps
 
       repositories = await new GitRepositoryModel('idea2app').getGroup(openSource);
     }
+
     return { props: JSON.parse(JSON.stringify({ project, repositories })) };
   },
 );

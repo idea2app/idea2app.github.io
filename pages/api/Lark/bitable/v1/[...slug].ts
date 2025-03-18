@@ -10,5 +10,6 @@ export default proxyLark((path, data) => {
     for (const { fields } of items)
       for (const key of Object.keys(fields)) if (!/^\w+$/.test(key)) delete fields[key];
   }
+
   return data;
 });
