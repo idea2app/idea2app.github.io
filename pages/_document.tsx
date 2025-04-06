@@ -11,8 +11,23 @@ import { DefaultImage } from './api/Lark/file/[id]';
 const siteNameJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'Ameliorate',
+  name: 'idea2app',
   url: 'https://idea2.app/',
+  description: 'Industry-wide IT transformation expert',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: 'https://idea2.app/search?q={search_term_string}',
+    'query-input': 'required name=search_term_string',
+  },
+};
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'idea2app',
+  url: 'https://idea2.app',
+  logo: 'https://github.com/idea2app.png',
+  sameAs: ['https://github.com/idea2app'],
 };
 
 export default function Document() {
@@ -21,9 +36,6 @@ export default function Document() {
       <Head>
         <link rel="icon" href={DefaultImage} />
         <link rel="manifest" href="/manifest.json" />
-        <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="idea2app" />
-        <meta property="og:url" content={siteNameJsonLd.url} />
 
         <Script src="https://polyfill.web-cell.dev/feature/PWAManifest.js" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -43,6 +55,7 @@ export default function Document() {
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=code,dark_mode,diversity_3,keyboard_arrow_down,language,light_mode,menu,translate,trending_up&display=swap"
         />
         <script type="application/ld+json">{JSON.stringify(siteNameJsonLd)}</script>
+        <script type="application/ld+json">{JSON.stringify(organizationJsonLd)}</script>
       </Head>
 
       <body>
