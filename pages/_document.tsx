@@ -2,7 +2,7 @@ import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import { Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 
-import { DefaultImage } from './api/Lark/file/[id]';
+import { DefaultImage } from '../models/configuration';
 
 /**
  * Influence Google Search to display search results with the name "idea2app" instead of idea2.app

@@ -9,7 +9,7 @@ import Head from 'next/head';
 
 import { Footer } from '../components/Layout/Footer';
 import { MainNavigator } from '../components/Layout/MainNavigator';
-import { isServer } from '../models/Base';
+import { isServer } from '../models/configuration';
 
 configure({ enforceActions: 'never' });
 

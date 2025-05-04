@@ -2,7 +2,8 @@ import { TableCellValue } from 'mobx-lark';
 import { ImageProps } from 'next/image';
 import { FC } from 'react';
 
-import { DefaultImage, fileURLOf } from '../pages/api/Lark/file/[id]';
+import { fileURLOf } from '../models/Base';
+import { DefaultImage } from '../models/configuration';
 
 export interface LarkImageProps extends Omit<ImageProps, 'src'> {
   src?: TableCellValue;

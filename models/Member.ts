@@ -1,6 +1,7 @@
 import { BiDataQueryOptions, BiDataTable, TableCellValue } from 'mobx-lark';
 
-import { LarkBaseId, larkClient } from './Base';
+import { larkClient } from './Base';
+import { LarkBaseId } from './configuration';
 
 export type Member = Record<
   'id' | 'nickname' | 'type' | 'skill' | 'position' | 'summary' | 'github' | 'joinedAt',

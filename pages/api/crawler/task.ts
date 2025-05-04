@@ -1,26 +1,31 @@
 import { githubClient } from 'mobx-github';
+import { createKoaRouter } from 'next-ssr-middleware';
 
-import { safeAPI } from '../core';
+import { CRAWLER_TOKEN } from '../../../models/configuration';
+import { withSafeKoaRouter } from '../core';
 
 export interface CrawlerTask {
   URI: string;
   title?: string;
 }
 
-const { CRAWLER_TOKEN } = process.env;
+export const config = { api: { bodyParser: false } };
 
-export default safeAPI(async ({ method, headers, body }, response) => {
-  if (!CRAWLER_TOKEN || CRAWLER_TOKEN !== headers.authorization?.split(/\s+/)[1])
-    return void response.status(401).end();
+const router = createKoaRouter(import.meta.url);
 
-  if (method !== 'POST') return void response.status(405).end();
+router.post('/', async context => {
+  if (!CRAWLER_TOKEN || CRAWLER_TOKEN !== context.get('Authorization')?.split(/\s+/)[1])
+    return context.throw(401);
 
-  const { URI, title = URI } = body as CrawlerTask;
+  const { URI, title = URI } = Reflect.get(context.request, 'body') as CrawlerTask;
 
-  const { status, body: data } = await githubClient.post('repos/idea2app/OWS-cache/issues', {
+  const { status, body } = await githubClient.post('repos/idea2app/OWS-cache/issues', {
     title,
     body: `### URL\n\n${URI}`,
     labels: ['crawler'],
   });
-  response.status(status).send(data);
+  context.status = status;
+  context.body = body;
 });
+
+export default withSafeKoaRouter(router);
