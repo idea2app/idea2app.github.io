@@ -1,7 +1,6 @@
 import { CardProps, Chip } from '@mui/material';
 import { marked } from 'marked';
 import { observer } from 'mobx-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
 
@@ -29,15 +28,13 @@ export const MemberCard: FC<MemberCardProps> = observer(
 
       <div className="flex w-auto items-center gap-4">
         {github && (
-          <Image
-            width={64}
-            height={64}
+          <img
+            style={{ width: '4rem', height: '4rem' }}
             className="rounded-full object-cover"
             src={`https://github.com/${String(github)}.png`}
             alt={String(github)}
           />
         )}
-
         <Link href={`/member/${String(nickname)}`} aria-label={String(nickname)}>
           <h2 className="text-base">{String(nickname)}</h2>
           <p className="text-sm">{String(position ?? '')}</p>
