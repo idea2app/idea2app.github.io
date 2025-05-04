@@ -11,7 +11,7 @@ import { BrandLogo, GithubIcon } from './Svg';
 
 export const mainNavLinks = () => [
   { title: t('latest_projects'), href: '/project' },
-  { title: 'GitHub-reward', href: '/project/reward/issue' },
+  { title: 'GitHub-reward', href: '/project/reward/issue', target: '_top' },
   { title: t('member'), href: '/member' },
   { title: t('open_source_project'), href: '/open-source' },
 ];
@@ -27,8 +27,8 @@ export class MainNavigator extends Component {
   };
 
   renderLinks = () =>
-    mainNavLinks().map(({ title, href }) => (
-      <Link key={title} className="py-1" href={href}>
+    mainNavLinks().map(({ title, href, target }) => (
+      <Link key={title} className="py-1" href={href} target={target}>
         {title}
       </Link>
     ));

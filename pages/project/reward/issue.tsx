@@ -9,6 +9,7 @@ import { PageHead } from '../../../components/PageHead';
 import { ScrollList } from '../../../components/ScrollList';
 import issueStore, { IssueFilter, IssueModel } from '../../../models/Issue';
 import { i18n } from '../../../models/Translation';
+import { githubOAuth } from '../../api/GitHub/core';
 
 const issueFilter: IssueFilter = {
   repository_url: 'https://github.com/idea2app',
@@ -16,7 +17,7 @@ const issueFilter: IssueFilter = {
   title: 'reward',
 };
 
-export const getServerSideProps = compose(cache(), errorLogger, translator(i18n), async () => {
+export const getServerSideProps = compose(githubOAuth, errorLogger, translator(i18n), async () => {
   const list = await new IssueModel().getList(issueFilter);
 
   return { props: JSON.parse(JSON.stringify({ list })) };

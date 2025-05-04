@@ -1,12 +1,11 @@
-import { parseCookie } from 'mobx-i18n';
-
 export const Name = process.env.NEXT_PUBLIC_SITE_NAME,
   Summary = process.env.NEXT_PUBLIC_SITE_SUMMARY,
   DefaultImage = process.env.NEXT_PUBLIC_LOGO || '/og.png';
 
 export const isServer = () => typeof window === 'undefined';
 
-export const VercelHost = process.env.VERCEL_URL;
+export const { VERCEL } = process.env,
+  VercelHost = process.env.VERCEL_URL;
 
 export const API_Host = isServer()
   ? VercelHost
@@ -18,8 +17,9 @@ export const CACHE_HOST = process.env.NEXT_PUBLIC_CACHE_HOST!;
 
 export const { CRAWLER_TOKEN, JWT_SECRET } = process.env;
 
-export const GithubToken =
-  parseCookie(globalThis.document?.cookie || '').token || process.env.GITHUB_TOKEN;
+export const ProxyBaseURL = `https://idea2.app/proxy`;
+
+export const GithubToken = process.env.GITHUB_TOKEN;
 
 export const LARK_API_HOST = `${API_Host}/api/Lark/`;
 

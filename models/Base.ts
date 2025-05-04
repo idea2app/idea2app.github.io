@@ -10,7 +10,7 @@ if (!isServer()) githubClient.baseURI = `${API_Host}/api/GitHub/`;
 githubClient.use(({ request }, next) => {
   if (GithubToken)
     request.headers = {
-      authorization: `Bearer ${GithubToken}`,
+      Authorization: `Bearer ${GithubToken}`,
       ...request.headers,
     };
   return next();

@@ -1,5 +1,8 @@
 import { Context, Middleware } from 'koa';
 import { githubClient } from 'mobx-github';
+import { githubOAuth2 } from 'next-ssr-middleware';
+
+import { ProxyBaseURL, VERCEL } from '../../../models/configuration';
 
 export const proxyGithub = async <T>({
   method,
@@ -20,3 +23,13 @@ export const proxyGitHubAll: Middleware = async context => {
   context.status = status;
   context.body = body;
 };
+
+const client_id = process.env.GITHUB_OAUTH_CLIENT_ID!,
+  client_secret = process.env.GITHUB_OAUTH_CLIENT_SECRET!;
+
+export const githubOAuth = githubOAuth2({
+  rootBaseURL: VERCEL ? undefined : `${ProxyBaseURL}/github.com/`,
+  client_id,
+  client_secret,
+  scopes: ['user', 'repo'],
+});
