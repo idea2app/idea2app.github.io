@@ -1,31 +1,28 @@
+import { Context, Middleware } from 'koa';
 import { LarkApp, LarkData } from 'mobx-lark';
 
-import { safeAPI } from '../core';
+import { LarkAppMeta } from '../../../models/configuration';
 
-export const lark = new LarkApp({
-  host: process.env.LARK_API_HOST,
-  id: process.env.LARK_APP_ID!,
-  secret: process.env.LARK_APP_SECRET!,
-});
+export const lark = new LarkApp(LarkAppMeta);
 
-export const proxyLark = <T extends LarkData>(dataFilter?: (path: string, data: T) => T) =>
-  safeAPI(async ({ method, url, headers, body }, response) => {
-    await lark.getAccessToken();
+export const proxyLark = async <T extends LarkData>({
+  method,
+  url,
+  headers: { host, authorization, ...headers },
+  request,
+}: Context) => {
+  await lark.getAccessToken();
 
-    delete headers.host;
+  const path = url!.slice(`/api/Lark/`.length),
+    body = Reflect.get(request, 'body');
 
-    const path = url!.slice(`/api/Lark/`.length);
+  // @ts-expect-error Type compatibility issue
+  return lark.client.request<T>({ method, path, headers, body });
+};
 
-    const { status, body: data } = await lark.client.request<T>({
-      // @ts-expect-error KoAJAX type compatibility
-      method,
-      path,
-      // @ts-expect-error KoAJAX type compatibility
-      headers,
-      body: body || undefined,
-    });
+export const proxyLarkAll: Middleware = async context => {
+  const { status, body } = await proxyLark(context);
 
-    response.status(status);
-
-    response.send(dataFilter?.(path, data!) ?? data);
-  });
+  context.status = status;
+  context.body = body;
+};

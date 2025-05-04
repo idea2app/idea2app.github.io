@@ -1,44 +1,63 @@
+import Router, { RouterParamContext } from '@koa/router';
+import { JsonWebTokenError } from 'jsonwebtoken';
+import { Context, Middleware, ParameterizedContext } from 'koa';
+import JWT from 'koa-jwt';
 import { HTTPError } from 'koajax';
-import { NextApiRequest, NextApiResponse } from 'next';
-import { cache } from 'next-ssr-middleware';
+import { cache, KoaOption, withKoa, withKoaRouter } from 'next-ssr-middleware';
 import { Month } from 'web-utility';
 
-import { VercelHost } from '../../models/Base';
+import { JWT_SECRET, VercelHost } from '../../models/configuration';
 
-export type NextAPI = (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
+export type JWTContext = ParameterizedContext<
+  { jwtOriginalError: JsonWebTokenError } | { user: { email: string } }
+>;
 
-export function safeAPI(handler: NextAPI): NextAPI {
-  return async (req, res) => {
-    try {
-      return await handler(req, res);
-    } catch (error) {
-      if (!(error instanceof HTTPError)) {
-        console.error(error);
+export const parseJWT = JWT({
+  secret: JWT_SECRET!,
+  cookie: 'token',
+  passthrough: true,
+});
 
-        res.status(400);
+export const verifyJWT = JWT({ secret: JWT_SECRET!, cookie: 'token' });
 
-        return res.send({ message: (error as Error).message });
-      }
-      const { message, response } = error;
-      let { body } = response;
+export const safeAPI: Middleware<any, any> = async (context: Context, next) => {
+  try {
+    return await next();
+  } catch (error) {
+    if (!(error instanceof HTTPError)) {
+      console.error(error);
 
-      res.status(response.status);
-      res.statusMessage = message;
+      context.status = 400;
 
-      if (body instanceof ArrayBuffer)
-        try {
-          const data = new TextDecoder().decode(new Uint8Array(body));
-          console.error(data);
-
-          body = JSON.parse(data);
-          console.error(body);
-        } catch {
-          //
-        }
-      res.send(body);
+      return (context.body = { message: (error as Error).message });
     }
-  };
-}
+    const { message, response } = error;
+    let { body } = response;
+
+    context.status = response.status;
+    context.statusMessage = message;
+
+    if (body instanceof ArrayBuffer)
+      try {
+        body = new TextDecoder().decode(new Uint8Array(body));
+
+        body = JSON.parse(body);
+      } catch {
+        //
+      }
+    console.error(JSON.stringify(body, null, 2));
+
+    context.body = body;
+  }
+};
+
+export const withSafeKoa = <S, C>(...middlewares: Middleware<S, C>[]) =>
+  withKoa<S, C>({} as KoaOption, safeAPI, ...middlewares);
+
+export const withSafeKoaRouter = <S, C extends RouterParamContext<S>>(
+  router: Router<S, C>,
+  ...middlewares: Middleware<S, C>[]
+) => withKoaRouter<S, C>({} as KoaOption, router, safeAPI, ...middlewares);
 
 export function getTarget(link: URL | string): string {
   const { origin = `https://${VercelHost}`, href = `https://${VercelHost}` } =

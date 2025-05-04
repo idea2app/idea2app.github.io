@@ -5,12 +5,13 @@ import {
   normalizeText,
   TableCellLink,
   TableCellValue,
-  TableRecord
+  TableRecord,
 } from 'mobx-lark';
 import { NewData } from 'mobx-restful';
 import { isEmpty } from 'web-utility';
 
-import { LarkBaseId, larkClient } from './Base';
+import { larkClient } from './Base';
+import { LarkBaseId } from './configuration';
 
 export type Project = Record<
   | 'id'
@@ -45,17 +46,17 @@ export class ProjectModel extends BiDataTable<Project>() {
   makeFilter(filter: NewData<Project>) {
     return [
       'NOT(CurrentValue.[settlementDate]="")',
-      isEmpty(filter) ? undefined : makeSimpleFilter(filter)
+      isEmpty(filter) ? undefined : makeSimpleFilter(filter),
     ]
       .filter(Boolean)
       .join('&&');
   }
 
-  normalize({ id, fields: { link, ...fields } }: TableRecord<Project>) {
+  extractFields({ id, fields: { link, ...fields } }: TableRecord<Project>) {
     return {
       ...fields,
       id,
-      link: link && normalizeText(link as TableCellLink)
+      link: link && normalizeText(link as TableCellLink),
     };
   }
 }

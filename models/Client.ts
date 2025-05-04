@@ -1,6 +1,7 @@
 import { BiDataQueryOptions, BiDataTable, TableCellValue } from 'mobx-lark';
 
-import { LarkBaseId, larkClient } from './Base';
+import { larkClient } from './Base';
+import { LarkBaseId } from './configuration';
 
 export type Client = Record<
   'id' | 'name' | 'type' | 'partnership' | 'image' | 'summary' | 'address',
