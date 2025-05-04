@@ -1,8 +1,22 @@
 import { HTTPClient } from 'koajax';
 import MIME from 'mime';
+import { githubClient } from 'mobx-github';
 import { TableCellValue, TableCellMedia, TableCellAttachment } from 'mobx-lark';
 
-import { API_Host } from './configuration';
+import { API_Host, GithubToken, isServer } from './configuration';
+
+if (!isServer()) githubClient.baseURI = `${API_Host}/api/GitHub/`;
+
+githubClient.use(({ request }, next) => {
+  if (GithubToken)
+    request.headers = {
+      Authorization: `Bearer ${GithubToken}`,
+      ...request.headers,
+    };
+  return next();
+});
+
+export { githubClient };
 
 export const larkClient = new HTTPClient({
   baseURI: `${API_Host}/api/Lark/`,

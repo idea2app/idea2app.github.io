@@ -40,7 +40,7 @@ export default function Document() {
          * */}
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=code,dark_mode,diversity_3,keyboard_arrow_down,language,light_mode,menu,translate,trending_up&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
         />
         <script type="application/ld+json">{JSON.stringify(siteNameJsonLd)}</script>
       </Head>

@@ -1,19 +1,8 @@
 import { observable } from 'mobx';
-import { githubClient, GitRepository, RepositoryFilter, RepositoryModel } from 'mobx-github';
+import { GitRepository, RepositoryFilter, RepositoryModel } from 'mobx-github';
 import { Stream } from 'mobx-restful';
 
-import { API_Host, GithubToken, isServer } from './configuration';
-
-if (!isServer()) githubClient.baseURI = `${API_Host}/api/GitHub/`;
-
-githubClient.use(({ request }, next) => {
-  if (GithubToken)
-    request.headers = {
-      authorization: `Bearer ${GithubToken}`,
-      ...request.headers,
-    };
-  return next();
-});
+import { githubClient } from './Base';
 
 export class GitRepositoryModel extends Stream<GitRepository, RepositoryFilter>(RepositoryModel) {
   client = githubClient;

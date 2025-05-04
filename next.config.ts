@@ -1,4 +1,5 @@
 import { withSentryConfig } from '@sentry/nextjs';
+import { NextConfig } from 'next';
 import setPWA from 'next-pwa';
 import webpack from 'webpack';
 
@@ -10,6 +11,20 @@ const withPWA = setPWA({
   register: true,
   skipWaiting: true,
   disable: isDev,
+});
+
+const rewrites: NextConfig['rewrites'] = async () => ({
+  beforeFiles: [
+    {
+      source: '/proxy/github.com/:path*',
+      destination: 'https://github.com/:path*',
+    },
+    {
+      source: '/proxy/raw.githubusercontent.com/:path*',
+      destination: 'https://raw.githubusercontent.com/:path*',
+    },
+  ],
+  afterFiles: [],
 });
 
 const nextConfig = withPWA({
@@ -30,6 +45,7 @@ const nextConfig = withPWA({
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return config;
   },
+  rewrites,
 });
 
 export default isDev || !SENTRY_AUTH_TOKEN
