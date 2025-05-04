@@ -24,7 +24,7 @@ export class IssueModel extends ListModel<Issue, IssueFilter> {
   ) {
     const [org, repo] = repository_url?.replace('https://github.com/', '').split('/') || [];
 
-    const condition = Object.entries({ org, repo, state })
+    const condition = Object.entries({ org, repo, type: 'issue', state })
       .filter(([, value]) => !isEmpty(value))
       .map(([key, value]) => `${key}:${value}`)
       .join(' ');

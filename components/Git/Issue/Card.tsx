@@ -1,12 +1,15 @@
-import { Avatar, Card, CardContent, CardProps, Chip, Icon, Stack, Typography } from '@mui/material';
+import { Avatar, Card, CardContent, CardProps, Chip } from '@mui/material';
 import { marked } from 'marked';
 import { Issue } from 'mobx-github';
 import { FC } from 'react';
+
+import { SymbolIcon } from '../../Icon';
 
 export type IssueCardProps = Issue & Omit<CardProps, 'id'>;
 
 export const IssueCard: FC<IssueCardProps> = ({
   id,
+  repository_url,
   number,
   title,
   labels,
@@ -18,19 +21,21 @@ export const IssueCard: FC<IssueCardProps> = ({
   ...props
 }) => (
   <Card {...props}>
-    <CardContent>
-      <Typography
-        variant="h4"
-        component="a"
-        href={html_url}
-        target="_blank"
-        rel="noreferrer"
-        style={{ textDecoration: 'none', color: 'inherit' }}
-      >
-        #{number} {title}
-      </Typography>
+    <CardContent className="flex h-full flex-col justify-between gap-2">
+      <h2 className="text-2xl">
+        <a
+          href={html_url}
+          target="_blank"
+          rel="noreferrer"
+          style={{ textDecoration: 'none', color: 'inherit' }}
+        >
+          {repository_url.split('/').slice(-2).join('/')}#{number}
+          <br />
+          {title}
+        </a>
+      </h2>
 
-      <Stack direction="row" spacing={1}>
+      <div className="flex items-center gap-2">
         {labels?.map(
           label =>
             typeof label === 'object' && (
@@ -41,22 +46,23 @@ export const IssueCard: FC<IssueCardProps> = ({
               />
             ),
         )}
-      </Stack>
+      </div>
 
-      <Typography component="article" dangerouslySetInnerHTML={{ __html: marked(body || '') }} />
+      <article dangerouslySetInnerHTML={{ __html: marked(body || '') }} />
 
-      {user && (
-        <Stack direction="row" spacing={1} alignItems="center">
-          <Avatar src={user.avatar_url} alt={user.name || ''} />
-          <Typography>{user.name || ''}</Typography>
-        </Stack>
-      )}
-      <Stack direction="row" spacing={1} alignItems="center">
-        <Icon>chat_bubble_outline</Icon>
-        {comments}
-      </Stack>
-
-      <time dateTime={created_at}>{new Date(created_at).toLocaleString()}</time>
+      <footer className="flex items-center justify-between">
+        {user && (
+          <div className="flex items-center gap-2">
+            <Avatar src={user.avatar_url} alt={user.name || ''} />
+            {user.name || ''}
+          </div>
+        )}
+        <div className="flex items-center gap-2">
+          <SymbolIcon name="chat" />
+          {comments}
+        </div>
+        <time dateTime={created_at}>{new Date(created_at).toLocaleString()}</time>
+      </footer>
     </CardContent>
   </Card>
 );

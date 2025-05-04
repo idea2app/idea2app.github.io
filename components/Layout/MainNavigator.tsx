@@ -1,16 +1,6 @@
-import {
-  AppBar,
-  Button,
-  Drawer,
-  IconButton,
-  Menu,
-  MenuItem,
-  PopoverProps,
-  Toolbar,
-} from '@mui/material';
+import { AppBar, Drawer, IconButton, Menu, MenuItem, PopoverProps, Toolbar } from '@mui/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { Component } from 'react';
 
@@ -21,6 +11,7 @@ import { BrandLogo, GithubIcon } from './Svg';
 
 export const mainNavLinks = () => [
   { title: t('latest_projects'), href: '/project' },
+  { title: 'GitHub-reward', href: '/project/reward/issue' },
   { title: t('member'), href: '/member' },
   { title: t('open_source_project'), href: '/open-source' },
 ];
