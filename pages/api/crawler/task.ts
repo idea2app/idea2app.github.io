@@ -1,6 +1,6 @@
-import { githubClient } from 'mobx-github';
 import { createKoaRouter } from 'next-ssr-middleware';
 
+import { githubClient } from '../../../models/Base';
 import { CRAWLER_TOKEN } from '../../../models/configuration';
 import { withSafeKoaRouter } from '../core';
 
