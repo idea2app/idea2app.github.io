@@ -1,12 +1,12 @@
 import Router, { RouterParamContext } from '@koa/router';
-import { JsonWebTokenError } from 'jsonwebtoken';
+import { JsonWebTokenError, sign } from 'jsonwebtoken';
 import { Context, Middleware, ParameterizedContext } from 'koa';
 import JWT from 'koa-jwt';
 import { HTTPError } from 'koajax';
 import { cache, KoaOption, withKoa, withKoaRouter } from 'next-ssr-middleware';
 import { Month } from 'web-utility';
 
-import { JWT_SECRET, VercelHost } from '../../models/configuration';
+import { CrawlerEmail, JWT_SECRET, VERCEL_URL } from '../../models/configuration';
 
 export type JWTContext = ParameterizedContext<
   { jwtOriginalError: JsonWebTokenError } | { user: { email: string } }
@@ -19,6 +19,8 @@ export const parseJWT = JWT({
 });
 
 export const verifyJWT = JWT({ secret: JWT_SECRET!, cookie: 'token' });
+
+if (JWT_SECRET) console.info('🔑 [Crawler JWT]', sign({ email: CrawlerEmail }, JWT_SECRET));
 
 export const safeAPI: Middleware<any, any> = async (context: Context, next) => {
   try {
@@ -60,7 +62,7 @@ export const withSafeKoaRouter = <S, C extends RouterParamContext<S>>(
 ) => withKoaRouter<S, C>({} as KoaOption, router, safeAPI, ...middlewares);
 
 export function getTarget(link: URL | string): string {
-  const { origin = `https://${VercelHost}`, href = `https://${VercelHost}` } =
+  const { origin = `https://${VERCEL_URL}`, href = `https://${VERCEL_URL}` } =
     globalThis.location || {};
 
   return origin !== new URL(link, href).origin ? '_blank' : '_self';

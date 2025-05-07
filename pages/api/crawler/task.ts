@@ -1,8 +1,8 @@
 import { createKoaRouter } from 'next-ssr-middleware';
 
 import { githubClient } from '../../../models/Base';
-import { CRAWLER_TOKEN } from '../../../models/configuration';
-import { withSafeKoaRouter } from '../core';
+import { CACHE_REPOSITORY, CrawlerEmail } from '../../../models/configuration';
+import { JWTContext, parseJWT, withSafeKoaRouter } from '../core';
 
 export interface CrawlerTask {
   URI: string;
@@ -13,16 +13,16 @@ export const config = { api: { bodyParser: false } };
 
 const router = createKoaRouter(import.meta.url);
 
-router.post('/', async context => {
-  if (!CRAWLER_TOKEN || CRAWLER_TOKEN !== context.get('Authorization')?.split(/\s+/)[1])
+router.post('/', parseJWT, async (context: JWTContext) => {
+  if (!('user' in context.state) || context.state.user.email !== CrawlerEmail)
     return context.throw(401);
 
   const { URI, title = URI } = Reflect.get(context.request, 'body') as CrawlerTask;
 
-  const { status, body } = await githubClient.post('repos/idea2app/OWS-cache/issues', {
+  const { status, body } = await githubClient.post(`repos/${CACHE_REPOSITORY}/issues`, {
     title,
-    body: `### URL\n\n${URI}`,
     labels: ['crawler'],
+    body: `### URL\n\n${URI}`,
   });
   context.status = status;
   context.body = body;

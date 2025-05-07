@@ -4,22 +4,18 @@ export const Name = process.env.NEXT_PUBLIC_SITE_NAME,
 
 export const isServer = () => typeof window === 'undefined';
 
-export const { VERCEL } = process.env,
-  VercelHost = process.env.VERCEL_URL;
+export const { VERCEL, VERCEL_URL, JWT_SECRET, GITHUB_TOKEN, CACHE_REPOSITORY } = process.env;
 
 export const API_Host = isServer()
-  ? VercelHost
-    ? `https://${VercelHost}`
+  ? VERCEL_URL
+    ? `https://${VERCEL_URL}`
     : 'http://localhost:3000'
   : globalThis.location.origin;
 
-export const CACHE_HOST = process.env.NEXT_PUBLIC_CACHE_HOST!;
-
-export const { CRAWLER_TOKEN, JWT_SECRET } = process.env;
+export const CACHE_HOST = process.env.NEXT_PUBLIC_CACHE_HOST!,
+  CrawlerEmail = `crawler@idea2.app`;
 
 export const ProxyBaseURL = `https://idea2.app/proxy`;
-
-export const GithubToken = process.env.GITHUB_TOKEN;
 
 export const LARK_API_HOST = `${API_Host}/api/Lark/`;
 
