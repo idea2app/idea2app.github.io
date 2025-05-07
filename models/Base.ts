@@ -3,14 +3,14 @@ import MIME from 'mime';
 import { githubClient } from 'mobx-github';
 import { TableCellValue, TableCellMedia, TableCellAttachment } from 'mobx-lark';
 
-import { API_Host, GithubToken, isServer } from './configuration';
+import { API_Host, GITHUB_TOKEN, isServer } from './configuration';
 
 if (!isServer()) githubClient.baseURI = `${API_Host}/api/GitHub/`;
 
 githubClient.use(({ request }, next) => {
-  if (GithubToken)
+  if (GITHUB_TOKEN)
     request.headers = {
-      Authorization: `Bearer ${GithubToken}`,
+      Authorization: `Bearer ${GITHUB_TOKEN}`,
       ...request.headers,
     };
   return next();

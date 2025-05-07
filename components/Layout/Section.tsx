@@ -1,30 +1,34 @@
 import { Button } from '@mui/material';
 import { observer } from 'mobx-react';
 import Link from 'next/link';
-import { FC, PropsWithChildren } from 'react';
+import { FC, PropsWithChildren, useContext } from 'react';
 
-import { t } from '../../models/Translation';
+import { I18nContext } from '../../models/Translation';
 
 export type SectionProps = PropsWithChildren<
   Partial<Record<'id' | 'title' | 'link' | 'className', string>>
 >;
 
 export const Section: FC<SectionProps> = observer(
-  ({ id, title, children, link, className = '' }) => (
-    <section className={`mx-auto flex max-w-(--breakpoint-xl) flex-col gap-6 py-8 ${className}`}>
-      <h2 className="text-center" id={id}>
-        {title}
-      </h2>
+  ({ id, title, children, link, className = '' }) => {
+    const { t } = useContext(I18nContext);
 
-      {children}
+    return (
+      <section className={`mx-auto flex max-w-(--breakpoint-xl) flex-col gap-6 py-8 ${className}`}>
+        <h2 className="text-center" id={id}>
+          {title}
+        </h2>
 
-      {link && (
-        <footer className="text-center">
-          <Button component={Link} href={link} aria-label={`load more ${title}`}>
-            {t('load_more')}
-          </Button>
-        </footer>
-      )}
-    </section>
-  ),
+        {children}
+
+        {link && (
+          <footer className="text-center">
+            <Button component={Link} href={link} aria-label={`load more ${title}`}>
+              {t('load_more')}
+            </Button>
+          </footer>
+        )}
+      </section>
+    );
+  },
 );

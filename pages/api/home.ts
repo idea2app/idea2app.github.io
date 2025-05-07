@@ -1,6 +1,6 @@
-import { t } from '../../models/Translation';
+import { i18n } from '../../models/Translation';
 
-export const service = () => [
+export const service = ({ t }: typeof i18n) => [
   {
     icon: 'trending_up',
     title: t('IT_transformation_consulting'),
@@ -24,7 +24,7 @@ export const service = () => [
   },
 ];
 
-export const PARTNERS_INFO = () => [
+export const PARTNERS_INFO = ({ t }: typeof i18n) => [
   {
     logo: '/aiux.png',
     logoDark: '/aiux-dark.png',

@@ -2,16 +2,17 @@ import Giscus from '@giscus/react';
 import { Alert } from '@mui/material';
 import { observer } from 'mobx-react';
 import { NextPage } from 'next';
-import { compose, RouteProps, router, translator } from 'next-ssr-middleware';
+import { compose, RouteProps, router } from 'next-ssr-middleware';
+import { useContext } from 'react';
 
 import { PageHead } from '../../components/PageHead';
-import { i18n, t } from '../../models/Translation';
+import { I18nContext } from '../../models/Translation';
 
-export const getServerSideProps = compose(router, translator(i18n));
+export const getServerSideProps = compose(router);
 
 const RequirementDetailPage: NextPage<RouteProps<{ title: string }>> = observer(
   ({ route: { params } }) => {
-    const { currentLanguage } = i18n,
+    const { currentLanguage, t } = useContext(I18nContext),
       title = `${params!.title} - ${t('AI_requirement_evaluation')}`;
 
     return (
@@ -39,5 +40,4 @@ const RequirementDetailPage: NextPage<RouteProps<{ title: string }>> = observer(
     );
   },
 );
-
 export default RequirementDetailPage;
