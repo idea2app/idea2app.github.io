@@ -2,7 +2,7 @@ import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 
-import { DefaultImage, SiteUrl } from '../models/configuration';
+import { DefaultImage, Name, SiteUrl } from '../models/configuration';
 import { LanguageCode, parseSSRContext } from '../models/Translation';
 
 /**
@@ -12,14 +12,14 @@ import { LanguageCode, parseSSRContext } from '../models/Translation';
 const siteNameJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'idea2app',
+  name: Name,
   url: SiteUrl,
 };
 
 const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'idea2app',
+  name: Name,
   url: SiteUrl,
   logo: DefaultImage,
   sameAs: ['https://github.com/idea2app'],
