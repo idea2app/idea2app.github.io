@@ -1,16 +1,17 @@
-import { TabContext, TabList, TabPanel } from '@mui/lab';
+import { TabContext, TabList, TabListProps, TabPanel } from '@mui/lab';
 import { Badge, Tab } from '@mui/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
-import { compose, errorLogger, translator } from 'next-ssr-middleware';
-import { Component, SyntheticEvent } from 'react';
+import { ObservedComponent, observePropsState } from 'mobx-react-helper';
+import { compose, errorLogger } from 'next-ssr-middleware';
+import { Component } from 'react';
 
 import { MemberCard } from '../../components/Member/Card';
 import { PageHead } from '../../components/PageHead';
 import { ProjectListLayout } from '../../components/Project';
 import { Member, MemberModel } from '../../models/Member';
 import { Project, ProjectModel } from '../../models/Project';
-import { i18n, t } from '../../models/Translation';
+import { i18n, I18nContext } from '../../models/Translation';
 import { solidCache } from '../api/core';
 
 interface MemberDetailPageProps {
@@ -22,7 +23,6 @@ interface MemberDetailPageProps {
 export const getServerSideProps = compose<{ nickname: string }>(
   solidCache,
   errorLogger,
-  translator(i18n),
   async ({ params }) => {
     const [member] = await new MemberModel().getList(params, 1, 1);
 
@@ -38,14 +38,22 @@ export const getServerSideProps = compose<{ nickname: string }>(
     };
   },
 );
+
+export default interface MemberDetailPage
+  extends ObservedComponent<MemberDetailPageProps, typeof i18n> {}
+
 @observer
+@observePropsState
 export default class MemberDetailPage extends Component<MemberDetailPageProps> {
+  static contextType = I18nContext;
+
   @observable accessor eventKey = '0';
 
-  handleChange = (event: SyntheticEvent, newValue: string) => (this.eventKey = newValue);
+  handleChange: TabListProps['onChange'] = (event, newValue) => (this.eventKey = newValue);
 
   render() {
     const { member, leaderProjects, memberProjects } = this.props;
+    const { t } = this.observedContext!;
 
     const entries = Object.entries({
       [t('projects_as_leader')]: leaderProjects,

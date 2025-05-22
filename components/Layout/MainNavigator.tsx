@@ -1,49 +1,51 @@
-import {
-  AppBar,
-  Button,
-  Drawer,
-  IconButton,
-  Menu,
-  MenuItem,
-  PopoverProps,
-  Toolbar,
-} from '@mui/material';
-import { observable } from 'mobx';
+import { AppBar, Drawer, IconButton, Menu, MenuItem, PopoverProps, Toolbar } from '@mui/material';
+import { computed, observable } from 'mobx';
 import { observer } from 'mobx-react';
-import Image from 'next/image';
+import { ObservedComponent, observePropsState } from 'mobx-react-helper';
 import Link from 'next/link';
 import { Component } from 'react';
 
-import { i18n, LanguageName, t } from '../../models/Translation';
+import { i18n, I18nContext, LanguageName } from '../../models/Translation';
 import { SymbolIcon } from '../Icon';
 import { ColorModeIconDropdown } from './ColorModeDropdown';
 import { BrandLogo, GithubIcon } from './Svg';
 
-export const mainNavLinks = () => [
-  { title: t('latest_projects'), href: '/project' },
-  { title: t('member'), href: '/member' },
-  { title: t('open_source_project'), href: '/open-source' },
-];
+export interface MainNavigator extends ObservedComponent<{}, typeof i18n> {}
 
 @observer
+@observePropsState
 export class MainNavigator extends Component {
+  static contextType = I18nContext;
+
   @observable accessor menuExpand = false;
   @observable accessor menuAnchor: PopoverProps['anchorEl'] = null;
 
+  @computed
+  get links() {
+    const { t } = this.observedContext!;
+
+    return [
+      { title: t('latest_projects'), href: '/project' },
+      { title: 'GitHub-reward', href: '/project/reward/issue', target: '_top' },
+      { title: t('member'), href: '/member' },
+      { title: t('open_source_project'), href: '/open-source' },
+    ];
+  }
+
   switchI18n = (key: string) => {
-    i18n.changeLanguage(key as keyof typeof LanguageName);
+    this.observedContext!.loadLanguages(key as keyof typeof LanguageName);
     this.menuAnchor = null;
   };
 
   renderLinks = () =>
-    mainNavLinks().map(({ title, href }) => (
-      <Link key={title} className="py-1" href={href}>
+    this.links.map(({ title, href, target }) => (
+      <Link key={title} className="py-1" href={href} target={target}>
         {title}
       </Link>
     ));
 
   renderI18nSwitch = () => {
-    const { currentLanguage } = i18n,
+    const { currentLanguage } = this.observedContext!,
       { menuAnchor } = this;
 
     return (
@@ -59,12 +61,7 @@ export class MainNavigator extends Component {
         <Menu
           anchorEl={menuAnchor}
           id="i18n-menu"
-          slotProps={{
-            paper: {
-              variant: 'outlined',
-              sx: { my: '4px' },
-            },
-          }}
+          slotProps={{ paper: { variant: 'outlined', sx: { my: '4px' } } }}
           open={Boolean(menuAnchor)}
           onClose={() => (this.menuAnchor = null)}
         >
@@ -98,7 +95,7 @@ export class MainNavigator extends Component {
         variant="temporary"
         anchor="top"
         ModalProps={{ keepMounted: true }}
-        PaperProps={{ className: 'w-full bg-transparent shadow-none bg-none' }}
+        slotProps={{ paper: { className: 'w-full bg-transparent shadow-none bg-none' } }}
         open={this.menuExpand}
         onClose={() => (this.menuExpand = false)}
       >

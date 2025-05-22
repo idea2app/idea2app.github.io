@@ -1,23 +1,8 @@
 import { observable } from 'mobx';
-import { githubClient, GitRepository, RepositoryFilter, RepositoryModel } from 'mobx-github';
-import { parseCookie } from 'mobx-i18n';
+import { GitRepository, RepositoryFilter, RepositoryModel } from 'mobx-github';
 import { Stream } from 'mobx-restful';
 
-import { API_Host, isServer } from './Base';
-
-const GithubToken =
-  parseCookie(globalThis.document?.cookie || '').token || process.env.GITHUB_TOKEN;
-
-if (!isServer()) githubClient.baseURI = `${API_Host}/api/GitHub/`;
-
-githubClient.use(({ request }, next) => {
-  if (GithubToken)
-    request.headers = {
-      authorization: `Bearer ${GithubToken}`,
-      ...request.headers
-    };
-  return next();
-});
+import { githubClient } from './Base';
 
 export class GitRepositoryModel extends Stream<GitRepository, RepositoryFilter>(RepositoryModel) {
   client = githubClient;
@@ -42,7 +27,7 @@ export class GitRepositoryModel extends Stream<GitRepository, RepositoryFilter>(
         const { pageData, totalCount } = await loadPage.call(this, i, this.pageSize, filter);
         const list = pageData.filter(
           ({ description, topics, fork, archived }) =>
-            description?.trim() && topics?.[0] && !fork && !archived
+            description?.trim() && topics?.[0] && !fork && !archived,
         );
         const droppedCount = pageData.length - list.length;
 

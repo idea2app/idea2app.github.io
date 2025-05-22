@@ -1,8 +1,8 @@
 import { Tooltip } from '@mui/material';
 import { FC, ReactNode } from 'react';
 
+import { fileURLOf } from '../../models/Base';
 import { Client } from '../../models/Client';
-import { fileURLOf } from '../../pages/api/Lark/file/[id]';
 import { LarkImage } from '../LarkImage';
 
 export interface PartnerProps extends Client {
@@ -41,7 +41,7 @@ export const LogoWithLink: FC<Omit<PartnerOverviewProps, 'tooltip'>> = ({
   address,
   logo,
   logoDark,
-  className
+  className,
 }) => (
   <a
     key={name}

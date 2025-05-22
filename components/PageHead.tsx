@@ -1,6 +1,8 @@
 import Head from 'next/head';
 import type { FC, PropsWithChildren } from 'react';
 
+import { Name, SiteUrl, Summary } from '../models/configuration';
+
 export type PageHeadProps = PropsWithChildren<{
   title?: string;
   description?: string;
@@ -8,10 +10,6 @@ export type PageHeadProps = PropsWithChildren<{
   type?: string;
   url?: string;
 }>;
-
-const Name = process.env.NEXT_PUBLIC_SITE_NAME,
-  Summary = process.env.NEXT_PUBLIC_SITE_SUMMARY,
-  SiteUrl = 'https://idea2.app';
 
 export const PageHead: FC<PageHeadProps> = ({
   title,

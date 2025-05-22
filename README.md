@@ -68,20 +68,20 @@ You can check out [the Next.js GitHub repository][27] - your feedback and contri
 
 |           name           |     file     |       description       |
 | :----------------------: | :----------: | :---------------------: |
-|     `CRAWLER_TOKEN`      | `.env.local` | Web hooks authorization |
-|   `SENTRY_AUTH_TOKEN`    | `.env.local` | [Official document][28] |
-|       `SENTRY_ORG`       |    `.env`    | [Official document][29] |
-|     `SENTRY_PROJECT`     |    `.env`    | [Official document][29] |
-| `NEXT_PUBLIC_SENTRY_DSN` |    `.env`    | [Official document][30] |
-|      `GITHUB_TOKEN`      | `.env.local` | [Official document][31] |
-|      `LARK_APP_ID`       | `.env.local` | [Official document][32] |
-|    `LARK_APP_SECRET`     | `.env.local` | [Official document][32] |
+|       `JWT_SECRET`       | `.env.local` | [API authorization][28] |
+|   `SENTRY_AUTH_TOKEN`    | `.env.local` | [Official document][29] |
+|       `SENTRY_ORG`       |    `.env`    | [Official document][30] |
+|     `SENTRY_PROJECT`     |    `.env`    | [Official document][30] |
+| `NEXT_PUBLIC_SENTRY_DSN` |    `.env`    | [Official document][31] |
+|      `GITHUB_TOKEN`      | `.env.local` | [Official document][32] |
+|      `LARK_APP_ID`       | `.env.local` | [Official document][33] |
+|    `LARK_APP_SECRET`     | `.env.local` | [Official document][33] |
 
 ### Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform][13] from the creators of Next.js.
 
-Check out our [Next.js deployment documentation][33] for more details.
+Check out our [Next.js deployment documentation][34] for more details.
 
 ### Docker
 
@@ -110,16 +110,17 @@ pnpm container
 [18]: https://github.com/new?template_name=idea2app.github.io&template_owner=idea2app
 [19]: https://github.com/idea2app/idea2app.github.io/blob/34a68d5c3a21665c5971edff5aa7c208647d1566/.github/workflows/main.yml#L9-L11
 [20]: https://github.com/idea2app/idea2app.github.io/settings/secrets/actions
-[21]: https://github.com/kaiyuanshe/kaiyuanshe.github.io/blob/bb4675a56bf1d6b207231313da5ed0af7cf0ebd6/.github/workflows/pull-request.yml#L32-L56
+[21]: https://github.com/idea2app/Lark-Next-Bootstrap-ts/blob/363e023e5dd472c8ea53ec96eac25ec5122e667b/.github/workflows/Lark-notification.yml#L39
 [22]: https://github.com/idea2app/idea2app.github.io/issues/new/choose
 [23]: https://github.com/idea2app/idea2app.github.io/projects
 [24]: https://nextjs.org/docs/api-routes/introduction
 [25]: https://nextjs.org/docs
 [26]: https://nextjs.org/learn
 [27]: https://github.com/vercel/next.js/
-[28]: https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#use-configuration-files-for-source-map-upload
-[29]: https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#use-environment-variables
-[30]: https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#create-initialization-config-files
-[31]: https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api#authenticating-with-a-personal-access-token
-[32]: https://open.larksuite.com/document/server-docs/getting-started/api-access-token/app-access-token-development-guide#95c7f5f5
-[33]: https://nextjs.org/docs/deployment
+[28]: https://github.com/auth0/node-jsonwebtoken?tab=readme-ov-file#jwtsignpayload-secretorprivatekey-options-callback
+[29]: https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#use-configuration-files-for-source-map-upload
+[30]: https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#use-environment-variables
+[31]: https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#create-initialization-config-files
+[32]: https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api#authenticating-with-a-personal-access-token
+[33]: https://open.larksuite.com/document/server-docs/getting-started/api-access-token/app-access-token-development-guide#95c7f5f5
+[34]: https://nextjs.org/docs/deployment
