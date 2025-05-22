@@ -1,6 +1,7 @@
 export const Name = process.env.NEXT_PUBLIC_SITE_NAME,
   Summary = process.env.NEXT_PUBLIC_SITE_SUMMARY,
-  DefaultImage = process.env.NEXT_PUBLIC_LOGO || '/og.png';
+  DefaultImage = process.env.NEXT_PUBLIC_LOGO || '/idea2app.svg',
+  SiteUrl = `https://${process.env.VERCEL_URL || 'idea2.app'}`;
 
 export const isServer = () => typeof window === 'undefined';
 

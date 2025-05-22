@@ -2,7 +2,7 @@ import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 
-import { DefaultImage } from '../models/configuration';
+import { DefaultImage, Name, SiteUrl } from '../models/configuration';
 import { LanguageCode, parseSSRContext } from '../models/Translation';
 
 /**
@@ -12,8 +12,18 @@ import { LanguageCode, parseSSRContext } from '../models/Translation';
 const siteNameJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'Ameliorate',
-  url: 'https://idea2.app/',
+  name: Name,
+  url: SiteUrl,
+};
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: Name,
+  url: SiteUrl,
+  logo: DefaultImage,
+  sameAs: ['https://github.com/idea2app'],
+  email: 'contact@idea2app.cn',
 };
 
 interface CustomDocumentProps {
@@ -59,6 +69,7 @@ export default class CustomDocument extends Document<CustomDocumentProps> {
             href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
           />
           <script type="application/ld+json">{JSON.stringify(siteNameJsonLd)}</script>
+          <script type="application/ld+json">{JSON.stringify(organizationJsonLd)}</script>
         </Head>
 
         <body>
