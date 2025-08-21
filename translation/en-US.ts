@@ -26,6 +26,7 @@ export default {
   open_source_project: 'Open-source project',
   partner: 'Partner',
   member: 'Member',
+  wiki: 'Wiki',
   component: 'Component',
   pagination: 'Pagination',
   powered_by: 'Powered by',

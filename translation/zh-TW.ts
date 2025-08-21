@@ -26,6 +26,7 @@ export default {
   open_source_project: '開源專案',
   partner: '合作夥伴',
   member: '菁英團隊',
+  wiki: '開放百科',
   component: '元件',
   pagination: '分頁',
   powered_by: '強力驅動自',

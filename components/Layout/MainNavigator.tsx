@@ -1,20 +1,16 @@
 import { AppBar, Drawer, IconButton, Menu, MenuItem, PopoverProps, Toolbar } from '@mui/material';
 import { computed, observable } from 'mobx';
 import { observer } from 'mobx-react';
-import { ObservedComponent, observePropsState } from 'mobx-react-helper';
+import { ObservedComponent } from 'mobx-react-helper';
 import Link from 'next/link';
-import { Component } from 'react';
 
 import { i18n, I18nContext, LanguageName } from '../../models/Translation';
 import { SymbolIcon } from '../Icon';
 import { ColorModeIconDropdown } from './ColorModeDropdown';
 import { BrandLogo, GithubIcon } from './Svg';
 
-export interface MainNavigator extends ObservedComponent<{}, typeof i18n> {}
-
 @observer
-@observePropsState
-export class MainNavigator extends Component {
+export class MainNavigator extends ObservedComponent<{}, typeof i18n> {
   static contextType = I18nContext;
 
   @observable accessor menuExpand = false;
@@ -29,6 +25,7 @@ export class MainNavigator extends Component {
       { title: 'GitHub-reward', href: '/project/reward/issue', target: '_top' },
       { title: t('member'), href: '/member' },
       { title: t('open_source_project'), href: '/open-source' },
+      { title: t('wiki'), href: '/wiki' },
     ];
   }
 

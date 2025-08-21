@@ -2,9 +2,8 @@ import { TabContext, TabList, TabListProps, TabPanel } from '@mui/lab';
 import { Badge, Tab } from '@mui/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
-import { ObservedComponent, observePropsState } from 'mobx-react-helper';
+import { ObservedComponent } from 'mobx-react-helper';
 import { compose, errorLogger } from 'next-ssr-middleware';
-import { Component } from 'react';
 
 import { MemberCard } from '../../components/Member/Card';
 import { PageHead } from '../../components/PageHead';
@@ -39,12 +38,11 @@ export const getServerSideProps = compose<{ nickname: string }>(
   },
 );
 
-export default interface MemberDetailPage
-  extends ObservedComponent<MemberDetailPageProps, typeof i18n> {}
-
 @observer
-@observePropsState
-export default class MemberDetailPage extends Component<MemberDetailPageProps> {
+export default class MemberDetailPage extends ObservedComponent<
+  MemberDetailPageProps,
+  typeof i18n
+> {
   static contextType = I18nContext;
 
   @observable accessor eventKey = '0';

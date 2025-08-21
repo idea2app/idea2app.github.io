@@ -62,8 +62,7 @@ export default class CustomApp extends App<I18nProps> {
   }
 
   render() {
-    const { Component, pageProps, router } = this.props,
-      { t } = this.i18nStore;
+    const { Component, pageProps } = this.props;
 
     return (
       <I18nContext.Provider value={this.i18nStore}>

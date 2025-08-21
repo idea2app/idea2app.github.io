@@ -17,9 +17,7 @@ const RequirementDetailPage: NextPage<RouteProps<{ title: string }>> = observer(
 
     return (
       <div className="container mx-auto flex max-w-(--breakpoint-xl) flex-col gap-4 px-4 pt-16 pb-6">
-        <PageHead title={title}>
-          <meta property="og:title" content={params!.title} />
-        </PageHead>
+        <PageHead title={title} />
 
         <h1 className="py-10 text-center text-5xl">{title}</h1>
 
@@ -32,7 +30,7 @@ const RequirementDetailPage: NextPage<RouteProps<{ title: string }>> = observer(
           repoId="R_kgDOOHPqjQ"
           category="Ideas"
           categoryId="DIC_kwDOOHPqjc4Cn5sg"
-          mapping="og:title"
+          mapping="title"
           emitMetadata="1"
           lang={currentLanguage.startsWith('zh-') ? currentLanguage : currentLanguage.split('-')[0]}
         />
