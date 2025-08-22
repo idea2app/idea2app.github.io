@@ -47,7 +47,7 @@ export const MemberCard: FC<MemberCardProps> = observer(
         ))}
       </ul>
 
-      <div dangerouslySetInnerHTML={{ __html: marked(summary as string) }} />
+      <div dangerouslySetInnerHTML={{ __html: marked((summary as string) || '') }} />
     </li>
   ),
 );
