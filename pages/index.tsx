@@ -48,7 +48,7 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => {
       <PageHead />
 
       <div className="px-4 py-6 pt-16">
-        <section className="container mx-auto flex max-w-(--breakpoint-lg) flex-col gap-4">
+        <section className="container mx-auto flex max-w-screen-lg flex-col gap-4">
           <div className="flex flex-row items-center justify-around py-12">
             <BrandLogo style={{ width: '12rem', height: '12rem' }} />
 
@@ -60,20 +60,21 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => {
             </header>
           </div>
 
-          <ul className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <ul className="grid grid-cols-1 gap-4 md:grid-cols-4 lg:grid-cols-3">
             {service(i18n).map(({ title, summary, icon, buttonText, buttonLink }) => (
               <li
                 key={title}
-                className="elevation-1 hover:elevation-8 flex flex-col gap-4 rounded-3xl border p-4 dark:border-0"
+                className="elevation-1 hover:elevation-8 flex flex-col gap-4 rounded-3xl border p-4 md:col-span-2 last:md:col-start-2 lg:col-span-1 last:lg:col-start-3 dark:border-0"
                 tabIndex={-1}
               >
-                <h5 className="flex items-center gap-4">
+                <h5 className="flex flex-shrink-0 items-center gap-4 lg:text-nowrap">
                   <SymbolIcon name={icon} /> {title}
                 </h5>
 
-                <p>{summary}</p>
+                <p className="flex-1">{summary}</p>
 
                 <Button
+                  className="flex-shrink-0 md:self-center"
                   variant="contained"
                   href={buttonLink}
                   target={buttonLink.startsWith('http') ? '_blank' : undefined}
@@ -85,7 +86,7 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => {
           </ul>
         </section>
 
-        <section id="partner" className="relative mx-auto max-w-(--breakpoint-xl) px-8 py-16">
+        <section id="partner" className="relative mx-auto max-w-screen-xl px-8 py-16">
           <div className="from-background absolute top-0 left-0 z-20 block h-24 w-24 bg-linear-to-r to-transparent" />
           <ul className="hover:animation-pause-all flex flex-row flex-nowrap items-center justify-center gap-12 overflow-hidden">
             {/**

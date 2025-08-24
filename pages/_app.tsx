@@ -1,6 +1,8 @@
 import '../styles/main.css';
 
-import { createTheme, StyledEngineProvider, ThemeProvider } from '@mui/material';
+import { EmotionCache } from '@emotion/cache';
+import { createTheme, GlobalStyles, StyledEngineProvider, ThemeProvider } from '@mui/material';
+import { AppCacheProvider, createEmotionCache } from '@mui/material-nextjs/v15-pagesRouter';
 import { HTTPError } from 'koajax';
 import { configure } from 'mobx';
 import { enableStaticRendering, observer } from 'mobx-react';
@@ -39,8 +41,10 @@ export const theme = createTheme({
   },
 });
 
+const clientCache = createEmotionCache({ enableCssLayer: true, key: 'css' });
+
 @observer
-export default class CustomApp extends App<I18nProps> {
+export default class CustomApp extends App<I18nProps & { emotionCache: EmotionCache }> {
   static async getInitialProps(context: AppContext) {
     return {
       ...(await App.getInitialProps(context)),
@@ -62,27 +66,30 @@ export default class CustomApp extends App<I18nProps> {
   }
 
   render() {
-    const { Component, pageProps } = this.props;
+    const { Component, pageProps, emotionCache = clientCache } = this.props;
 
     return (
       <I18nContext.Provider value={this.i18nStore}>
-        <Head>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-        </Head>
-        <StyledEngineProvider injectFirst>
-          {/**
-           * @see {@link https://mui.com/material-ui/integrations/interoperability/#tailwind-css}
-           */}
-          <ThemeProvider theme={theme} defaultMode="system" disableTransitionOnChange>
-            <div className="flex min-h-screen flex-col justify-between">
-              <MainNavigator />
+        <AppCacheProvider emotionCache={emotionCache}>
+          <GlobalStyles styles="@layer theme, base, mui, components, utilities;" />
+          <Head>
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+          </Head>
+          <StyledEngineProvider injectFirst>
+            {/**
+             * @see {@link https://mui.com/material-ui/integrations/interoperability/#tailwind-css}
+             */}
+            <ThemeProvider theme={theme} defaultMode="system" disableTransitionOnChange>
+              <div className="flex min-h-screen flex-col justify-between">
+                <MainNavigator />
 
-              <Component {...pageProps} />
+                <Component {...pageProps} />
 
-              <Footer />
-            </div>
-          </ThemeProvider>
-        </StyledEngineProvider>
+                <Footer />
+              </div>
+            </ThemeProvider>
+          </StyledEngineProvider>
+        </AppCacheProvider>
       </I18nContext.Provider>
     );
   }

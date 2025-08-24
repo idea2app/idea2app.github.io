@@ -1,4 +1,5 @@
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
+import { createEmotionCache, documentGetInitialProps } from '@mui/material-nextjs/v15-pagesRouter';
 import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 
@@ -31,10 +32,17 @@ interface CustomDocumentProps {
   colorScheme: 'light' | 'dark';
 }
 
+/**
+ * @see {@link https://mui.com/material-ui/integrations/nextjs/#pages-router}
+ */
 export default class CustomDocument extends Document<CustomDocumentProps> {
   static async getInitialProps(context: DocumentContext) {
+    const cacheProps = await documentGetInitialProps(context, {
+      emotionCache: createEmotionCache({ enableCssLayer: true, key: 'css' }),
+    });
+
     return {
-      ...(await Document.getInitialProps(context)),
+      ...cacheProps,
       ...parseSSRContext<CustomDocumentProps>(context, ['language']),
     };
   }

@@ -18,6 +18,7 @@ export default {
     '與您的技術團隊面對面一起從實踐中學習「敏捷開發」方法論，成長為可靠、高效的「現代化工程團隊」',
   read_tutorial: '閱讀教程',
   latest_projects: '近期專案',
+  github_reward: '開源懸賞',
   welcome_to: '歡迎使用',
   get_started_by_editing: '開始你的專案吧，編輯',
   upstream_projects: '上游專案',

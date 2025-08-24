@@ -9,7 +9,7 @@ export default {
   IT_transformation_consulting_summary:
     'Help you sort out business processes, discover the pain points of Improving Efficiency & Reducing Costs", and tailor IT Transformation solutions',
   read_resolution: 'Read resolution',
-  custom_software_development: 'Custom software development',
+  custom_software_development: 'Tailored Software',
   custom_software_development_summary:
     'Front-line engineers efficiently deliver Software systems based on Industry-leading technologies, allowing you to spend your money wisely',
   consult_immediately: 'Consult immediately',
@@ -18,6 +18,7 @@ export default {
     'Face-to-face with your technical team to learn Agile Development methodology from practice, and grow into a reliable and efficient Modern Engineering Team',
   read_tutorial: 'Read tutorial',
   latest_projects: 'Latest projects',
+  github_reward: 'GitHub-reward',
   welcome_to: 'Welcome to',
   get_started_by_editing: 'Get started by editing',
   upstream_projects: 'Upstream projects',

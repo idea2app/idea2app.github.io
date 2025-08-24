@@ -1,0 +1,368 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* 基础配置 */
+@theme {
+  /* 颜色配置 */
+  --color-primary: rgb(var(--mui-palette-primary-mainChannel));
+  --color-primary-light: rgb(var(--mui-palette-primary-lightChannel));
+  --color-primary-dark: rgb(var(--mui-palette-primary-darkChannel));
+  --color-primary-contrast-text: rgb(var(--mui-palette-primary-contrastTextChannel));
+
+  --color-secondary: rgb(var(--mui-palette-secondary-mainChannel));
+  --color-secondary-light: rgb(var(--mui-palette-secondary-lightChannel));
+  --color-secondary-dark: rgb(var(--mui-palette-secondary-darkChannel));
+  --color-secondary-contrast-text: rgb(var(--mui-palette-secondary-contrastTextChannel));
+
+  --color-error: rgb(var(--mui-palette-error-mainChannel));
+  --color-error-light: rgb(var(--mui-palette-error-lightChannel));
+  --color-error-dark: rgb(var(--mui-palette-error-darkChannel));
+  --color-error-contrast-text: rgb(var(--mui-palette-error-contrastTextChannel));
+
+  --color-info: rgb(var(--mui-palette-info-mainChannel));
+  --color-info-light: rgb(var(--mui-palette-info-lightChannel));
+  --color-info-dark: rgb(var(--mui-palette-info-darkChannel));
+  --color-info-contrast-text: rgb(var(--mui-palette-info-contrastTextChannel));
+
+  --color-success: rgb(var(--mui-palette-success-mainChannel));
+  --color-success-light: rgb(var(--mui-palette-success-lightChannel));
+  --color-success-dark: rgb(var(--mui-palette-success-darkChannel));
+  --color-success-contrast-text: rgb(var(--mui-palette-success-contrastTextChannel));
+
+  --color-warning: rgb(var(--mui-palette-warning-mainChannel));
+  --color-warning-light: rgb(var(--mui-palette-warning-lightChannel));
+  --color-warning-dark: rgb(var(--mui-palette-warning-darkChannel));
+  --color-warning-contrast-text: rgb(var(--mui-palette-warning-contrastTextChannel));
+
+  --color-text-disabled: var(--mui-palette-text-disabled);
+
+  /* 通用颜色 */
+  --color-common-background: var(--mui-palette-common-background);
+  --color-common-on-background: var(--mui-palette-common-onBackground);
+
+  /* 灰色色阶 */
+  --color-gray-50: var(--mui-palette-grey-50);
+  --color-gray-100: var(--mui-palette-grey-100);
+  --color-gray-200: var(--mui-palette-grey-200);
+  --color-gray-300: var(--mui-palette-grey-300);
+  --color-gray-400: var(--mui-palette-grey-400);
+  --color-gray-500: var(--mui-palette-grey-500);
+  --color-gray-600: var(--mui-palette-grey-600);
+  --color-gray-700: var(--mui-palette-grey-700);
+  --color-gray-800: var(--mui-palette-grey-800);
+  --color-gray-900: var(--mui-palette-grey-900);
+  --color-gray-A100: var(--mui-palette-grey-A100);
+  --color-gray-A200: var(--mui-palette-grey-A200);
+  --color-gray-A400: var(--mui-palette-grey-A400);
+  --color-gray-A700: var(--mui-palette-grey-A700);
+
+  /* 分割线 */
+  --color-divider: var(--mui-palette-divider);
+
+  /* 背景 */
+  --color-background: var(--mui-palette-background-default);
+  --color-background-paper: var(--mui-palette-background-paper);
+
+  /* 边框半径 */
+  --radius-sm: calc(var(--mui-shape-borderRadius) / 2);
+  --radius: var(--mui-shape-borderRadius);
+  --radius-lg: calc(var(--mui-shape-borderRadius) * 2);
+
+  /* 断点 */
+  --breakpoint-sm: 37.5rem;
+  --breakpoint-md: 56.25rem;
+  --breakpoint-lg: 75rem;
+  --breakpoint-xl: 96rem;
+  --breakpoint-2xl: 120rem;
+
+  /* 操作状态 */
+  --color-action-active: var(--mui-palette-action-active);
+  --color-action-disabled: var(--mui-palette-action-disabled);
+  --color-action-focus: var(--mui-palette-action-focus);
+  --color-action-hover: var(--mui-palette-action-hover);
+  --color-action-selected: var(--mui-palette-action-selected);
+
+  --opacity-active: var(--mui-palette-action-activeOpacity);
+  --opacity-disabled: var(--mui-palette-action-disabledOpacity);
+  --opacity-focus: var(--mui-palette-action-focusOpacity);
+  --opacity-hover: var(--mui-palette-action-hoverOpacity);
+  --opacity-selected: var(--mui-palette-action-selectedOpacity);
+
+  /* 动画 */
+  --animate-carousel: scrolls 60s linear infinite;
+
+  /* 关键帧动画 */
+  @keyframes scrolls {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+}
+
+/* 基础样式 */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+
+  h1 {
+    font: var(--mui-font-h1);
+    letter-spacing: -0.01562em;
+  }
+  h2 {
+    font: var(--mui-font-h2);
+    letter-spacing: -0.00833em;
+  }
+  h3 {
+    font: var(--mui-font-h3);
+  }
+  h4 {
+    font: var(--mui-font-h4);
+    letter-spacing: 0.00735em;
+  }
+  h5 {
+    font: var(--mui-font-h5);
+  }
+  h6 {
+    font: var(--mui-font-h6);
+    letter-spacing: 0.0075em;
+  }
+  p {
+    font: var(--mui-font-body1);
+    letter-spacing: 0.00938em;
+  }
+  span {
+    font: var(--mui-font-body2);
+    letter-spacing: 0.01071em;
+  }
+}
+
+/* 工具类 */
+@layer utilities {
+  /* 排版工具类 */
+  .typography-h1 {
+    font: var(--mui-font-h1);
+  }
+  .typography-h2 {
+    font: var(--mui-font-h2);
+  }
+  .typography-h3 {
+    font: var(--mui-font-h3);
+  }
+  .typography-h4 {
+    font: var(--mui-font-h4);
+  }
+  .typography-h5 {
+    font: var(--mui-font-h5);
+  }
+  .typography-h6 {
+    font: var(--mui-font-h6);
+  }
+  .typography-subtitle1 {
+    font: var(--mui-font-subtitle1);
+  }
+  .typography-subtitle2 {
+    font: var(--mui-font-subtitle2);
+  }
+  .typography-body1 {
+    font: var(--mui-font-body1);
+  }
+  .typography-body2 {
+    font: var(--mui-font-body2);
+  }
+  .typography-button {
+    font: var(--mui-font-button);
+  }
+  .typography-caption {
+    font: var(--mui-font-caption);
+  }
+  .typography-overline {
+    font: var(--mui-font-overline);
+  }
+}
+
+@utility animation-pause-all {
+  & > * {
+    animation-play-state: paused;
+  }
+}
+
+/* 覆盖层工具类 */
+@utility overlay-1 {
+  background-image: var(--mui-overlays-1);
+}
+@utility overlay-2 {
+  background-image: var(--mui-overlays-2);
+}
+@utility overlay-3 {
+  background-image: var(--mui-overlays-3);
+}
+@utility overlay-4 {
+  background-image: var(--mui-overlays-4);
+}
+@utility overlay-5 {
+  background-image: var(--mui-overlays-5);
+}
+@utility overlay-6 {
+  background-image: var(--mui-overlays-6);
+}
+@utility overlay-7 {
+  background-image: var(--mui-overlays-7);
+}
+@utility overlay-8 {
+  background-image: var(--mui-overlays-8);
+}
+@utility overlay-9 {
+  background-image: var(--mui-overlays-9);
+}
+@utility overlay-10 {
+  background-image: var(--mui-overlays-10);
+}
+@utility overlay-11 {
+  background-image: var(--mui-overlays-11);
+}
+@utility overlay-12 {
+  background-image: var(--mui-overlays-12);
+}
+@utility overlay-13 {
+  background-image: var(--mui-overlays-13);
+}
+@utility overlay-14 {
+  background-image: var(--mui-overlays-14);
+}
+@utility overlay-15 {
+  background-image: var(--mui-overlays-15);
+}
+@utility overlay-16 {
+  background-image: var(--mui-overlays-16);
+}
+@utility overlay-17 {
+  background-image: var(--mui-overlays-17);
+}
+@utility overlay-18 {
+  background-image: var(--mui-overlays-18);
+}
+@utility overlay-19 {
+  background-image: var(--mui-overlays-19);
+}
+@utility overlay-20 {
+  background-image: var(--mui-overlays-20);
+}
+@utility overlay-21 {
+  background-image: var(--mui-overlays-21);
+}
+@utility overlay-22 {
+  background-image: var(--mui-overlays-22);
+}
+@utility overlay-23 {
+  background-image: var(--mui-overlays-23);
+}
+@utility overlay-24 {
+  background-image: var(--mui-overlays-24);
+}
+
+/* 阴影工具类 */
+@utility elevation-1 {
+  box-shadow: var(--mui-shadows-1);
+  background-image: var(--mui-overlays-1);
+}
+@utility elevation-2 {
+  box-shadow: var(--mui-shadows-2);
+  background-image: var(--mui-overlays-2);
+}
+@utility elevation-3 {
+  box-shadow: var(--mui-shadows-3);
+  background-image: var(--mui-overlays-3);
+}
+@utility elevation-4 {
+  box-shadow: var(--mui-shadows-4);
+  background-image: var(--mui-overlays-4);
+}
+@utility elevation-5 {
+  box-shadow: var(--mui-shadows-5);
+  background-image: var(--mui-overlays-5);
+}
+@utility elevation-6 {
+  box-shadow: var(--mui-shadows-6);
+  background-image: var(--mui-overlays-6);
+}
+@utility elevation-7 {
+  box-shadow: var(--mui-shadows-7);
+  background-image: var(--mui-overlays-7);
+}
+@utility elevation-8 {
+  box-shadow: var(--mui-shadows-8);
+  background-image: var(--mui-overlays-8);
+}
+@utility elevation-9 {
+  box-shadow: var(--mui-shadows-9);
+  background-image: var(--mui-overlays-9);
+}
+@utility elevation-10 {
+  box-shadow: var(--mui-shadows-10);
+  background-image: var(--mui-overlays-10);
+}
+@utility elevation-11 {
+  box-shadow: var(--mui-shadows-11);
+  background-image: var(--mui-overlays-11);
+}
+@utility elevation-12 {
+  box-shadow: var(--mui-shadows-12);
+  background-image: var(--mui-overlays-12);
+}
+@utility elevation-13 {
+  box-shadow: var(--mui-shadows-13);
+  background-image: var(--mui-overlays-13);
+}
+@utility elevation-14 {
+  box-shadow: var(--mui-shadows-14);
+  background-image: var(--mui-overlays-14);
+}
+@utility elevation-15 {
+  box-shadow: var(--mui-shadows-15);
+  background-image: var(--mui-overlays-15);
+}
+@utility elevation-16 {
+  box-shadow: var(--mui-shadows-16);
+  background-image: var(--mui-overlays-16);
+}
+@utility elevation-17 {
+  box-shadow: var(--mui-shadows-17);
+  background-image: var(--mui-overlays-17);
+}
+@utility elevation-18 {
+  box-shadow: var(--mui-shadows-18);
+  background-image: var(--mui-overlays-18);
+}
+@utility elevation-19 {
+  box-shadow: var(--mui-shadows-19);
+  background-image: var(--mui-overlays-19);
+}
+@utility elevation-20 {
+  box-shadow: var(--mui-shadows-20);
+  background-image: var(--mui-overlays-20);
+}
+@utility elevation-21 {
+  box-shadow: var(--mui-shadows-21);
+  background-image: var(--mui-overlays-21);
+}
+@utility elevation-22 {
+  box-shadow: var(--mui-shadows-22);
+  background-image: var(--mui-overlays-22);
+}
+@utility elevation-23 {
+  box-shadow: var(--mui-shadows-23);
+  background-image: var(--mui-overlays-23);
+}
+@utility elevation-24 {
+  box-shadow: var(--mui-shadows-24);
+  background-image: var(--mui-overlays-24);
+}

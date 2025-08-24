@@ -22,10 +22,10 @@ export class MainNavigator extends ObservedComponent<{}, typeof i18n> {
 
     return [
       { title: t('latest_projects'), href: '/project' },
-      { title: 'GitHub-reward', href: '/project/reward/issue', target: '_top' },
       { title: t('member'), href: '/member' },
       { title: t('open_source_project'), href: '/open-source' },
       { title: t('wiki'), href: '/wiki' },
+      { title: t('github_reward'), href: '/project/reward/issue', target: '_top' },
     ];
   }
 
@@ -78,7 +78,7 @@ export class MainNavigator extends ObservedComponent<{}, typeof i18n> {
   };
 
   renderDrawer = () => (
-    <nav className="sm:hidden">
+    <nav className="md:hidden">
       <IconButton
         aria-label="nav links"
         aria-controls="drawer"
@@ -106,9 +106,9 @@ export class MainNavigator extends ObservedComponent<{}, typeof i18n> {
 
   render() {
     return (
-      <AppBar color="transparent" className="fixed backdrop-blur-sm" style={{ zIndex: 1201 }}>
+      <AppBar color="transparent" className="fixed z-[1201] backdrop-blur-sm">
         <Toolbar>
-          <div className="container mx-auto flex max-w-(--breakpoint-xl) items-center justify-between px-3">
+          <div className="container mx-auto flex max-w-screen-xl items-center justify-between px-3">
             <div className="flex flex-row items-center gap-3">
               {this.renderDrawer()}
 
@@ -118,7 +118,7 @@ export class MainNavigator extends ObservedComponent<{}, typeof i18n> {
               </Link>
             </div>
 
-            <nav className="item-center hidden flex-row gap-4 sm:flex">{this.renderLinks()}</nav>
+            <nav className="item-center hidden flex-row gap-4 md:flex">{this.renderLinks()}</nav>
 
             <div className="flex flex-row items-center gap-3 sm:gap-6">
               <Link
