@@ -5,7 +5,7 @@ export const service = ({ t }: typeof i18n) => [
     icon: 'trending_up',
     title: t('IT_transformation_consulting'),
     summary: t('IT_transformation_consulting_summary'),
-    buttonText: t('read_resolution'),
+    buttonText: t('view_proposal'),
     buttonLink: 'https://idea2app.feishu.cn/wiki/RsCvwrpXPimCpRkjpsAcWl2rnJd',
   },
   {

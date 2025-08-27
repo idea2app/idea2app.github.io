@@ -8,7 +8,7 @@ export default {
   IT_transformation_consulting: '业务智能化咨询',
   IT_transformation_consulting_summary:
     '帮您梳理业务流程，发掘「提效降本」的痛点，量身定制「智能化转型」方案',
-  read_resolution: '阅读解决方案',
+  view_proposal: '查看方案',
   custom_software_development: '定制化软件开发',
   custom_software_development_summary:
     '一线工程师基于业界领先技术高效交付软件系统，让您的钱花在刀刃上',
@@ -46,6 +46,7 @@ export default {
   programming_language: '编程语言',
   topic: '话题',
   star_count: '星标数',
+  preview: '预览',
 
   // Member page
   projects_as_leader: '负责的项目',

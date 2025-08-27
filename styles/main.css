@@ -1,16 +1,5 @@
 @import './tailwind.css';
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-
-
-
 .material-symbols-outlined {
   font-variation-settings:
     'FILL' 0,
@@ -31,3 +20,42 @@ div:has(.next-error-h1) {
     width: auto !important;
   }
 }
+
+.prose {
+  span {
+    font-size: inherit;
+    letter-spacing: inherit;
+  }
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+}
+
+/* .carousel-ul {
+  anchor-name: --my-carousel;
+  scrollbar-width: none;
+  scroll-marker-group: after;
+}
+
+.carousel-ul::scroll-marker-group {
+  position: absolute;
+  position-anchor: --my-carousel;
+  display: flex;
+  top: calc(anchor(bottom) - 0.25rem);
+  justify-content: center;
+  justify-self: anchor-center;
+  gap: 0.5rem;
+}
+.carousel-ul::column::scroll-marker {
+  border: 1px solid black;
+  border-radius: 0.5rem;
+  background-color: transparent;
+  width: 0.25rem;
+  height: 0.25rem;
+  content: '';
+}
+
+.carousel-ul::column::scroll-marker:target-current {
+  background-color: var(--color-primary);
+} */

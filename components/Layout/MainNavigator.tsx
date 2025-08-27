@@ -1,4 +1,13 @@
-import { AppBar, Drawer, IconButton, Menu, MenuItem, PopoverProps, Toolbar } from '@mui/material';
+import {
+  AppBar,
+  Button,
+  Drawer,
+  IconButton,
+  Menu,
+  MenuItem,
+  PopoverProps,
+  Toolbar,
+} from '@mui/material';
 import { computed, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
@@ -36,9 +45,9 @@ export class MainNavigator extends ObservedComponent<{}, typeof i18n> {
 
   renderLinks = () =>
     this.links.map(({ title, href, target }) => (
-      <Link key={title} className="py-1" href={href} target={target}>
+      <Button key={title} component={Link} className="py-1" href={href} target={target}>
         {title}
-      </Link>
+      </Button>
     ));
 
   renderI18nSwitch = () => {
@@ -106,7 +115,7 @@ export class MainNavigator extends ObservedComponent<{}, typeof i18n> {
 
   render() {
     return (
-      <AppBar color="transparent" className="fixed z-[1201] backdrop-blur-sm">
+      <AppBar color="transparent" className="fixed z-[1201] backdrop-blur-md">
         <Toolbar>
           <div className="container mx-auto flex max-w-screen-xl items-center justify-between px-3">
             <div className="flex flex-row items-center gap-3">
@@ -121,14 +130,16 @@ export class MainNavigator extends ObservedComponent<{}, typeof i18n> {
             <nav className="item-center hidden flex-row gap-4 md:flex">{this.renderLinks()}</nav>
 
             <div className="flex flex-row items-center gap-3 sm:gap-6">
-              <Link
+              <IconButton
+                className="!text-black dark:!text-white"
+                component={Link}
                 href="https://github.com/idea2app"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="idea2app's GitHub account"
               >
                 <GithubIcon />
-              </Link>
+              </IconButton>
               <ColorModeIconDropdown />
               {this.renderI18nSwitch()}
             </div>

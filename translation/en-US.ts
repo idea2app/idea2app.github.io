@@ -8,7 +8,7 @@ export default {
   IT_transformation_consulting: 'IT transformation consulting',
   IT_transformation_consulting_summary:
     'Help you sort out business processes, discover the pain points of Improving Efficiency & Reducing Costs", and tailor IT Transformation solutions',
-  read_resolution: 'Read resolution',
+  view_proposal: 'View proposal',
   custom_software_development: 'Tailored Software',
   custom_software_development_summary:
     'Front-line engineers efficiently deliver Software systems based on Industry-leading technologies, allowing you to spend your money wisely',
@@ -46,6 +46,7 @@ export default {
   programming_language: 'Programming Language',
   topic: 'Topic',
   star_count: 'Star Count',
+  preview: 'Preview',
 
   // Member page
   projects_as_leader: 'Projects as leader',

@@ -51,6 +51,7 @@
     "@next/eslint-plugin-next": "^15.5.0",
     "@stylistic/eslint-plugin": "^5.2.3",
     "@tailwindcss/postcss": "^4.1.12",
+    "@tailwindcss/typography": "^0.5.16",
     "@types/eslint-config-prettier": "^6.11.3",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/koa": "^3.0.0",

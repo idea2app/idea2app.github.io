@@ -8,7 +8,7 @@ export default {
   IT_transformation_consulting: '業務智慧化咨詢',
   IT_transformation_consulting_summary:
     '幫您梳理業務流程，發掘「提效降本」的痛點，量身定制「智慧化轉型」方案',
-  read_resolution: '閱讀解決方案',
+  view_proposal: '查看方案',
   custom_software_development: '客製化軟體開發',
   custom_software_development_summary:
     '一線工程師基於業界領先技術高效交付軟體系統，讓您的錢花在刀刃上',
@@ -46,7 +46,7 @@ export default {
   programming_language: '編程語言',
   topic: '話題',
   star_count: '星標數',
-
+  preview: '預覽',
   // Member page
   projects_as_leader: '負責的專案',
   projects_as_member: '參與的專案',

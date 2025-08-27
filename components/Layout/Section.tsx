@@ -15,7 +15,7 @@ export const Section: FC<SectionProps> = observer(
 
     return (
       <section className={`mx-auto flex max-w-screen-xl flex-col gap-6 py-8 ${className}`}>
-        <h2 className="text-center" id={id}>
+        <h2 className="text-center font-semibold" id={id}>
           {title}
         </h2>
 

@@ -41,7 +41,7 @@ export const theme = createTheme({
   },
 });
 
-const clientCache = createEmotionCache({ enableCssLayer: true, key: 'css' });
+const clientCache = createEmotionCache({ enableCssLayer: true, key: 'css', prepend: true });
 
 @observer
 export default class CustomApp extends App<I18nProps & { emotionCache: EmotionCache }> {

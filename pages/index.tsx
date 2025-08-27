@@ -64,17 +64,17 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => {
             {service(i18n).map(({ title, summary, icon, buttonText, buttonLink }) => (
               <li
                 key={title}
-                className="elevation-1 hover:elevation-8 flex flex-col gap-4 rounded-3xl border p-4 md:col-span-2 last:md:col-start-2 lg:col-span-1 last:lg:col-start-3 dark:border-0"
+                className="bg-primary/10 flex flex-col gap-4 rounded-3xl p-4 md:col-span-2 last:md:col-start-2 lg:col-span-1 last:lg:col-start-3 dark:border-0"
                 tabIndex={-1}
               >
                 <h5 className="flex flex-shrink-0 items-center gap-4 lg:text-nowrap">
                   <SymbolIcon name={icon} /> {title}
                 </h5>
 
-                <p className="flex-1">{summary}</p>
+                <p className="flex-1 text-neutral-500">{summary}</p>
 
                 <Button
-                  className="flex-shrink-0 md:self-center"
+                  className="flex-shrink-0 !rounded-full md:self-center"
                   variant="contained"
                   href={buttonLink}
                   target={buttonLink.startsWith('http') ? '_blank' : undefined}
@@ -95,7 +95,7 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => {
             {Array.from({ length: 3 }).map((_, index) => (
               <li
                 key={index}
-                className="animate-carousel flex min-w-full shrink-0 flex-row flex-nowrap items-center justify-around gap-12"
+                className="animate-carousel-scroll flex min-w-full shrink-0 flex-row flex-nowrap items-center justify-around gap-12"
               >
                 {PARTNERS_INFO(i18n).map(({ name, ...rest }) => (
                   <PartnerOverview key={name} name={name} {...rest} />
