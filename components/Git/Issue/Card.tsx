@@ -22,7 +22,7 @@ export const IssueCard: FC<IssueCardProps> = ({
 }) => (
   <Card {...props}>
     <CardContent className="flex h-full flex-col justify-between gap-2">
-      <h2 className="text-2xl">
+      <h2 className="text-2xl font-semibold">
         <a
           href={html_url}
           target="_blank"

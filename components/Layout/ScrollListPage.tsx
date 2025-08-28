@@ -31,9 +31,9 @@ export const ScrollListPage = <D extends DataObject, F extends Filter<D> = Filte
   const i18n = useContext(I18nContext);
 
   return (
-    <div className={`container mx-auto max-w-(--breakpoint-xl) px-4 pt-16 pb-6 ${className}`}>
+    <div className={`container mx-auto max-w-screen-xl px-4 pt-16 pb-6 ${className}`}>
       <PageHead title={title} />
-      <h1 className="my-8 text-4xl">{header}</h1>
+      <h1 className="my-8 text-4xl font-semibold">{header}</h1>
 
       {scrollList ? (
         <ScrollList

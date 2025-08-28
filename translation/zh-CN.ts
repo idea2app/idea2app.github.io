@@ -8,7 +8,7 @@ export default {
   IT_transformation_consulting: '业务智能化咨询',
   IT_transformation_consulting_summary:
     '帮您梳理业务流程，发掘「提效降本」的痛点，量身定制「智能化转型」方案',
-  read_resolution: '阅读解决方案',
+  view_proposal: '查看方案',
   custom_software_development: '定制化软件开发',
   custom_software_development_summary:
     '一线工程师基于业界领先技术高效交付软件系统，让您的钱花在刀刃上',
@@ -18,6 +18,7 @@ export default {
     '与您的技术团队面对面一起从实践中学习「敏捷开发」方法论，成长为可靠、高效的「现代化工程团队」',
   read_tutorial: '阅读教程',
   latest_projects: '近期项目',
+  github_reward: '开源悬赏',
   welcome_to: '欢迎使用',
   get_started_by_editing: '开始你的项目吧，编辑',
   upstream_projects: '上游项目',
@@ -26,6 +27,7 @@ export default {
   open_source_project: '开源项目',
   partner: '合作伙伴',
   member: '菁英团队',
+  wiki: '开放百科',
   component: '组件',
   pagination: '分页',
   powered_by: '强力驱动自',
@@ -44,6 +46,7 @@ export default {
   programming_language: '编程语言',
   topic: '话题',
   star_count: '星标数',
+  preview: '预览',
 
   // Member page
   projects_as_leader: '负责的项目',

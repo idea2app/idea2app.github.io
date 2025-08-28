@@ -8,7 +8,7 @@ export default {
   IT_transformation_consulting: '業務智慧化咨詢',
   IT_transformation_consulting_summary:
     '幫您梳理業務流程，發掘「提效降本」的痛點，量身定制「智慧化轉型」方案',
-  read_resolution: '閱讀解決方案',
+  view_proposal: '查看方案',
   custom_software_development: '客製化軟體開發',
   custom_software_development_summary:
     '一線工程師基於業界領先技術高效交付軟體系統，讓您的錢花在刀刃上',
@@ -18,6 +18,7 @@ export default {
     '與您的技術團隊面對面一起從實踐中學習「敏捷開發」方法論，成長為可靠、高效的「現代化工程團隊」',
   read_tutorial: '閱讀教程',
   latest_projects: '近期專案',
+  github_reward: '開源懸賞',
   welcome_to: '歡迎使用',
   get_started_by_editing: '開始你的專案吧，編輯',
   upstream_projects: '上游專案',
@@ -26,6 +27,7 @@ export default {
   open_source_project: '開源專案',
   partner: '合作夥伴',
   member: '菁英團隊',
+  wiki: '開放百科',
   component: '元件',
   pagination: '分頁',
   powered_by: '強力驅動自',
@@ -44,7 +46,7 @@ export default {
   programming_language: '編程語言',
   topic: '話題',
   star_count: '星標數',
-
+  preview: '預覽',
   // Member page
   projects_as_leader: '負責的專案',
   projects_as_member: '參與的專案',

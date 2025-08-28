@@ -1,20 +1,25 @@
-import { AppBar, Drawer, IconButton, Menu, MenuItem, PopoverProps, Toolbar } from '@mui/material';
+import {
+  AppBar,
+  Button,
+  Drawer,
+  IconButton,
+  Menu,
+  MenuItem,
+  PopoverProps,
+  Toolbar,
+} from '@mui/material';
 import { computed, observable } from 'mobx';
 import { observer } from 'mobx-react';
-import { ObservedComponent, observePropsState } from 'mobx-react-helper';
+import { ObservedComponent } from 'mobx-react-helper';
 import Link from 'next/link';
-import { Component } from 'react';
 
 import { i18n, I18nContext, LanguageName } from '../../models/Translation';
 import { SymbolIcon } from '../Icon';
 import { ColorModeIconDropdown } from './ColorModeDropdown';
 import { BrandLogo, GithubIcon } from './Svg';
 
-export interface MainNavigator extends ObservedComponent<{}, typeof i18n> {}
-
 @observer
-@observePropsState
-export class MainNavigator extends Component {
+export class MainNavigator extends ObservedComponent<{}, typeof i18n> {
   static contextType = I18nContext;
 
   @observable accessor menuExpand = false;
@@ -26,9 +31,10 @@ export class MainNavigator extends Component {
 
     return [
       { title: t('latest_projects'), href: '/project' },
-      { title: 'GitHub-reward', href: '/project/reward/issue', target: '_top' },
       { title: t('member'), href: '/member' },
       { title: t('open_source_project'), href: '/open-source' },
+      { title: t('wiki'), href: '/wiki' },
+      { title: t('github_reward'), href: '/project/reward/issue', target: '_top' },
     ];
   }
 
@@ -39,9 +45,9 @@ export class MainNavigator extends Component {
 
   renderLinks = () =>
     this.links.map(({ title, href, target }) => (
-      <Link key={title} className="py-1" href={href} target={target}>
+      <Button key={title} component={Link} className="py-1" href={href} target={target}>
         {title}
-      </Link>
+      </Button>
     ));
 
   renderI18nSwitch = () => {
@@ -81,7 +87,7 @@ export class MainNavigator extends Component {
   };
 
   renderDrawer = () => (
-    <nav className="sm:hidden">
+    <nav className="md:hidden">
       <IconButton
         aria-label="nav links"
         aria-controls="drawer"
@@ -109,9 +115,9 @@ export class MainNavigator extends Component {
 
   render() {
     return (
-      <AppBar color="transparent" className="fixed backdrop-blur-sm" style={{ zIndex: 1201 }}>
+      <AppBar color="transparent" className="fixed z-[1201] backdrop-blur-md">
         <Toolbar>
-          <div className="container mx-auto flex max-w-(--breakpoint-xl) items-center justify-between px-3">
+          <div className="container mx-auto flex max-w-screen-xl items-center justify-between px-3">
             <div className="flex flex-row items-center gap-3">
               {this.renderDrawer()}
 
@@ -121,17 +127,19 @@ export class MainNavigator extends Component {
               </Link>
             </div>
 
-            <nav className="item-center hidden flex-row gap-4 sm:flex">{this.renderLinks()}</nav>
+            <nav className="item-center hidden flex-row gap-4 md:flex">{this.renderLinks()}</nav>
 
             <div className="flex flex-row items-center gap-3 sm:gap-6">
-              <Link
+              <IconButton
+                className="!text-black dark:!text-white"
+                component={Link}
                 href="https://github.com/idea2app"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="idea2app's GitHub account"
               >
                 <GithubIcon />
-              </Link>
+              </IconButton>
               <ColorModeIconDropdown />
               {this.renderI18nSwitch()}
             </div>

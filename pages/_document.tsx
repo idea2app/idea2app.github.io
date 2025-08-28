@@ -1,4 +1,5 @@
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
+import { createEmotionCache, documentGetInitialProps } from '@mui/material-nextjs/v15-pagesRouter';
 import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 
@@ -31,10 +32,17 @@ interface CustomDocumentProps {
   colorScheme: 'light' | 'dark';
 }
 
+/**
+ * @see {@link https://mui.com/material-ui/integrations/nextjs/#pages-router}
+ */
 export default class CustomDocument extends Document<CustomDocumentProps> {
   static async getInitialProps(context: DocumentContext) {
+    const cacheProps = await documentGetInitialProps(context, {
+      emotionCache: createEmotionCache({ enableCssLayer: true, key: 'css', prepend: true }),
+    });
+
     return {
-      ...(await Document.getInitialProps(context)),
+      ...cacheProps,
       ...parseSSRContext<CustomDocumentProps>(context, ['language']),
     };
   }
@@ -66,7 +74,7 @@ export default class CustomDocument extends Document<CustomDocumentProps> {
            * */}
           <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=chat,code,dark_mode,diversity_3,keyboard_arrow_down,language,light_mode,menu,translate,trending_up,visibility&display=swap"
           />
           <script type="application/ld+json">{JSON.stringify(siteNameJsonLd)}</script>
           <script type="application/ld+json">{JSON.stringify(organizationJsonLd)}</script>
