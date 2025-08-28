@@ -32,30 +32,3 @@ div:has(.next-error-h1) {
   scrollbar-width: none;
 }
 
-/* .carousel-ul {
-  anchor-name: --my-carousel;
-  scrollbar-width: none;
-  scroll-marker-group: after;
-}
-
-.carousel-ul::scroll-marker-group {
-  position: absolute;
-  position-anchor: --my-carousel;
-  display: flex;
-  top: calc(anchor(bottom) - 0.25rem);
-  justify-content: center;
-  justify-self: anchor-center;
-  gap: 0.5rem;
-}
-.carousel-ul::column::scroll-marker {
-  border: 1px solid black;
-  border-radius: 0.5rem;
-  background-color: transparent;
-  width: 0.25rem;
-  height: 0.25rem;
-  content: '';
-}
-
-.carousel-ul::column::scroll-marker:target-current {
-  background-color: var(--color-primary);
-} */
