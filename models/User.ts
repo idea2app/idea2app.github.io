@@ -4,6 +4,7 @@ import { observable, reaction } from 'mobx';
 import { persist, restore, toggle } from 'mobx-restful';
 import { setCookie } from 'web-utility';
 
+import { TableModel } from './Base';
 import { API_Host, isServer } from './configuration';
 
 export interface User {
@@ -18,13 +19,12 @@ export interface WebAuthnChallenge {
   string: string;
 }
 
-export class UserModel {
+export class UserModel extends TableModel<User> {
+  baseURI = 'user';
+
   @persist()
   @observable
   accessor session: User | undefined;
-
-  @observable
-  accessor uploading = 0;
 
   disposer = reaction(
     () => this.session?.token,
@@ -32,7 +32,7 @@ export class UserModel {
   );
   restored = !isServer() && restore(this, 'User');
 
-  client = new HTTPClient({ baseURI: `${API_Host}/api/`, responseType: 'json' }).use(({ request }, next) => {
+  client = new HTTPClient({ baseURI: API_Host, responseType: 'json' }).use(({ request }, next) => {
     const isSameDomain = API_Host.startsWith(new URL(request.path, API_Host).origin);
 
     if (isSameDomain && this.session)
@@ -72,11 +72,10 @@ export class UserModel {
 
   @toggle('uploading')
   async signUpWebAuthn(email: string) {
-    if (isServer())
-      throw new Error('WebAuthn not available on server side');
+    if (isServer()) throw new Error('WebAuthn not available on server side');
 
     const { client } = await import('@passwordless-id/webauthn');
-    
+
     const challenge = await this.createChallenge();
 
     const registration = await client.register({ user: email, challenge });
@@ -91,11 +90,10 @@ export class UserModel {
 
   @toggle('uploading')
   async signInWebAuthn() {
-    if (isServer())
-      throw new Error('WebAuthn not available on server side');
+    if (isServer()) throw new Error('WebAuthn not available on server side');
 
     const { client } = await import('@passwordless-id/webauthn');
-    
+
     const challenge = await this.createChallenge();
 
     const authentication = await client.authenticate({ challenge });

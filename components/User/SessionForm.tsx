@@ -1,11 +1,11 @@
-import { Button, IconButton,InputAdornment, Tab, Tabs, TextField } from '@mui/material';
+import { Button, IconButton, InputAdornment, Tab, Tabs, TextField } from '@mui/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
-import React, { ChangeEvent,FormEvent, MouseEvent } from 'react';
+import { FormEvent, MouseEvent } from 'react';
 import { formToJSON } from 'web-utility';
 
-import { I18nContext } from '../../models/Translation';
+import { i18n, I18nContext } from '../../models/Translation';
 import userStore from '../../models/User';
 import { SymbolIcon } from '../Icon';
 
@@ -19,12 +19,11 @@ export interface SignInData {
 }
 
 @observer
-export class SessionForm extends ObservedComponent<SessionFormProps, typeof I18nContext> {
+export class SessionForm extends ObservedComponent<SessionFormProps, typeof i18n> {
+  static contextType = I18nContext;
+
   @observable
   accessor signType: 'up' | 'in' = 'in';
-
-  static contextType = I18nContext;
-  declare context: React.ContextType<typeof I18nContext>;
 
   handleWebAuthn = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -32,7 +31,9 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof I18n
 
     if (this.signType === 'up') {
       const { phone } = formToJSON<SignInData>(event.currentTarget.form!);
+
       if (!phone) throw new Error('手机号是WebAuthn注册的必填项');
+
       await userStore.signUpWebAuthn(phone);
     } else {
       await userStore.signInWebAuthn();
@@ -48,10 +49,13 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof I18n
 
     if (this.signType === 'up') {
       await userStore.signUp(phone, password);
+
       this.signType = 'in';
+
       alert('注册成功，请登录');
     } else {
       await userStore.signIn(phone, password);
+
       this.props.onSignIn?.({ phone, password });
     }
   };
@@ -59,14 +63,11 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof I18n
   render() {
     const { signType } = this,
       loading = userStore.uploading > 0;
-    
-    const { t } = this.context;
+
+    const { t } = this.observedContext;
 
     return (
-      <form
-        className="flex flex-col gap-4"
-        onSubmit={this.handleSubmit}
-      >
+      <form className="flex flex-col gap-4" onSubmit={this.handleSubmit}>
         <Tabs
           value={signType}
           variant="fullWidth"
@@ -82,34 +83,33 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof I18n
           type="tel"
           required
           fullWidth
+          variant="outlined"
           label={t('phone_number')}
           placeholder={t('please_enter_phone')}
-          variant="outlined"
-          inputProps={{
-            pattern: "1[3-9]\\d{9}",
-            title: t('please_enter_correct_phone')
-          }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">+86</InputAdornment>
-            ),
+          slotProps={{
+            htmlInput: {
+              pattern: '1[3-9]\\d{9}',
+              title: t('please_enter_correct_phone'),
+            },
+            input: {
+              startAdornment: <InputAdornment position="start">+86</InputAdornment>,
+            },
           }}
         />
-
         <div className="flex items-center gap-2">
           <TextField
             name="password"
             type="password"
             required
             fullWidth
+            variant="outlined"
             label={t('password')}
             placeholder={t('please_enter_password')}
-            variant="outlined"
           />
 
           <IconButton
             size="large"
-            className="self-end mb-2"
+            className="mb-2 self-end"
             disabled={loading}
             onClick={this.handleWebAuthn}
           >
@@ -118,12 +118,12 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof I18n
         </div>
 
         <Button
+          className="mt-4"
           type="submit"
           variant="contained"
           fullWidth
           size="large"
           disabled={loading}
-          className="mt-4"
         >
           {signType === 'up' ? t('register') : t('login')}
         </Button>
