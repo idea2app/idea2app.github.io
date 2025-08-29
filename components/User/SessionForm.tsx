@@ -1,7 +1,8 @@
 import { Button, Tab, Tabs, TextField, InputAdornment, IconButton } from '@mui/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
-import { Component, FormEvent, MouseEvent, ChangeEvent, ReactNode } from 'react';
+import { ObservedComponent } from 'mobx-react-helper';
+import React, { FormEvent, MouseEvent, ChangeEvent } from 'react';
 import { formToJSON } from 'web-utility';
 
 import { SymbolIcon } from '../Icon';
@@ -18,7 +19,7 @@ export interface SignInData {
 }
 
 @observer
-export class SessionForm extends Component<SessionFormProps> {
+export class SessionForm extends ObservedComponent<SessionFormProps, typeof I18nContext> {
   @observable
   accessor signType: 'up' | 'in' = 'in';
 
@@ -29,19 +30,14 @@ export class SessionForm extends Component<SessionFormProps> {
     event.preventDefault();
     event.stopPropagation();
 
-    try {
-      if (this.signType === 'up') {
-        const { phone } = formToJSON<SignInData>(event.currentTarget.form!);
-        if (!phone) throw new Error('手机号是WebAuthn注册的必填项');
-        await userStore.signUpWebAuthn(phone);
-      } else {
-        await userStore.signInWebAuthn();
-      }
-      this.props.onSignIn?.();
-    } catch (error) {
-      console.error('WebAuthn failed:', error);
-      alert('WebAuthn验证失败');
+    if (this.signType === 'up') {
+      const { phone } = formToJSON<SignInData>(event.currentTarget.form!);
+      if (!phone) throw new Error('手机号是WebAuthn注册的必填项');
+      await userStore.signUpWebAuthn(phone);
+    } else {
+      await userStore.signInWebAuthn();
     }
+    this.props.onSignIn?.();
   };
 
   handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -50,23 +46,14 @@ export class SessionForm extends Component<SessionFormProps> {
 
     const { phone, password } = formToJSON<SignInData>(event.currentTarget);
 
-    try {
-      if (this.signType === 'up') {
-        await userStore.signUp(phone, password);
-        this.signType = 'in';
-        alert('注册成功，请登录');
-      } else {
-        await userStore.signIn(phone, password);
-        this.props.onSignIn?.({ phone, password });
-      }
-    } catch (error) {
-      console.error('Authentication failed:', error);
-      alert((error as Error).message || '操作失败，请稍后重试');
+    if (this.signType === 'up') {
+      await userStore.signUp(phone, password);
+      this.signType = 'in';
+      alert('注册成功，请登录');
+    } else {
+      await userStore.signIn(phone, password);
+      this.props.onSignIn?.({ phone, password });
     }
-  };
-
-  handleTabChange = (_: ChangeEvent<{}>, newValue: 'up' | 'in') => {
-    this.signType = newValue;
   };
 
   render() {
@@ -82,7 +69,7 @@ export class SessionForm extends Component<SessionFormProps> {
       >
         <Tabs
           value={signType}
-          onChange={this.handleTabChange}
+          onChange={(_, newValue: 'up' | 'in') => (this.signType = newValue)}
           variant="fullWidth"
           className="mb-4"
         >
@@ -91,8 +78,8 @@ export class SessionForm extends Component<SessionFormProps> {
         </Tabs>
 
         <TextField
-          type="tel"
           name="phone"
+          type="tel"
           required
           fullWidth
           label={t('phone_number')}
@@ -100,7 +87,7 @@ export class SessionForm extends Component<SessionFormProps> {
           variant="outlined"
           inputProps={{
             pattern: "1[3-9]\\d{9}",
-            title: "请输入正确的手机号码"
+            title: t('please_enter_correct_phone')
           }}
           InputProps={{
             startAdornment: (
@@ -111,8 +98,8 @@ export class SessionForm extends Component<SessionFormProps> {
 
         <div className="flex items-center gap-2">
           <TextField
-            type="password"
             name="password"
+            type="password"
             required
             fullWidth
             label={t('password')}
@@ -121,10 +108,10 @@ export class SessionForm extends Component<SessionFormProps> {
           />
 
           <IconButton
-            onClick={this.handleWebAuthn}
-            disabled={loading}
             size="large"
             className="self-end mb-2"
+            disabled={loading}
+            onClick={this.handleWebAuthn}
           >
             <SymbolIcon name="fingerprint" />
           </IconButton>

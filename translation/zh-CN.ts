@@ -78,6 +78,7 @@ export default {
   // User authentication
   phone_number: '手机号码',
   please_enter_phone: '请输入手机号码',
+  please_enter_correct_phone: '请输入正确的手机号码',
   password: '密码',
   please_enter_password: '请输入密码或验证码',
   register: '注册',

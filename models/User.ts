@@ -72,9 +72,8 @@ export class UserModel {
 
   @toggle('uploading')
   async signUpWebAuthn(email: string) {
-    if (typeof window === 'undefined') {
+    if (isServer())
       throw new Error('WebAuthn not available on server side');
-    }
 
     const { client } = await import('@passwordless-id/webauthn');
     
@@ -92,9 +91,8 @@ export class UserModel {
 
   @toggle('uploading')
   async signInWebAuthn() {
-    if (typeof window === 'undefined') {
+    if (isServer())
       throw new Error('WebAuthn not available on server side');
-    }
 
     const { client } = await import('@passwordless-id/webauthn');
     

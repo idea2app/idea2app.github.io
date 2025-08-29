@@ -25,8 +25,6 @@ const DashboardPage: FC<DashboardPageProps> = observer(({ jwtPayload }) => {
 
   const menuItems = [
     { href: '/dashboard', title: t('overview') },
-    { href: '/dashboard/profile', title: t('profile') },
-    { href: '/dashboard/settings', title: t('settings') },
   ];
 
   return (

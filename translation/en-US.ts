@@ -80,6 +80,7 @@ export default {
   // User authentication
   phone_number: 'Phone Number',
   please_enter_phone: 'Please enter phone number',
+  please_enter_correct_phone: 'Please enter correct phone number',
   password: 'Password',
   please_enter_password: 'Please enter password or verification code',
   register: 'Register',
