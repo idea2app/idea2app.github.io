@@ -2,6 +2,8 @@ import { HTTPClient } from 'koajax';
 import MIME from 'mime';
 import { githubClient } from 'mobx-github';
 import { TableCellValue, TableCellMedia, TableCellAttachment } from 'mobx-lark';
+import { Filter, ListModel, toggle, IDType } from 'mobx-restful';
+import { buildURLData } from 'web-utility';
 
 import { API_Host, GITHUB_TOKEN, isServer } from './configuration';
 
@@ -33,4 +35,26 @@ export function fileURLOf(field: TableCellValue, cache = false) {
   if (cache) URI += '.' + MIME.getExtension('type' in file ? file.type : file.mimeType);
 
   return URI;
+}
+
+export abstract class TableModel<D extends Base, F extends Filter<D> = Filter<D>> extends ListModel<
+  D,
+  F
+> {
+  @toggle('uploading')
+  async updateOne(data: Filter<D>, id?: IDType) {
+    const { body } = await (id
+      ? this.client.put<D>(`${this.baseURI}/${id}`, data)
+      : this.client.post<D>(this.baseURI, data));
+
+    return (this.currentOne = body!);
+  }
+
+  async loadPage(pageIndex: number, pageSize: number, filter: F) {
+    const { body } = await this.client.get<ListChunk<D>>(
+      `${this.baseURI}?${buildURLData({ ...filter, pageIndex, pageSize })}`,
+    );
+
+    return { pageData: body!.list, totalCount: body!.count };
+  }
 }
