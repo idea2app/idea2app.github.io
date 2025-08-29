@@ -1,14 +1,25 @@
-import { withSafeKoa } from '../core';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-const router = require('@koa/router')();
+interface SMSCodeRequest {
+  phone: string;
+}
 
-// SMS Code endpoint
-router.post('/sms-code', async (ctx: any) => {
-  const { phone } = ctx.request.body;
+interface SMSCodeResponse {
+  success: boolean;
+  message: string;
+  code?: string;
+}
+
+export default function handler(req: NextApiRequest, res: NextApiResponse<SMSCodeResponse>) {
+  if (req.method !== 'POST') {
+    res.status(405).json({ success: false, message: 'Method not allowed' });
+    return;
+  }
+
+  const { phone }: SMSCodeRequest = req.body;
 
   if (!phone || !/^1[3-9]\d{9}$/.test(phone)) {
-    ctx.status = 400;
-    ctx.body = { success: false, message: '请输入正确的手机号码' };
+    res.status(400).json({ success: false, message: '请输入正确的手机号码' });
     return;
   }
 
@@ -17,12 +28,10 @@ router.post('/sms-code', async (ctx: any) => {
   // In demo mode, log the code (in production, send actual SMS)
   console.log(`SMS Code for ${phone}: ${code}`);
 
-  ctx.body = { 
+  res.status(200).json({ 
     success: true, 
     message: '验证码已发送',
     // For demo only
     code: process.env.NODE_ENV === 'development' ? code : undefined
-  };
-});
-
-export default withSafeKoa(router.routes(), router.allowedMethods());
+  });
+}
