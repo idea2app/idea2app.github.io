@@ -1,4 +1,4 @@
-import { Button, Chip, Divider, IconButton } from '@mui/material';
+import { Button, Chip, Divider, IconButton, Tooltip } from '@mui/material';
 import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
 import Link from 'next/link';
@@ -47,25 +47,31 @@ export const GitCard: FC<GitCardProps> = observer(
         <p className="row-span-3 text-sm text-neutral-500">{description}</p>
         <div className="row-span-1 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <IconButton
-              component="a"
-              target="_blank"
-              href={`https://codespaces.new/${full_name}`}
-              rel="noreferrer"
-            >
-              <OcticonIcon />
-            </IconButton>
-            <IconButton
-              component="a"
-              target="_blank"
-              href={`https://gitpod.io/?autostart=true#${html_url}`}
-              rel="noreferrer"
-            >
-              <GitpodIcon className="h-6 w-6 font-extralight" />
-            </IconButton>
-            <IconButton component="a" target="_blank" href={html_url} rel="noreferrer">
-              <SymbolIcon name="code" />
-            </IconButton>
+            <Tooltip title="Codespaces">
+              <IconButton
+                component="a"
+                target="_blank"
+                href={`https://codespaces.new/${full_name}`}
+                rel="noreferrer"
+              >
+                <OcticonIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Gitpod">
+              <IconButton
+                component="a"
+                target="_blank"
+                href={`https://gitpod.io/?autostart=true#${html_url}`}
+                rel="noreferrer"
+              >
+                <GitpodIcon className="h-6 w-6 font-extralight dark:fill-white" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Code">
+              <IconButton component="a" target="_blank" href={html_url} rel="noreferrer">
+                <SymbolIcon name="code" />
+              </IconButton>
+            </Tooltip>
           </div>
 
           <Button
