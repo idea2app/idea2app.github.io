@@ -13,9 +13,7 @@ interface DashboardPageProps extends JWTProps {
 
 export const getServerSideProps = compose<{}, DashboardPageProps>(
   jwtVerifier(),
-  async () => {
-    return { props: {} };
-  },
+  async () => ({ props: {} }),
 );
 
 const DashboardPage: FC<DashboardPageProps> = observer(({ jwtPayload }) => {

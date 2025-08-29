@@ -59,11 +59,11 @@ export class SessionBox extends Component<SessionBoxProps> {
           <Drawer
             anchor="right"
             open={this.modalShown}
-            onClose={() => (this.modalShown = false)}
             PaperProps={{
               className: 'p-4',
               style: { width: '400px' },
             }}
+            onClose={() => (this.modalShown = false)}
           >
             <SessionForm onSignIn={() => window.location.reload()} />
           </Drawer>

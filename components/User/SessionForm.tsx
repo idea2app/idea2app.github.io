@@ -1,13 +1,13 @@
-import { Button, Tab, Tabs, TextField, InputAdornment, IconButton } from '@mui/material';
+import { Button, IconButton,InputAdornment, Tab, Tabs, TextField } from '@mui/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
-import React, { FormEvent, MouseEvent, ChangeEvent } from 'react';
+import React, { ChangeEvent,FormEvent, MouseEvent } from 'react';
 import { formToJSON } from 'web-utility';
 
-import { SymbolIcon } from '../Icon';
-import userStore from '../../models/User';
 import { I18nContext } from '../../models/Translation';
+import userStore from '../../models/User';
+import { SymbolIcon } from '../Icon';
 
 export interface SessionFormProps {
   onSignIn?: (data?: SignInData) => any;
@@ -69,9 +69,9 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof I18n
       >
         <Tabs
           value={signType}
-          onChange={(_, newValue: 'up' | 'in') => (this.signType = newValue)}
           variant="fullWidth"
           className="mb-4"
+          onChange={(_, newValue: 'up' | 'in') => (this.signType = newValue)}
         >
           <Tab label={t('register')} value="up" />
           <Tab label={t('login')} value="in" />
