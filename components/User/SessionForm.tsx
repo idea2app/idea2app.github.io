@@ -1,11 +1,12 @@
 import { Button, Tab, Tabs, TextField, InputAdornment, IconButton } from '@mui/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
-import { Component, FormEvent, MouseEvent, ChangeEvent } from 'react';
+import { Component, FormEvent, MouseEvent, ChangeEvent, ReactNode } from 'react';
 import { formToJSON } from 'web-utility';
 
 import { SymbolIcon } from '../Icon';
 import userStore from '../../models/User';
+import { I18nContext } from '../../models/Translation';
 
 export interface SessionFormProps {
   onSignIn?: (data?: SignInData) => any;
@@ -20,6 +21,9 @@ export interface SignInData {
 export class SessionForm extends Component<SessionFormProps> {
   @observable
   accessor signType: 'up' | 'in' = 'in';
+
+  static contextType = I18nContext;
+  declare context: React.ContextType<typeof I18nContext>;
 
   handleWebAuthn = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -68,6 +72,8 @@ export class SessionForm extends Component<SessionFormProps> {
   render() {
     const { signType } = this,
       loading = userStore.uploading > 0;
+    
+    const { t } = this.context;
 
     return (
       <form
@@ -80,8 +86,8 @@ export class SessionForm extends Component<SessionFormProps> {
           variant="fullWidth"
           className="mb-4"
         >
-          <Tab label="注册" value="up" />
-          <Tab label="登录" value="in" />
+          <Tab label={t('register')} value="up" />
+          <Tab label={t('login')} value="in" />
         </Tabs>
 
         <TextField
@@ -89,8 +95,8 @@ export class SessionForm extends Component<SessionFormProps> {
           name="phone"
           required
           fullWidth
-          label="手机号码"
-          placeholder="请输入手机号码"
+          label={t('phone_number')}
+          placeholder={t('please_enter_phone')}
           variant="outlined"
           inputProps={{
             pattern: "1[3-9]\\d{9}",
@@ -109,8 +115,8 @@ export class SessionForm extends Component<SessionFormProps> {
             name="password"
             required
             fullWidth
-            label="密码"
-            placeholder="请输入密码或验证码"
+            label={t('password')}
+            placeholder={t('please_enter_password')}
             variant="outlined"
           />
 
@@ -132,7 +138,7 @@ export class SessionForm extends Component<SessionFormProps> {
           disabled={loading}
           className="mt-4"
         >
-          {signType === 'up' ? '注册' : '登录'}
+          {signType === 'up' ? t('register') : t('login')}
         </Button>
       </form>
     );

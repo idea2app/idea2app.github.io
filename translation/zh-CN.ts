@@ -74,4 +74,17 @@ export default {
   AI_requirement_evaluation: '🤖 需求评估',
   information_security_alert: '本服务免费，但仅接受与估价有关的<strong>可公开信息</strong>。',
   project_name: '项目名称',
+
+  // User authentication
+  phone_number: '手机号码',
+  please_enter_phone: '请输入手机号码',
+  password: '密码',
+  please_enter_password: '请输入密码或验证码',
+  register: '注册',
+  login: '登录',
+  welcome_use: '欢迎使用',
+  backend_management: '后台管理',
+  overview: '概览',
+  profile: '个人资料',
+  settings: '设置',
 } as const;

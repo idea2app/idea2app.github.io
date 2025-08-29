@@ -73,4 +73,17 @@ export default {
   AI_requirement_evaluation: '🤖 需求評估',
   information_security_alert: '本服務免費，但僅接受與估價有關的<strong>可公開资讯</strong>。',
   project_name: '專案名稱',
+
+  // User authentication
+  phone_number: '手機號碼',
+  please_enter_phone: '請輸入手機號碼',
+  password: '密碼',
+  please_enter_password: '請輸入密碼或驗證碼',
+  register: '註冊',
+  login: '登入',
+  welcome_use: '歡迎使用',
+  backend_management: '後台管理',
+  overview: '概覽',
+  profile: '個人資料',
+  settings: '設定',
 } as const;
