@@ -1,6 +1,7 @@
 import { Block, renderBlocks, WikiNode } from 'mobx-lark';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { FC } from 'react';
+import { Minute, Second } from 'web-utility';
 
 import { PageHead } from '../../components/PageHead';
 import documentStore from '../../models/Document';
@@ -25,12 +26,18 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   if (node?.obj_type !== 'docx') return { notFound: true };
 
-  const blocks = await documentStore.getOneBlocks(
-    node.obj_token,
-    token => `/api/Lark/file/${token}`,
-  );
+  try {
+    const blocks = await documentStore.getOneBlocks(
+      node.obj_token,
+      token => `/api/Lark/file/${token}`,
+    );
 
-  return { props: { node, blocks } };
+    return { props: { node, blocks } };
+  } catch (error) {
+    console.error(error);
+
+    return { notFound: true, revalidate: Minute / Second };
+  }
 };
 
 interface WikiDocumentPageProps {
