@@ -1,6 +1,7 @@
 import { Drawer, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
+import Link from 'next/link';
 import { Component, HTMLAttributes, JSX } from 'react';
 
 import { PageHead } from '../PageHead';
@@ -37,8 +38,9 @@ export class SessionBox extends Component<SessionBoxProps> {
             {menu.map(({ href, title }) => (
               <ListItem key={href} disablePadding>
                 <ListItemButton
-                  href={href}
-                  selected={path?.split('?')[0].startsWith(href!)}
+                  component={Link}
+                  href={href || '#'}
+                  selected={path?.split('?')[0].startsWith(href || '')}
                   className="rounded"
                 >
                   <ListItemText primary={title} />

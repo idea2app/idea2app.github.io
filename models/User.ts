@@ -1,158 +1,121 @@
-import { makeObservable, observable } from 'mobx';
+import { clear } from 'idb-keyval';
+import { HTTPClient } from 'koajax';
+import { observable, reaction } from 'mobx';
+import { persist, restore, toggle } from 'mobx-restful';
+import { setCookie } from 'web-utility';
 
-import { API_Host } from './configuration';
+import { API_Host, isServer } from './configuration';
 
-// User types for SMS verification
 export interface User {
   id?: string;
-  phone?: string;
   email?: string;
   nickname?: string;
   avatar?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  token?: string;
 }
 
-export interface SignInData {
-  phone: string;
-  password?: string;
-  verificationCode?: string;
+export interface WebAuthnChallenge {
+  string: string;
 }
 
-export interface SignUpData extends SignInData {
-  password: string;
-}
+export class UserModel {
+  @persist()
+  @observable
+  accessor session: User | undefined;
 
-export interface SMSCodeRequest {
-  phone: string;
-}
-
-export interface SMSCodeResponse {
-  success: boolean;
-  message?: string;
-}
-
-export interface AuthResponse {
-  user: User;
-  token: string;
-}
-
-export class UserStore {
   @observable
   accessor uploading = 0;
 
-  @observable
-  accessor currentUser: User | null = null;
+  disposer = reaction(
+    () => this.session?.token,
+    token => setCookie('token', token || '', { path: '/' }),
+  );
+  restored = !isServer() && restore(this, 'User');
 
-  baseURL = `${API_Host}/api/`;
+  client = new HTTPClient({ baseURI: `${API_Host}/api/`, responseType: 'json' }).use(({ request }, next) => {
+    const isSameDomain = API_Host.startsWith(new URL(request.path, API_Host).origin);
 
-  constructor() {
-    makeObservable(this);
-  }
-
-  private async request<T>(path: string, method: string = 'GET', body?: any): Promise<T> {
-    this.uploading++;
-    try {
-      const options: RequestInit = { 
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+    if (isSameDomain && this.session)
+      request.headers = {
+        ...request.headers,
+        Authorization: `Bearer ${this.session.token}`,
       };
-      
-      if (body) {
-        options.body = JSON.stringify(body);
-      }
 
-      const response = await fetch(`${this.baseURL}${path}`, options);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      return await response.json();
-    } finally {
-      this.uploading--;
+    return next();
+  });
+
+  @toggle('uploading')
+  async sendOTP(address: string) {
+    await this.client.post(`user/session/email/${address}/OTP`);
+  }
+
+  @toggle('uploading')
+  async signUp(email: string, password: string) {
+    const { body } = await this.client.post<User>('user', { email, password });
+
+    return body;
+  }
+
+  @toggle('uploading')
+  async signIn(email: string, password: string) {
+    const { body } = await this.client.post<User>('user/session', { email, password });
+
+    return (this.session = body);
+  }
+
+  @toggle('uploading')
+  async createChallenge() {
+    const { body } = await this.client.post<WebAuthnChallenge>('user/WebAuthn/challenge');
+
+    return body!.string;
+  }
+
+  @toggle('uploading')
+  async signUpWebAuthn(email: string) {
+    if (typeof window === 'undefined') {
+      throw new Error('WebAuthn not available on server side');
     }
+
+    const { client } = await import('@passwordless-id/webauthn');
+    
+    const challenge = await this.createChallenge();
+
+    const registration = await client.register({ user: email, challenge });
+
+    const { body } = await this.client.post<User>('user/WebAuthn/registration', {
+      ...registration,
+      challenge,
+    });
+
+    return (this.session = body);
   }
 
-  async sendSMSCode(phone: string): Promise<SMSCodeResponse> {
-    return this.request<SMSCodeResponse>('user/sms-code', 'POST', { phone });
-  }
-
-  async signUp(phone: string, password: string): Promise<AuthResponse> {
-    const response = await this.request<AuthResponse>('user/signup', 'POST', { phone, password });
-    
-    this.currentUser = response.user;
-    
-    // Store token in cookie
-    document.cookie = `token=${response.token}; path=/; max-age=${7 * 24 * 60 * 60}`;
-    
-    return response;
-  }
-
-  async signUpWithSMS(phone: string, verificationCode: string): Promise<AuthResponse> {
-    const response = await this.request<AuthResponse>('user/signup-sms', 'POST', { phone, verificationCode });
-    
-    this.currentUser = response.user;
-    
-    // Store token in cookie
-    document.cookie = `token=${response.token}; path=/; max-age=${7 * 24 * 60 * 60}`;
-    
-    return response;
-  }
-
-  async signIn(phone: string, password: string): Promise<AuthResponse> {
-    const response = await this.request<AuthResponse>('user/signin', 'POST', { phone, password });
-    
-    this.currentUser = response.user;
-    
-    // Store token in cookie
-    document.cookie = `token=${response.token}; path=/; max-age=${7 * 24 * 60 * 60}`;
-    
-    return response;
-  }
-
-  async signInWithSMS(phone: string, verificationCode: string): Promise<AuthResponse> {
-    const response = await this.request<AuthResponse>('user/signin-sms', 'POST', { phone, verificationCode });
-    
-    this.currentUser = response.user;
-    
-    // Store token in cookie
-    document.cookie = `token=${response.token}; path=/; max-age=${7 * 24 * 60 * 60}`;
-    
-    return response;
-  }
-
-  async signUpWebAuthn(phone: string): Promise<void> {
-    // WebAuthn registration flow
-    // This is a placeholder implementation
-    throw new Error('WebAuthn registration not implemented yet');
-  }
-
-  async signInWebAuthn(): Promise<AuthResponse> {
-    // WebAuthn authentication flow
-    // This is a placeholder implementation
-    throw new Error('WebAuthn authentication not implemented yet');
-  }
-
-  async getCurrentUser(): Promise<User | null> {
-    try {
-      const response = await this.request<{ user: User }>('user/profile', 'GET');
-      this.currentUser = response.user;
-      return response.user;
-    } catch (error) {
-      console.error('Failed to get current user:', error);
-      return null;
+  @toggle('uploading')
+  async signInWebAuthn() {
+    if (typeof window === 'undefined') {
+      throw new Error('WebAuthn not available on server side');
     }
+
+    const { client } = await import('@passwordless-id/webauthn');
+    
+    const challenge = await this.createChallenge();
+
+    const authentication = await client.authenticate({ challenge });
+
+    const { body } = await this.client.post<User>('user/WebAuthn/authentication', {
+      ...authentication,
+      challenge,
+    });
+
+    return (this.session = body);
   }
 
-  signOut(): void {
-    this.currentUser = null;
-    // Remove token cookie
-    document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT';
+  @toggle('uploading')
+  async signOut() {
+    await clear();
+
+    location.hash = '';
   }
 }
 
-const userStore = new UserStore();
-export default userStore;
+export default new UserModel();
