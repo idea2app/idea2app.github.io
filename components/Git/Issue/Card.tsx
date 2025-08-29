@@ -1,7 +1,7 @@
 import { Avatar, Card, CardContent, CardProps, Chip } from '@mui/material';
 import { marked } from 'marked';
 import { Issue } from 'mobx-github';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { SymbolIcon } from '../../Icon';
 
@@ -19,7 +19,20 @@ export const IssueCard: FC<IssueCardProps> = ({
   comments,
   created_at,
   ...props
-}) => (
+}) => {
+  const [parsedBody, setParsedBody] = useState<string>('');
+
+  useEffect(() => {
+    if (body) {
+      const parseMarkdown = async () => {
+        const html = await marked.parse(body);
+        setParsedBody(html);
+      };
+      parseMarkdown();
+    }
+  }, [body]);
+
+  return (
   <Card {...props}>
     <CardContent className="flex h-full flex-col justify-between gap-2">
       <h2 className="text-2xl font-semibold">
@@ -48,7 +61,7 @@ export const IssueCard: FC<IssueCardProps> = ({
         )}
       </div>
 
-      <article dangerouslySetInnerHTML={{ __html: marked(body || '') }} />
+      <article dangerouslySetInnerHTML={{ __html: parsedBody }} />
 
       <footer className="flex items-center justify-between">
         {user && (
@@ -66,3 +79,4 @@ export const IssueCard: FC<IssueCardProps> = ({
     </CardContent>
   </Card>
 );
+};

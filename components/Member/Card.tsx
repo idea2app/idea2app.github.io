@@ -2,7 +2,7 @@ import { Button, CardProps, Chip, IconButton } from '@mui/material';
 import { marked } from 'marked';
 import { observer } from 'mobx-react';
 import Link from 'next/link';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { Member } from '../../models/Member';
 import { GithubIcon } from '../Layout/Svg';
@@ -10,7 +10,20 @@ import { GithubIcon } from '../Layout/Svg';
 export type MemberCardProps = Member & Omit<CardProps, 'id'>;
 
 export const MemberCard: FC<MemberCardProps> = observer(
-  ({ className = '', nickname, skill, position, summary, github }) => (
+  ({ className = '', nickname, skill, position, summary, github }) => {
+    const [parsedSummary, setParsedSummary] = useState<string>('');
+
+    useEffect(() => {
+      if (summary) {
+        const parseMarkdown = async () => {
+          const html = await marked.parse((summary as string) || '');
+          setParsedSummary(html);
+        };
+        parseMarkdown();
+      }
+    }, [summary]);
+
+    return (
     <li
       className={`elevation-1 hover:elevation-4 relative rounded-2xl border border-gray-200 p-4 dark:border-0 ${className} mb-4 flex break-inside-avoid flex-col gap-3`}
     >
@@ -59,9 +72,10 @@ export const MemberCard: FC<MemberCardProps> = observer(
       </ul>
 
       <p
-        dangerouslySetInnerHTML={{ __html: marked((summary as string) || '') }}
+        dangerouslySetInnerHTML={{ __html: parsedSummary }}
         className="text-neutral-500"
       />
     </li>
-  ),
+    );
+  },
 );
