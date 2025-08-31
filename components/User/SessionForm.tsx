@@ -1,3 +1,4 @@
+import { PhoneSignInData } from '@idea2app/data-server';
 import { Button, IconButton, InputAdornment, Tab, Tabs, TextField } from '@mui/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
@@ -10,12 +11,7 @@ import userStore from '../../models/User';
 import { SymbolIcon } from '../Icon';
 
 export interface SessionFormProps {
-  onSignIn?: (data?: SignInData) => any;
-}
-
-export interface SignInData {
-  phone: string;
-  password: string;
+  onSignIn?: (data?: PhoneSignInData) => any;
 }
 
 @observer
@@ -32,11 +28,11 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof i18n
     const { t } = this.observedContext;
 
     if (this.signType === 'up') {
-      const { phone } = formToJSON<SignInData>(event.currentTarget.form!);
+      const { mobilePhone } = formToJSON<PhoneSignInData>(event.currentTarget.form!);
 
-      if (!phone) throw new Error(t('phone_required_for_webauthn'));
+      if (!mobilePhone) throw new Error(t('phone_required_for_webauthn'));
 
-      await userStore.signUpWebAuthn(phone);
+      await userStore.signUpWebAuthn(mobilePhone);
     } else {
       await userStore.signInWebAuthn();
     }
@@ -48,18 +44,18 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof i18n
     event.stopPropagation();
 
     const { t } = this.observedContext;
-    const { phone, password } = formToJSON<SignInData>(event.currentTarget);
+    const { mobilePhone, password } = formToJSON<PhoneSignInData>(event.currentTarget);
 
     if (this.signType === 'up') {
-      await userStore.signUp(phone, password);
+      await userStore.signUp(mobilePhone, password);
 
       this.signType = 'in';
 
       alert(t('registration_success_please_login'));
     } else {
-      await userStore.signIn(phone, password);
+      await userStore.signIn(mobilePhone, password);
 
-      this.props.onSignIn?.({ phone, password });
+      this.props.onSignIn?.({ mobilePhone, password });
     }
   };
 
@@ -82,7 +78,7 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof i18n
         </Tabs>
 
         <TextField
-          name="phone"
+          name="mobilePhone"
           type="tel"
           required
           fullWidth

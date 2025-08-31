@@ -48,7 +48,7 @@ export const IssueCard: FC<IssueCardProps> = ({
         )}
       </div>
 
-      <article dangerouslySetInnerHTML={{ __html: marked(body || '', { async: false }) as string }} />
+      <article dangerouslySetInnerHTML={{ __html: marked(body || '', { async: false }) }} />
 
       <footer className="flex items-center justify-between">
         {user && (

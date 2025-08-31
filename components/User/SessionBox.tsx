@@ -1,8 +1,9 @@
+import { User } from '@idea2app/data-server';
 import { Drawer, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
-import { JwtPayload } from 'jsonwebtoken';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import Link from 'next/link';
+import { JWTProps } from 'next-ssr-middleware';
 import { Component, HTMLAttributes, JSX } from 'react';
 
 import { PageHead } from '../PageHead';
@@ -10,10 +11,9 @@ import { SessionForm } from './SessionForm';
 
 export type MenuItem = Pick<JSX.IntrinsicElements['a'], 'href' | 'title'>;
 
-export interface SessionBoxProps extends HTMLAttributes<HTMLDivElement> {
+export interface SessionBoxProps extends HTMLAttributes<HTMLDivElement>, JWTProps<User> {
   path?: string;
   menu?: MenuItem[];
-  jwtPayload?: JwtPayload;
 }
 
 @observer
@@ -33,7 +33,7 @@ export class SessionBox extends Component<SessionBoxProps> {
         <div>
           <List
             component="nav"
-            className="flex-col px-3 sticky-top"
+            className="sticky-top flex-col px-3"
             style={{ top: '5rem', minWidth: '200px' }}
           >
             {menu.map(({ href, title }) => (
@@ -53,17 +53,14 @@ export class SessionBox extends Component<SessionBoxProps> {
         <main className="flex-1 pb-3">
           <PageHead title={title} />
 
-          <h1 className="text-3xl font-bold mb-4">{title}</h1>
+          <h1 className="mb-4 text-3xl font-bold">{title}</h1>
 
           {children}
 
           <Drawer
             anchor="right"
+            slotProps={{ paper: { className: 'p-4', style: { width: '400px' } } }}
             open={this.modalShown}
-            PaperProps={{
-              className: 'p-4',
-              style: { width: '400px' },
-            }}
             onClose={() => (this.modalShown = false)}
           >
             <SessionForm onSignIn={() => window.location.reload()} />

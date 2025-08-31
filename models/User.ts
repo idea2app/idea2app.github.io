@@ -1,20 +1,12 @@
+import { User, WebAuthnChallenge } from '@idea2app/data-server';
 import { clear } from 'idb-keyval';
 import { HTTPClient } from 'koajax';
 import { observable, reaction } from 'mobx';
 import { persist, restore, toggle } from 'mobx-restful';
 import { setCookie } from 'web-utility';
-import { User as GitHubUser } from 'mobx-github';
 
 import { TableModel } from './Base';
-import { API_Host, isServer } from './configuration';
-
-export interface User extends GitHubUser {
-  token?: string;
-}
-
-export interface WebAuthnChallenge {
-  string: string;
-}
+import { API_HOST, isServer } from './configuration';
 
 export class UserModel extends TableModel<User> {
   baseURI = 'user';
@@ -29,8 +21,8 @@ export class UserModel extends TableModel<User> {
   );
   restored = !isServer() && restore(this, 'User');
 
-  client = new HTTPClient({ baseURI: API_Host, responseType: 'json' }).use(({ request }, next) => {
-    const isSameDomain = API_Host.startsWith(new URL(request.path, API_Host).origin);
+  client = new HTTPClient({ baseURI: API_HOST, responseType: 'json' }).use(({ request }, next) => {
+    const isSameDomain = API_HOST.startsWith(new URL(request.path, API_HOST).origin);
 
     if (isSameDomain && this.session)
       request.headers = {
