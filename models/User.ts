@@ -3,15 +3,12 @@ import { HTTPClient } from 'koajax';
 import { observable, reaction } from 'mobx';
 import { persist, restore, toggle } from 'mobx-restful';
 import { setCookie } from 'web-utility';
+import { User as GitHubUser } from 'mobx-github';
 
 import { TableModel } from './Base';
 import { API_Host, isServer } from './configuration';
 
-export interface User {
-  id?: string;
-  email?: string;
-  nickname?: string;
-  avatar?: string;
+export interface User extends GitHubUser {
   token?: string;
 }
 

@@ -12,6 +12,7 @@
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.14.1",
     "@giscus/react": "^3.1.0",
+    "@idea2app/data-server": "^1.0.0-rc.0",
     "@koa/bodyparser": "^6.0.0",
     "@koa/router": "^14.0.0",
     "@mui/lab": "^7.0.0-beta.16",

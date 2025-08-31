@@ -45,7 +45,7 @@ const nextConfig = withPWA({
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return config;
   },
-  rewrites,
+  rewrites: rewrites as any,
 });
 
 export default isDev || !SENTRY_AUTH_TOKEN

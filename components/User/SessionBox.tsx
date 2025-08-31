@@ -1,4 +1,5 @@
 import { Drawer, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import { JwtPayload } from 'jsonwebtoken';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import Link from 'next/link';
@@ -12,7 +13,7 @@ export type MenuItem = Pick<JSX.IntrinsicElements['a'], 'href' | 'title'>;
 export interface SessionBoxProps extends HTMLAttributes<HTMLDivElement> {
   path?: string;
   menu?: MenuItem[];
-  jwtPayload?: any; // TODO: Define proper JWT payload type
+  jwtPayload?: JwtPayload;
 }
 
 @observer
