@@ -76,4 +76,20 @@ export default {
   information_security_alert:
     'This service is free of charge, but only accepts <strong>publicly available information</strong> related to estimation.',
   project_name: 'Project Name',
+
+  // User authentication
+  phone_number: 'Phone Number',
+  please_enter_phone: 'Please enter phone number',
+  please_enter_correct_phone: 'Please enter correct phone number',
+  password: 'Password',
+  please_enter_password: 'Please enter password or verification code',
+  register: 'Register',
+  login: 'Login',
+  welcome_use: 'Welcome',
+  backend_management: 'Management Dashboard',
+  overview: 'Overview',
+  profile: 'Profile',
+  settings: 'Settings',
+  phone_required_for_webauthn: 'Phone number is required for WebAuthn registration',
+  registration_success_please_login: 'Registration successful, please login',
 } as const;
