@@ -90,4 +90,6 @@ export default {
   overview: 'Overview',
   profile: 'Profile',
   settings: 'Settings',
+  phone_required_for_webauthn: 'Phone number is required for WebAuthn registration',
+  registration_success_please_login: 'Registration successful, please login',
 } as const;

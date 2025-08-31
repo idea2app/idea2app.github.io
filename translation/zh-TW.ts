@@ -87,4 +87,6 @@ export default {
   overview: '概覽',
   profile: '個人資料',
   settings: '設定',
+  phone_required_for_webauthn: '手機號是WebAuthn註冊的必填項',
+  registration_success_please_login: '註冊成功，請登入',
 } as const;

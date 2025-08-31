@@ -29,10 +29,12 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof i18n
     event.preventDefault();
     event.stopPropagation();
 
+    const { t } = this.observedContext;
+
     if (this.signType === 'up') {
       const { phone } = formToJSON<SignInData>(event.currentTarget.form!);
 
-      if (!phone) throw new Error('手机号是WebAuthn注册的必填项');
+      if (!phone) throw new Error(t('phone_required_for_webauthn'));
 
       await userStore.signUpWebAuthn(phone);
     } else {
@@ -45,6 +47,7 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof i18n
     event.preventDefault();
     event.stopPropagation();
 
+    const { t } = this.observedContext;
     const { phone, password } = formToJSON<SignInData>(event.currentTarget);
 
     if (this.signType === 'up') {
@@ -52,7 +55,7 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof i18n
 
       this.signType = 'in';
 
-      alert('注册成功，请登录');
+      alert(t('registration_success_please_login'));
     } else {
       await userStore.signIn(phone, password);
 
