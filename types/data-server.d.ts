@@ -5,6 +5,7 @@ declare module '@idea2app/data-server' {
     email?: string;
     name?: string;
     phone?: string;
+    avatar?: string;
     [key: string]: any;
   }
 

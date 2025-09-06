@@ -74,6 +74,7 @@ export default {
   AI_requirement_evaluation: '🤖 需求评估',
   information_security_alert: '本服务免费，但仅接受与估价有关的<strong>可公开信息</strong>。',
   project_name: '项目名称',
+  project_evaluation: '项目评估',
 
   // User authentication
   phone_number: '手机号码',

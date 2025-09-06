@@ -76,6 +76,7 @@ export default {
   information_security_alert:
     'This service is free of charge, but only accepts <strong>publicly available information</strong> related to estimation.',
   project_name: 'Project Name',
+  project_evaluation: 'Project Evaluation',
 
   // User authentication
   phone_number: 'Phone Number',
