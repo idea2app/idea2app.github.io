@@ -1,39 +1,22 @@
-import { User } from '@idea2app/data-server';
-import { Button, Card, CardActions, CardContent, Container, Grid, Typography } from '@mui/material';
+import { Project, User } from '@idea2app/data-server';
+import { Container, Grid, Typography } from '@mui/material';
 import { observer } from 'mobx-react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { compose, JWTProps, jwtVerifier } from 'next-ssr-middleware';
 import { FC, useContext } from 'react';
 
+import { ProjectCard } from '../../components/ProjectCard';
+import { ScrollList } from '../../components/ScrollList';
 import { SessionBox } from '../../components/User/SessionBox';
+import { ProjectModel } from '../../models/ProjectEvaluation';
 import { I18nContext } from '../../models/Translation';
 
 interface DashboardPageProps extends JWTProps<User> {}
 
 export const getServerSideProps = compose<{}, DashboardPageProps>(jwtVerifier());
 
-// Mock projects that would be created from dashboard
-const mockProjects = [
-  {
-    id: 'animal-protection-platform',
-    name: '动物保护平台',
-    description: '一个用于保护野生动物和宠物的综合平台',
-    status: '评估中',
-  },
-  {
-    id: 'e-commerce-system',
-    name: '电商系统',
-    description: '现代化的电子商务解决方案',
-    status: '评估完成',
-  },
-  {
-    id: 'iot-monitoring',
-    name: 'IoT监控系统',
-    description: '物联网设备监控和管理平台',
-    status: '待评估',
-  },
-];
+// Initialize project store for client-side rendering
+const projectStore = new ProjectModel();
 
 const DashboardPage: FC<DashboardPageProps> = observer(({ jwtPayload }) => {
   const { asPath } = useRouter();
@@ -53,45 +36,33 @@ const DashboardPage: FC<DashboardPageProps> = observer(({ jwtPayload }) => {
           最近项目
         </Typography>
 
-        <Grid container spacing={3}>
-          {mockProjects.map((project) => (
-            <Grid item xs={12} md={4} key={project.id}>
-              <Card>
-                <CardContent>
-                  <Typography variant="h6" component="h3" gutterBottom>
-                    {project.name}
+        <ScrollList
+          translator={i18n}
+          store={projectStore}
+          filter={{}}
+          renderList={(allItems: Project[]) => (
+            <Grid container spacing={3}>
+              {allItems.length === 0 ? (
+                <Grid size={{ xs: 12 }}>
+                  <Typography color="textSecondary" sx={{ textAlign: 'center', mt: 4 }}>
+                    暂无项目数据
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                    {project.description}
-                  </Typography>
-                  <Typography variant="caption" 
-                    sx={{ 
-                      px: 1, 
-                      py: 0.5, 
-                      borderRadius: 1, 
-                      bgcolor: project.status === '评估完成' ? 'success.light' : 
-                              project.status === '评估中' ? 'warning.light' : 'grey.200',
-                      color: project.status === '评估完成' ? 'success.contrastText' : 
-                             project.status === '评估中' ? 'warning.contrastText' : 'text.primary'
-                    }}
-                  >
-                    {project.status}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    component={Link}
-                    href={`/dashboard/project/${project.id}`}
-                    size="small"
-                    variant="contained"
-                  >
-                    查看评估
-                  </Button>
-                </CardActions>
-              </Card>
+                </Grid>
+              ) : (
+                allItems.map((project) => (
+                  <Grid key={project.id} size={{ xs: 12, md: 4 }}>
+                    <ProjectCard
+                      id={project.id}
+                      name={project.name}
+                      description={project.description || ''}
+                      status={project.status || '待评估'}
+                    />
+                  </Grid>
+                ))
+              )}
             </Grid>
-          ))}
-        </Grid>
+          )}
+        />
       </Container>
     </SessionBox>
   );

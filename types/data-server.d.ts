@@ -1,12 +1,31 @@
-// Temporary types for @idea2app/data-server until properly installed
+// Types for @idea2app/data-server@1.0.0-rc.1 - waiting for official types
 declare module '@idea2app/data-server' {
-  export interface User {
-    id?: string;
+  export interface Base {
+    id: string;
+    createdAt?: string;
+    updatedAt?: string;
+  }
+
+  export interface User extends Base {
     email?: string;
     name?: string;
     phone?: string;
     avatar?: string;
-    [key: string]: any;
+    token?: string;
+  }
+
+  export interface Project extends Base {
+    name: string;
+    description?: string;
+    status?: string;
+    owner?: User;
+  }
+
+  export interface ConsultMessage extends Base {
+    content: string;
+    user?: User;
+    project?: Project;
+    evaluation?: Record<string, any>;
   }
 
   export interface PhoneSignInData {
@@ -18,31 +37,15 @@ declare module '@idea2app/data-server' {
 
   export interface WebAuthnChallenge {
     challenge: string;
-    [key: string]: any;
-  }
-
-  export interface Base {
+    string: string;
     [key: string]: any;
   }
 
   export interface ListChunk<T> {
     list: T[];
     count: number;
-    [key: string]: any;
   }
 
-  export interface ProjectEvaluation {
-    id: string;
-    message?: string;
-    evaluation?: {
-      techStack?: string[];
-      difficulty?: string;
-      timeline?: string;
-      cost?: string;
-      architecture?: string;
-      [key: string]: any;
-    };
-    user?: User;
-    timestamp?: string;
-  }
+  // Legacy compatibility
+  export interface ProjectEvaluation extends ConsultMessage {}
 }
