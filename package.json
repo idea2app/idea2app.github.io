@@ -50,7 +50,7 @@
     "@cspell/eslint-plugin": "^9.2.0",
     "@eslint/compat": "^1.3.2",
     "@eslint/js": "^9.34.0",
-    "@idea2app/data-server": "^1.0.0-rc.1",
+    "@idea2app/data-server": "1.0.0-rc.1",
     "@next/eslint-plugin-next": "^15.5.2",
     "@stylistic/eslint-plugin": "^5.2.3",
     "@tailwindcss/postcss": "^4.1.12",

@@ -23,17 +23,13 @@ export const getServerSideProps = compose<{}, ProjectEvaluationPageProps>(
 export default class ProjectEvaluationPage extends ObservedComponent<ProjectEvaluationPageProps, typeof i18n> {
   static contextType = I18nContext;
 
-  get evaluationStore() {
-    const projectId = Number(this.props.route!.params!.id);
-    return new ConsultMessageModel(projectId);
-  }
-
-  get projectId() {
-    return this.props.route!.params!.id;
-  }
+  projectId = +this.props.route!.params!.id;
+  
+  evaluationStore = new ConsultMessageModel(this.projectId);
 
   get menu() {
     const { t } = this.observedContext;
+    
     return [
       { href: '/dashboard', title: t('overview') },
       { href: `/dashboard/project/${this.projectId}`, title: t('project_evaluation') },
@@ -90,7 +86,7 @@ export default class ProjectEvaluationPage extends ObservedComponent<ProjectEval
             )}
             
             {evaluation && (
-              <EvaluationDisplay {...(evaluation as RequirementEvaluation)} translator={this.observedContext} />
+              <EvaluationDisplay {...(evaluation as RequirementEvaluation)} />
             )}
             
             {createdAt && (
@@ -126,7 +122,7 @@ export default class ProjectEvaluationPage extends ObservedComponent<ProjectEval
             <ScrollList
               translator={this.observedContext}
               store={this.evaluationStore}
-              filter={{ project: this.projectId }}
+              filter={{ project: String(this.projectId) }}
               renderList={(allItems: ConsultMessage[]) => (
                 <Box sx={{ height: '100%', overflowY: 'auto', p: 1 }}>
                   {allItems.length === 0 ? (

@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
-import { TranslationModel } from 'mobx-i18n';
-import { FC } from 'react';
+import { FC, useContext } from 'react';
+
+import { I18nContext } from '../../models/Translation';
 
 // Based on typical requirement evaluation structure
 export interface RequirementEvaluation {
@@ -13,11 +14,7 @@ export interface RequirementEvaluation {
   riskAssessment?: string;
 }
 
-export interface EvaluationDisplayProps extends RequirementEvaluation {
-  translator: TranslationModel<any, any>;
-}
-
-export const EvaluationDisplay: FC<RequirementEvaluation & { translator: TranslationModel<any, any> }> = ({
+export const EvaluationDisplay: FC<RequirementEvaluation> = ({
   techStack = [],
   difficulty = '',
   timeline = '',
@@ -25,9 +22,8 @@ export const EvaluationDisplay: FC<RequirementEvaluation & { translator: Transla
   architecture = '',
   keyFeatures = '',
   riskAssessment = '',
-  translator,
 }) => {
-  const { t } = translator;
+  const { t } = useContext(I18nContext);
 
   return (
     <Box sx={{

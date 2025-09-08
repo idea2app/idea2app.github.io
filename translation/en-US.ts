@@ -82,12 +82,15 @@ export default {
   tech_stack: 'Tech Stack',
   difficulty: 'Difficulty',
   timeline: 'Timeline',
-  cost: 'Cost',
+  cost: 'Cost Estimate',
   key_features: 'Key Features',
   risk_assessment: 'Risk Assessment',
   architecture: 'Architecture',
   ai_assistant: 'AI Assistant',
   loading_project_evaluation: 'Loading project evaluation data',
+  view_evaluation: 'View Evaluation',
+  recent_projects: 'Recent Projects',
+  no_project_data: 'No project data',
 
   // User authentication
   phone_number: 'Phone Number',

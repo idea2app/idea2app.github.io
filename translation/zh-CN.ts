@@ -86,6 +86,9 @@ export default {
   architecture: '架构设计',
   ai_assistant: 'AI助手',
   loading_project_evaluation: '正在加载项目评估数据',
+  view_evaluation: '查看评估',
+  recent_projects: '最近项目',
+  no_project_data: '暂无项目数据',
 
   // User authentication
   phone_number: '手机号码',

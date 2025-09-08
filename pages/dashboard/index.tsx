@@ -3,7 +3,7 @@ import { Container, Grid, Typography } from '@mui/material';
 import { observer } from 'mobx-react';
 import { useRouter } from 'next/router';
 import { compose, JWTProps, jwtVerifier } from 'next-ssr-middleware';
-import { FC, useContext, useMemo } from 'react';
+import { FC, useContext } from 'react';
 
 import { ProjectCard } from '../../components/Project/NewCard';
 import { ScrollList } from '../../components/ScrollList';
@@ -25,15 +25,6 @@ const DashboardPage: FC<DashboardPageProps> = observer(({ jwtPayload }) => {
 
   const menu = [{ href: '/dashboard', title: t('overview') }];
 
-  // Role-based filtering: pass createdBy for client users, empty for others
-  const filter = useMemo(() => {
-    const userRole = jwtPayload?.role;
-    if (userRole === 'client' && jwtPayload?.id) {
-      return { createdBy: jwtPayload.id };
-    }
-    return {};
-  }, [jwtPayload]);
-
   return (
     <SessionBox title={t('backend_management')} path={asPath} {...{ menu, jwtPayload }}>
       <Container maxWidth="lg" className="py-8">
@@ -42,19 +33,19 @@ const DashboardPage: FC<DashboardPageProps> = observer(({ jwtPayload }) => {
         </Typography>
         
         <Typography variant="h5" component="h2" sx={{ mt: 4, mb: 3 }}>
-          最近项目
+          {t('recent_projects')}
         </Typography>
 
         <ScrollList
           translator={i18n}
           store={projectStore}
-          filter={filter}
+          filter={jwtPayload?.role === 'client' && jwtPayload?.id ? { createdBy: jwtPayload.id } : {}}
           renderList={(allItems: Project[]) => (
             <Grid container spacing={3}>
               {allItems.length === 0 ? (
                 <Grid size={{ xs: 12 }}>
                   <Typography color="textSecondary" sx={{ textAlign: 'center', mt: 4 }}>
-                    暂无项目数据
+                    {t('no_project_data')}
                   </Typography>
                 </Grid>
               ) : (

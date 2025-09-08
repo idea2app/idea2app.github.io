@@ -90,4 +90,18 @@ export default {
   settings: '設定',
   phone_required_for_webauthn: '手機號是 WebAuthn 註冊的必填項',
   registration_success_please_login: '註冊成功，請登入',
+
+  // Project evaluation translations
+  tech_stack: '技術棧',
+  difficulty: '難度',
+  timeline: '開發週期',
+  cost: '成本預估',
+  architecture: '架構設計',
+  key_features: '核心功能',
+  risk_assessment: '風險評估',
+  ai_assistant: 'AI助手',
+  loading_project_evaluation: '正在載入專案評估資料',
+  view_evaluation: '查看評估',
+  recent_projects: '最近專案',
+  no_project_data: '暫無專案資料',
 } as const;

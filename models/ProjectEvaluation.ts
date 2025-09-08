@@ -7,6 +7,7 @@ import userStore from './User';
 export interface ProjectFilter extends Filter<Project> {
   owner?: string;
   status?: string;
+  createdBy?: string;
 }
 
 export interface ConsultMessageFilter extends Filter<ConsultMessage> {
@@ -21,6 +22,7 @@ export class ProjectModel extends TableModel<Project, ProjectFilter> {
 
 export class ConsultMessageModel extends TableModel<ConsultMessage, ConsultMessageFilter> {
   client = userStore.client;
+  baseURI: string;
 
   constructor(public projectId: number) {
     super();
