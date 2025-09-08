@@ -21,11 +21,21 @@ declare module '@idea2app/data-server' {
     owner?: User;
   }
 
+  export interface RequirementEvaluation {
+    techStack?: string[];
+    difficulty?: string;
+    timeline?: string;
+    cost?: string;
+    architecture?: string;
+    keyFeatures?: string;
+    riskAssessment?: string;
+  }
+
   export interface ConsultMessage extends Base {
     content: string;
     user?: User;
     project?: Project;
-    evaluation?: Record<string, any>;
+    evaluation?: RequirementEvaluation;
   }
 
   export interface PhoneSignInData {

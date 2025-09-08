@@ -1,4 +1,4 @@
-import { ConsultMessage, User } from '@idea2app/data-server';
+import { ConsultMessage, User, RequirementEvaluation } from '@idea2app/data-server';
 import { Avatar, Box, Container, Paper, Typography } from '@mui/material';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
@@ -6,7 +6,7 @@ import { compose, JWTProps, jwtVerifier, RouteProps, router } from 'next-ssr-mid
 import { ReactNode } from 'react';
 
 import { PageHead } from '../../../components/PageHead';
-import { EvaluationDisplay, RequirementEvaluation } from '../../../components/Project/EvaluationDisplay';
+import { EvaluationDisplay } from '../../../components/Project/EvaluationDisplay';
 import { ScrollList } from '../../../components/ScrollList';
 import { SessionBox } from '../../../components/User/SessionBox';
 import { ConsultMessageModel } from '../../../models/ProjectEvaluation';

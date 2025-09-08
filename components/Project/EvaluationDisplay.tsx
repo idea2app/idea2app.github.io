@@ -1,18 +1,8 @@
+import { RequirementEvaluation } from '@idea2app/data-server';
 import { Box, Typography } from '@mui/material';
 import { FC, useContext } from 'react';
 
 import { I18nContext } from '../../models/Translation';
-
-// Based on typical requirement evaluation structure
-export interface RequirementEvaluation {
-  techStack?: string[];
-  difficulty?: string;
-  timeline?: string;
-  cost?: string;
-  architecture?: string;
-  keyFeatures?: string;
-  riskAssessment?: string;
-}
 
 export const EvaluationDisplay: FC<RequirementEvaluation> = ({
   techStack = [],
@@ -109,13 +99,13 @@ export const EvaluationDisplay: FC<RequirementEvaluation> = ({
       
       {architecture && (
         <Box className="evaluation-item">
-          <Typography component="span" sx={{ fontWeight: 600 }}>
+          <Typography component="h3" sx={{ fontWeight: 600 }}>
             {t('architecture')}
           </Typography>
-          <Box component="div" sx={{ mt: 0.5 }}>
+          <Box component="ul" sx={{ mt: 0.5 }}>
             {architecture.replace(/<[^>]*>/g, '').split('\n').filter((line: string) => line.trim()).map((line: string, index: number) => (
-              <Box key={index} component="div" sx={{ ml: 1 }}>
-                • {line.trim()}
+              <Box key={index} component="li" sx={{ ml: 1 }}>
+                {line.trim()}
               </Box>
             ))}
           </Box>
