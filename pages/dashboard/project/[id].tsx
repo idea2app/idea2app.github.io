@@ -1,4 +1,4 @@
-import { ConsultMessage, User, RequirementEvaluation } from '@idea2app/data-server';
+import { ConsultMessage, RequirementEvaluation,User } from '@idea2app/data-server';
 import { Avatar, Box, Container, Paper, Typography } from '@mui/material';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
