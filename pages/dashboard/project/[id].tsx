@@ -1,149 +1,54 @@
 import { ConsultMessage, User } from '@idea2app/data-server';
 import { Avatar, Box, Container, Paper, Typography } from '@mui/material';
-import { TranslationModel } from 'mobx-i18n';
 import { observer } from 'mobx-react';
+import { ObservedComponent } from 'mobx-react-helper';
 import { compose, JWTProps, jwtVerifier, RouteProps, router } from 'next-ssr-middleware';
-import { Component, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { PageHead } from '../../../components/PageHead';
+import { EvaluationDisplay, RequirementEvaluation } from '../../../components/Project/EvaluationDisplay';
 import { ScrollList } from '../../../components/ScrollList';
 import { SessionBox } from '../../../components/User/SessionBox';
-import { ProjectEvaluationModel } from '../../../models/ProjectEvaluation';
-import { I18nContext } from '../../../models/Translation';
-
-// Mock store for now - this would be replaced with actual implementation
-const evaluationStore = new ProjectEvaluationModel();
+import { ConsultMessageModel } from '../../../models/ProjectEvaluation';
+import { i18n, I18nContext } from '../../../models/Translation';
 
 interface ProjectEvaluationPageProps extends JWTProps<User>, RouteProps<{ id: string }> {}
-
-interface ProjectEvaluationPageState {}
 
 export const getServerSideProps = compose<{}, ProjectEvaluationPageProps>(
   jwtVerifier(),
   router
 );
 
-interface EvaluationDisplayProps {
-  evaluation: Record<string, any>;
-}
-
-// JSX component for rendering evaluation data
-const EvaluationDisplay: React.FC<EvaluationDisplayProps> = ({ evaluation }) => {
-  if (!evaluation) return null;
-
-  const {
-    techStack = [],
-    difficulty = '',
-    timeline = '',
-    cost = '',
-    architecture = '',
-    keyFeatures = '',
-    riskAssessment = '',
-    ...rest
-  } = evaluation;
-
-  return (
-    <Box sx={{
-      '& .evaluation-item': {
-        marginBottom: 1,
-        fontSize: '0.875rem',
-        padding: '4px 0',
-        borderLeft: '3px solid',
-        borderColor: 'primary.light',
-        paddingLeft: 1,
-      },
-      '& strong': {
-        fontWeight: 600,
-        color: 'primary.dark',
-      },
-      '& ul': {
-        margin: '8px 0',
-        paddingLeft: '20px',
-      },
-      '& li': {
-        marginBottom: '4px',
-      },
-    }}>
-      {techStack.length > 0 && (
-        <Box className="evaluation-item">
-          <strong>技术栈:</strong> {techStack.join(', ')}
-        </Box>
-      )}
-      
-      {difficulty && (
-        <Box className="evaluation-item">
-          <strong>难度评估:</strong> {difficulty}
-        </Box>
-      )}
-      
-      {timeline && (
-        <Box className="evaluation-item">
-          <strong>开发周期:</strong> {timeline}
-        </Box>
-      )}
-      
-      {cost && (
-        <Box className="evaluation-item">
-          <strong>成本预估:</strong> {cost}
-        </Box>
-      )}
-
-      {keyFeatures && (
-        <Box className="evaluation-item">
-          <strong>核心功能:</strong> {keyFeatures}
-        </Box>
-      )}
-
-      {riskAssessment && (
-        <Box className="evaluation-item">
-          <strong>风险评估:</strong> {riskAssessment}
-        </Box>
-      )}
-      
-      {architecture && (
-        <Box className="evaluation-item">
-          <strong>架构设计:</strong>
-          <Box component="div" sx={{ mt: 0.5 }}>
-            {/* For now, render as text - in real implementation, this would be parsed */}
-            {architecture.replace(/<[^>]*>/g, '').split('\n').filter((line: string) => line.trim()).map((line: string, index: number) => (
-              <Box key={index} component="div" sx={{ ml: 1 }}>
-                • {line.trim()}
-              </Box>
-            ))}
-          </Box>
-        </Box>
-      )}
-
-      {/* Render any additional properties */}
-      {Object.entries(rest).map(([key, value]) => (
-        value && typeof value === 'string' && (
-          <Box key={key} className="evaluation-item">
-            <strong>{key}:</strong> {value}
-          </Box>
-        )
-      ))}
-    </Box>
-  );
-};
-
 @observer
-class ProjectEvaluationPage extends Component<ProjectEvaluationPageProps, ProjectEvaluationPageState> {
+export default class ProjectEvaluationPage extends ObservedComponent<ProjectEvaluationPageProps, typeof i18n> {
   static contextType = I18nContext;
-  declare context: TranslationModel<any, any>;
 
-  constructor(props: ProjectEvaluationPageProps) {
-    super(props);
-    this.state = {};
+  get evaluationStore() {
+    const projectId = Number(this.props.route!.params!.id);
+    return new ConsultMessageModel(projectId);
   }
 
-  renderChatMessage = (item: ConsultMessage): ReactNode => {
-    const isBot = !item.user;
-    const avatarSrc = isBot ? '/robot-avatar.png' : item.user?.avatar || '/default-avatar.png';
-    const name = isBot ? '🤖 AI助手' : item.user?.name || 'User';
+  get projectId() {
+    return this.props.route!.params!.id;
+  }
+
+  get menu() {
+    const { t } = this.observedContext;
+    return [
+      { href: '/dashboard', title: t('overview') },
+      { href: `/dashboard/project/${this.projectId}`, title: t('project_evaluation') },
+    ];
+  }
+
+  renderChatMessage = ({ id, content, evaluation, createdAt, user }: ConsultMessage): ReactNode => {
+    const { t } = this.observedContext;
+    const isBot = !user;
+    const avatarSrc = isBot ? '/robot-avatar.png' : user?.avatar || '/default-avatar.png';
+    const name = isBot ? `🤖 ${t('ai_assistant')}` : user?.name || 'User';
 
     return (
       <Box
-        key={item.id}
+        key={id}
         sx={{
           display: 'flex',
           justifyContent: isBot ? 'flex-start' : 'flex-end',
@@ -178,19 +83,19 @@ class ProjectEvaluationPage extends Component<ProjectEvaluationPageProps, Projec
               {name}
             </Typography>
             
-            {item.content && (
+            {content && (
               <Typography variant="body2" sx={{ mb: 1 }}>
-                {item.content}
+                {content}
               </Typography>
             )}
             
-            {item.evaluation && (
-              <EvaluationDisplay evaluation={item.evaluation} />
+            {evaluation && (
+              <EvaluationDisplay {...(evaluation as RequirementEvaluation)} translator={this.observedContext} />
             )}
             
-            {item.createdAt && (
+            {createdAt && (
               <Typography variant="caption" sx={{ opacity: 0.6, fontSize: '0.75rem' }}>
-                {new Date(item.createdAt).toLocaleTimeString()}
+                {new Date(createdAt).toLocaleTimeString()}
               </Typography>
             )}
           </Paper>
@@ -200,40 +105,34 @@ class ProjectEvaluationPage extends Component<ProjectEvaluationPageProps, Projec
   };
 
   render(): ReactNode {
-    const { jwtPayload, route: { params } } = this.props;
-    const { t } = this.context;
-    const projectId = params!.id;
-
-    const menu = [
-      { href: '/dashboard', title: t('overview') },
-      { href: `/dashboard/project/${projectId}`, title: t('project_evaluation') },
-    ];
+    const { jwtPayload } = this.props;
+    const { t } = this.observedContext;
 
     return (
       <SessionBox
-        title={`${t('project_evaluation')} - ${projectId}`}
-        path={`/dashboard/project/${projectId}`}
-        menu={menu}
+        title={`${t('project_evaluation')} - ${this.projectId}`}
+        path={`/dashboard/project/${this.projectId}`}
+        menu={this.menu}
         jwtPayload={jwtPayload}
       >
-        <PageHead title={`${t('project_evaluation')} - ${projectId}`} />
+        <PageHead title={`${t('project_evaluation')} - ${this.projectId}`} />
 
         <Container maxWidth="md" sx={{ height: '70vh', display: 'flex', flexDirection: 'column' }}>
           <Typography variant="h4" component="h2" gutterBottom>
-            项目评估: {projectId}
+            {t('project_evaluation')} {this.projectId}
           </Typography>
 
           <Box sx={{ flex: 1, overflow: 'hidden' }}>
             <ScrollList
-              translator={this.context}
-              store={evaluationStore}
-              filter={{ project: projectId }}
+              translator={this.observedContext}
+              store={this.evaluationStore}
+              filter={{ project: this.projectId }}
               renderList={(allItems: ConsultMessage[]) => (
                 <Box sx={{ height: '100%', overflowY: 'auto', p: 1 }}>
                   {allItems.length === 0 ? (
                     <Box sx={{ textAlign: 'center', mt: 4 }}>
                       <Typography color="textSecondary">
-                        正在加载项目评估数据...
+                        {t('loading_project_evaluation')}
                       </Typography>
                     </Box>
                   ) : (
@@ -248,5 +147,3 @@ class ProjectEvaluationPage extends Component<ProjectEvaluationPageProps, Projec
     );
   }
 }
-
-export default ProjectEvaluationPage;

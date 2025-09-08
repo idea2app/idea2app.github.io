@@ -75,6 +75,17 @@ export default {
   information_security_alert: '本服务免费，但仅接受与估价有关的<strong>可公开信息</strong>。',
   project_name: '项目名称',
   project_evaluation: '项目评估',
+  
+  // Evaluation fields
+  tech_stack: '技术栈',
+  difficulty: '难度评估',
+  timeline: '开发周期',
+  cost: '成本预估',
+  key_features: '核心功能',
+  risk_assessment: '风险评估',
+  architecture: '架构设计',
+  ai_assistant: 'AI助手',
+  loading_project_evaluation: '正在加载项目评估数据',
 
   // User authentication
   phone_number: '手机号码',

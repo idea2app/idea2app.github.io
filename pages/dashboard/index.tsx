@@ -3,9 +3,9 @@ import { Container, Grid, Typography } from '@mui/material';
 import { observer } from 'mobx-react';
 import { useRouter } from 'next/router';
 import { compose, JWTProps, jwtVerifier } from 'next-ssr-middleware';
-import { FC, useContext } from 'react';
+import { FC, useContext, useMemo } from 'react';
 
-import { ProjectCard } from '../../components/ProjectCard';
+import { ProjectCard } from '../../components/Project/NewCard';
 import { ScrollList } from '../../components/ScrollList';
 import { SessionBox } from '../../components/User/SessionBox';
 import { ProjectModel } from '../../models/ProjectEvaluation';
@@ -25,6 +25,15 @@ const DashboardPage: FC<DashboardPageProps> = observer(({ jwtPayload }) => {
 
   const menu = [{ href: '/dashboard', title: t('overview') }];
 
+  // Role-based filtering: pass createdBy for client users, empty for others
+  const filter = useMemo(() => {
+    const userRole = jwtPayload?.role;
+    if (userRole === 'client' && jwtPayload?.id) {
+      return { createdBy: jwtPayload.id };
+    }
+    return {};
+  }, [jwtPayload]);
+
   return (
     <SessionBox title={t('backend_management')} path={asPath} {...{ menu, jwtPayload }}>
       <Container maxWidth="lg" className="py-8">
@@ -39,7 +48,7 @@ const DashboardPage: FC<DashboardPageProps> = observer(({ jwtPayload }) => {
         <ScrollList
           translator={i18n}
           store={projectStore}
-          filter={{}}
+          filter={filter}
           renderList={(allItems: Project[]) => (
             <Grid container spacing={3}>
               {allItems.length === 0 ? (
@@ -51,12 +60,7 @@ const DashboardPage: FC<DashboardPageProps> = observer(({ jwtPayload }) => {
               ) : (
                 allItems.map((project) => (
                   <Grid key={project.id} size={{ xs: 12, md: 4 }}>
-                    <ProjectCard
-                      id={project.id}
-                      name={project.name}
-                      description={project.description || ''}
-                      status={project.status || '待评估'}
-                    />
+                    <ProjectCard {...project} />
                   </Grid>
                 ))
               )}

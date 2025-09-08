@@ -77,6 +77,17 @@ export default {
     'This service is free of charge, but only accepts <strong>publicly available information</strong> related to estimation.',
   project_name: 'Project Name',
   project_evaluation: 'Project Evaluation',
+  
+  // Evaluation fields
+  tech_stack: 'Tech Stack',
+  difficulty: 'Difficulty',
+  timeline: 'Timeline',
+  cost: 'Cost',
+  key_features: 'Key Features',
+  risk_assessment: 'Risk Assessment',
+  architecture: 'Architecture',
+  ai_assistant: 'AI Assistant',
+  loading_project_evaluation: 'Loading project evaluation data',
 
   // User authentication
   phone_number: 'Phone Number',
