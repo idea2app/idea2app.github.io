@@ -1,9 +1,10 @@
 import { ConsultMessage, RequirementEvaluation, User, UserRole } from '@idea2app/data-server';
-import { Avatar, Box, Container, Paper, Typography } from '@mui/material';
+import { Avatar, Box, Button, Container, Paper, TextField, Typography } from '@mui/material';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
 import { compose, JWTProps, jwtVerifier, RouteProps, router } from 'next-ssr-middleware';
-import { ReactNode } from 'react';
+import { FormEvent, ReactNode } from 'react';
+import { formToJSON } from 'web-utility';
 
 import { PageHead } from '../../../components/PageHead';
 import { EvaluationDisplay } from '../../../components/Project/EvaluationDisplay';
@@ -93,6 +94,24 @@ export default class ProjectEvaluationPage extends ObservedComponent<
     );
   };
 
+  handleMessageSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const { content } = formToJSON<{ content: string }>(event.currentTarget);
+    
+    if (!content.trim()) return;
+
+    try {
+      await this.evaluationStore.updateOne({ content: content.trim() });
+      // Clear the form
+      event.currentTarget.reset();
+      // Refresh the messages
+      this.evaluationStore.clear();
+      await this.evaluationStore.getList();
+    } catch (error) {
+      console.error('Failed to send message:', error);
+    }
+  };
+
   render(): ReactNode {
     const { jwtPayload } = this.props;
     const { t } = this.observedContext;
@@ -106,12 +125,13 @@ export default class ProjectEvaluationPage extends ObservedComponent<
       >
         <PageHead title={`${t('project_evaluation')} - ${this.projectId}`} />
 
-        <Container maxWidth="md" sx={{ height: '70vh', display: 'flex', flexDirection: 'column' }}>
+        <Container maxWidth="md" sx={{ height: '85vh', display: 'flex', flexDirection: 'column' }}>
           <Typography variant="h4" component="h2" gutterBottom>
             {t('project_evaluation')} {this.projectId}
           </Typography>
 
-          <Box sx={{ flex: 1, overflow: 'hidden' }}>
+          {/* Chat Messages Area */}
+          <Box sx={{ flex: 1, overflow: 'hidden', mb: 2 }}>
             <ScrollList
               translator={this.observedContext}
               store={this.evaluationStore}
@@ -131,6 +151,32 @@ export default class ProjectEvaluationPage extends ObservedComponent<
               )}
             />
           </Box>
+
+          {/* Message Input Form */}
+          <Paper elevation={1} sx={{ p: 2, mt: 'auto' }}>
+            <form onSubmit={this.handleMessageSubmit}>
+              <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-end' }}>
+                <TextField
+                  name="content"
+                  placeholder={t('type_your_message')}
+                  multiline
+                  maxRows={4}
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                  required
+                />
+                <Button 
+                  type="submit" 
+                  variant="contained" 
+                  sx={{ minWidth: 'auto', px: 2 }}
+                  disabled={this.evaluationStore.uploading > 0}
+                >
+                  {t('send')}
+                </Button>
+              </Box>
+            </form>
+          </Paper>
         </Container>
       </SessionBox>
     );

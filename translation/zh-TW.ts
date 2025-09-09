@@ -125,4 +125,9 @@ export default {
   professional_development_team: '合同簽訂並支付定金後，項目開發由 idea2app 公司分配的專業工程師完成',
   phone_required_for_webauthn: '手機號是 WebAuthn 註冊的必填項',
   registration_success_please_login: '註冊成功，請登入',
+  
+  // Chat interface
+  type_your_message: '輸入您的訊息...',
+  send_message: '發送訊息',
+  send: '發送',
 } as const;

@@ -128,4 +128,9 @@ export default {
   professional_development_team: 'Professional engineers assigned by idea2app complete development after contract and deposit',
   phone_required_for_webauthn: 'Phone number is required for WebAuthn registration',
   registration_success_please_login: 'Registration successful, please login',
+  
+  // Chat interface
+  type_your_message: 'Type your message...',
+  send_message: 'Send Message',
+  send: 'Send',
 } as const;
