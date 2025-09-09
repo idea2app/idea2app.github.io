@@ -110,6 +110,9 @@ export default {
   overview: '概览',
   profile: '个人资料',
   settings: '设置',
+  new_project: '新建项目',
+  create_new_project: '创建新项目',
+  commercial_version: '商业版',
   phone_required_for_webauthn: '手机号是 WebAuthn 注册的必填项',
   registration_success_please_login: '注册成功，请登录',
 } as const;

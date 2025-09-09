@@ -109,6 +109,9 @@ export default {
   overview: '概覽',
   profile: '個人資料',
   settings: '設定',
+  new_project: '新建項目',
+  create_new_project: '創建新項目',
+  commercial_version: '商業版',
   phone_required_for_webauthn: '手機號是 WebAuthn 註冊的必填項',
   registration_success_please_login: '註冊成功，請登入',
 } as const;

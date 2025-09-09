@@ -1,9 +1,10 @@
 import { User, UserRole } from '@idea2app/data-server';
-import { Container, Grid, Typography } from '@mui/material';
+import { Button, Container, Grid, TextField, Typography } from '@mui/material';
 import { observer } from 'mobx-react';
 import { useRouter } from 'next/router';
 import { compose, JWTProps, jwtVerifier } from 'next-ssr-middleware';
 import { FC, useContext } from 'react';
+import { formToJSON } from 'web-utility';
 
 import { ProjectCard } from '../../components/Project/NewCard';
 import { ScrollList } from '../../components/ScrollList';
@@ -31,6 +32,39 @@ const DashboardPage: FC<DashboardPageProps> = observer(({ jwtPayload }) => {
         <Typography variant="h3" component="h1" gutterBottom>
           {t('welcome_use')}
         </Typography>
+
+        {/* New Project Section */}
+        <form
+          style={{ marginTop: 32, marginBottom: 32 }}
+          onSubmit={event => {
+            event.preventDefault();
+
+            const { title } = formToJSON<{ title: string }>(event.currentTarget);
+
+            location.href = `/dashboard/project/new?title=${encodeURIComponent(title)}`;
+          }}
+        >
+          <Typography variant="h5" component="h2" sx={{ mb: 3 }}>
+            {t('create_new_project')}
+          </Typography>
+          
+          <Grid container spacing={2} alignItems="flex-end">
+            <Grid size={{ xs: 12, md: 8 }}>
+              <TextField 
+                fullWidth
+                label={t('project_name')} 
+                name="title" 
+                required 
+                defaultValue="动物保护平台" 
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 4 }}>
+              <Button variant="contained" size="large" type="submit" fullWidth>
+                {t('create')}
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
 
         <Typography variant="h5" component="h2" sx={{ mt: 4, mb: 3 }}>
           {t('recent_projects')}

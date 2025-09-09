@@ -112,6 +112,9 @@ export default {
   overview: 'Overview',
   profile: 'Profile',
   settings: 'Settings',
+  new_project: 'New Project',
+  create_new_project: 'Create New Project',
+  commercial_version: 'Commercial Version',
   phone_required_for_webauthn: 'Phone number is required for WebAuthn registration',
   registration_success_please_login: 'Registration successful, please login',
 } as const;

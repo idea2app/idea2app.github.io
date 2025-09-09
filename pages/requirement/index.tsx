@@ -30,6 +30,15 @@ const RequirementEntryPage: NextPage = observer(() => {
       <Button variant="contained" size="large" type="submit">
         {t('AI_requirement_evaluation')}
       </Button>
+
+      <Button 
+        variant="outlined" 
+        size="large" 
+        sx={{ mt: 2 }}
+        onClick={() => { location.href = '/dashboard'; }}
+      >
+        {t('commercial_version')}
+      </Button>
     </form>
   );
 });
