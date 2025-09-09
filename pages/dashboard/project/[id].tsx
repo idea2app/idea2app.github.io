@@ -1,4 +1,4 @@
-import { ConsultMessage, RequirementEvaluation,User } from '@idea2app/data-server';
+import { ConsultMessage, RequirementEvaluation, User, UserRole } from '@idea2app/data-server';
 import { Avatar, Box, Container, Paper, Typography } from '@mui/material';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
@@ -12,33 +12,33 @@ import { SessionBox } from '../../../components/User/SessionBox';
 import { ConsultMessageModel } from '../../../models/ProjectEvaluation';
 import { i18n, I18nContext } from '../../../models/Translation';
 
-interface ProjectEvaluationPageProps extends JWTProps<User>, RouteProps<{ id: string }> {}
+type ProjectEvaluationPageProps = JWTProps<User> & RouteProps<{ id: string }>;
 
-export const getServerSideProps = compose<{}, ProjectEvaluationPageProps>(
-  jwtVerifier(),
-  router
-);
+export const getServerSideProps = compose<{}, ProjectEvaluationPageProps>(jwtVerifier(), router);
 
 @observer
-export default class ProjectEvaluationPage extends ObservedComponent<ProjectEvaluationPageProps, typeof i18n> {
+export default class ProjectEvaluationPage extends ObservedComponent<
+  ProjectEvaluationPageProps,
+  typeof i18n
+> {
   static contextType = I18nContext;
 
   projectId = +this.props.route!.params!.id;
-  
+
   evaluationStore = new ConsultMessageModel(this.projectId);
 
   get menu() {
     const { t } = this.observedContext;
-    
+
     return [
       { href: '/dashboard', title: t('overview') },
       { href: `/dashboard/project/${this.projectId}`, title: t('project_evaluation') },
     ];
   }
 
-  renderChatMessage = ({ id, content, evaluation, createdAt, createdBy }: ConsultMessage): ReactNode => {
+  renderChatMessage = ({ id, content, evaluation, createdAt, createdBy }: ConsultMessage) => {
     const { t } = this.observedContext;
-    const isBot = !createdBy;
+    const isBot = createdBy.roles.includes(3 as UserRole.Robot);
     const avatarSrc = isBot ? '/robot-avatar.png' : createdBy?.avatar || '/default-avatar.png';
     const name = isBot ? `🤖 ${t('ai_assistant')}` : createdBy?.name || 'User';
 
@@ -61,11 +61,7 @@ export default class ProjectEvaluationPage extends ObservedComponent<ProjectEval
             gap: 1,
           }}
         >
-          <Avatar
-            src={avatarSrc}
-            alt={name}
-            sx={{ width: 32, height: 32 }}
-          />
+          <Avatar src={avatarSrc} alt={name} sx={{ width: 32, height: 32 }} />
           <Paper
             elevation={1}
             sx={{
@@ -78,17 +74,14 @@ export default class ProjectEvaluationPage extends ObservedComponent<ProjectEval
             <Typography variant="caption" display="block" sx={{ mb: 0.5, opacity: 0.8 }}>
               {name}
             </Typography>
-            
+
             {content && (
               <Typography variant="body2" sx={{ mb: 1 }}>
                 {content}
               </Typography>
             )}
-            
-            {evaluation && (
-              <EvaluationDisplay {...(evaluation as RequirementEvaluation)} />
-            )}
-            
+            {evaluation && <EvaluationDisplay {...evaluation} />}
+
             {createdAt && (
               <Typography variant="caption" sx={{ opacity: 0.6, fontSize: '0.75rem' }}>
                 {new Date(createdAt).toLocaleTimeString()}
@@ -122,17 +115,17 @@ export default class ProjectEvaluationPage extends ObservedComponent<ProjectEval
             <ScrollList
               translator={this.observedContext}
               store={this.evaluationStore}
-              filter={{ project: String(this.projectId) }}
-              renderList={(allItems: ConsultMessage[]) => (
+              filter={{ project: this.projectId }}
+              renderList={allItems => (
                 <Box sx={{ height: '100%', overflowY: 'auto', p: 1 }}>
-                  {allItems.length === 0 ? (
+                  {allItems[0] ? (
+                    allItems.map(this.renderChatMessage)
+                  ) : (
                     <Box sx={{ textAlign: 'center', mt: 4 }}>
                       <Typography color="textSecondary">
                         {t('loading_project_evaluation')}
                       </Typography>
                     </Box>
-                  ) : (
-                    allItems.map(this.renderChatMessage)
                   )}
                 </Box>
               )}
