@@ -75,6 +75,27 @@ export default {
   project_name: '專案名稱',
   project_evaluation: '專案評估',
 
+  // Evaluation fields
+  description: '專案描述',
+  development_scopes: '開發範圍',
+  workload: '工作量',
+  hours: '小時',
+  timeline: '開發週期',
+  months: '個月',
+  budget: '預算',
+  team_size: '團隊規模',
+  developers: '開發者',
+  designers: '設計師',
+  complexity_factor: '複雜度係數',
+  ai_assistant: 'AI助手',
+  loading_project_evaluation: '正在載入專案評估資料',
+  view_evaluation: '查看評估',
+  recent_projects: '最近專案',
+  no_project_data: '暫無專案資料',
+  project_open: '進行中',
+  project_closed: '已關閉',
+  project_pending: '等待中',
+
   // User authentication
   phone_number: '手機號碼',
   please_enter_phone: '請輸入手機號碼',
@@ -90,18 +111,4 @@ export default {
   settings: '設定',
   phone_required_for_webauthn: '手機號是 WebAuthn 註冊的必填項',
   registration_success_please_login: '註冊成功，請登入',
-
-  // Project evaluation translations
-  tech_stack: '技術棧',
-  difficulty: '難度',
-  timeline: '開發週期',
-  cost: '成本預估',
-  architecture: '架構設計',
-  key_features: '核心功能',
-  risk_assessment: '風險評估',
-  ai_assistant: 'AI助手',
-  loading_project_evaluation: '正在載入專案評估資料',
-  view_evaluation: '查看評估',
-  recent_projects: '最近專案',
-  no_project_data: '暫無專案資料',
 } as const;

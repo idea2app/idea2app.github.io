@@ -5,13 +5,15 @@ import { FC, useContext } from 'react';
 import { I18nContext } from '../../models/Translation';
 
 export const EvaluationDisplay: FC<RequirementEvaluation> = ({
-  techStack = [],
-  difficulty = '',
-  timeline = '',
-  cost = '',
-  architecture = '',
-  keyFeatures = '',
-  riskAssessment = '',
+  title,
+  description,
+  scopes = [],
+  developerCount,
+  designerCount,
+  workload,
+  monthPeriod,
+  budget,
+  factor,
 }) => {
   const { t } = useContext(I18nContext);
 
@@ -37,78 +39,89 @@ export const EvaluationDisplay: FC<RequirementEvaluation> = ({
         marginBottom: '4px',
       },
     }}>
-      {techStack.length > 0 && (
+      {title && (
+        <Box className="evaluation-item">
+          <Typography component="h3" sx={{ fontWeight: 600, mb: 1 }}>
+            {title}
+          </Typography>
+        </Box>
+      )}
+
+      {description && (
         <Box className="evaluation-item">
           <Typography component="span" sx={{ fontWeight: 600 }}>
-            {t('tech_stack')}
+            {t('description')}
           </Typography>
           {' '}
-          {techStack.join(', ')}
+          {description}
         </Box>
       )}
       
-      {difficulty && (
+      {scopes && scopes.length > 0 && (
         <Box className="evaluation-item">
           <Typography component="span" sx={{ fontWeight: 600 }}>
-            {t('difficulty')}
+            {t('development_scopes')}
           </Typography>
-          {' '}
-          {difficulty}
+          <Box component="ul" sx={{ mt: 0.5 }}>
+            {scopes.map((scope, index) => (
+              <Box key={index} component="li" sx={{ ml: 1 }}>
+                {scope}
+              </Box>
+            ))}
+          </Box>
         </Box>
       )}
       
-      {timeline && (
+      {workload && (
+        <Box className="evaluation-item">
+          <Typography component="span" sx={{ fontWeight: 600 }}>
+            {t('workload')}
+          </Typography>
+          {' '}
+          {workload} {t('hours')}
+        </Box>
+      )}
+      
+      {monthPeriod && (
         <Box className="evaluation-item">
           <Typography component="span" sx={{ fontWeight: 600 }}>
             {t('timeline')}
           </Typography>
           {' '}
-          {timeline}
-        </Box>
-      )}
-      
-      {cost && (
-        <Box className="evaluation-item">
-          <Typography component="span" sx={{ fontWeight: 600 }}>
-            {t('cost')}
-          </Typography>
-          {' '}
-          {cost}
+          {monthPeriod} {t('months')}
         </Box>
       )}
 
-      {keyFeatures && (
+      {budget && (
         <Box className="evaluation-item">
           <Typography component="span" sx={{ fontWeight: 600 }}>
-            {t('key_features')}
+            {t('budget')}
           </Typography>
           {' '}
-          {keyFeatures}
+          ${budget.toLocaleString()}
         </Box>
       )}
 
-      {riskAssessment && (
+      {(developerCount || designerCount) && (
         <Box className="evaluation-item">
           <Typography component="span" sx={{ fontWeight: 600 }}>
-            {t('risk_assessment')}
+            {t('team_size')}
           </Typography>
           {' '}
-          {riskAssessment}
+          {[
+            developerCount && `${developerCount} ${t('developers')}`,
+            designerCount && `${designerCount} ${t('designers')}`
+          ].filter(Boolean).join(', ')}
         </Box>
       )}
-      
-      {architecture && (
+
+      {factor && (
         <Box className="evaluation-item">
-          <Typography component="h3" sx={{ fontWeight: 600 }}>
-            {t('architecture')}
+          <Typography component="span" sx={{ fontWeight: 600 }}>
+            {t('complexity_factor')}
           </Typography>
-          <Box component="ul" sx={{ mt: 0.5 }}>
-            {architecture.replace(/<[^>]*>/g, '').split('\n').filter((line: string) => line.trim()).map((line: string, index: number) => (
-              <Box key={index} component="li" sx={{ ml: 1 }}>
-                {line.trim()}
-              </Box>
-            ))}
-          </Box>
+          {' '}
+          {factor}
         </Box>
       )}
     </Box>

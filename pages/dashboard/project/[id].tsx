@@ -36,11 +36,11 @@ export default class ProjectEvaluationPage extends ObservedComponent<ProjectEval
     ];
   }
 
-  renderChatMessage = ({ id, content, evaluation, createdAt, user }: ConsultMessage): ReactNode => {
+  renderChatMessage = ({ id, content, evaluation, createdAt, createdBy }: ConsultMessage): ReactNode => {
     const { t } = this.observedContext;
-    const isBot = !user;
-    const avatarSrc = isBot ? '/robot-avatar.png' : user?.avatar || '/default-avatar.png';
-    const name = isBot ? `🤖 ${t('ai_assistant')}` : user?.name || 'User';
+    const isBot = !createdBy;
+    const avatarSrc = isBot ? '/robot-avatar.png' : createdBy?.avatar || '/default-avatar.png';
+    const name = isBot ? `🤖 ${t('ai_assistant')}` : createdBy?.name || 'User';
 
     return (
       <Box

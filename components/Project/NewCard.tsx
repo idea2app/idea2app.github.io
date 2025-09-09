@@ -1,17 +1,11 @@
+import { Project } from '@idea2app/data-server';
 import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 import Link from 'next/link';
 import { FC, useContext } from 'react';
 
 import { I18nContext } from '../../models/Translation';
 
-export interface ProjectCardProps {
-  id: string;
-  name: string;
-  description?: string;
-  status?: string;
-}
-
-export const ProjectCard: FC<ProjectCardProps> = ({ id, name, description = '', status = '' }) => {
+export const ProjectCard: FC<Project> = ({ id, name, requirementText, projectStatus }) => {
   const { t } = useContext(I18nContext);
   
   return (
@@ -21,21 +15,22 @@ export const ProjectCard: FC<ProjectCardProps> = ({ id, name, description = '', 
           {name}
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-          {description}
+          {requirementText || ''}
         </Typography>
         <Typography 
           variant="caption" 
           sx={{ 
             px: 1, 
-            py: 0.5, 
+            py: 0.5,
             borderRadius: 1, 
-            bgcolor: status === '评估完成' ? 'success.light' : 
-                    status === '评估中' ? 'warning.light' : 'grey.200',
-            color: status === '评估完成' ? 'success.contrastText' : 
-                   status === '评估中' ? 'warning.contrastText' : 'text.primary'
+            bgcolor: projectStatus === '1' ? 'success.light' : 
+                    projectStatus === '0' ? 'grey.200' : 'warning.light',
+            color: projectStatus === '1' ? 'success.contrastText' : 
+                   projectStatus === '0' ? 'text.primary' : 'warning.contrastText'
           }}
         >
-          {status}
+          {projectStatus === '1' ? t('project_open') : 
+           projectStatus === '0' ? t('project_closed') : t('project_pending')}
         </Typography>
       </CardContent>
       <CardActions>

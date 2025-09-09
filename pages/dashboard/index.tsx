@@ -8,7 +8,7 @@ import { FC, useContext } from 'react';
 import { ProjectCard } from '../../components/Project/NewCard';
 import { ScrollList } from '../../components/ScrollList';
 import { SessionBox } from '../../components/User/SessionBox';
-import { ProjectModel } from '../../models/ProjectEvaluation';
+import { ExtendedProjectFilter,ProjectModel } from '../../models/ProjectEvaluation';
 import { I18nContext } from '../../models/Translation';
 
 interface DashboardPageProps extends JWTProps<User> {}
@@ -39,7 +39,7 @@ const DashboardPage: FC<DashboardPageProps> = observer(({ jwtPayload }) => {
         <ScrollList
           translator={i18n}
           store={projectStore}
-          filter={jwtPayload?.role === 'client' && jwtPayload?.id ? { createdBy: jwtPayload.id } : {}}
+          filter={jwtPayload?.role === 'client' && jwtPayload?.id ? { createdBy: +jwtPayload.id } : {}}
           renderList={(allItems: Project[]) => (
             <Grid container spacing={3}>
               {allItems.length === 0 ? (

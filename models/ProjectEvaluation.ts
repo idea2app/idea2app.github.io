@@ -1,13 +1,12 @@
-import { Project, ConsultMessage } from '@idea2app/data-server';
+import { Project, ConsultMessage, ProjectFilter, UserBaseFilter } from '@idea2app/data-server';
 import { Filter } from 'mobx-restful';
 
 import { TableModel } from './Base';
 import userStore from './User';
 
-export interface ProjectFilter extends Filter<Project> {
-  owner?: string;
-  status?: string;
-  createdBy?: string;
+// Combine ProjectFilter with UserBaseFilter to support role-based filtering
+export interface ExtendedProjectFilter extends ProjectFilter {
+  createdBy?: number;
 }
 
 export interface ConsultMessageFilter extends Filter<ConsultMessage> {
@@ -15,7 +14,7 @@ export interface ConsultMessageFilter extends Filter<ConsultMessage> {
   user?: string;
 }
 
-export class ProjectModel extends TableModel<Project, ProjectFilter> {
+export class ProjectModel extends TableModel<Project, ExtendedProjectFilter> {
   client = userStore.client;
   baseURI = 'project';
 }
