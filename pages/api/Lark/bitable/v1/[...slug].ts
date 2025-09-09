@@ -1,8 +1,8 @@
 import { LarkPageData, TableCellText, TableRecord, TableRecordData } from 'mobx-lark';
 import { DataObject } from 'mobx-restful';
-import { createKoaRouter } from 'next-ssr-middleware';
+import { createKoaRouter, withKoaRouter } from 'next-ssr-middleware';
 
-import { JWTContext, parseJWT, verifyJWT, withSafeKoaRouter } from '../../../core';
+import { JWTContext, parseJWT, safeAPI, verifyJWT } from '../../../core';
 import { proxyLark, proxyLarkAll } from '../../core';
 
 export const config = { api: { bodyParser: false } };
@@ -15,26 +15,31 @@ function filterData(fields: DataObject) {
   for (const key of Object.keys(fields)) if (!/^\w+$/.test(key)) delete fields[key];
 }
 
-router.get('/apps/:app/tables/:table/records/:record', parseJWT, async (context: JWTContext) => {
-  const { status, body } = await proxyLark<TableRecordData<ControlledData>>(context);
+router.get(
+  '/apps/:app/tables/:table/records/:record',
+  safeAPI,
+  parseJWT,
+  async (context: JWTContext) => {
+    const { status, body } = await proxyLark<TableRecordData<ControlledData>>(context);
 
-  const { fields } = body!.data!.record;
-  const { authorizedEmails } = fields;
+    const { fields } = body!.data!.record;
+    const { authorizedEmails } = fields;
 
-  if (authorizedEmails) {
-    const { state } = context;
+    if (authorizedEmails) {
+      const { state } = context;
 
-    if ('jwtOriginalError' in state) return context.throw(401);
+      if ('jwtOriginalError' in state) return context.throw(401);
 
-    if (!authorizedEmails[0]?.text.includes(state.user.email!)) return context.throw(403);
-  }
-  filterData(fields);
+      if (!authorizedEmails[0]?.text.includes(state.user.email!)) return context.throw(403);
+    }
+    filterData(fields);
 
-  context.status = status;
-  context.body = body;
-});
+    context.status = status;
+    context.body = body;
+  },
+);
 
-router.get('/apps/:app/tables/:table/records', parseJWT, async (context: JWTContext) => {
+router.get('/apps/:app/tables/:table/records', safeAPI, parseJWT, async (context: JWTContext) => {
   const { status, body } = await proxyLark<LarkPageData<TableRecord<ControlledData>>>(context);
 
   const list = body!.data!.items || [],
@@ -52,6 +57,6 @@ router.get('/apps/:app/tables/:table/records', parseJWT, async (context: JWTCont
   context.body = body;
 });
 
-router.all('/(.*)', verifyJWT, proxyLarkAll);
+router.all('/{*slug}', safeAPI, verifyJWT, proxyLarkAll);
 
-export default withSafeKoaRouter(router);
+export default withKoaRouter(router);

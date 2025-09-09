@@ -30,9 +30,6 @@ importers:
       '@koa/bodyparser':
         specifier: ^6.0.0
         version: 6.0.0(koa@3.0.1)
-      '@koa/router':
-        specifier: ^14.0.0
-        version: 14.0.0
       '@mui/lab':
         specifier: ^7.0.0-beta.16
         version: 7.0.0-beta.16(@emotion/react@11.14.0(@types/react@19.1.12)(react@19.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.12)(react@19.1.1))(@types/react@19.1.12)(react@19.1.1))(@mui/material@7.3.1(@emotion/react@11.14.0(@types/react@19.1.12)(react@19.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.12)(react@19.1.1))(@types/react@19.1.12)(react@19.1.1))(@types/react@19.1.12)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(@types/react@19.1.12)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
@@ -160,9 +157,6 @@ importers:
       '@types/koa':
         specifier: ^3.0.0
         version: 3.0.0
-      '@types/koa__router':
-        specifier: ^12.0.4
-        version: 12.0.4
       '@types/lodash':
         specifier: ^4.17.20
         version: 4.17.20
@@ -1170,7 +1164,7 @@ packages:
     engines: {node: '>=18.18'}
 
   '@idea2app/data-server@1.0.0-rc.1':
-    resolution: {integrity: sha512-26Pl2O0UP9SIwUsqXFXqEs9UXUb2rvAcDVZiM3e1tL6+4TQveCKcu8EKx/qEDTKqNkd0SuxNgbsXeyzV62heyA==, tarball: https://npm.pkg.github.com/download/@idea2app/data-server/1.0.0-rc.1/c19a8590513606f302aad627d833b5e45442b0e5}
+    resolution: {integrity: sha512-o/umMjsWkNx40+VkddtlwCrVQGLHhhbKStogYTFgCMJaUBf/bpWJQ5e0vmAcN8jUMBxA4iceSHM59ZyNrcTgzA==, tarball: https://npm.pkg.github.com/download/@idea2app/data-server/1.0.0-rc.1/b2f2d2304c5f9664222c4b0c78e7f5fe334e2232}
 
   '@img/sharp-darwin-arm64@0.34.3':
     resolution: {integrity: sha512-ryFMfvxxpQRsgZJqBd4wsttYQbCxsJksrv9Lw/v798JcQ8+w84mBWuXwl+TT0WJ/WrYOLaYpwQXi3sA9nTIaIg==}
@@ -1334,10 +1328,6 @@ packages:
   '@koa/router@13.1.1':
     resolution: {integrity: sha512-JQEuMANYRVHs7lm7KY9PCIjkgJk73h4m4J+g2mkw2Vo1ugPZ17UJVqEH8F+HeAdjKz5do1OaLe7ArDz+z308gw==}
     engines: {node: '>= 18'}
-
-  '@koa/router@14.0.0':
-    resolution: {integrity: sha512-LBSu5K0qAaaQcXX/0WIB9PGDevyCxxpnc1uq13vV/CgObaVxuis5hKl3Eboq/8gcb6ebnkAStW9NB/Em2eYyFA==}
-    engines: {node: '>= 20'}
 
   '@lit-labs/ssr-dom-shim@1.4.0':
     resolution: {integrity: sha512-ficsEARKnmmW5njugNYKipTm4SFnbik7CXtoencDZzmzo/dQ+2Q0bgkzJuoJP20Aj0F+izzJjOqsnkd6F/o1bw==}
@@ -4486,10 +4476,6 @@ packages:
   path-to-regexp@6.3.0:
     resolution: {integrity: sha512-Yhpw4T9C6hPpgPeA28us07OJeqZ5EzQTkbfwuhsUg0c237RomFoETJgmp2sa3F/41gfLE6G5cqcYwznmeEeOlQ==}
 
-  path-to-regexp@8.2.0:
-    resolution: {integrity: sha512-TdrF7fW9Rphjq4RjrW0Kp2AW0Ahwu9sRGTkS6bvDi0SCwZlEZYmcfDbEsTz8RVk0EHIS/Vd1bv3JhG+1xZuAyQ==}
-    engines: {node: '>=16'}
-
   path-type@4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
@@ -6800,15 +6786,6 @@ snapshots:
       http-errors: 2.0.0
       koa-compose: 4.1.0
       path-to-regexp: 6.3.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@koa/router@14.0.0':
-    dependencies:
-      debug: 4.4.1
-      http-errors: 2.0.0
-      koa-compose: 4.1.0
-      path-to-regexp: 8.2.0
     transitivePeerDependencies:
       - supports-color
 
@@ -10373,8 +10350,6 @@ snapshots:
       minipass: 7.1.2
 
   path-to-regexp@6.3.0: {}
-
-  path-to-regexp@8.2.0: {}
 
   path-type@4.0.0: {}
 
