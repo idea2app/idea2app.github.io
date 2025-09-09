@@ -1,4 +1,4 @@
-import { Button, TextField, Grid } from '@mui/material';
+import { Button, Grid,TextField } from '@mui/material';
 import { observer } from 'mobx-react';
 import { NextPage } from 'next';
 import { useContext } from 'react';
@@ -6,8 +6,8 @@ import { formToJSON } from 'web-utility';
 
 import { PageHead } from '../../components/PageHead';
 import { VersionComparison } from '../../components/VersionComparison';
-import { I18nContext } from '../../models/Translation';
 import { ProjectModel } from '../../models/ProjectEvaluation';
+import { I18nContext } from '../../models/Translation';
 
 const projectStore = new ProjectModel();
 
