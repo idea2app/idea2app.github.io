@@ -1,4 +1,4 @@
-import { debounce } from 'lodash';
+import debounce from 'lodash.debounce';
 import { when } from 'mobx';
 import { TranslationModel } from 'mobx-i18n';
 import { observer } from 'mobx-react';

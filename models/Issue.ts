@@ -1,7 +1,6 @@
-import { isEmpty } from 'lodash';
 import { Issue } from 'mobx-github';
 import { Filter, ListModel } from 'mobx-restful';
-import { buildURLData } from 'web-utility';
+import { buildURLData, isEmpty } from 'web-utility';
 
 import { githubClient } from './Base';
 
