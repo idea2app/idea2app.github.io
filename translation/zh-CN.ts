@@ -75,7 +75,7 @@ export default {
   information_security_alert: '本服务免费，但仅接受与估价有关的<strong>可公开信息</strong>。',
   project_name: '项目名称',
   project_evaluation: '项目评估',
-  
+
   // Evaluation fields
   description: '项目描述',
   development_scopes: '开发范围',
@@ -88,7 +88,7 @@ export default {
   developers: '开发者',
   designers: '设计师',
   complexity_factor: '复杂度系数',
-  ai_assistant: 'AI助手',
+  ai_assistant: 'AI 助手',
   loading_project_evaluation: '正在加载项目评估数据',
   view_evaluation: '查看评估',
   recent_projects: '最近项目',
@@ -123,12 +123,13 @@ export default {
   unlimited_evaluation_24_7: '全天候不限量评估',
   project_data_confidential: '项目资料保密',
   daily_engineer_review: 'idea2app 工程师每日审核 AI 评估',
-  professional_development_team: '合同签订并支付定金后，项目开发由 idea2app 公司分配的专业工程师完成',
+  professional_development_team:
+    '合同签订并支付定金后，项目开发由 idea2app 公司分配的专业工程师完成',
   phone_required_for_webauthn: '手机号是 WebAuthn 注册的必填项',
   registration_success_please_login: '注册成功，请登录',
-  
+
   // Chat interface
-  type_your_message: '输入您的消息...',
+  type_your_message: '输入您的消息……',
   send_message: '发送消息',
   send: '发送',
 } as const;

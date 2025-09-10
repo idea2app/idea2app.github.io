@@ -82,7 +82,7 @@ export const EvaluationDisplay: FC<RequirementEvaluation> = observer(
             <Typography component="h4" sx={{ fontWeight: 600 }}>
               {t('budget')}
             </Typography>{' '}
-            ￥{budget.toLocaleString()}
+            RMB￥{budget.toLocaleString()}
           </Box>
         )}
         {(developerCount || designerCount) && (

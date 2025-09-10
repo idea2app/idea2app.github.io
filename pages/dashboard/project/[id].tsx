@@ -3,14 +3,14 @@ import { Avatar, Box, Button, Container, Paper, TextField, Typography } from '@m
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
 import { compose, JWTProps, jwtVerifier, RouteProps, router } from 'next-ssr-middleware';
-import { FormEvent, ReactNode } from 'react';
-import { formToJSON, scrollTo } from 'web-utility';
+import { FormEvent } from 'react';
+import { formToJSON, scrollTo, sleep } from 'web-utility';
 
 import { PageHead } from '../../../components/PageHead';
 import { EvaluationDisplay } from '../../../components/Project/EvaluationDisplay';
 import { ScrollList } from '../../../components/ScrollList';
 import { SessionBox } from '../../../components/User/SessionBox';
-import { ConsultMessageModel } from '../../../models/ProjectEvaluation';
+import { ConsultMessageModel, ProjectModel } from '../../../models/ProjectEvaluation';
 import { i18n, I18nContext } from '../../../models/Translation';
 
 type ProjectEvaluationPageProps = JWTProps<User> & RouteProps<{ id: string }>;
@@ -26,7 +26,9 @@ export default class ProjectEvaluationPage extends ObservedComponent<
 
   projectId = +this.props.route!.params!.id;
 
-  evaluationStore = new ConsultMessageModel(this.projectId);
+  projectStore = new ProjectModel();
+
+  messageStore = new ConsultMessageModel(this.projectId);
 
   get menu() {
     const { t } = this.observedContext;
@@ -35,6 +37,10 @@ export default class ProjectEvaluationPage extends ObservedComponent<
       { href: '/dashboard', title: t('overview') },
       { href: `/dashboard/project/${this.projectId}`, title: t('project_evaluation') },
     ];
+  }
+
+  componentDidMount() {
+    this.projectStore.getOne(this.projectId);
   }
 
   handleMessageSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -46,17 +52,20 @@ export default class ProjectEvaluationPage extends ObservedComponent<
 
     if (!content) return;
 
-    await this.evaluationStore.updateOne({ content });
+    await this.messageStore.updateOne({ content });
 
     event.currentTarget.reset();
 
-    // Scroll to the last message
-    setTimeout(() => {
-      scrollTo('#last-message');
-    }, 100);
+    await sleep(0.2);
+
+    scrollTo('#last-message');
   };
 
-  renderChatMessage = ({ id, content, evaluation, createdAt, createdBy }: ConsultMessage) => {
+  renderChatMessage = (
+    { id, content, evaluation, createdAt, createdBy }: ConsultMessage,
+    index = 0,
+    { length }: ConsultMessage[],
+  ) => {
     const { t } = this.observedContext;
     const isBot = createdBy.roles.includes(3 as UserRole.Robot);
     const avatarSrc = isBot ? '/robot-avatar.png' : createdBy?.avatar || '/default-avatar.png';
@@ -65,6 +74,7 @@ export default class ProjectEvaluationPage extends ObservedComponent<
     return (
       <Box
         key={id}
+        id={index + 1 === length ? 'last-message' : undefined}
         sx={{
           display: 'flex',
           justifyContent: isBot ? 'flex-start' : 'flex-end',
@@ -113,38 +123,33 @@ export default class ProjectEvaluationPage extends ObservedComponent<
     );
   };
 
-  render(): ReactNode {
-    const { jwtPayload } = this.props;
-    const { t } = this.observedContext;
+  render() {
+    const { jwtPayload } = this.props,
+      i18n = this.observedContext,
+      { projectId, menu, projectStore, messageStore } = this;
+    const { t } = i18n,
+      currentProject = projectStore.currentOne;
+    const title = `${currentProject.name} - ${t('project_evaluation')}`;
 
     return (
-      <SessionBox
-        title={`${t('project_evaluation')} - ${this.projectId}`}
-        path={`/dashboard/project/${this.projectId}`}
-        menu={this.menu}
-        jwtPayload={jwtPayload}
-      >
-        <PageHead title={`${t('project_evaluation')} - ${this.projectId}`} />
+      <SessionBox {...{ jwtPayload, menu, title }} path={`/dashboard/project/${projectId}`}>
+        <PageHead title={title} />
 
         <Container maxWidth="md" sx={{ height: '85vh', display: 'flex', flexDirection: 'column' }}>
-          <Typography variant="h4" component="h2" gutterBottom>
-            {t('project_evaluation')} {this.projectId}
+          <Typography variant="h4" component="h1" gutterBottom>
+            {title}
           </Typography>
 
           {/* Chat Messages Area */}
           <Box sx={{ flex: 1, overflow: 'hidden', mb: 2 }}>
             <ScrollList
-              translator={this.observedContext}
-              store={this.evaluationStore}
-              filter={{ project: this.projectId }}
+              translator={i18n}
+              store={messageStore}
+              filter={{ project: projectId }}
               renderList={allItems => (
                 <Box sx={{ height: '100%', overflowY: 'auto', p: 1 }}>
                   {allItems[0] ? (
-                    allItems.map((item, index) => 
-                      index === allItems.length - 1 
-                        ? <div key={item.id} id="last-message">{this.renderChatMessage(item)}</div>
-                        : this.renderChatMessage(item)
-                    )
+                    allItems.map(this.renderChatMessage)
                   ) : (
                     <Box sx={{ textAlign: 'center', mt: 4 }}>
                       <Typography color="textSecondary">
@@ -158,29 +163,32 @@ export default class ProjectEvaluationPage extends ObservedComponent<
           </Box>
 
           {/* Message Input Form */}
-          <Paper elevation={1} sx={{ p: 2, mt: 'auto' }}>
-            <form onSubmit={this.handleMessageSubmit}>
-              <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-end' }}>
-                <TextField
-                  name="content"
-                  placeholder={t('type_your_message')}
-                  multiline
-                  maxRows={4}
-                  fullWidth
-                  variant="outlined"
-                  size="small"
-                  required
-                />
-                <Button 
-                  type="submit" 
-                  variant="contained" 
-                  sx={{ minWidth: 'auto', px: 2 }}
-                  disabled={this.evaluationStore.uploading > 0}
-                >
-                  {t('send')}
-                </Button>
-              </Box>
-            </form>
+          <Paper
+            component="form"
+            elevation={1}
+            sx={{ p: 2, mt: 'auto' }}
+            onSubmit={this.handleMessageSubmit}
+          >
+            <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-end' }}>
+              <TextField
+                name="content"
+                placeholder={t('type_your_message')}
+                multiline
+                maxRows={4}
+                fullWidth
+                variant="outlined"
+                size="small"
+                required
+              />
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{ minWidth: 'auto', px: 2 }}
+                disabled={messageStore.uploading > 0}
+              >
+                {t('send')}
+              </Button>
+            </Box>
           </Paper>
         </Container>
       </SessionBox>

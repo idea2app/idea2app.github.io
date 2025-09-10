@@ -1,7 +1,7 @@
-import { Button, Grid,TextField } from '@mui/material';
+import { Button, Grid, TextField } from '@mui/material';
 import { observer } from 'mobx-react';
 import { NextPage } from 'next';
-import { useContext } from 'react';
+import { FormEvent, useContext } from 'react';
 import { formToJSON } from 'web-utility';
 
 import { PageHead } from '../../components/PageHead';
@@ -14,20 +14,19 @@ const projectStore = new ProjectModel();
 const RequirementEntryPage: NextPage = observer(() => {
   const { t } = useContext(I18nContext);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const submitter = (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement;
-    const isCommercial = submitter.value === 'commercial';
-    
-    const { title } = formToJSON<{ title: string }>(event.currentTarget);
+    const { value } = (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement;
+    const isCommercial = value === 'commercial';
 
-    if (isCommercial) {
-      const { id } = await projectStore.updateOne({ name: title });
-      location.href = `/dashboard/project/${id}`;
-    } else {
-      location.href += `/${title}`;
-    }
+    const { name } = formToJSON<{ name: string }>(event.currentTarget);
+
+    if (!isCommercial) return (location.href += `/${name}`);
+
+    const { id } = await projectStore.updateOne({ name });
+
+    location.href = `/dashboard/project/${id}`;
   };
 
   return (
@@ -37,42 +36,28 @@ const RequirementEntryPage: NextPage = observer(() => {
       <h1 className="py-10 text-center text-6xl">{t('AI_requirement_evaluation')}</h1>
 
       {/* Unified Input Form */}
-      <form className="flex flex-col gap-4 mb-8" onSubmit={handleSubmit}>
-        <TextField 
-          label={t('project_name')} 
-          name="title" 
-          required 
+      <form className="mb-8 flex flex-col gap-4" onSubmit={handleSubmit}>
+        <TextField
+          label={t('project_name')}
+          name="name"
+          required
           defaultValue="动物保护平台"
           fullWidth
         />
-
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 6 }}>
-            <Button 
-              type="submit"
-              variant="contained" 
-              size="large" 
-              fullWidth
-              value="public"
-            >
+            <Button type="submit" variant="contained" size="large" fullWidth value="public">
               {t('AI_requirement_evaluation')}
             </Button>
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
-            <Button 
-              type="submit"
-              variant="outlined" 
-              size="large" 
-              fullWidth
-              value="commercial"
-            >
+            <Button type="submit" variant="outlined" size="large" fullWidth value="commercial">
               {t('commercial_version')}
             </Button>
           </Grid>
         </Grid>
       </form>
 
-      {/* Version Comparison Cards */}
       <VersionComparison />
     </div>
   );
