@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
 import { compose, JWTProps, jwtVerifier, RouteProps, router } from 'next-ssr-middleware';
 import { FormEvent, ReactNode } from 'react';
-import { formToJSON } from 'web-utility';
+import { formToJSON, scrollTo } from 'web-utility';
 
 import { PageHead } from '../../../components/PageHead';
 import { EvaluationDisplay } from '../../../components/Project/EvaluationDisplay';
@@ -52,7 +52,7 @@ export default class ProjectEvaluationPage extends ObservedComponent<
 
     // Scroll to the last message
     setTimeout(() => {
-      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      scrollTo('#last-message');
     }, 100);
   };
 
@@ -140,7 +140,11 @@ export default class ProjectEvaluationPage extends ObservedComponent<
               renderList={allItems => (
                 <Box sx={{ height: '100%', overflowY: 'auto', p: 1 }}>
                   {allItems[0] ? (
-                    allItems.map(this.renderChatMessage)
+                    allItems.map((item, index) => 
+                      index === allItems.length - 1 
+                        ? <div key={item.id} id="last-message">{this.renderChatMessage(item)}</div>
+                        : this.renderChatMessage(item)
+                    )
                   ) : (
                     <Box sx={{ textAlign: 'center', mt: 4 }}>
                       <Typography color="textSecondary">
