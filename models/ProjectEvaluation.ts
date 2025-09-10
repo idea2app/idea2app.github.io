@@ -1,6 +1,6 @@
 import { ConsultMessage, Project, ProjectFilter, UserBaseFilter } from '@idea2app/data-server';
-import { Filter, IDType, toggle } from 'mobx-restful';
 import { debounce } from 'lodash';
+import { Filter, IDType, toggle } from 'mobx-restful';
 
 import { TableModel } from './Base';
 import userStore from './User';
@@ -31,7 +31,7 @@ export class ConsultMessageModel extends TableModel<ConsultMessage> {
       content: content!,
       createdAt: new Date().toISOString(),
       createdBy: userStore.session!,
-      project: this.projectId as any,
+      project: { id: this.projectId } as Project,
     } as ConsultMessage;
 
     // Add to local list immediately
