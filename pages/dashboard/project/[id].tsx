@@ -1,4 +1,4 @@
-import { ConsultMessage, RequirementEvaluation, User, UserRole } from '@idea2app/data-server';
+import { ConsultMessage, User, UserRole } from '@idea2app/data-server';
 import { Avatar, Box, Button, Container, Paper, TextField, Typography } from '@mui/material';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
@@ -36,6 +36,25 @@ export default class ProjectEvaluationPage extends ObservedComponent<
       { href: `/dashboard/project/${this.projectId}`, title: t('project_evaluation') },
     ];
   }
+
+  handleMessageSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    let { content } = formToJSON<{ content: string }>(event.currentTarget);
+
+    content = content.trim();
+
+    if (!content) return;
+
+    await this.evaluationStore.updateOne({ content });
+
+    event.currentTarget.reset();
+
+    // Scroll to the last message
+    setTimeout(() => {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }, 100);
+  };
 
   renderChatMessage = ({ id, content, evaluation, createdAt, createdBy }: ConsultMessage) => {
     const { t } = this.observedContext;
@@ -92,24 +111,6 @@ export default class ProjectEvaluationPage extends ObservedComponent<
         </Box>
       </Box>
     );
-  };
-
-  handleMessageSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const { content } = formToJSON<{ content: string }>(event.currentTarget);
-    
-    if (!content.trim()) return;
-
-    try {
-      await this.evaluationStore.updateOne({ content: content.trim() });
-      // Clear the form
-      event.currentTarget.reset();
-      // Refresh the messages
-      this.evaluationStore.clear();
-      await this.evaluationStore.getList();
-    } catch (error) {
-      console.error('Failed to send message:', error);
-    }
   };
 
   render(): ReactNode {
