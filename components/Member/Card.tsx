@@ -59,7 +59,7 @@ export const MemberCard: FC<MemberCardProps> = observer(
       </ul>
 
       <p
-        dangerouslySetInnerHTML={{ __html: marked((summary as string) || '') }}
+        dangerouslySetInnerHTML={{ __html: marked((summary as string) || '', { async: false }) }}
         className="text-neutral-500"
       />
     </li>

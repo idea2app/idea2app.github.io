@@ -13,7 +13,7 @@ COPY . /app
 WORKDIR /app
 
 FROM base AS build
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store  pnpm i --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store  pnpm e i --frozen-lockfile
 RUN CI=true  pnpm build
 
 FROM base
