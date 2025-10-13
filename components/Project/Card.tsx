@@ -18,10 +18,12 @@ export const ProjectCard: FC<ProjectCardProps> = ({
   price,
   settlementDate,
   component = 'li',
+  ...props
 }) => (
   <Box
-    component={component}
     className={`elevation-1 hover:elevation-4 relative rounded-2xl border border-gray-200 p-4 dark:border-0 ${className} mb-4 grid break-inside-avoid grid-cols-1 grid-rows-4 gap-2`}
+    component={component}
+    {...props}
   >
     <a className="row-span-2 flex items-center justify-between" href={`/project/${id}`}>
       <h2 className="text-lg">{String(name)}</h2>

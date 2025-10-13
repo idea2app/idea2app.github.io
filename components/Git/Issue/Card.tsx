@@ -23,9 +23,9 @@ export const IssueCard: FC<IssueCardProps> = ({
   ...props
 }) => (
   <Box
-    {...props}
-    component={component}
     className={`elevation-1 hover:elevation-4 relative mb-4 grid break-inside-avoid grid-cols-1 grid-rows-5 gap-2 rounded-2xl border border-gray-200 p-4 dark:border-0 ${className}`}
+    component={component}
+    {...props}
   >
     <a
       className="row-span-1 text-2xl font-semibold"
