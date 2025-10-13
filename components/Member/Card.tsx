@@ -48,7 +48,6 @@ export const MemberCard: FC<MemberCardProps> = observer(
         {(skill as string[]).map(value => (
           <Chip
             key={value}
-            className=""
             size="small"
             component="li"
             variant="outlined"

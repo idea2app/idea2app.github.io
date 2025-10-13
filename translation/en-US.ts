@@ -67,6 +67,9 @@ export default {
   partner_kys_slogan:
     'Based in China, contributing to the world, promoting open source as a new way of life',
 
+  // Issue page
+  github_reward_issues: 'GitHub-reward issues',
+
   // Open source project
   load_more: 'Load more...',
   no_more: 'No more',
@@ -77,7 +80,7 @@ export default {
     'This service is free of charge, but only accepts <strong>publicly available information</strong> related to estimation.',
   project_name: 'Project Name',
   project_evaluation: 'Project Evaluation',
-  
+
   // Evaluation fields
   description: 'Description',
   development_scopes: 'Development Scopes',
@@ -119,16 +122,19 @@ export default {
   github_one_click_login: 'GitHub one-click login without registration',
   free_evaluation_daily_limit: 'Free evaluation with daily limits',
   submitted_data_public: 'Submitted information is publicly available',
-  volunteer_community_support: 'Open source community volunteers provide irregular replies and follow-ups',
-  open_source_bounty_development: 'Project development through open source bounty system by volunteers',
+  volunteer_community_support:
+    'Open source community volunteers provide irregular replies and follow-ups',
+  open_source_bounty_development:
+    'Project development through open source bounty system by volunteers',
   phone_one_click_register: 'Phone number one-click registration without password',
   unlimited_evaluation_24_7: 'Unlimited evaluation available 24/7',
   project_data_confidential: 'Project information kept confidential',
   daily_engineer_review: 'idea2app engineers review AI evaluations daily',
-  professional_development_team: 'Professional engineers assigned by idea2app complete development after contract and deposit',
+  professional_development_team:
+    'Professional engineers assigned by idea2app complete development after contract and deposit',
   phone_required_for_webauthn: 'Phone number is required for WebAuthn registration',
   registration_success_please_login: 'Registration successful, please login',
-  
+
   // Chat interface
   type_your_message: 'Type your message...',
   send_message: 'Send Message',

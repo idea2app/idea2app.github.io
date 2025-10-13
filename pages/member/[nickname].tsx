@@ -63,13 +63,14 @@ export default class MemberDetailPage extends ObservedComponent<
         <PageHead title={member.nickname as string} />
 
         <div className="flex flex-col gap-4 md:flex-row">
-          <ul className="w-full md:w-1/3">
+          <ul className="w-full md:w-1/4">
             <MemberCard {...member} />
           </ul>
 
-          <div className="flex w-full flex-col items-center rounded-2xl border-2 md:w-2/3">
+          <div className="flex w-full flex-col rounded-2xl md:w-3/4">
             <TabContext value={this.eventKey}>
               <TabList
+                className="mx-auto"
                 component="ul"
                 aria-label="project tab"
                 variant="fullWidth"
@@ -94,7 +95,7 @@ export default class MemberDetailPage extends ObservedComponent<
                 ))}
               </TabList>
               {entries.map(([label, list], index) => (
-                <TabPanel key={label} value={index + ''}>
+                <TabPanel key={label} className="px-0!" value={index + ''}>
                   <ProjectListLayout defaultData={list} />
                 </TabPanel>
               ))}

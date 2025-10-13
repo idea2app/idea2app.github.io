@@ -46,7 +46,7 @@ interface WikiDocumentPageProps {
 }
 
 const WikiDocumentPage: FC<WikiDocumentPageProps> = ({ node, blocks }) => (
-  <div className="prose container mx-auto max-w-screen-xl px-4 pt-16 pb-6">
+  <div className="prose container mx-auto max-w-screen-xl px-4 pt-24 pb-6">
     <PageHead title={node.title} />
 
     {renderBlocks(blocks)}

@@ -21,25 +21,32 @@ export const ProjectCard: FC<ProjectCardProps> = ({
 }) => (
   <Box
     component={component}
-    className={`${className} flex flex-col justify-between gap-4 rounded-2xl border p-4 elevation-1 hover:elevation-8 dark:border-0`}
+    className={`elevation-1 hover:elevation-4 relative rounded-2xl border border-gray-200 p-4 dark:border-0 ${className} mb-4 grid break-inside-avoid grid-cols-1 grid-rows-4 gap-2`}
   >
-    <h2 className="flex items-center justify-between">
-      <a className="text-lg" title={String(name)} href={`/project/${id}`}>
-        {String(name)}
-      </a>
+    <a className="row-span-2 flex items-center justify-between" href={`/project/${id}`}>
+      <h2 className="text-lg">{String(name)}</h2>
       <Chip label={String(workForm)} />
-    </h2>
-    <ul className="flex flex-row flex-wrap gap-3">
+    </a>
+    <ul className="scrollbar-none scroll-snap-x row-span-1 flex snap-mandatory flex-nowrap gap-2 overflow-x-scroll">
       {(type as string[])?.map(value => (
-        <Chip key={value} component="li" size="small" label={value} />
+        <Chip
+          key={value}
+          size="small"
+          component="li"
+          variant="outlined"
+          color="primary"
+          label={value}
+        />
       ))}
     </ul>
-    <div className="flex items-center justify-between">
+    <div className="row-span-1 flex items-center justify-between">
       <strong className="flex-fill">
         ￥{String(price).replace(/\d/g, (matched, offset) => (offset ? '0' : matched))}+
       </strong>
 
-      <time>🏁 {formatDate(+settlementDate!, 'YYYY-MM-DD')}</time>
+      <time className="text-sm text-neutral-500">
+        🏁 {formatDate(+settlementDate!, 'YYYY-MM-DD')}
+      </time>
     </div>
   </Box>
 );

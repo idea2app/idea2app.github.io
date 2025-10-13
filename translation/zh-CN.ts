@@ -66,6 +66,9 @@ export default {
   partner_kys: '开源社',
   partner_kys_slogan: '立足中国、贡献全球，推动开源成为新时代的生活方式',
 
+  // Issue page
+  github_reward_issues: '悬赏议题',
+
   // Open source project
   load_more: '加载更多……',
   no_more: '没有更多',
