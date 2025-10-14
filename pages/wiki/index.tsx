@@ -39,7 +39,7 @@ const WikiIndexPage: FC<{ nodes: XWikiNode[] }> = observer(({ nodes }) => {
   const { t } = useContext(I18nContext);
 
   return (
-    <div className="prose container mx-auto max-w-screen-xl px-4 pt-16 pb-6">
+    <div className="prose container mx-auto max-w-screen-xl px-4 pt-24 pb-6">
       <PageHead title={t('wiki')} />
 
       <h1>{t('wiki')}</h1>

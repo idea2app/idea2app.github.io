@@ -121,7 +121,8 @@ export class MainNavigator extends ObservedComponent<{}, typeof i18n> {
             <div className="flex flex-row items-center gap-3">
               {this.renderDrawer()}
 
-              <BrandLogo />
+              <BrandLogo className="dark:!hidden" variant="black" />
+              <BrandLogo className="!hidden dark:!block" variant="white" />
               <Link translate="no" className="font-bold uppercase" href="/" rel="home">
                 idea2app
               </Link>

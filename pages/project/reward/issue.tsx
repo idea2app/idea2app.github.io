@@ -25,12 +25,13 @@ export const getServerSideProps = compose(githubOAuth, errorLogger, async () => 
 
 const IssuesPage: FC<{ list: Issue[] }> = observer(({ list }) => {
   const i18n = useContext(I18nContext);
+  const { t } = i18n;
 
   return (
-    <Grid container className="px-4 py-20">
-      <PageHead title="GitHub-reward issues" />
+    <div className="container mx-auto max-w-screen-xl px-4 pt-16 pb-6">
+      <PageHead title={t('github_reward_issues')} />
 
-      <h1>GitHub-reward issues</h1>
+      <h1 className="my-8 text-4xl font-semibold">{t('github_reward_issues')}</h1>
 
       <ScrollList
         translator={i18n}
@@ -38,16 +39,14 @@ const IssuesPage: FC<{ list: Issue[] }> = observer(({ list }) => {
         filter={issueFilter}
         defaultData={list}
         renderList={allItems => (
-          <Grid container spacing={2}>
+          <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {allItems.map(issue => (
-              <Grid key={issue.id} size={{ xs: 12, sm: 6, md: 4 }}>
-                <IssueCard className="h-full" {...issue} />
-              </Grid>
+              <IssueCard key={issue.id} className="h-full" {...issue} />
             ))}
-          </Grid>
+          </ul>
         )}
       />
-    </Grid>
+    </div>
   );
 });
 

@@ -31,4 +31,3 @@ div:has(.next-error-h1) {
 @utility scrollbar-none {
   scrollbar-width: none;
 }
-

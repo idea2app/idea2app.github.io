@@ -50,7 +50,8 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => {
       <div className="px-4 py-6 pt-16">
         <section className="container mx-auto flex max-w-screen-lg flex-col gap-4">
           <div className="flex flex-row items-center justify-around py-12">
-            <BrandLogo style={{ width: '12rem', height: '12rem' }} />
+            <BrandLogo className="!h-48 !w-48 dark:!hidden" variant="black" />
+            <BrandLogo className="!hidden !h-48 !w-48 dark:!block" variant="white" />
 
             <header className="border-s-2 border-s-black p-4 dark:border-s-white">
               <p>{t('idea2app_summary')}</p>

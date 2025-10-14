@@ -45,7 +45,12 @@ const ProjectDetailPage: FC<ProjectDetailPageProps> = observer(({ project, repos
       <PageHead title={String(project.name)} />
 
       <div className="flex flex-col gap-4 md:flex-row">
-        <a className="w-full md:w-2/3" href={String(project.link) || '#'}>
+        <a
+          className="w-full md:w-2/3"
+          href={String(project.link) || '#'}
+          target="_blank"
+          rel="noreferrer"
+        >
           {/**
            * @todo replace with LarkImage after R2 is ready
            */}
@@ -57,9 +62,9 @@ const ProjectDetailPage: FC<ProjectDetailPageProps> = observer(({ project, repos
           <hr />
           <h2 className="text-xl">{t('open_source_project')}</h2>
 
-          <ul>
+          <ul className="flex max-h-[45rem] snap-y flex-col gap-4 overflow-y-auto">
             {repositories.map(repository => (
-              <GitCard key={repository.id} {...repository} />
+              <GitCard key={repository.id} className="snap-center" {...repository} />
             ))}
           </ul>
         </div>
