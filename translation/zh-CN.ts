@@ -135,4 +135,12 @@ export default {
   type_your_message: '输入您的消息……',
   send_message: '发送消息',
   send: '发送',
+
+  // Prototype Generator
+  generate_prototype: '生成原型',
+  generating: '生成中……',
+  prototype_generating: '正在生成原型，请稍候',
+  view_preview: '查看预览',
+  view_ai_log: '查看 AI 日志',
+  prototype_generation_failed: '原型生成失败',
 } as const;

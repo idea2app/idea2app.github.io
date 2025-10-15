@@ -8,6 +8,7 @@ import { formToJSON, scrollTo, sleep } from 'web-utility';
 
 import { PageHead } from '../../../components/PageHead';
 import { EvaluationDisplay } from '../../../components/Project/EvaluationDisplay';
+import { PrototypeGeneratorToolbar } from '../../../components/Project/PrototypeGeneratorToolbar';
 import { ScrollList } from '../../../components/ScrollList';
 import { SessionBox } from '../../../components/User/SessionBox';
 import { ConsultMessageModel, ProjectModel } from '../../../models/ProjectEvaluation';
@@ -111,6 +112,10 @@ export default class ProjectEvaluationPage extends ObservedComponent<
               </Typography>
             )}
             {evaluation && <EvaluationDisplay {...evaluation} />}
+
+            {isBot && evaluation && (
+              <PrototypeGeneratorToolbar projectId={this.projectId} messageId={id as number} />
+            )}
 
             {createdAt && (
               <Typography variant="caption" sx={{ opacity: 0.6, fontSize: '0.75rem' }}>

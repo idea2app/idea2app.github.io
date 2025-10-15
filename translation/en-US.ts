@@ -139,4 +139,12 @@ export default {
   type_your_message: 'Type your message...',
   send_message: 'Send Message',
   send: 'Send',
+
+  // Prototype Generator
+  generate_prototype: 'Generate Prototype',
+  generating: 'Generating...',
+  prototype_generating: 'Generating prototype, please wait',
+  view_preview: 'View Preview',
+  view_ai_log: 'View AI Log',
+  prototype_generation_failed: 'Prototype generation failed',
 } as const;
