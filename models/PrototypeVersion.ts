@@ -48,7 +48,12 @@ export class PrototypeVersionModel extends TableModel<PrototypeVersion> {
         `${this.baseURI}/message/${messageId}`,
       );
       return body || null;
-    } catch (error) {
+    } catch (error: any) {
+      // Return null for 404 (not found), but log other errors
+      if (error?.response?.status === 404) {
+        return null;
+      }
+      console.error('Failed to fetch prototype version:', error);
       return null;
     }
   }
