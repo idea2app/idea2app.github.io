@@ -1,4 +1,3 @@
-import { Base } from '@idea2app/data-server';
 import { toggle } from 'mobx-restful';
 
 import { TableModel } from './Base';
@@ -11,13 +10,18 @@ export enum PrototypeVersionStatus {
   FAILED = 'failed',
 }
 
-export class PrototypeVersion extends Base {
-  projectId!: number;
-  messageId!: number;
-  status!: PrototypeVersionStatus;
+// Define base interface for PrototypeVersion
+// This will match the Base class from @idea2app/data-server when the PR is merged
+export interface PrototypeVersion {
+  id: number;
+  projectId: number;
+  messageId: number;
+  status: PrototypeVersionStatus;
   previewUrl?: string;
   logUrl?: string;
   errorMessage?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export class PrototypeVersionModel extends TableModel<PrototypeVersion> {
