@@ -33,14 +33,6 @@ export class PrototypeVersionModel extends TableModel<PrototypeVersion> {
     this.baseURI = `project/${projectId}/prototype-version`;
   }
 
-  @toggle('uploading')
-  async createVersion(messageId: number) {
-    const version = await this.client.post<PrototypeVersion>(`${this.baseURI}`, {
-      messageId,
-    });
-    return version.body;
-  }
-
   @toggle('downloading')
   async getVersionByMessageId(messageId: number): Promise<PrototypeVersion | null> {
     try {
@@ -49,10 +41,8 @@ export class PrototypeVersionModel extends TableModel<PrototypeVersion> {
       );
       return body || null;
     } catch (error: any) {
-      // Return null for 404 (not found), but log other errors
-      if (error?.response?.status === 404) {
-        return null;
-      }
+      if (error?.response?.status === 404) return null;
+
       console.error('Failed to fetch prototype version:', error);
       return null;
     }
