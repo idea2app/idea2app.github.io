@@ -2,31 +2,23 @@ import { Button, Grid, TextField } from '@mui/material';
 import { observer } from 'mobx-react';
 import { NextPage } from 'next';
 import { FormEvent, useContext } from 'react';
-import { formToJSON } from 'web-utility';
+import { buildURLData, formToJSON } from 'web-utility';
 
 import { PageHead } from '../../components/PageHead';
 import { VersionComparison } from '../../components/VersionComparison';
-import { ProjectModel } from '../../models/ProjectEvaluation';
 import { I18nContext } from '../../models/Translation';
-
-const projectStore = new ProjectModel();
 
 const RequirementEntryPage: NextPage = observer(() => {
   const { t } = useContext(I18nContext);
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const { value } = (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement;
-    const isCommercial = value === 'commercial';
+    const { value } = (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement,
+      { name } = formToJSON<{ name: string }>(event.currentTarget);
 
-    const { name } = formToJSON<{ name: string }>(event.currentTarget);
-
-    if (!isCommercial) return (location.href += `/${name}`);
-
-    const { id } = await projectStore.updateOne({ name });
-
-    location.href = `/dashboard/project/${id}`;
+    location.href =
+      value === 'commercial' ? `/dashboard?${buildURLData({ name })}` : `/requirement/${name}`;
   };
 
   return (
@@ -35,7 +27,6 @@ const RequirementEntryPage: NextPage = observer(() => {
 
       <h1 className="py-10 text-center text-6xl">{t('AI_requirement_evaluation')}</h1>
 
-      {/* Unified Input Form */}
       <form className="mb-8 flex flex-col gap-4" onSubmit={handleSubmit}>
         <TextField
           label={t('project_name')}

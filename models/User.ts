@@ -21,17 +21,21 @@ export class UserModel extends TableModel<User> {
   );
   restored = !isServer() && restore(this, 'User');
 
-  client = new HTTPClient({ baseURI: API_HOST, responseType: 'json' }).use(({ request }, next) => {
-    const isSameDomain = API_HOST.startsWith(new URL(request.path, API_HOST).origin);
+  client = new HTTPClient({ baseURI: API_HOST, responseType: 'json' }).use(
+    async ({ request }, next) => {
+      await this.restored;
 
-    if (isSameDomain && this.session)
-      request.headers = {
-        ...request.headers,
-        Authorization: `Bearer ${this.session.token}`,
-      };
+      const isSameDomain = API_HOST.startsWith(new URL(request.path, API_HOST).origin);
 
-    return next();
-  });
+      if (isSameDomain && this.session)
+        request.headers = {
+          ...request.headers,
+          Authorization: `Bearer ${this.session.token}`,
+        };
+
+      return next();
+    },
+  );
 
   @toggle('uploading')
   async sendOTP(address: string) {

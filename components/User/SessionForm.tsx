@@ -1,5 +1,5 @@
-import { PhoneSignInData } from '@idea2app/data-server';
-import { Button, IconButton, InputAdornment, Tab, Tabs, TextField } from '@mui/material';
+import { SignInData } from '@idea2app/data-server';
+import { Button, IconButton, Tab, Tabs, TextField } from '@mui/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
@@ -11,7 +11,7 @@ import userStore from '../../models/User';
 import { SymbolIcon } from '../Icon';
 
 export interface SessionFormProps {
-  onSignIn?: (data?: PhoneSignInData) => any;
+  onSignIn?: (data?: SignInData) => any;
 }
 
 @observer
@@ -28,15 +28,29 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof i18n
     const { t } = this.observedContext;
 
     if (this.signType === 'up') {
-      const { mobilePhone } = formToJSON<PhoneSignInData>(event.currentTarget.form!);
+      const { email } = formToJSON<SignInData>(event.currentTarget.form!);
 
-      if (!mobilePhone) throw new Error(t('phone_required_for_webauthn'));
+      if (!email) throw new Error(t('email_required_for_webauthn'));
 
-      await userStore.signUpWebAuthn(mobilePhone);
+      await userStore.signUpWebAuthn(email);
     } else {
       await userStore.signInWebAuthn();
     }
     this.props.onSignIn?.();
+  };
+
+  handleEmailOTP = async (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const { t } = this.observedContext;
+    const { email } = formToJSON<SignInData>(event.currentTarget.form!);
+
+    if (!email) throw new URIError(t('email_required_for_OTP'));
+
+    await userStore.sendOTP(email);
+
+    alert(t('OTP_sent_to_email'));
   };
 
   handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -44,18 +58,18 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof i18n
     event.stopPropagation();
 
     const { t } = this.observedContext;
-    const { mobilePhone, password } = formToJSON<PhoneSignInData>(event.currentTarget);
+    const { email, password } = formToJSON<SignInData>(event.currentTarget);
 
     if (this.signType === 'up') {
-      await userStore.signUp(mobilePhone, password);
+      await userStore.signUp(email, password);
 
       this.signType = 'in';
 
       alert(t('registration_success_please_login'));
     } else {
-      await userStore.signIn(mobilePhone, password);
+      await userStore.signIn(email, password);
 
-      this.props.onSignIn?.({ mobilePhone, password });
+      this.props.onSignIn?.({ email, password });
     }
   };
 
@@ -78,22 +92,13 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof i18n
         </Tabs>
 
         <TextField
-          name="mobilePhone"
-          type="tel"
+          name="email"
+          type="email"
           required
           fullWidth
           variant="outlined"
-          label={t('phone_number')}
-          placeholder={t('please_enter_phone')}
-          slotProps={{
-            htmlInput: {
-              pattern: '1[3-9]\\d{9}',
-              title: t('please_enter_correct_phone'),
-            },
-            input: {
-              startAdornment: <InputAdornment position="start">+86</InputAdornment>,
-            },
-          }}
+          label={t('email')}
+          placeholder={t('please_enter_email')}
         />
         <div className="flex items-center gap-2">
           <TextField
@@ -105,10 +110,19 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof i18n
             label={t('password')}
             placeholder={t('please_enter_password')}
           />
-
+          {signType === 'in' && (
+            <IconButton
+              size="large"
+              title="Email OTP"
+              disabled={loading}
+              onClick={this.handleEmailOTP}
+            >
+              <SymbolIcon name="key" />
+            </IconButton>
+          )}
           <IconButton
             size="large"
-            className="mb-2 self-end"
+            title="WebAuthn"
             disabled={loading}
             onClick={this.handleWebAuthn}
           >

@@ -1,14 +1,11 @@
+import { PrototypeVersion, PrototypeVersionStatus } from '@idea2app/data-server';
 import { Box, Button, CircularProgress, Link, Typography } from '@mui/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
 import { sleep } from 'web-utility';
 
-import {
-  PrototypeVersion,
-  PrototypeVersionModel,
-  PrototypeVersionStatus,
-} from '../../models/PrototypeVersion';
+import { PrototypeVersionModel } from '../../models/PrototypeVersion';
 import { i18n, I18nContext } from '../../models/Translation';
 
 export interface PrototypeGeneratorToolbarProps {
@@ -26,7 +23,7 @@ export class PrototypeGeneratorToolbar extends ObservedComponent<
   versionStore = new PrototypeVersionModel(this.props.projectId);
 
   @observable
-  accessor version: PrototypeVersion | null = null;
+  accessor version: PrototypeVersion | undefined;
 
   @observable
   accessor isPolling = false;
@@ -40,7 +37,7 @@ export class PrototypeGeneratorToolbar extends ObservedComponent<
       void this.loadVersion();
     }
 
-    if (this.version?.status === PrototypeVersionStatus.GENERATING) {
+    if (this.version?.status === 'processing') {
       this.startPolling();
     }
   }
@@ -67,10 +64,7 @@ export class PrototypeGeneratorToolbar extends ObservedComponent<
       const updatedVersion = await this.versionStore.getVersionByMessageId(this.props.messageId);
       this.version = updatedVersion;
 
-      if (
-        updatedVersion?.status === PrototypeVersionStatus.COMPLETED ||
-        updatedVersion?.status === PrototypeVersionStatus.FAILED
-      ) {
+      if (updatedVersion?.status === 'completed' || updatedVersion?.status === 'failed') {
         this.isPolling = false;
         break;
       }
@@ -81,7 +75,9 @@ export class PrototypeGeneratorToolbar extends ObservedComponent<
 
   handleGenerateClick = async () => {
     try {
-      const newVersion = await this.versionStore.updateOne({ messageId: this.props.messageId });
+      const newVersion = await this.versionStore.updateOne({
+        evaluationMessage: this.props.messageId,
+      });
       if (newVersion) {
         this.version = newVersion;
       }
@@ -125,9 +121,9 @@ export class PrototypeGeneratorToolbar extends ObservedComponent<
 
     return (
       <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-        {version!.previewUrl && (
+        {version!.previewLink && (
           <Link
-            href={version!.previewUrl}
+            href={version!.previewLink}
             target="_blank"
             rel="noopener noreferrer"
             sx={{
@@ -140,9 +136,9 @@ export class PrototypeGeneratorToolbar extends ObservedComponent<
             {t('view_preview')}
           </Link>
         )}
-        {version!.logUrl && (
+        {version!.gitLogsLink && (
           <Link
-            href={version!.logUrl}
+            href={version!.gitLogsLink}
             target="_blank"
             rel="noopener noreferrer"
             sx={{
@@ -168,9 +164,9 @@ export class PrototypeGeneratorToolbar extends ObservedComponent<
         <Typography variant="body2" color="error" sx={{ fontSize: '0.875rem' }}>
           {version!.errorMessage || t('prototype_generation_failed')}
         </Typography>
-        {version!.logUrl && (
+        {version!.gitLogsLink && (
           <Link
-            href={version!.logUrl}
+            href={version!.gitLogsLink}
             target="_blank"
             rel="noopener noreferrer"
             sx={{
@@ -190,18 +186,6 @@ export class PrototypeGeneratorToolbar extends ObservedComponent<
   render() {
     const { version } = this;
 
-    let content = null;
-
-    if (!version || version.status === PrototypeVersionStatus.PENDING) {
-      content = this.renderPending();
-    } else if (version.status === PrototypeVersionStatus.GENERATING) {
-      content = this.renderGenerating();
-    } else if (version.status === PrototypeVersionStatus.COMPLETED) {
-      content = this.renderCompleted();
-    } else if (version.status === PrototypeVersionStatus.FAILED) {
-      content = this.renderFailed();
-    }
-
     return (
       <Box
         sx={{
@@ -211,7 +195,13 @@ export class PrototypeGeneratorToolbar extends ObservedComponent<
           borderColor: 'divider',
         }}
       >
-        {content}
+        {!version || version.status === 'pending'
+          ? this.renderPending()
+          : version.status === 'processing'
+            ? this.renderGenerating()
+            : version.status === 'completed'
+              ? this.renderCompleted()
+              : this.renderFailed()}
       </Box>
     );
   }

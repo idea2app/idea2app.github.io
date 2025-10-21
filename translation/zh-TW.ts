@@ -81,6 +81,12 @@ export default {
   // Evaluation fields
   description: '專案描述',
   development_scopes: '開發範圍',
+  feature_modules: '功能板塊',
+  product_prototype: '產品原型',
+  ui_design: 'UI 設計',
+  desktop: '桌面端',
+  mobile: '移動端',
+  server: '服務端',
   workload: '工作量',
   hours: '小時',
   timeline: '開發週期',
@@ -100,9 +106,8 @@ export default {
   project_pending: '等待中',
 
   // User authentication
-  phone_number: '手機號碼',
-  please_enter_phone: '請輸入手機號碼',
-  please_enter_correct_phone: '請輸入正確的手機號碼',
+  email: '電子郵箱',
+  please_enter_email: '請輸入電子郵箱',
   password: '密碼',
   please_enter_password: '請輸入密碼或驗證碼',
   register: '註冊',
@@ -121,13 +126,16 @@ export default {
   submitted_data_public: '提交的資料全網公開',
   volunteer_community_support: '開源市集等開源社區志工不定期回覆、跟進',
   open_source_bounty_development: '項目開發最終由上述志工以開源懸賞的方式落地',
-  phone_one_click_register: '手機號一鍵免密註冊登入',
+  email_one_click_register: '電子郵箱一鍵免密註冊登入',
   unlimited_evaluation_24_7: '全天候不限量評估',
   project_data_confidential: '項目資料保密',
   daily_engineer_review: 'idea2app 工程師每日審核 AI 評估',
   professional_development_team:
     '合同簽訂並支付定金後，項目開發由 idea2app 公司分配的專業工程師完成',
-  phone_required_for_webauthn: '手機號是 WebAuthn 註冊的必填項',
+  ai_interactive_prototype: '智慧生成可互動原型圖',
+  email_required_for_webauthn: '電子郵箱是 WebAuthn 註冊的必填項',
+  email_required_for_OTP: '電子郵箱是發送驗證碼的必填項',
+  OTP_sent_to_email: '驗證碼已發送到您的郵箱',
   registration_success_please_login: '註冊成功，請登入',
 
   // Chat interface

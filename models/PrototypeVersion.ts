@@ -1,28 +1,8 @@
+import { PrototypeVersion } from '@idea2app/data-server';
 import { toggle } from 'mobx-restful';
 
 import { TableModel } from './Base';
 import userStore from './User';
-
-export enum PrototypeVersionStatus {
-  PENDING = 'pending',
-  GENERATING = 'generating',
-  COMPLETED = 'completed',
-  FAILED = 'failed',
-}
-
-// Define base interface for PrototypeVersion
-// This will match the Base class from @idea2app/data-server when the PR is merged
-export interface PrototypeVersion {
-  id: number;
-  projectId: number;
-  messageId: number;
-  status: PrototypeVersionStatus;
-  previewUrl?: string;
-  logUrl?: string;
-  errorMessage?: string;
-  createdAt: string;
-  updatedAt: string;
-}
 
 export class PrototypeVersionModel extends TableModel<PrototypeVersion> {
   baseURI = '';
@@ -34,17 +14,16 @@ export class PrototypeVersionModel extends TableModel<PrototypeVersion> {
   }
 
   @toggle('downloading')
-  async getVersionByMessageId(messageId: number): Promise<PrototypeVersion | null> {
+  async getVersionByMessageId(messageId: number) {
     try {
       const { body } = await this.client.get<PrototypeVersion>(
         `${this.baseURI}/message/${messageId}`,
       );
-      return body || null;
+      return body;
     } catch (error: any) {
-      if (error?.response?.status === 404) return null;
+      if (error?.response?.status === 404) return;
 
       console.error('Failed to fetch prototype version:', error);
-      return null;
     }
   }
 }

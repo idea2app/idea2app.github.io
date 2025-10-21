@@ -84,6 +84,12 @@ export default {
   // Evaluation fields
   description: 'Description',
   development_scopes: 'Development Scopes',
+  feature_modules: 'Feature Modules',
+  product_prototype: 'Product Prototype',
+  ui_design: 'UI Design',
+  desktop: 'Desktop',
+  mobile: 'Mobile',
+  server: 'Server',
   workload: 'Workload',
   hours: 'hours',
   timeline: 'Timeline',
@@ -103,9 +109,8 @@ export default {
   project_pending: 'Pending',
 
   // User authentication
-  phone_number: 'Phone Number',
-  please_enter_phone: 'Please enter phone number',
-  please_enter_correct_phone: 'Please enter correct phone number',
+  email: 'Email',
+  please_enter_email: 'Please enter Email',
   password: 'Password',
   please_enter_password: 'Please enter password or verification code',
   register: 'Register',
@@ -126,13 +131,16 @@ export default {
     'Open source community volunteers provide irregular replies and follow-ups',
   open_source_bounty_development:
     'Project development through open source bounty system by volunteers',
-  phone_one_click_register: 'Phone number one-click registration without password',
+  email_one_click_register: 'Email one-click registration without password',
   unlimited_evaluation_24_7: 'Unlimited evaluation available 24/7',
   project_data_confidential: 'Project information kept confidential',
   daily_engineer_review: 'idea2app engineers review AI evaluations daily',
   professional_development_team:
     'Professional engineers assigned by idea2app complete development after contract and deposit',
-  phone_required_for_webauthn: 'Phone number is required for WebAuthn registration',
+  ai_interactive_prototype: 'AI-generated interactive prototype',
+  email_required_for_webauthn: 'Email is required for WebAuthn registration',
+  email_required_for_OTP: 'Email is required to send verification code',
+  OTP_sent_to_email: 'Verification code has been sent to your email',
   registration_success_please_login: 'Registration successful, please login',
 
   // Chat interface

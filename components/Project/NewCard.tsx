@@ -6,7 +6,7 @@ import { FC, useContext } from 'react';
 
 import { I18nContext } from '../../models/Translation';
 
-export const ProjectCard: FC<Project> = observer(({ id, name, projectStatus }) => {
+export const ProjectCard: FC<Project> = observer(({ id, name, status }) => {
   const { t } = useContext(I18nContext);
 
   return (
@@ -21,23 +21,18 @@ export const ProjectCard: FC<Project> = observer(({ id, name, projectStatus }) =
             px: 1,
             py: 0.5,
             borderRadius: 1,
-            bgcolor:
-              projectStatus === '1'
-                ? 'success.light'
-                : projectStatus === '0'
-                  ? 'grey.200'
-                  : 'warning.light',
+            bgcolor: status === 1 ? 'success.light' : status === 0 ? 'grey.200' : 'warning.light',
             color:
-              projectStatus === '1'
+              status === 1
                 ? 'success.contrastText'
-                : projectStatus === '0'
+                : status === 0
                   ? 'text.primary'
                   : 'warning.contrastText',
           }}
         >
-          {projectStatus === '1'
+          {status === 1
             ? t('project_open')
-            : projectStatus === '0'
+            : status === 0
               ? t('project_closed')
               : t('project_pending')}
         </Typography>

@@ -3,13 +3,22 @@ import { Box, Typography } from '@mui/material';
 import { observer } from 'mobx-react';
 import { FC, useContext } from 'react';
 
-import { I18nContext } from '../../models/Translation';
+import { i18n, I18nContext } from '../../models/Translation';
 import userStore from '../../models/User';
+
+export const DevelopmentScopeName = ({ t }: typeof i18n) => [
+  t('product_prototype'),
+  t('ui_design'),
+  t('desktop'),
+  t('mobile'),
+  t('server'),
+];
 
 export const EvaluationDisplay: FC<RequirementEvaluation> = observer(
   ({
     title,
     scopes = [],
+    models,
     developerCount,
     designerCount,
     workload,
@@ -17,11 +26,13 @@ export const EvaluationDisplay: FC<RequirementEvaluation> = observer(
     budget,
     factor,
   }) => {
-    const { t } = useContext(I18nContext),
+    const i18n = useContext(I18nContext);
+    const { t } = i18n,
       { roles } = userStore.session || {};
 
     return (
       <Box
+        className="prose"
         sx={{
           '& .evaluation-item': {
             marginBottom: 1,
@@ -55,7 +66,21 @@ export const EvaluationDisplay: FC<RequirementEvaluation> = observer(
             <Box component="ul" sx={{ mt: 0.5 }}>
               {scopes.map(scope => (
                 <Box key={scope} component="li" sx={{ ml: 1 }}>
-                  {scope}
+                  {DevelopmentScopeName(i18n)[scope]}
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        )}
+        {models && models.length > 0 && (
+          <Box className="evaluation-item">
+            <Typography component="h4" sx={{ fontWeight: 600 }}>
+              {t('feature_modules')}
+            </Typography>
+            <Box component="ol" sx={{ mt: 0.5 }}>
+              {models.map((model, index) => (
+                <Box key={index} component="li" sx={{ ml: 1 }}>
+                  {model}
                 </Box>
               ))}
             </Box>
