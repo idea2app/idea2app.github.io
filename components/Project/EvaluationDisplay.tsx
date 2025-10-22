@@ -10,10 +10,7 @@ import { FC, useContext } from 'react';
 
 import { i18n, I18nContext } from '../../models/Translation';
 import userStore from '../../models/User';
-import {
-  PrototypeGeneratorToolbar,
-  PrototypeGeneratorToolbarProps,
-} from './PrototypeGeneratorToolbar';
+import { PrototypeGenerator, PrototypeGeneratorProps } from './PrototypeGenerator';
 
 export const DevelopmentScopeName = ({ t }: typeof i18n) => [
   t('product_prototype'),
@@ -25,7 +22,7 @@ export const DevelopmentScopeName = ({ t }: typeof i18n) => [
 
 export interface EvaluationDisplayProps
   extends RequirementEvaluation,
-    Pick<PrototypeGeneratorToolbarProps, 'projectId' | 'messageId'> {
+    Pick<PrototypeGeneratorProps, 'projectId' | 'messageId'> {
   prototypes?: PrototypeVersion[];
 }
 
@@ -96,7 +93,7 @@ export const EvaluationDisplay: FC<EvaluationDisplayProps> = observer(
                     {DevelopmentScopeName(i18n)[scope]}
 
                     {prototypeType && (
-                      <PrototypeGeneratorToolbar
+                      <PrototypeGenerator
                         {...{ projectId, messageId }}
                         type={prototypeType}
                         prototype={prototypes?.find(({ type }) => type === prototypeType)}
@@ -108,7 +105,7 @@ export const EvaluationDisplay: FC<EvaluationDisplayProps> = observer(
             </Box>
           </Box>
         )}
-        {models && models.length > 0 && (
+        {models?.[0] && (
           <Box className="evaluation-item">
             <Typography component="h4" sx={{ fontWeight: 600 }}>
               {t('feature_modules')}

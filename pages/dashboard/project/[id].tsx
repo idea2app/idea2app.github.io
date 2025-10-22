@@ -9,7 +9,6 @@ import { formToJSON, scrollTo, sleep } from 'web-utility';
 
 import { PageHead } from '../../../components/PageHead';
 import { EvaluationDisplay } from '../../../components/Project/EvaluationDisplay';
-import { PrototypeGeneratorToolbar } from '../../../components/Project/PrototypeGeneratorToolbar';
 import { ScrollList } from '../../../components/ScrollList';
 import { SessionBox } from '../../../components/User/SessionBox';
 import { ConsultMessageModel, ProjectModel } from '../../../models/ProjectEvaluation';

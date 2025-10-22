@@ -102,8 +102,11 @@ export default {
   recent_projects: '最近專案',
   no_project_data: '暫無專案資料',
   project_open: '進行中',
-  project_closed: '已關閉',
-  project_pending: '等待中',
+  project_evaluated: '已評估',
+  project_contract_generated: '合約已生成',
+  project_in_development: '開發中',
+  project_in_testing: '測試中',
+  project_maintenance: '維護中',
 
   // User authentication
   email: '電子郵箱',

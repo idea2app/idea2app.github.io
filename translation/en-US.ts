@@ -105,8 +105,11 @@ export default {
   recent_projects: 'Recent Projects',
   no_project_data: 'No project data',
   project_open: 'Open',
-  project_closed: 'Closed',
-  project_pending: 'Pending',
+  project_evaluated: 'Evaluated',
+  project_contract_generated: 'Contract generated',
+  project_in_development: 'In development',
+  project_in_testing: 'In testing',
+  project_maintenance: 'Maintenance',
 
   // User authentication
   email: 'Email',

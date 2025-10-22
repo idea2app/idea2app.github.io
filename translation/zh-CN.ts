@@ -103,8 +103,11 @@ export default {
   recent_projects: '最近项目',
   no_project_data: '暂无项目数据',
   project_open: '进行中',
-  project_closed: '已关闭',
-  project_pending: '等待中',
+  project_evaluated: '已评估',
+  project_contract_generated: '合同已生成',
+  project_in_development: '开发中',
+  project_in_testing: '测试中',
+  project_maintenance: '维护中',
 
   // User authentication
   email: '电子邮箱',

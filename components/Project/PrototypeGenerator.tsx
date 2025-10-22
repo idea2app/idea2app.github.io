@@ -9,7 +9,7 @@ import { inViewport, sleep } from 'web-utility';
 import { PrototypeVersionModel } from '../../models/PrototypeVersion';
 import { i18n, I18nContext } from '../../models/Translation';
 
-export interface PrototypeGeneratorToolbarProps {
+export interface PrototypeGeneratorProps {
   projectId: number;
   messageId: number;
   type: PrototypeType;
@@ -17,10 +17,7 @@ export interface PrototypeGeneratorToolbarProps {
 }
 
 @observer
-export class PrototypeGeneratorToolbar extends ObservedComponent<
-  PrototypeGeneratorToolbarProps,
-  typeof i18n
-> {
+export class PrototypeGenerator extends ObservedComponent<PrototypeGeneratorProps, typeof i18n> {
   static contextType = I18nContext;
 
   versionStore = new PrototypeVersionModel(this.props.projectId, this.props.type);

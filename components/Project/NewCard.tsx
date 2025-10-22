@@ -5,8 +5,36 @@ import Link from 'next/link';
 import { FC, useContext } from 'react';
 
 import { I18nContext } from '../../models/Translation';
+import type zhCN from '../../translation/zh-CN';
 
-export const ProjectCard: FC<Project> = observer(({ id, name, status }) => {
+const statusTextKeys: (keyof typeof zhCN)[] = [
+  'project_open', // Open
+  'project_evaluated', // Evaluated
+  'project_contract_generated', // ContractGenerated
+  'project_in_development', // InDevelopment
+  'project_in_testing', // InTesting
+  'project_maintenance', // Maintenance
+];
+
+const bgColors: string[] = [
+  'grey.200', // Open
+  'success.light', // Evaluated
+  'warning.light', // ContractGenerated
+  'info.light', // InDevelopment
+  'secondary.light', // InTesting
+  'primary.light', // Maintenance
+];
+
+const textColors: string[] = [
+  'text.primary', // Open
+  'success.contrastText', // Evaluated
+  'warning.contrastText', // ContractGenerated
+  'info.contrastText', // InDevelopment
+  'secondary.contrastText', // InTesting
+  'primary.contrastText', // Maintenance
+];
+
+export const ProjectCard: FC<Project> = observer(({ id, name, status = 0 }) => {
   const { t } = useContext(I18nContext);
 
   return (
@@ -21,20 +49,11 @@ export const ProjectCard: FC<Project> = observer(({ id, name, status }) => {
             px: 1,
             py: 0.5,
             borderRadius: 1,
-            bgcolor: status === 1 ? 'success.light' : status === 0 ? 'grey.200' : 'warning.light',
-            color:
-              status === 1
-                ? 'success.contrastText'
-                : status === 0
-                  ? 'text.primary'
-                  : 'warning.contrastText',
+            bgcolor: bgColors[status] ?? 'grey.200',
+            color: textColors[status] ?? 'text.primary',
           }}
         >
-          {status === 1
-            ? t('project_open')
-            : status === 0
-              ? t('project_closed')
-              : t('project_pending')}
+          {t((statusTextKeys[status] ?? 'project_open') as keyof typeof zhCN)}
         </Typography>
       </CardContent>
       <CardActions>
