@@ -1,5 +1,5 @@
 import { User } from '@idea2app/data-server';
-import { Drawer, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import { Box, List, ListItem, ListItemButton, ListItemText, Modal } from '@mui/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import Link from 'next/link';
@@ -51,20 +51,20 @@ export class SessionBox extends Component<SessionBoxProps> {
           </List>
         </div>
         <main className="flex-1 pb-3">
-          <PageHead title={title} />
-
-          <h1 className="mb-4 text-3xl font-bold">{title}</h1>
-
           {children}
 
-          <Drawer
-            anchor="right"
-            slotProps={{ paper: { className: 'p-4', style: { width: '400px' } } }}
-            open={this.modalShown}
-            onClose={() => (this.modalShown = false)}
-          >
-            <SessionForm onSignIn={() => window.location.reload()} />
-          </Drawer>
+          <Modal open={this.modalShown}>
+            <Box
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded p-4 shadow-lg"
+              sx={{
+                width: '400px',
+                maxWidth: '90vw',
+                bgcolor: 'background.paper',
+              }}
+            >
+              <SessionForm onSignIn={() => (this.modalShown = false)} />
+            </Box>
+          </Modal>
         </main>
       </div>
     );

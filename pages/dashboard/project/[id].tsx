@@ -1,7 +1,8 @@
 import { ConsultMessage, User, UserRole } from '@idea2app/data-server';
 import { Avatar, Box, Button, Container, Paper, TextField, Typography } from '@mui/material';
+import { marked } from 'marked';
 import { observer } from 'mobx-react';
-import { ObservedComponent } from 'mobx-react-helper';
+import { ObservedComponent, reaction } from 'mobx-react-helper';
 import { compose, JWTProps, jwtVerifier, RouteProps, router } from 'next-ssr-middleware';
 import { FormEvent } from 'react';
 import { formToJSON, scrollTo, sleep } from 'web-utility';
@@ -40,13 +41,24 @@ export default class ProjectEvaluationPage extends ObservedComponent<
   }
 
   componentDidMount() {
+    super.componentDidMount();
+
     this.projectStore.getOne(this.projectId);
+  }
+
+  @reaction(({ messageStore }) => messageStore.allItems)
+  async handleMessageChange() {
+    await sleep();
+
+    scrollTo('#last-message');
   }
 
   handleMessageSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    let { content } = formToJSON<{ content: string }>(event.currentTarget);
+    const form = event.currentTarget;
+
+    let { content } = formToJSON<{ content: string }>(form);
 
     content = content.trim();
 
@@ -54,22 +66,18 @@ export default class ProjectEvaluationPage extends ObservedComponent<
 
     await this.messageStore.updateOne({ content });
 
-    event.currentTarget.reset();
-
-    await sleep(0.2);
-
-    scrollTo('#last-message');
+    form.reset();
   };
 
   renderChatMessage = (
-    { id, content, evaluation, createdAt, createdBy }: ConsultMessage,
+    { id, content, evaluation, prototypes, createdAt, createdBy }: ConsultMessage,
     index = 0,
     { length }: ConsultMessage[],
   ) => {
     const { t } = this.observedContext;
     const isBot = createdBy.roles.includes(3 as UserRole.Robot);
     const avatarSrc = isBot ? '/robot-avatar.png' : createdBy?.avatar || '/default-avatar.png';
-    const name = isBot ? `🤖 ${t('ai_assistant')}` : createdBy?.name || 'User';
+    const name = isBot ? `${t('ai_assistant')} 🤖` : createdBy?.name || 'User';
 
     return (
       <Box
@@ -96,9 +104,9 @@ export default class ProjectEvaluationPage extends ObservedComponent<
             elevation={1}
             sx={{
               p: 2,
-              backgroundColor: isBot ? 'grey.100' : 'primary.light',
-              color: isBot ? 'text.primary' : 'primary.contrastText',
-              borderRadius: isBot ? '16px 16px 16px 4px' : '16px 16px 4px 16px',
+              backgroundColor: 'primary.light',
+              color: 'primary.contrastText',
+              borderRadius: '16px 16px 4px 16px',
             }}
           >
             <Typography variant="caption" display="block" sx={{ mb: 0.5, opacity: 0.8 }}>
@@ -106,12 +114,21 @@ export default class ProjectEvaluationPage extends ObservedComponent<
             </Typography>
 
             {content && (
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                {content}
-              </Typography>
+              <Typography
+                className="prose"
+                variant="body2"
+                sx={{ mb: 1 }}
+                dangerouslySetInnerHTML={{ __html: marked(content) }}
+              />
             )}
-            {evaluation && <EvaluationDisplay {...evaluation} />}
-
+            {evaluation && (
+              <EvaluationDisplay
+                {...evaluation}
+                projectId={this.projectId}
+                messageId={id}
+                prototypes={prototypes}
+              />
+            )}
             {createdAt && (
               <Typography variant="caption" sx={{ opacity: 0.6, fontSize: '0.75rem' }}>
                 {new Date(createdAt).toLocaleTimeString()}
@@ -135,28 +152,20 @@ export default class ProjectEvaluationPage extends ObservedComponent<
       <SessionBox {...{ jwtPayload, menu, title }} path={`/dashboard/project/${projectId}`}>
         <PageHead title={title} />
 
-        <Container maxWidth="md" sx={{ height: '85vh', display: 'flex', flexDirection: 'column' }}>
-          <Typography variant="h4" component="h1" gutterBottom>
-            {title}
-          </Typography>
-
+        <Container
+          maxWidth="md"
+          sx={{ height: '85vh', display: 'flex', flexDirection: 'column', gap: '1rem' }}
+        >
+          <h1 className="mt-20 text-3xl font-bold">{title}</h1>
           {/* Chat Messages Area */}
-          <Box sx={{ flex: 1, overflow: 'hidden', mb: 2 }}>
+          <Box sx={{ flex: 1, overflow: 'auto', mb: 2 }}>
             <ScrollList
               translator={i18n}
               store={messageStore}
               filter={{ project: projectId }}
               renderList={allItems => (
                 <Box sx={{ height: '100%', overflowY: 'auto', p: 1 }}>
-                  {allItems[0] ? (
-                    allItems.map(this.renderChatMessage)
-                  ) : (
-                    <Box sx={{ textAlign: 'center', mt: 4 }}>
-                      <Typography color="textSecondary">
-                        {t('loading_project_evaluation')}
-                      </Typography>
-                    </Box>
-                  )}
+                  {allItems.map(this.renderChatMessage)}
                 </Box>
               )}
             />
@@ -182,6 +191,7 @@ export default class ProjectEvaluationPage extends ObservedComponent<
               />
               <Button
                 type="submit"
+                className="text-nowrap"
                 variant="contained"
                 sx={{ minWidth: 'auto', px: 2 }}
                 disabled={messageStore.uploading > 0}

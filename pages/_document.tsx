@@ -74,7 +74,7 @@ export default class CustomDocument extends Document<CustomDocumentProps> {
            * */}
           <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=chat,code,dark_mode,diversity_3,keyboard_arrow_down,language,light_mode,menu,translate,trending_up,visibility&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=chat,code,dark_mode,diversity_3,fingerprint,key,keyboard_arrow_down,language,light_mode,menu,translate,trending_up,visibility&display=swap"
           />
           <script type="application/ld+json">{JSON.stringify(siteNameJsonLd)}</script>
           <script type="application/ld+json">{JSON.stringify(organizationJsonLd)}</script>

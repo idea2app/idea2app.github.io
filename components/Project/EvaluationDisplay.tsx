@@ -1,27 +1,53 @@
-import { RequirementEvaluation, UserRole } from '@idea2app/data-server';
+import {
+  PrototypeType,
+  PrototypeVersion,
+  RequirementEvaluation,
+  UserRole,
+} from '@idea2app/data-server';
 import { Box, Typography } from '@mui/material';
 import { observer } from 'mobx-react';
 import { FC, useContext } from 'react';
 
-import { I18nContext } from '../../models/Translation';
+import { i18n, I18nContext } from '../../models/Translation';
 import userStore from '../../models/User';
+import { PrototypeGenerator, PrototypeGeneratorProps } from './PrototypeGenerator';
 
-export const EvaluationDisplay: FC<RequirementEvaluation> = observer(
+export const DevelopmentScopeName = ({ t }: typeof i18n) => [
+  t('product_prototype'),
+  t('ui_design'),
+  t('desktop'),
+  t('mobile'),
+  t('server'),
+];
+
+export interface EvaluationDisplayProps
+  extends RequirementEvaluation,
+    Pick<PrototypeGeneratorProps, 'projectId' | 'messageId'> {
+  prototypes?: PrototypeVersion[];
+}
+
+export const EvaluationDisplay: FC<EvaluationDisplayProps> = observer(
   ({
     title,
     scopes = [],
+    models,
     developerCount,
     designerCount,
     workload,
     monthPeriod,
     budget,
     factor,
+    projectId,
+    messageId,
+    prototypes,
   }) => {
-    const { t } = useContext(I18nContext),
+    const i18n = useContext(I18nContext);
+    const { t } = i18n,
       { roles } = userStore.session || {};
 
     return (
       <Box
+        className="prose"
         sx={{
           '& .evaluation-item': {
             marginBottom: 1,
@@ -53,9 +79,41 @@ export const EvaluationDisplay: FC<RequirementEvaluation> = observer(
               {t('development_scopes')}
             </Typography>
             <Box component="ul" sx={{ mt: 0.5 }}>
-              {scopes.map(scope => (
-                <Box key={scope} component="li" sx={{ ml: 1 }}>
-                  {scope}
+              {scopes.map(scope => {
+                const prototypeType = (
+                  scope === 2 ? 'desktop' : scope === 3 ? 'mobile' : undefined
+                ) as PrototypeType;
+
+                return (
+                  <Box
+                    key={scope}
+                    component="li"
+                    sx={{ ml: 1, display: 'flex', alignItems: 'center', gap: 1 }}
+                  >
+                    {DevelopmentScopeName(i18n)[scope]}
+
+                    {prototypeType && (
+                      <PrototypeGenerator
+                        {...{ projectId, messageId }}
+                        type={prototypeType}
+                        prototype={prototypes?.find(({ type }) => type === prototypeType)}
+                      />
+                    )}
+                  </Box>
+                );
+              })}
+            </Box>
+          </Box>
+        )}
+        {models?.[0] && (
+          <Box className="evaluation-item">
+            <Typography component="h4" sx={{ fontWeight: 600 }}>
+              {t('feature_modules')}
+            </Typography>
+            <Box component="ol" sx={{ mt: 0.5 }}>
+              {models.map((model, index) => (
+                <Box key={index} component="li" sx={{ ml: 1 }}>
+                  {model}
                 </Box>
               ))}
             </Box>

@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { Project } from '../../models/Project';
-import { ProjectCard } from './Card';
+import { ProjectCard } from './PublicCard';
 
 export interface ProjectListLayoutProps {
   defaultData: Project[];

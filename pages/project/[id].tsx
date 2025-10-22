@@ -6,7 +6,7 @@ import { FC, useContext } from 'react';
 import { GitCard } from '../../components/Git/Card';
 import { LarkImage } from '../../components/LarkImage';
 import { PageHead } from '../../components/PageHead';
-import { ProjectCard } from '../../components/Project/Card';
+import { ProjectCard } from '../../components/Project/PublicCard';
 import { Project, ProjectModel } from '../../models/Project';
 import { GitRepositoryModel } from '../../models/Repository';
 import { I18nContext } from '../../models/Translation';

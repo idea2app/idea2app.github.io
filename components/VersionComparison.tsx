@@ -17,8 +17,8 @@ export const VersionComparison: FC = observer(() => {
             </Typography>
             <Box component="ol" sx={{ pl: 2 }}>
               <Typography component="li">{t('github_one_click_login')}</Typography>
-              <Typography component="li">{t('free_evaluation_daily_limit')}</Typography>
               <Typography component="li">{t('submitted_data_public')}</Typography>
+              <Typography component="li">{t('free_evaluation_daily_limit')}</Typography>
               <Typography component="li">{t('volunteer_community_support')}</Typography>
               <Typography component="li">{t('open_source_bounty_development')}</Typography>
             </Box>
@@ -33,9 +33,10 @@ export const VersionComparison: FC = observer(() => {
               {t('commercial_version')}
             </Typography>
             <Box component="ol" sx={{ pl: 2 }}>
-              <Typography component="li">{t('phone_one_click_register')}</Typography>
-              <Typography component="li">{t('unlimited_evaluation_24_7')}</Typography>
+              <Typography component="li">{t('email_one_click_register')}</Typography>
               <Typography component="li">{t('project_data_confidential')}</Typography>
+              <Typography component="li">{t('unlimited_evaluation_24_7')}</Typography>
+              <Typography component="li">{t('ai_interactive_prototype')}</Typography>
               <Typography component="li">{t('daily_engineer_review')}</Typography>
               <Typography component="li">{t('professional_development_team')}</Typography>
             </Box>

@@ -11,17 +11,25 @@ export type ScrollBoundaryProps = PropsWithChildren<
   }
 >;
 
-function touch(edge: EdgePosition, onTouch: TouchHandler) {
-  return (node: HTMLElement | null) => {
-    if (node) {
-      new IntersectionObserver(([{ isIntersecting }]) => {
-        if (isIntersecting) {
-          onTouch(edge);
-        }
-      }).observe(node);
-    }
-  };
-}
+const EdgeOrder: EdgePosition[] = ['top', 'right', 'bottom', 'left'];
+
+const touch = (edge: EdgePosition, onTouch: TouchHandler) => (node: HTMLElement | null) => {
+  if (!node) return;
+
+  const anchor = node.parentElement?.parentElement;
+
+  const { overflowX, overflowY } = anchor ? getComputedStyle(anchor) : {};
+
+  const root = `${overflowX}${overflowY}`.match(/auto|scroll/) ? anchor : null;
+
+  const edgeMargins = Array(4).fill('0px');
+  edgeMargins[EdgeOrder.indexOf(edge)] = '200px';
+
+  new IntersectionObserver(([{ isIntersecting }]) => isIntersecting && onTouch(edge), {
+    root,
+    rootMargin: edgeMargins.join(' '),
+  }).observe(node);
+};
 
 export const ScrollBoundary: FC<ScrollBoundaryProps> = ({
   className = '',
@@ -30,7 +38,7 @@ export const ScrollBoundary: FC<ScrollBoundaryProps> = ({
   left,
   right,
   bottom,
-  children
+  children,
 }) => (
   <div className={className} style={{ position: 'relative' }}>
     <div
