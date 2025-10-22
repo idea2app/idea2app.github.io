@@ -1,4 +1,4 @@
-import { PrototypeVersion } from '@idea2app/data-server';
+import { PrototypeType, PrototypeVersion } from '@idea2app/data-server';
 import { toggle } from 'mobx-restful';
 
 import { TableModel } from './Base';
@@ -8,9 +8,12 @@ export class PrototypeVersionModel extends TableModel<PrototypeVersion> {
   baseURI = '';
   client = userStore.client;
 
-  constructor(public projectId: number) {
+  constructor(
+    public projectId: number,
+    public type: PrototypeType,
+  ) {
     super();
-    this.baseURI = `project/${projectId}/prototype-version`;
+    this.baseURI = `project/${projectId}/prototype/${type}/version`;
   }
 
   @toggle('downloading')

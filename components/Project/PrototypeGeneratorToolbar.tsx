@@ -1,9 +1,10 @@
-import { PrototypeVersion, PrototypeVersionStatus } from '@idea2app/data-server';
+import { PrototypeType, PrototypeVersion } from '@idea2app/data-server';
 import { Box, Button, CircularProgress, Link, Typography } from '@mui/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
-import { sleep } from 'web-utility';
+import { createRef } from 'react';
+import { inViewport, sleep } from 'web-utility';
 
 import { PrototypeVersionModel } from '../../models/PrototypeVersion';
 import { i18n, I18nContext } from '../../models/Translation';
@@ -11,6 +12,8 @@ import { i18n, I18nContext } from '../../models/Translation';
 export interface PrototypeGeneratorToolbarProps {
   projectId: number;
   messageId: number;
+  type: PrototypeType;
+  prototype?: PrototypeVersion;
 }
 
 @observer
@@ -20,86 +23,55 @@ export class PrototypeGeneratorToolbar extends ObservedComponent<
 > {
   static contextType = I18nContext;
 
-  versionStore = new PrototypeVersionModel(this.props.projectId);
+  versionStore = new PrototypeVersionModel(this.props.projectId, this.props.type);
 
   @observable
-  accessor version: PrototypeVersion | undefined;
+  accessor version = this.props.prototype;
 
-  @observable
-  accessor isPolling = false;
+  private root = createRef<HTMLElement>();
 
   componentDidMount() {
-    void this.loadVersion();
+    super.componentDidMount();
+
+    this.pollStatusCheck();
   }
 
-  componentDidUpdate(prevProps: PrototypeGeneratorToolbarProps) {
-    if (prevProps.messageId !== this.props.messageId) {
-      void this.loadVersion();
-    }
+  async pollStatusCheck() {
+    const { props, version } = this,
+      rootElement = this.root.current;
 
-    if (this.version?.status === 'processing') {
-      this.startPolling();
-    }
-  }
+    while (version?.status === 'pending' || version?.status === 'processing') {
+      if (!rootElement?.isConnected) break;
 
-  componentWillUnmount() {
-    this.isPolling = false;
-  }
-
-  async loadVersion() {
-    const existingVersion = await this.versionStore.getVersionByMessageId(this.props.messageId);
-    this.version = existingVersion;
-  }
-
-  async startPolling() {
-    if (this.isPolling) return;
-
-    this.isPolling = true;
-
-    for (let i = 0; i < 100; i++) {
-      if (!this.isPolling) break;
+      if (inViewport(rootElement))
+        this.version = await this.versionStore.getOne(props.prototype!.id);
 
       await sleep(3);
-
-      const updatedVersion = await this.versionStore.getVersionByMessageId(this.props.messageId);
-      this.version = updatedVersion;
-
-      if (updatedVersion?.status === 'completed' || updatedVersion?.status === 'failed') {
-        this.isPolling = false;
-        break;
-      }
     }
-
-    this.isPolling = false;
   }
 
   handleGenerateClick = async () => {
-    try {
-      const newVersion = await this.versionStore.updateOne({
-        evaluationMessage: this.props.messageId,
-      });
-      if (newVersion) {
-        this.version = newVersion;
-      }
-    } catch (error) {
-      console.error('Failed to create prototype version:', error);
-    }
+    this.version = await this.versionStore.updateOne({
+      evaluationMessage: this.props.messageId,
+    });
+
+    return this.pollStatusCheck();
   };
 
   renderPending() {
     const { t } = this.observedContext;
-    const { versionStore } = this;
+    const loading = this.versionStore.uploading > 0;
 
     return (
       <Button
         variant="contained"
         color="primary"
         size="small"
-        disabled={versionStore.uploading > 0}
+        disabled={loading}
         sx={{ textTransform: 'none' }}
         onClick={this.handleGenerateClick}
       >
-        {versionStore.uploading > 0 ? t('generating') : t('generate_prototype')}
+        {loading ? t('generating') : t('generate_prototype')}
       </Button>
     );
   }
@@ -117,13 +89,13 @@ export class PrototypeGeneratorToolbar extends ObservedComponent<
 
   renderCompleted() {
     const { t } = this.observedContext;
-    const { version } = this;
+    const { previewLink, gitLogsLink } = this.version || {};
 
     return (
       <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-        {version!.previewLink && (
+        {previewLink && (
           <Link
-            href={version!.previewLink}
+            href={previewLink}
             target="_blank"
             rel="noopener noreferrer"
             sx={{
@@ -136,9 +108,9 @@ export class PrototypeGeneratorToolbar extends ObservedComponent<
             {t('view_preview')}
           </Link>
         )}
-        {version!.gitLogsLink && (
+        {gitLogsLink && (
           <Link
-            href={version!.gitLogsLink}
+            href={gitLogsLink}
             target="_blank"
             rel="noopener noreferrer"
             sx={{
@@ -157,16 +129,16 @@ export class PrototypeGeneratorToolbar extends ObservedComponent<
 
   renderFailed() {
     const { t } = this.observedContext;
-    const { version } = this;
+    const { errorMessage, gitLogsLink } = this.version || {};
 
     return (
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
         <Typography variant="body2" color="error" sx={{ fontSize: '0.875rem' }}>
-          {version!.errorMessage || t('prototype_generation_failed')}
+          {errorMessage || t('prototype_generation_failed')}
         </Typography>
-        {version!.gitLogsLink && (
+        {gitLogsLink && (
           <Link
-            href={version!.gitLogsLink}
+            href={gitLogsLink}
             target="_blank"
             rel="noopener noreferrer"
             sx={{
@@ -187,14 +159,7 @@ export class PrototypeGeneratorToolbar extends ObservedComponent<
     const { version } = this;
 
     return (
-      <Box
-        sx={{
-          mt: 1.5,
-          pt: 1.5,
-          borderTop: '1px solid',
-          borderColor: 'divider',
-        }}
-      >
+      <Box ref={this.root} sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
         {!version || version.status === 'pending'
           ? this.renderPending()
           : version.status === 'processing'

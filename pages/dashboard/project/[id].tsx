@@ -71,7 +71,7 @@ export default class ProjectEvaluationPage extends ObservedComponent<
   };
 
   renderChatMessage = (
-    { id, content, evaluation, createdAt, createdBy }: ConsultMessage,
+    { id, content, evaluation, prototypes, createdAt, createdBy }: ConsultMessage,
     index = 0,
     { length }: ConsultMessage[],
   ) => {
@@ -123,10 +123,12 @@ export default class ProjectEvaluationPage extends ObservedComponent<
               />
             )}
             {evaluation && (
-              <>
-                <EvaluationDisplay {...evaluation} />
-                <PrototypeGeneratorToolbar projectId={this.projectId} messageId={id as number} />
-              </>
+              <EvaluationDisplay
+                {...evaluation}
+                projectId={this.projectId}
+                messageId={id}
+                prototypes={prototypes}
+              />
             )}
             {createdAt && (
               <Typography variant="caption" sx={{ opacity: 0.6, fontSize: '0.75rem' }}>

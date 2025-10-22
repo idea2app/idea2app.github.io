@@ -1,10 +1,19 @@
-import { RequirementEvaluation, UserRole } from '@idea2app/data-server';
+import {
+  PrototypeType,
+  PrototypeVersion,
+  RequirementEvaluation,
+  UserRole,
+} from '@idea2app/data-server';
 import { Box, Typography } from '@mui/material';
 import { observer } from 'mobx-react';
 import { FC, useContext } from 'react';
 
 import { i18n, I18nContext } from '../../models/Translation';
 import userStore from '../../models/User';
+import {
+  PrototypeGeneratorToolbar,
+  PrototypeGeneratorToolbarProps,
+} from './PrototypeGeneratorToolbar';
 
 export const DevelopmentScopeName = ({ t }: typeof i18n) => [
   t('product_prototype'),
@@ -14,7 +23,13 @@ export const DevelopmentScopeName = ({ t }: typeof i18n) => [
   t('server'),
 ];
 
-export const EvaluationDisplay: FC<RequirementEvaluation> = observer(
+export interface EvaluationDisplayProps
+  extends RequirementEvaluation,
+    Pick<PrototypeGeneratorToolbarProps, 'projectId' | 'messageId'> {
+  prototypes?: PrototypeVersion[];
+}
+
+export const EvaluationDisplay: FC<EvaluationDisplayProps> = observer(
   ({
     title,
     scopes = [],
@@ -25,6 +40,9 @@ export const EvaluationDisplay: FC<RequirementEvaluation> = observer(
     monthPeriod,
     budget,
     factor,
+    projectId,
+    messageId,
+    prototypes,
   }) => {
     const i18n = useContext(I18nContext);
     const { t } = i18n,
@@ -64,11 +82,29 @@ export const EvaluationDisplay: FC<RequirementEvaluation> = observer(
               {t('development_scopes')}
             </Typography>
             <Box component="ul" sx={{ mt: 0.5 }}>
-              {scopes.map(scope => (
-                <Box key={scope} component="li" sx={{ ml: 1 }}>
-                  {DevelopmentScopeName(i18n)[scope]}
-                </Box>
-              ))}
+              {scopes.map(scope => {
+                const prototypeType = (
+                  scope === 2 ? 'desktop' : scope === 3 ? 'mobile' : undefined
+                ) as PrototypeType;
+
+                return (
+                  <Box
+                    key={scope}
+                    component="li"
+                    sx={{ ml: 1, display: 'flex', alignItems: 'center', gap: 1 }}
+                  >
+                    {DevelopmentScopeName(i18n)[scope]}
+
+                    {prototypeType && (
+                      <PrototypeGeneratorToolbar
+                        {...{ projectId, messageId }}
+                        type={prototypeType}
+                        prototype={prototypes?.find(({ type }) => type === prototypeType)}
+                      />
+                    )}
+                  </Box>
+                );
+              })}
             </Box>
           </Box>
         )}
