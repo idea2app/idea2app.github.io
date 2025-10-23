@@ -10,7 +10,7 @@
 ## Technology stack
 
 - Language: [TypeScript v5][2] + [MDX v3][10]
-- Component engine: [Next.js v15][3]
+- Component engine: [Next.js v16][3]
 - Component suite: [Bootstrap v5][4]
 - PWA framework: [Workbox v6][5]
 - State management: [MobX v6][11]
@@ -20,7 +20,6 @@
 ## Best practice
 
 1.  Install GitHub apps in your organization or account:
-
     1.  [Probot settings][15]: set up Issue labels & Pull Request rules
     2.  [PR badge][16]: set up Online [VS Code][17] editor entries in Pull Request description
 

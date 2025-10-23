@@ -34,14 +34,12 @@ export class PrototypeGenerator extends ObservedComponent<PrototypeGeneratorProp
   }
 
   async pollStatusCheck() {
-    const { props, version } = this,
-      rootElement = this.root.current;
+    const rootElement = this.root.current;
 
-    while (version?.status === 'pending' || version?.status === 'processing') {
+    while (this.version?.status === 'pending' || this.version?.status === 'processing') {
       if (!rootElement?.isConnected) break;
 
-      if (inViewport(rootElement))
-        this.version = await this.versionStore.getOne(props.prototype!.id);
+      if (inViewport(rootElement)) this.version = await this.versionStore.getOne(this.version.id);
 
       await sleep(3);
     }
@@ -91,34 +89,28 @@ export class PrototypeGenerator extends ObservedComponent<PrototypeGeneratorProp
     return (
       <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
         {previewLink && (
-          <Link
+          <Button
             href={previewLink}
             target="_blank"
             rel="noopener noreferrer"
-            sx={{
-              textDecoration: 'none',
-              fontSize: '0.875rem',
-              fontWeight: 500,
-              color: 'primary.main',
-            }}
+            variant="contained"
+            color="success"
+            size="small"
           >
             {t('view_preview')}
-          </Link>
+          </Button>
         )}
         {gitLogsLink && (
-          <Link
+          <Button
             href={gitLogsLink}
             target="_blank"
             rel="noopener noreferrer"
-            sx={{
-              textDecoration: 'none',
-              fontSize: '0.875rem',
-              fontWeight: 500,
-              color: 'text.secondary',
-            }}
+            variant="contained"
+            color="warning"
+            size="small"
           >
             {t('view_ai_log')}
-          </Link>
+          </Button>
         )}
       </Box>
     );
