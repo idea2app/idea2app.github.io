@@ -17,18 +17,6 @@ import { Component, HTMLAttributes, JSX } from 'react';
 
 import { SessionForm } from './SessionForm';
 
-const MenuIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    width="24"
-    height="24"
-  >
-    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
-  </svg>
-);
-
 export type MenuItem = Pick<JSX.IntrinsicElements['a'], 'href' | 'title'>;
 
 export interface SessionBoxProps extends HTMLAttributes<HTMLDivElement>, JWTProps<User> {
@@ -109,36 +97,40 @@ export class SessionBox extends Component<SessionBoxProps> {
             aria-label="menu"
             onClick={this.toggleMobileMenu}
           >
-            <MenuIcon />
+            <span className="material-symbols-outlined">menu</span>
           </IconButton>
         </Box>
 
-        {/* Mobile Drawer */}
+        {/* Mobile Drawer - temporary, closes on click */}
         <Drawer
           anchor="left"
           open={this.mobileMenuOpen}
+          variant="temporary"
           sx={{ display: { xs: 'block', md: 'none' } }}
           onClose={this.closeMobileMenu}
         >
           <Box sx={{ width: 250 }}>{this.renderMenuItems()}</Box>
         </Drawer>
 
-        {/* Desktop Sidebar */}
-        <Box
+        {/* Desktop Drawer - persistent, always open */}
+        <Drawer
+          anchor="left"
+          open={true}
+          variant="permanent"
           sx={{
             display: { xs: 'none', md: 'block' },
-            minWidth: 200,
-          }}
-        >
-          <Box
-            sx={{
+            '& .MuiDrawer-paper': {
+              width: 250,
               position: 'sticky',
               top: '5rem',
-            }}
-          >
-            {this.renderMenuItems()}
-          </Box>
-        </Box>
+              height: 'calc(100vh - 5rem)',
+              border: 'none',
+              boxShadow: 'none',
+            },
+          }}
+        >
+          {this.renderMenuItems()}
+        </Drawer>
 
         {/* Main Content */}
         <Box
