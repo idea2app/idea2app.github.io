@@ -37,14 +37,18 @@ const DashboardPage: FC<DashboardPageProps> = observer(({ route, jwtPayload }) =
 
   return (
     <SessionBox title={t('backend_management')} path={route.resolvedUrl} {...{ menu, jwtPayload }}>
-      <Container maxWidth="lg" className="py-8">
-        <Typography variant="h3" component="h1" gutterBottom>
+      <Container maxWidth="lg" className="py-3 md:py-8">
+        <Typography
+          variant="h3"
+          component="h1"
+          gutterBottom
+          className="text-[1.75rem] sm:text-[2.5rem] md:text-[3rem]"
+        >
           {t('welcome_use')}
         </Typography>
 
-        <Box
-          component="form"
-          sx={{ display: 'flex', gap: 2, alignItems: 'center', mt: 2, mb: 4 }}
+        <form
+          className="mb-4 mt-2 flex flex-col items-stretch gap-2 sm:flex-row sm:items-center"
           onSubmit={handleCreateProject}
         >
           <TextField
@@ -56,16 +60,20 @@ const DashboardPage: FC<DashboardPageProps> = observer(({ route, jwtPayload }) =
             defaultValue={route.query.name}
           />
           <Button
-            className="text-nowrap"
-            type="submit"
+            className="min-w-full whitespace-nowrap sm:min-w-0"
             variant="contained"
+            type="submit"
             disabled={projectStore.uploading > 0}
           >
             {t('create_new_project')}
           </Button>
-        </Box>
+        </form>
 
-        <Typography variant="h5" component="h2" sx={{ mt: 4, mb: 3 }}>
+        <Typography
+          variant="h5"
+          component="h2"
+          className="mb-3 mt-4 text-[1.25rem] sm:text-[1.5rem]"
+        >
           {t('recent_projects')}
         </Typography>
 
@@ -76,16 +84,16 @@ const DashboardPage: FC<DashboardPageProps> = observer(({ route, jwtPayload }) =
             jwtPayload?.roles.includes(2 as UserRole.Client) ? { createdBy: jwtPayload.id } : {}
           }
           renderList={allItems => (
-            <Grid container spacing={3}>
+            <Grid container spacing={{ xs: 2, sm: 3 }}>
               {allItems[0] ? (
                 allItems.map(project => (
-                  <Grid key={project.id} size={{ xs: 12, md: 4 }}>
+                  <Grid key={project.id} size={{ xs: 12, sm: 6, md: 4 }}>
                     <ProjectCard {...project} />
                   </Grid>
                 ))
               ) : (
                 <Grid size={{ xs: 12 }}>
-                  <Typography color="textSecondary" sx={{ textAlign: 'center', mt: 4 }}>
+                  <Typography color="textSecondary" className="mt-4 text-center">
                     {t('no_project_data')}
                   </Typography>
                 </Grid>
