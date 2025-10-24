@@ -37,13 +37,9 @@ export class SessionBox extends Component<SessionBoxProps> {
     this.modalShown = !this.props.jwtPayload;
   }
 
-  toggleDrawer = () => {
-    this.drawerOpen = !this.drawerOpen;
-  };
+  toggleDrawer = () => (this.drawerOpen = !this.drawerOpen);
 
-  closeDrawer = () => {
-    this.drawerOpen = false;
-  };
+  closeDrawer = () => (this.drawerOpen = false);
 
   renderMenuItems() {
     const { path, menu = [] } = this.props;
