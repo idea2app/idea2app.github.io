@@ -1,10 +1,10 @@
 import { ConsultMessage, User, UserRole } from '@idea2app/data-server';
-import { Avatar, Box, Button, Container, Paper, TextField, Typography } from '@mui/material';
+import { Avatar, Button, Container, Paper, TextField, Typography } from '@mui/material';
 import { marked } from 'marked';
 import { observer } from 'mobx-react';
 import { ObservedComponent, reaction } from 'mobx-react-helper';
 import { compose, JWTProps, jwtVerifier, RouteProps, router } from 'next-ssr-middleware';
-import { FormEvent } from 'react';
+import { FormEvent, KeyboardEventHandler } from 'react';
 import { formToJSON, scrollTo, sleep } from 'web-utility';
 
 import { PageHead } from '../../../components/PageHead';
@@ -69,6 +69,13 @@ export default class ProjectEvaluationPage extends ObservedComponent<
     form.reset();
   };
 
+  handleQuickSubmit: KeyboardEventHandler = ({ ctrlKey, key, target }) => {
+    if (ctrlKey && key === 'Enter')
+      (target as HTMLTextAreaElement).form?.dispatchEvent(
+        new SubmitEvent('submit', { cancelable: true, bubbles: true }),
+      );
+  };
+
   renderChatMessage = (
     { id, content, evaluation, prototypes, createdAt, createdBy }: ConsultMessage,
     index = 0,
@@ -86,12 +93,12 @@ export default class ProjectEvaluationPage extends ObservedComponent<
         className={`mb-2 flex w-full ${isBot ? 'justify-start' : 'justify-end'}`}
       >
         <div
-          className={`flex items-start gap-1 max-w-[95%] sm:max-w-[80%] ${isBot ? 'flex-row' : 'flex-row-reverse'}`}
+          className={`flex max-w-[95%] items-start gap-1 sm:max-w-[80%] ${isBot ? 'flex-row' : 'flex-row-reverse'}`}
         >
           <Avatar src={avatarSrc} alt={name} className="h-7 w-7 sm:h-8 sm:w-8" />
           <Paper
             elevation={1}
-            className="rounded-[16px_16px_4px_16px] p-1.5 sm:p-2 bg-primary-light text-primary-contrast"
+            className="bg-primary-light text-primary-contrast rounded-[16px_16px_4px_16px] p-1.5 sm:p-2"
             sx={{
               backgroundColor: 'primary.light',
               color: 'primary.contrastText',
@@ -143,16 +150,10 @@ export default class ProjectEvaluationPage extends ObservedComponent<
       <SessionBox {...{ jwtPayload, menu, title }} path={`/dashboard/project/${projectId}`}>
         <PageHead title={title} />
 
-        <Container
-          maxWidth="md"
-          className="flex h-[calc(100vh-120px)] flex-col gap-2 px-0 sm:gap-4 sm:px-2 md:h-[85vh]"
-        >
-          <Typography
-            component="h1"
-            className="mb-1 mt-2 px-2 text-2xl font-bold sm:mb-2 sm:mt-4 sm:px-0 sm:text-3xl md:mt-20 md:text-5xl"
-          >
+        <Container maxWidth="md" className="px-4 py-6 pt-16">
+          <h1 className="sticky top-[4rem] z-1 m-0 py-5 text-3xl font-bold backdrop-blur-md">
             {title}
-          </Typography>
+          </h1>
           {/* Chat Messages Area */}
           <div className="mb-2 flex-1 overflow-auto">
             <ScrollList
@@ -171,29 +172,28 @@ export default class ProjectEvaluationPage extends ObservedComponent<
           <Paper
             component="form"
             elevation={1}
-            className="mx-1 mb-1 mt-auto p-1.5 sm:mx-0 sm:mb-0 sm:p-2"
+            className="sticky bottom-0 mx-1 mt-auto mb-1 flex items-end gap-2 p-1.5 sm:mx-0 sm:mb-0 sm:p-2"
             onSubmit={this.handleMessageSubmit}
           >
-            <div className="flex flex-col items-end gap-1 sm:flex-row">
-              <TextField
-                name="content"
-                placeholder={t('type_your_message')}
-                multiline
-                maxRows={4}
-                fullWidth
-                variant="outlined"
-                size="small"
-                required
-              />
-              <Button
-                type="submit"
-                variant="contained"
-                className="min-w-full whitespace-nowrap px-2 sm:min-w-0"
-                disabled={messageStore.uploading > 0}
-              >
-                {t('send')}
-              </Button>
-            </div>
+            <TextField
+              name="content"
+              placeholder={t('type_your_message')}
+              multiline
+              maxRows={4}
+              fullWidth
+              variant="outlined"
+              size="small"
+              required
+              onKeyUp={this.handleQuickSubmit}
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              className="min-w-full px-2 whitespace-nowrap sm:min-w-0"
+              disabled={messageStore.uploading > 0}
+            >
+              {t('send')}
+            </Button>
           </Paper>
         </Container>
       </SessionBox>

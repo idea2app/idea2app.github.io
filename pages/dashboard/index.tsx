@@ -1,10 +1,11 @@
 import { User, UserRole } from '@idea2app/data-server';
-import { Box, Button, Container, Grid, TextField, Typography } from '@mui/material';
+import { Button, Container, Grid, TextField, Typography } from '@mui/material';
 import { observer } from 'mobx-react';
 import { compose, JWTProps, jwtVerifier, RouteProps, router } from 'next-ssr-middleware';
 import { FC, FormEvent, useContext } from 'react';
 import { formToJSON } from 'web-utility';
 
+import { PageHead } from '../../components/PageHead';
 import { ProjectCard } from '../../components/Project/NewCard';
 import { ScrollList } from '../../components/ScrollList';
 import { SessionBox } from '../../components/User/SessionBox';
@@ -22,8 +23,6 @@ const DashboardPage: FC<DashboardPageProps> = observer(({ route, jwtPayload }) =
   const i18n = useContext(I18nContext);
   const { t } = i18n;
 
-  const menu = [{ href: '/dashboard', title: t('overview') }];
-
   const handleCreateProject = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     event.stopPropagation();
@@ -36,8 +35,10 @@ const DashboardPage: FC<DashboardPageProps> = observer(({ route, jwtPayload }) =
   };
 
   return (
-    <SessionBox title={t('backend_management')} path={route.resolvedUrl} {...{ menu, jwtPayload }}>
-      <Container maxWidth="lg" className="py-3 md:py-8">
+    <SessionBox path={route.resolvedUrl} {...{ jwtPayload }}>
+      <PageHead title={t('backend_management')} />
+
+      <Container maxWidth="lg" className="px-4 py-6 pt-16">
         <Typography
           variant="h3"
           component="h1"
@@ -48,7 +49,7 @@ const DashboardPage: FC<DashboardPageProps> = observer(({ route, jwtPayload }) =
         </Typography>
 
         <form
-          className="mb-4 mt-2 flex flex-col items-stretch gap-2 sm:flex-row sm:items-center"
+          className="mt-2 mb-4 flex flex-col items-stretch gap-2 sm:flex-row sm:items-center"
           onSubmit={handleCreateProject}
         >
           <TextField
@@ -72,7 +73,7 @@ const DashboardPage: FC<DashboardPageProps> = observer(({ route, jwtPayload }) =
         <Typography
           variant="h5"
           component="h2"
-          className="mb-3 mt-4 text-[1.25rem] sm:text-[1.5rem]"
+          className="mt-4 mb-3 text-[1.25rem] sm:text-[1.5rem]"
         >
           {t('recent_projects')}
         </Typography>

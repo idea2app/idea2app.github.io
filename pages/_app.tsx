@@ -11,6 +11,7 @@ import Head from 'next/head';
 
 import { Footer } from '../components/Layout/Footer';
 import { MainNavigator } from '../components/Layout/MainNavigator';
+import { PrivateMenu, PublicMenu } from '../components/Layout/menu';
 import { isServer } from '../models/configuration';
 import { createI18nStore, I18nContext, I18nProps, loadSSRLanguage } from '../models/Translation';
 
@@ -66,10 +67,13 @@ export default class CustomApp extends App<I18nProps & { emotionCache: EmotionCa
   }
 
   render() {
-    const { Component, pageProps, emotionCache = clientCache } = this.props;
+    const { router, Component, pageProps, emotionCache = clientCache } = this.props;
+    const { asPath } = router,
+      { i18nStore } = this;
+    const menu = asPath.startsWith('/dashboard') ? PrivateMenu(i18nStore) : PublicMenu(i18nStore);
 
     return (
-      <I18nContext.Provider value={this.i18nStore}>
+      <I18nContext.Provider value={i18nStore}>
         <AppCacheProvider emotionCache={emotionCache}>
           <GlobalStyles styles="@layer theme, base, mui, components, utilities;" />
           <Head>
@@ -81,7 +85,7 @@ export default class CustomApp extends App<I18nProps & { emotionCache: EmotionCa
              */}
             <ThemeProvider theme={theme} defaultMode="system" disableTransitionOnChange>
               <div className="flex min-h-screen flex-col justify-between">
-                <MainNavigator />
+                <MainNavigator menu={menu} />
 
                 <Component {...pageProps} />
 

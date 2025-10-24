@@ -8,7 +8,7 @@ import {
   PopoverProps,
   Toolbar,
 } from '@mui/material';
-import { computed, observable } from 'mobx';
+import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
 import Link from 'next/link';
@@ -17,26 +17,14 @@ import { i18n, I18nContext, LanguageName } from '../../models/Translation';
 import { SymbolIcon } from '../Icon';
 import { ColorModeIconDropdown } from './ColorModeDropdown';
 import { BrandLogo, GithubIcon } from './Svg';
+import { MenuLink } from './menu';
 
 @observer
-export class MainNavigator extends ObservedComponent<{}, typeof i18n> {
+export class MainNavigator extends ObservedComponent<{ menu: MenuLink[] }, typeof i18n> {
   static contextType = I18nContext;
 
   @observable accessor menuExpand = false;
   @observable accessor menuAnchor: PopoverProps['anchorEl'] = null;
-
-  @computed
-  get links() {
-    const { t } = this.observedContext!;
-
-    return [
-      { title: t('latest_projects'), href: '/project' },
-      { title: t('member'), href: '/member' },
-      { title: t('open_source_project'), href: '/open-source' },
-      { title: t('wiki'), href: '/wiki' },
-      { title: t('github_reward'), href: '/project/reward/issue', target: '_top' },
-    ];
-  }
 
   switchI18n = (key: string) => {
     this.observedContext!.loadLanguages(key as keyof typeof LanguageName);
@@ -44,7 +32,7 @@ export class MainNavigator extends ObservedComponent<{}, typeof i18n> {
   };
 
   renderLinks = () =>
-    this.links.map(({ title, href, target }) => (
+    this.props.menu.map(({ title, href, target }) => (
       <Button key={title} component={Link} className="py-1" href={href} target={target}>
         {title}
       </Button>
