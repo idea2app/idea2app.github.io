@@ -80,62 +80,35 @@ export default class ProjectEvaluationPage extends ObservedComponent<
     const name = isBot ? `${t('ai_assistant')} 🤖` : createdBy?.name || 'User';
 
     return (
-      <Box
+      <div
         key={id}
         id={index + 1 === length ? 'last-message' : undefined}
-        sx={{
-          display: 'flex',
-          justifyContent: isBot ? 'flex-start' : 'flex-end',
-          mb: 2,
-          width: '100%',
-        }}
+        className={`mb-2 flex w-full ${isBot ? 'justify-start' : 'justify-end'}`}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: isBot ? 'row' : 'row-reverse',
-            alignItems: 'flex-start',
-            maxWidth: { xs: '95%', sm: '80%' },
-            gap: 1,
-          }}
+        <div
+          className={`flex items-start gap-1 max-w-[95%] sm:max-w-[80%] ${isBot ? 'flex-row' : 'flex-row-reverse'}`}
         >
-          <Avatar
-            src={avatarSrc}
-            alt={name}
-            sx={{
-              width: { xs: 28, sm: 32 },
-              height: { xs: 28, sm: 32 },
-            }}
-          />
+          <Avatar src={avatarSrc} alt={name} className="h-7 w-7 sm:h-8 sm:w-8" />
           <Paper
             elevation={1}
+            className="rounded-[16px_16px_4px_16px] p-1.5 sm:p-2 bg-primary-light text-primary-contrast"
             sx={{
-              p: { xs: 1.5, sm: 2 },
               backgroundColor: 'primary.light',
               color: 'primary.contrastText',
-              borderRadius: '16px 16px 4px 16px',
             }}
           >
             <Typography
               variant="caption"
               display="block"
-              sx={{
-                mb: 0.5,
-                opacity: 0.8,
-                fontSize: { xs: '0.7rem', sm: '0.75rem' },
-              }}
+              className="mb-0.5 text-[0.7rem] opacity-80 sm:text-[0.75rem]"
             >
               {name}
             </Typography>
 
             {content && (
               <Typography
-                className="prose"
+                className="prose mb-1 text-[0.875rem] sm:text-base"
                 variant="body2"
-                sx={{
-                  mb: 1,
-                  fontSize: { xs: '0.875rem', sm: '1rem' },
-                }}
                 dangerouslySetInnerHTML={{ __html: marked(content) }}
               />
             )}
@@ -148,19 +121,13 @@ export default class ProjectEvaluationPage extends ObservedComponent<
               />
             )}
             {createdAt && (
-              <Typography
-                variant="caption"
-                sx={{
-                  opacity: 0.6,
-                  fontSize: { xs: '0.65rem', sm: '0.75rem' },
-                }}
-              >
+              <Typography variant="caption" className="text-[0.65rem] opacity-60 sm:text-[0.75rem]">
                 {new Date(createdAt).toLocaleTimeString()}
               </Typography>
             )}
           </Paper>
-        </Box>
-      </Box>
+        </div>
+      </div>
     );
   };
 
@@ -178,66 +145,36 @@ export default class ProjectEvaluationPage extends ObservedComponent<
 
         <Container
           maxWidth="md"
-          sx={{
-            height: { xs: 'calc(100vh - 120px)', md: '85vh' },
-            display: 'flex',
-            flexDirection: 'column',
-            gap: { xs: '0.5rem', sm: '1rem' },
-            px: { xs: 0, sm: 2 },
-          }}
+          className="flex h-[calc(100vh-120px)] flex-col gap-2 px-0 sm:gap-4 sm:px-2 md:h-[85vh]"
         >
           <Typography
             component="h1"
-            sx={{
-              mt: { xs: 2, sm: 4, md: 20 },
-              mb: { xs: 1, sm: 2 },
-              fontSize: { xs: '1.5rem', sm: '2rem', md: '3rem' },
-              fontWeight: 'bold',
-              px: { xs: 2, sm: 0 },
-            }}
+            className="mb-1 mt-2 px-2 text-2xl font-bold sm:mb-2 sm:mt-4 sm:px-0 sm:text-3xl md:mt-20 md:text-5xl"
           >
             {title}
           </Typography>
           {/* Chat Messages Area */}
-          <Box sx={{ flex: 1, overflow: 'auto', mb: 2 }}>
+          <div className="mb-2 flex-1 overflow-auto">
             <ScrollList
               translator={i18n}
               store={messageStore}
               filter={{ project: projectId }}
               renderList={allItems => (
-                <Box
-                  sx={{
-                    height: '100%',
-                    overflowY: 'auto',
-                    p: { xs: 1, sm: 2 },
-                  }}
-                >
+                <div className="h-full overflow-y-auto p-1 sm:p-2">
                   {allItems.map(this.renderChatMessage)}
-                </Box>
+                </div>
               )}
             />
-          </Box>
+          </div>
 
           {/* Message Input Form */}
           <Paper
             component="form"
             elevation={1}
-            sx={{
-              p: { xs: 1.5, sm: 2 },
-              mt: 'auto',
-              mx: { xs: 1, sm: 0 },
-              mb: { xs: 1, sm: 0 },
-            }}
+            className="mx-1 mb-1 mt-auto p-1.5 sm:mx-0 sm:mb-0 sm:p-2"
             onSubmit={this.handleMessageSubmit}
           >
-            <Box
-              sx={{
-                display: 'flex',
-                gap: 1,
-                alignItems: 'flex-end',
-                flexDirection: { xs: 'column', sm: 'row' },
-              }}
-            >
+            <div className="flex flex-col items-end gap-1 sm:flex-row">
               <TextField
                 name="content"
                 placeholder={t('type_your_message')}
@@ -251,16 +188,12 @@ export default class ProjectEvaluationPage extends ObservedComponent<
               <Button
                 type="submit"
                 variant="contained"
-                sx={{
-                  minWidth: { xs: '100%', sm: 'auto' },
-                  px: 2,
-                  whiteSpace: 'nowrap',
-                }}
+                className="min-w-full whitespace-nowrap px-2 sm:min-w-0"
                 disabled={messageStore.uploading > 0}
               >
                 {t('send')}
               </Button>
-            </Box>
+            </div>
           </Paper>
         </Container>
       </SessionBox>

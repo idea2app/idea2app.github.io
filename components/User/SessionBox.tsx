@@ -49,14 +49,14 @@ export class SessionBox extends Component<SessionBoxProps> {
     const { path, menu = [] } = this.props;
 
     return (
-      <List component="nav" sx={{ px: 2 }}>
+      <List component="nav" className="px-2">
         {menu.map(({ href, title }) => (
           <ListItem key={href} disablePadding>
             <ListItemButton
               component={Link}
               href={href || '#'}
               selected={path?.split('?')[0].startsWith(href || '')}
-              sx={{ borderRadius: 1 }}
+              className="rounded"
               onClick={this.closeDrawer}
             >
               <ListItemText primary={title} />
