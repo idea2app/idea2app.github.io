@@ -8,13 +8,16 @@ import {
   ListItemButton,
   ListItemText,
   Modal,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import Link from 'next/link';
 import { JWTProps } from 'next-ssr-middleware';
-import { Component, HTMLAttributes, JSX } from 'react';
+import { Component, FC, HTMLAttributes, JSX } from 'react';
 
+import { SymbolIcon } from '../Icon';
 import { SessionForm } from './SessionForm';
 
 export type MenuItem = Pick<JSX.IntrinsicElements['a'], 'href' | 'title'>;
@@ -24,24 +27,61 @@ export interface SessionBoxProps extends HTMLAttributes<HTMLDivElement>, JWTProp
   menu?: MenuItem[];
 }
 
+interface ResponsiveDrawerProps {
+  open: boolean;
+  onClose: () => void;
+  children: JSX.Element;
+}
+
+const ResponsiveDrawer: FC<ResponsiveDrawerProps> = ({ open, onClose, children }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  return (
+    <Drawer
+      anchor="left"
+      open={isMobile ? open : true}
+      variant={isMobile ? 'temporary' : 'permanent'}
+      onClose={onClose}
+      sx={{
+        display: { xs: isMobile ? 'block' : 'none', md: isMobile ? 'none' : 'block' },
+        '& .MuiDrawer-paper': {
+          width: 250,
+          ...(isMobile
+            ? {}
+            : {
+                position: 'sticky',
+                top: '5rem',
+                height: 'calc(100vh - 5rem)',
+                border: 'none',
+                boxShadow: 'none',
+              }),
+        },
+      }}
+    >
+      {children}
+    </Drawer>
+  );
+};
+
 @observer
 export class SessionBox extends Component<SessionBoxProps> {
   @observable
   accessor modalShown = false;
 
   @observable
-  accessor mobileMenuOpen = false;
+  accessor drawerOpen = false;
 
   componentDidMount() {
     this.modalShown = !this.props.jwtPayload;
   }
 
-  toggleMobileMenu = () => {
-    this.mobileMenuOpen = !this.mobileMenuOpen;
+  toggleDrawer = () => {
+    this.drawerOpen = !this.drawerOpen;
   };
 
-  closeMobileMenu = () => {
-    this.mobileMenuOpen = false;
+  closeDrawer = () => {
+    this.drawerOpen = false;
   };
 
   renderMenuItems() {
@@ -56,7 +96,7 @@ export class SessionBox extends Component<SessionBoxProps> {
               href={href || '#'}
               selected={path?.split('?')[0].startsWith(href || '')}
               sx={{ borderRadius: 1 }}
-              onClick={this.closeMobileMenu}
+              onClick={this.closeDrawer}
             >
               <ListItemText primary={title} />
             </ListItemButton>
@@ -95,42 +135,16 @@ export class SessionBox extends Component<SessionBoxProps> {
             edge="start"
             color="inherit"
             aria-label="menu"
-            onClick={this.toggleMobileMenu}
+            onClick={this.toggleDrawer}
           >
-            <span className="material-symbols-outlined">menu</span>
+            <SymbolIcon name="menu" />
           </IconButton>
         </Box>
 
-        {/* Mobile Drawer - temporary, closes on click */}
-        <Drawer
-          anchor="left"
-          open={this.mobileMenuOpen}
-          variant="temporary"
-          sx={{ display: { xs: 'block', md: 'none' } }}
-          onClose={this.closeMobileMenu}
-        >
+        {/* Unified Responsive Drawer */}
+        <ResponsiveDrawer open={this.drawerOpen} onClose={this.closeDrawer}>
           <Box sx={{ width: 250 }}>{this.renderMenuItems()}</Box>
-        </Drawer>
-
-        {/* Desktop Drawer - persistent, always open */}
-        <Drawer
-          anchor="left"
-          open={true}
-          variant="permanent"
-          sx={{
-            display: { xs: 'none', md: 'block' },
-            '& .MuiDrawer-paper': {
-              width: 250,
-              position: 'sticky',
-              top: '5rem',
-              height: 'calc(100vh - 5rem)',
-              border: 'none',
-              boxShadow: 'none',
-            },
-          }}
-        >
-          {this.renderMenuItems()}
-        </Drawer>
+        </ResponsiveDrawer>
 
         {/* Main Content */}
         <Box
