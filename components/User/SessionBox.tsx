@@ -1,23 +1,21 @@
 import { User } from '@idea2app/data-server';
 import {
   Box,
-  Drawer,
   IconButton,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
   Modal,
-  useMediaQuery,
-  useTheme,
 } from '@mui/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import Link from 'next/link';
 import { JWTProps } from 'next-ssr-middleware';
-import { Component, FC, HTMLAttributes, JSX } from 'react';
+import { Component, HTMLAttributes, JSX } from 'react';
 
 import { SymbolIcon } from '../Icon';
+import { ResponsiveDrawer } from './ResponsiveDrawer';
 import { SessionForm } from './SessionForm';
 
 export type MenuItem = Pick<JSX.IntrinsicElements['a'], 'href' | 'title'>;
@@ -26,43 +24,6 @@ export interface SessionBoxProps extends HTMLAttributes<HTMLDivElement>, JWTProp
   path?: string;
   menu?: MenuItem[];
 }
-
-interface ResponsiveDrawerProps {
-  open: boolean;
-  onClose: () => void;
-  children: JSX.Element;
-}
-
-const ResponsiveDrawer: FC<ResponsiveDrawerProps> = ({ open, onClose, children }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
-  return (
-    <Drawer
-      anchor="left"
-      open={isMobile ? open : true}
-      variant={isMobile ? 'temporary' : 'permanent'}
-      onClose={onClose}
-      sx={{
-        display: { xs: isMobile ? 'block' : 'none', md: isMobile ? 'none' : 'block' },
-        '& .MuiDrawer-paper': {
-          width: 250,
-          ...(isMobile
-            ? {}
-            : {
-                position: 'sticky',
-                top: '5rem',
-                height: 'calc(100vh - 5rem)',
-                border: 'none',
-                boxShadow: 'none',
-              }),
-        },
-      }}
-    >
-      {children}
-    </Drawer>
-  );
-};
 
 @observer
 export class SessionBox extends Component<SessionBoxProps> {
@@ -110,27 +71,9 @@ export class SessionBox extends Component<SessionBoxProps> {
     const { className = '', children, jwtPayload, ...props } = this.props;
 
     return (
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: { xs: 'column', md: 'row' },
-        }}
-        className={className}
-        {...props}
-      >
+      <div className={`flex flex-col md:flex-row ${className}`} {...props}>
         {/* Mobile Menu Button */}
-        <Box
-          sx={{
-            display: { xs: 'flex', md: 'none' },
-            position: 'sticky',
-            top: 0,
-            zIndex: 1100,
-            bgcolor: 'background.paper',
-            borderBottom: 1,
-            borderColor: 'divider',
-            p: 1,
-          }}
-        >
+        <div className="sticky top-0 z-[1100] flex border-b p-1 md:hidden bg-background-paper border-divider">
           <IconButton
             edge="start"
             color="inherit"
@@ -139,43 +82,27 @@ export class SessionBox extends Component<SessionBoxProps> {
           >
             <SymbolIcon name="menu" />
           </IconButton>
-        </Box>
+        </div>
 
         {/* Unified Responsive Drawer */}
         <ResponsiveDrawer open={this.drawerOpen} onClose={this.closeDrawer}>
-          <Box sx={{ width: 250 }}>{this.renderMenuItems()}</Box>
+          <div className="w-[250px]">{this.renderMenuItems()}</div>
         </ResponsiveDrawer>
 
         {/* Main Content */}
-        <Box
-          component="main"
-          sx={{
-            flex: 1,
-            pb: 3,
-            px: { xs: 2, sm: 3 },
-          }}
-        >
+        <main className="flex-1 px-2 pb-3 sm:px-3">
           {children}
 
           <Modal open={this.modalShown}>
             <Box
-              sx={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                width: { xs: '90vw', sm: 400 },
-                bgcolor: 'background.paper',
-                borderRadius: 1,
-                boxShadow: 24,
-                p: 4,
-              }}
+              className="absolute left-1/2 top-1/2 w-[90vw] -translate-x-1/2 -translate-y-1/2 rounded p-4 shadow-2xl sm:w-[400px] bg-background-paper"
+              sx={{ boxShadow: 24 }}
             >
               <SessionForm onSignIn={() => (this.modalShown = false)} />
             </Box>
           </Modal>
-        </Box>
-      </Box>
+        </main>
+      </div>
     );
   }
 }
