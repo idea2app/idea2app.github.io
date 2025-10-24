@@ -60,10 +60,10 @@ const DashboardPage: FC<DashboardPageProps> = observer(({ route, jwtPayload }) =
             defaultValue={route.query.name}
           />
           <Button
-            type="submit"
-            variant="contained"
-            disabled={projectStore.uploading > 0}
             className="min-w-full whitespace-nowrap sm:min-w-0"
+            variant="contained"
+            type="submit"
+            disabled={projectStore.uploading > 0}
           >
             {t('create_new_project')}
           </Button>
