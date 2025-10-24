@@ -37,14 +37,28 @@ const DashboardPage: FC<DashboardPageProps> = observer(({ route, jwtPayload }) =
 
   return (
     <SessionBox title={t('backend_management')} path={route.resolvedUrl} {...{ menu, jwtPayload }}>
-      <Container maxWidth="lg" className="py-8">
-        <Typography variant="h3" component="h1" gutterBottom>
+      <Container maxWidth="lg" sx={{ py: { xs: 3, md: 8 } }}>
+        <Typography
+          variant="h3"
+          component="h1"
+          gutterBottom
+          sx={{
+            fontSize: { xs: '1.75rem', sm: '2.5rem', md: '3rem' },
+          }}
+        >
           {t('welcome_use')}
         </Typography>
 
         <Box
           component="form"
-          sx={{ display: 'flex', gap: 2, alignItems: 'center', mt: 2, mb: 4 }}
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'row' },
+            gap: 2,
+            alignItems: { xs: 'stretch', sm: 'center' },
+            mt: 2,
+            mb: 4,
+          }}
           onSubmit={handleCreateProject}
         >
           <TextField
@@ -56,16 +70,27 @@ const DashboardPage: FC<DashboardPageProps> = observer(({ route, jwtPayload }) =
             defaultValue={route.query.name}
           />
           <Button
-            className="text-nowrap"
             type="submit"
             variant="contained"
             disabled={projectStore.uploading > 0}
+            sx={{
+              whiteSpace: 'nowrap',
+              minWidth: { xs: '100%', sm: 'auto' },
+            }}
           >
             {t('create_new_project')}
           </Button>
         </Box>
 
-        <Typography variant="h5" component="h2" sx={{ mt: 4, mb: 3 }}>
+        <Typography
+          variant="h5"
+          component="h2"
+          sx={{
+            mt: 4,
+            mb: 3,
+            fontSize: { xs: '1.25rem', sm: '1.5rem' },
+          }}
+        >
           {t('recent_projects')}
         </Typography>
 
@@ -76,10 +101,10 @@ const DashboardPage: FC<DashboardPageProps> = observer(({ route, jwtPayload }) =
             jwtPayload?.roles.includes(2 as UserRole.Client) ? { createdBy: jwtPayload.id } : {}
           }
           renderList={allItems => (
-            <Grid container spacing={3}>
+            <Grid container spacing={{ xs: 2, sm: 3 }}>
               {allItems[0] ? (
                 allItems.map(project => (
-                  <Grid key={project.id} size={{ xs: 12, md: 4 }}>
+                  <Grid key={project.id} size={{ xs: 12, sm: 6, md: 4 }}>
                     <ProjectCard {...project} />
                   </Grid>
                 ))

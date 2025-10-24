@@ -95,21 +95,36 @@ export default class ProjectEvaluationPage extends ObservedComponent<
             display: 'flex',
             flexDirection: isBot ? 'row' : 'row-reverse',
             alignItems: 'flex-start',
-            maxWidth: '80%',
+            maxWidth: { xs: '95%', sm: '80%' },
             gap: 1,
           }}
         >
-          <Avatar src={avatarSrc} alt={name} sx={{ width: 32, height: 32 }} />
+          <Avatar
+            src={avatarSrc}
+            alt={name}
+            sx={{
+              width: { xs: 28, sm: 32 },
+              height: { xs: 28, sm: 32 },
+            }}
+          />
           <Paper
             elevation={1}
             sx={{
-              p: 2,
+              p: { xs: 1.5, sm: 2 },
               backgroundColor: 'primary.light',
               color: 'primary.contrastText',
               borderRadius: '16px 16px 4px 16px',
             }}
           >
-            <Typography variant="caption" display="block" sx={{ mb: 0.5, opacity: 0.8 }}>
+            <Typography
+              variant="caption"
+              display="block"
+              sx={{
+                mb: 0.5,
+                opacity: 0.8,
+                fontSize: { xs: '0.7rem', sm: '0.75rem' },
+              }}
+            >
               {name}
             </Typography>
 
@@ -117,7 +132,10 @@ export default class ProjectEvaluationPage extends ObservedComponent<
               <Typography
                 className="prose"
                 variant="body2"
-                sx={{ mb: 1 }}
+                sx={{
+                  mb: 1,
+                  fontSize: { xs: '0.875rem', sm: '1rem' },
+                }}
                 dangerouslySetInnerHTML={{ __html: marked(content) }}
               />
             )}
@@ -130,7 +148,13 @@ export default class ProjectEvaluationPage extends ObservedComponent<
               />
             )}
             {createdAt && (
-              <Typography variant="caption" sx={{ opacity: 0.6, fontSize: '0.75rem' }}>
+              <Typography
+                variant="caption"
+                sx={{
+                  opacity: 0.6,
+                  fontSize: { xs: '0.65rem', sm: '0.75rem' },
+                }}
+              >
                 {new Date(createdAt).toLocaleTimeString()}
               </Typography>
             )}
@@ -154,9 +178,26 @@ export default class ProjectEvaluationPage extends ObservedComponent<
 
         <Container
           maxWidth="md"
-          sx={{ height: '85vh', display: 'flex', flexDirection: 'column', gap: '1rem' }}
+          sx={{
+            height: { xs: 'calc(100vh - 120px)', md: '85vh' },
+            display: 'flex',
+            flexDirection: 'column',
+            gap: { xs: '0.5rem', sm: '1rem' },
+            px: { xs: 0, sm: 2 },
+          }}
         >
-          <h1 className="mt-20 text-3xl font-bold">{title}</h1>
+          <Typography
+            component="h1"
+            sx={{
+              mt: { xs: 2, sm: 4, md: 20 },
+              mb: { xs: 1, sm: 2 },
+              fontSize: { xs: '1.5rem', sm: '2rem', md: '3rem' },
+              fontWeight: 'bold',
+              px: { xs: 2, sm: 0 },
+            }}
+          >
+            {title}
+          </Typography>
           {/* Chat Messages Area */}
           <Box sx={{ flex: 1, overflow: 'auto', mb: 2 }}>
             <ScrollList
@@ -164,7 +205,13 @@ export default class ProjectEvaluationPage extends ObservedComponent<
               store={messageStore}
               filter={{ project: projectId }}
               renderList={allItems => (
-                <Box sx={{ height: '100%', overflowY: 'auto', p: 1 }}>
+                <Box
+                  sx={{
+                    height: '100%',
+                    overflowY: 'auto',
+                    p: { xs: 1, sm: 2 },
+                  }}
+                >
                   {allItems.map(this.renderChatMessage)}
                 </Box>
               )}
@@ -175,10 +222,22 @@ export default class ProjectEvaluationPage extends ObservedComponent<
           <Paper
             component="form"
             elevation={1}
-            sx={{ p: 2, mt: 'auto' }}
+            sx={{
+              p: { xs: 1.5, sm: 2 },
+              mt: 'auto',
+              mx: { xs: 1, sm: 0 },
+              mb: { xs: 1, sm: 0 },
+            }}
             onSubmit={this.handleMessageSubmit}
           >
-            <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-end' }}>
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 1,
+                alignItems: 'flex-end',
+                flexDirection: { xs: 'column', sm: 'row' },
+              }}
+            >
               <TextField
                 name="content"
                 placeholder={t('type_your_message')}
@@ -191,9 +250,12 @@ export default class ProjectEvaluationPage extends ObservedComponent<
               />
               <Button
                 type="submit"
-                className="text-nowrap"
                 variant="contained"
-                sx={{ minWidth: 'auto', px: 2 }}
+                sx={{
+                  minWidth: { xs: '100%', sm: 'auto' },
+                  px: 2,
+                  whiteSpace: 'nowrap',
+                }}
                 disabled={messageStore.uploading > 0}
               >
                 {t('send')}
