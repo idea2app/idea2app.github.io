@@ -5,8 +5,8 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  mobx-github: ^0.6.0
-  next: ^16.0.0
+  mobx-github: ^0.6.2
+  next: ^16.0.1
 
 importers:
 
@@ -31,7 +31,7 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0(koa@3.1.1)
       '@mui/lab':
-        specifier: 7.0.1-beta.18
+        specifier: ^7.0.1-beta.18
         version: 7.0.1-beta.18(@emotion/react@11.14.0(@types/react@19.2.2)(react@19.2.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.2)(react@19.2.0))(@types/react@19.2.2)(react@19.2.0))(@mui/material@7.3.4(@emotion/react@11.14.0(@types/react@19.2.2)(react@19.2.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.2)(react@19.2.0))(@types/react@19.2.2)(react@19.2.0))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@mui/material':
         specifier: ^7.3.4
@@ -134,7 +134,7 @@ importers:
         specifier: ^9.39.0
         version: 9.39.0
       '@idea2app/data-server':
-        specifier: 1.0.0-rc.9
+        specifier: ^1.0.0-rc.9
         version: 1.0.0-rc.9(mobx@6.15.0)(typescript@5.9.3)
       '@next/eslint-plugin-next':
         specifier: ^16.0.1
@@ -1365,7 +1365,7 @@ packages:
       '@emotion/react': ^11.11.4
       '@emotion/server': ^11.11.0
       '@types/react': ^17.0.0 || ^18.0.0 || ^19.0.0
-      next: ^16.0.0
+      next: ^16.0.1
       react: ^17.0.0 || ^18.0.0 || ^19.0.0
     peerDependenciesMeta:
       '@emotion/cache':
@@ -1990,7 +1990,7 @@ packages:
     resolution: {integrity: sha512-9Np176cDMLTl98QRqESe6STyaQ0SKiWTDRdF3GPYPEB9s4t5Qz2zZJ9A40Fz3fZ33kW4Z/qscDx3WpCwFLe5Bg==}
     engines: {node: '>=18'}
     peerDependencies:
-      next: ^16.0.0
+      next: ^16.0.1
 
   '@sentry/node-core@10.22.0':
     resolution: {integrity: sha512-88Yyn+Qvmp0kPMnNRWgpUlAvhI9CNPqOT+0glW0L7OoN8LkJcNgx2GGUoLrJ+RGeHz/S7dIJY6DGa+u0Not2Qg==}
@@ -4231,12 +4231,12 @@ packages:
   next-pwa@5.6.0:
     resolution: {integrity: sha512-XV8g8C6B7UmViXU8askMEYhWwQ4qc/XqJGnexbLV68hzKaGHZDMtHsm2TNxFcbR7+ypVuth/wwpiIlMwpRJJ5A==}
     peerDependencies:
-      next: ^16.0.0
+      next: ^16.0.1
 
   next-ssr-middleware@1.0.3:
     resolution: {integrity: sha512-vV3W7bcNVrjPRov2N+IxMHmO9WF/fKezW25PJsm/Av3a5vGszKW6SDon07+/HZ9qsx5feIVeiXqdt20r/SMi9g==}
     peerDependencies:
-      next: ^16.0.0
+      next: ^16.0.1
       react: '>=18'
 
   next@16.0.1:
