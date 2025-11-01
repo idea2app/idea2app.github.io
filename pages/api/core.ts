@@ -5,7 +5,7 @@ import { HTTPError } from 'koajax';
 import { cache, KoaOption, withKoa } from 'next-ssr-middleware';
 import { Month } from 'web-utility';
 
-import { CrawlerEmail, JWT_SECRET, VERCEL_URL } from '../../models/configuration';
+import { JWT_SECRET, VERCEL_URL } from '../../models/configuration';
 
 export type JWTContext = ParameterizedContext<
   { jwtOriginalError: JsonWebTokenError } | { user: { email: string } }
@@ -18,8 +18,6 @@ export const parseJWT = JWT({
 });
 
 export const verifyJWT = JWT({ secret: JWT_SECRET!, cookie: 'token' });
-
-if (JWT_SECRET) console.info('🔑 [Crawler JWT]', sign({ email: CrawlerEmail }, JWT_SECRET));
 
 export const safeAPI: Middleware<any, any> = async (context: Context, next) => {
   try {
