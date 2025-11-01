@@ -22,6 +22,7 @@ const downloader: Middleware = async context => {
   const token = await lark.getAccessToken();
 
   const response = await fetch(lark.client.baseURI + `drive/v1/medias/${id}/download`, {
+    method,
     headers: { Authorization: `Bearer ${token}` },
   });
   const { ok, status, headers, body } = response;

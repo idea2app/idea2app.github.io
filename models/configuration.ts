@@ -5,7 +5,7 @@ export const Name = process.env.NEXT_PUBLIC_SITE_NAME,
 
 export const isServer = () => typeof window === 'undefined';
 
-export const { VERCEL, VERCEL_URL, JWT_SECRET, GITHUB_TOKEN, CACHE_REPOSITORY } = process.env;
+export const { VERCEL, VERCEL_URL, JWT_SECRET, GITHUB_TOKEN } = process.env;
 
 export const Own_API_Host = isServer()
   ? VERCEL_URL
@@ -15,8 +15,7 @@ export const Own_API_Host = isServer()
 
 export const API_HOST = process.env.NEXT_PUBLIC_API_HOST!;
 
-export const CACHE_HOST = process.env.NEXT_PUBLIC_CACHE_HOST!,
-  CrawlerEmail = `crawler@idea2.app`;
+export const CACHE_HOST = process.env.NEXT_PUBLIC_CACHE_HOST!;
 
 export const ProxyBaseURL = `https://idea2.app/proxy`;
 
@@ -27,8 +26,3 @@ export const LarkAppMeta = {
   secret: process.env.LARK_APP_SECRET!,
 };
 export const LarkBaseId = process.env.NEXT_PUBLIC_LARK_BASE!;
-
-const { hostname, pathname } = new URL(process.env.NEXT_PUBLIC_LARK_WIKI_URL!);
-
-export const LarkWikiDomain = hostname;
-export const LarkWikiId = pathname.split('/').pop()!;
