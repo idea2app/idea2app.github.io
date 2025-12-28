@@ -22,7 +22,6 @@ const downloader: Middleware = async context => {
   const token = await lark.getAccessToken();
 
   const response = await fetch(lark.client.baseURI + `drive/v1/medias/${id}/download`, {
-    method,
     headers: { Authorization: `Bearer ${token}` },
   });
   const { ok, status, headers, body } = response;
@@ -30,21 +29,23 @@ const downloader: Middleware = async context => {
   if (!ok) {
     context.status = status;
 
-    return (context.body = await response.json());
+    try {
+      return (context.body = await response.json());
+    } catch {
+      return (context.body = await response.text());
+    }
   }
   const mime = headers.get('Content-Type'),
     [stream1, stream2] = body!.tee();
 
-  const contentType = mime?.startsWith('application/octet-stream')
-    ? (await fileTypeFromStream(stream1))?.mime
-    : mime;
+  const contentType = (await fileTypeFromStream(stream1))?.mime || mime;
+
   context.set('Content-Type', contentType || 'application/octet-stream');
   context.set('Content-Disposition', headers.get('Content-Disposition') || '');
   context.set('Content-Length', headers.get('Content-Length') || '');
 
-  if (method === 'GET')
-    // @ts-expect-error Web type compatibility
-    context.body = Readable.fromWeb(stream2);
+  // @ts-expect-error Web type compatibility
+  context.body = method === 'GET' ? Readable.fromWeb(stream2) : '';
 };
 
 router.head('/:id', safeAPI, downloader).get('/:id', safeAPI, downloader);

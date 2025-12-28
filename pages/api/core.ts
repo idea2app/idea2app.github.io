@@ -1,4 +1,4 @@
-import { JsonWebTokenError, sign } from 'jsonwebtoken';
+import { JsonWebTokenError } from 'jsonwebtoken';
 import { Context, Middleware, ParameterizedContext } from 'koa';
 import JWT from 'koa-jwt';
 import { HTTPError } from 'koajax';
