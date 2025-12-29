@@ -30,7 +30,7 @@
     "mobx": "^6.15.0",
     "mobx-github": "^0.6.2",
     "mobx-i18n": "^0.7.2",
-    "mobx-lark": "^2.5.0",
+    "mobx-lark": "^2.6.0",
     "mobx-react": "^9.2.1",
     "mobx-react-helper": "^0.5.1",
     "mobx-restful": "^2.1.4",

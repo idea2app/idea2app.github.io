@@ -1,4 +1,4 @@
-import { JsonWebTokenError } from 'jsonwebtoken';
+import { JsonWebTokenError, sign } from 'jsonwebtoken';
 import { Context, Middleware, ParameterizedContext } from 'koa';
 import JWT from 'koa-jwt';
 import { HTTPError } from 'koajax';
@@ -18,6 +18,10 @@ export const parseJWT = JWT({
 });
 
 export const verifyJWT = JWT({ secret: JWT_SECRET!, cookie: 'token' });
+
+const RobotToken = sign({ id: 0, name: 'Robot' }, JWT_SECRET!);
+
+console.table({ RobotToken });
 
 export const safeAPI: Middleware<any, any> = async (context: Context, next) => {
   try {
