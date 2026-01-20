@@ -8,7 +8,7 @@ export const lark = new LarkApp(LarkAppMeta);
 export const proxyLark = async <T extends LarkData>({
   method,
   url,
-  headers: { host, authorization, ...headers },
+  headers: { host, authorization, 'content-length': _, ...headers },
   request,
 }: Context) => {
   await lark.getAccessToken();
