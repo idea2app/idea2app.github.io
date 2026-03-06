@@ -145,6 +145,7 @@ export default {
   type_your_message: '輸入您的訊息……',
   send_message: '發送訊息',
   send: '發送',
+  attach_files: '上傳檔案',
 
   // Prototype Generator
   generate_prototype: '生成原型',

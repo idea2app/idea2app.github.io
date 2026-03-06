@@ -146,6 +146,7 @@ export default {
   type_your_message: '输入您的消息……',
   send_message: '发送消息',
   send: '发送',
+  attach_files: '上传文件',
 
   // Prototype Generator
   generate_prototype: '生成原型',

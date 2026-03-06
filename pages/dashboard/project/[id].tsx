@@ -1,16 +1,18 @@
 import { ConsultMessage, User, UserRole } from '@idea2app/data-server';
-import { Avatar, Button, Container, Paper, TextField, Typography } from '@mui/material';
+import { Avatar, Button, Container, IconButton, Paper, TextField, Tooltip, Typography } from '@mui/material';
 import { marked } from 'marked';
 import { observer } from 'mobx-react';
 import { ObservedComponent, reaction } from 'mobx-react-helper';
 import { compose, JWTProps, jwtVerifier, RouteProps, router } from 'next-ssr-middleware';
-import { FormEvent, KeyboardEventHandler } from 'react';
+import { ChangeEvent, ClipboardEvent, createRef, DragEvent, FormEvent, KeyboardEventHandler } from 'react';
 import { formToJSON, scrollTo, sleep } from 'web-utility';
 
+import { SymbolIcon } from '../../../components/Icon';
 import { PageHead } from '../../../components/PageHead';
 import { EvaluationDisplay } from '../../../components/Project/EvaluationDisplay';
 import { ScrollList } from '../../../components/ScrollList';
 import { SessionBox } from '../../../components/User/SessionBox';
+import fileStore from '../../../models/File';
 import { ConsultMessageModel, ProjectModel } from '../../../models/ProjectEvaluation';
 import { i18n, I18nContext } from '../../../models/Translation';
 
@@ -30,6 +32,8 @@ export default class ProjectEvaluationPage extends ObservedComponent<
   projectStore = new ProjectModel();
 
   messageStore = new ConsultMessageModel(this.projectId);
+
+  fileInputRef = createRef<HTMLInputElement>();
 
   get menu() {
     const { t } = this.observedContext;
@@ -74,6 +78,43 @@ export default class ProjectEvaluationPage extends ObservedComponent<
       (target as HTMLTextAreaElement).form?.dispatchEvent(
         new SubmitEvent('submit', { cancelable: true, bubbles: true }),
       );
+  };
+
+  handleFiles = async (files: File[]) => {
+    for (const file of files) {
+      const url = await fileStore.upload(file);
+      const content = file.type.startsWith('image/')
+        ? `![${file.name}](${url})`
+        : `[${file.name}](${url})`;
+
+      await this.messageStore.updateOne({ content });
+    }
+  };
+
+  handleFileInputChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const files = [...(event.target.files || [])];
+
+    event.target.value = '';
+
+    if (files.length > 0) await this.handleFiles(files);
+  };
+
+  handlePasteDrop = async (event: ClipboardEvent | DragEvent) => {
+    const items =
+      event.type === 'paste'
+        ? [...(event as ClipboardEvent).clipboardData.items]
+        : [...(event as DragEvent).dataTransfer.items];
+
+    const files = items
+      .filter(item => item.kind === 'file')
+      .map(item => item.getAsFile())
+      .filter((file): file is File => file !== null);
+
+    if (files.length > 0) {
+      event.preventDefault();
+
+      await this.handleFiles(files);
+    }
   };
 
   renderChatMessage = (
@@ -175,6 +216,22 @@ export default class ProjectEvaluationPage extends ObservedComponent<
             className="sticky bottom-0 mx-1 mt-auto mb-1 flex items-end gap-2 p-1.5 sm:mx-0 sm:mb-0 sm:p-2"
             onSubmit={this.handleMessageSubmit}
           >
+            <input
+              ref={this.fileInputRef}
+              type="file"
+              multiple
+              className="hidden"
+              onChange={this.handleFileInputChange}
+            />
+            <Tooltip title={t('attach_files')}>
+              <IconButton
+                size="small"
+                disabled={fileStore.uploading > 0 || messageStore.uploading > 0}
+                onClick={() => this.fileInputRef.current?.click()}
+              >
+                <SymbolIcon name="attach_file" />
+              </IconButton>
+            </Tooltip>
             <TextField
               name="content"
               placeholder={t('type_your_message')}
@@ -185,12 +242,15 @@ export default class ProjectEvaluationPage extends ObservedComponent<
               size="small"
               required
               onKeyUp={this.handleQuickSubmit}
+              onPaste={this.handlePasteDrop}
+              onDragOver={e => e.preventDefault()}
+              onDrop={this.handlePasteDrop}
             />
             <Button
               type="submit"
               variant="contained"
               className="min-w-full px-2 whitespace-nowrap sm:min-w-0"
-              disabled={messageStore.uploading > 0}
+              disabled={fileStore.uploading > 0 || messageStore.uploading > 0}
             >
               {t('send')}
             </Button>
