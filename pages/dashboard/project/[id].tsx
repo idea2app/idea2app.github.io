@@ -4,11 +4,12 @@ import { marked } from 'marked';
 import { observer } from 'mobx-react';
 import { ObservedComponent, reaction } from 'mobx-react-helper';
 import { compose, JWTProps, jwtVerifier, RouteProps, router } from 'next-ssr-middleware';
-import { ChangeEvent, ClipboardEvent, createRef, DragEvent, FormEvent, KeyboardEventHandler } from 'react';
+import { ChangeEvent, FormEvent, KeyboardEventHandler } from 'react';
 import { formToJSON, scrollTo, sleep } from 'web-utility';
 
 import { SymbolIcon } from '../../../components/Icon';
 import { PageHead } from '../../../components/PageHead';
+import { PasteDropBox } from '../../../components/PasteDropBox';
 import { EvaluationDisplay } from '../../../components/Project/EvaluationDisplay';
 import { ScrollList } from '../../../components/ScrollList';
 import { SessionBox } from '../../../components/User/SessionBox';
@@ -32,8 +33,6 @@ export default class ProjectEvaluationPage extends ObservedComponent<
   projectStore = new ProjectModel();
 
   messageStore = new ConsultMessageModel(this.projectId);
-
-  fileInputRef = createRef<HTMLInputElement>();
 
   get menu() {
     const { t } = this.observedContext;
@@ -97,24 +96,6 @@ export default class ProjectEvaluationPage extends ObservedComponent<
     event.target.value = '';
 
     if (files.length > 0) await this.handleFiles(files);
-  };
-
-  handlePasteDrop = async (event: ClipboardEvent | DragEvent) => {
-    const items =
-      event.type === 'paste'
-        ? [...(event as ClipboardEvent).clipboardData.items]
-        : [...(event as DragEvent).dataTransfer.items];
-
-    const files = items
-      .filter(item => item.kind === 'file')
-      .map(item => item.getAsFile())
-      .filter((file): file is File => file !== null);
-
-    if (files.length > 0) {
-      event.preventDefault();
-
-      await this.handleFiles(files);
-    }
   };
 
   renderChatMessage = (
@@ -216,36 +197,34 @@ export default class ProjectEvaluationPage extends ObservedComponent<
             className="sticky bottom-0 mx-1 mt-auto mb-1 flex items-end gap-2 p-1.5 sm:mx-0 sm:mb-0 sm:p-2"
             onSubmit={this.handleMessageSubmit}
           >
-            <input
-              ref={this.fileInputRef}
-              type="file"
-              multiple
-              className="hidden"
-              onChange={this.handleFileInputChange}
-            />
             <Tooltip title={t('attach_files')}>
               <IconButton
+                component="label"
                 size="small"
                 disabled={fileStore.uploading > 0 || messageStore.uploading > 0}
-                onClick={() => this.fileInputRef.current?.click()}
               >
                 <SymbolIcon name="attach_file" />
+                <input
+                  type="file"
+                  multiple
+                  className="sr-only"
+                  onChange={this.handleFileInputChange}
+                />
               </IconButton>
             </Tooltip>
-            <TextField
-              name="content"
-              placeholder={t('type_your_message')}
-              multiline
-              maxRows={4}
-              fullWidth
-              variant="outlined"
-              size="small"
-              required
-              onKeyUp={this.handleQuickSubmit}
-              onPaste={this.handlePasteDrop}
-              onDragOver={e => e.preventDefault()}
-              onDrop={this.handlePasteDrop}
-            />
+            <PasteDropBox className="flex-1 min-w-0" onFiles={this.handleFiles}>
+              <TextField
+                name="content"
+                placeholder={t('type_your_message')}
+                multiline
+                maxRows={4}
+                fullWidth
+                variant="outlined"
+                size="small"
+                required
+                onKeyUp={this.handleQuickSubmit}
+              />
+            </PasteDropBox>
             <Button
               type="submit"
               variant="contained"
