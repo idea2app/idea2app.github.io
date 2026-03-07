@@ -1,15 +1,5 @@
-import { ConsultMessage, User, UserRole } from '@idea2app/data-server';
-import {
-  Avatar,
-  Button,
-  Container,
-  IconButton,
-  Paper,
-  TextField,
-  Tooltip,
-  Typography,
-} from '@mui/material';
-import { marked } from 'marked';
+import { User } from '@idea2app/data-server';
+import { Button, Container, IconButton, Paper, TextField, Tooltip } from '@mui/material';
 import { observer } from 'mobx-react';
 import { ObservedComponent, reaction } from 'mobx-react-helper';
 import { compose, JWTProps, jwtVerifier, RouteProps, router } from 'next-ssr-middleware';
@@ -17,10 +7,9 @@ import { ChangeEvent, KeyboardEventHandler, type SubmitEvent } from 'react';
 import { formToJSON, scrollTo, sleep } from 'web-utility';
 
 import { SymbolIcon } from '../../../components/Icon';
-import { FilePreview } from '../../../components/FilePreview';
 import { PageHead } from '../../../components/PageHead';
 import { PasteDropBox, PasteDropEvent } from '../../../components/PasteDropBox';
-import { EvaluationDisplay } from '../../../components/Project/EvaluationDisplay';
+import { ChatMessage } from '../../../components/Project/ChatMessage';
 import { ScrollList } from '../../../components/ScrollList';
 import { SessionBox } from '../../../components/User/SessionBox';
 import fileStore from '../../../models/File';
@@ -103,71 +92,8 @@ export default class ProjectEvaluationPage extends ObservedComponent<
     for (const file of currentTarget.files || []) await this.uploadFile(file);
   };
 
-  renderChatMessage = (
-    { id, content, file, evaluation, prototypes, createdAt, createdBy }: ConsultMessage,
-    index = 0,
-    { length }: ConsultMessage[],
-  ) => {
-    const { t } = this.observedContext;
-    const isBot = createdBy.roles.includes(3 as UserRole.Robot);
-    const avatarSrc = isBot ? '/robot-avatar.png' : createdBy?.avatar || '/default-avatar.png';
-    const name = isBot ? `${t('ai_assistant')} 🤖` : createdBy?.name || 'User';
-
-    return (
-      <div
-        key={id}
-        id={index + 1 === length ? 'last-message' : undefined}
-        className={`mb-2 flex w-full ${isBot ? 'justify-start' : 'justify-end'}`}
-      >
-        <div
-          className={`flex max-w-[95%] items-start gap-1 sm:max-w-[80%] ${isBot ? 'flex-row' : 'flex-row-reverse'}`}
-        >
-          <Avatar src={avatarSrc} alt={name} className="h-7 w-7 sm:h-8 sm:w-8" />
-          <Paper
-            elevation={1}
-            className="bg-primary-light text-primary-contrast rounded-[16px_16px_4px_16px] p-1.5 sm:p-2"
-            sx={{
-              backgroundColor: 'primary.light',
-              color: 'primary.contrastText',
-            }}
-          >
-            <Typography
-              variant="caption"
-              display="block"
-              className="mb-0.5 text-[0.7rem] opacity-80 sm:text-[0.75rem]"
-            >
-              {name}
-            </Typography>
-
-            {file ? (
-              <FilePreview className="mb-1" path={file} />
-            ) : (
-              content && (
-                <Typography
-                  className="prose mb-1 text-[0.875rem] sm:text-base"
-                  variant="body2"
-                  dangerouslySetInnerHTML={{ __html: marked(content) }}
-                />
-              )
-            )}
-            {evaluation && (
-              <EvaluationDisplay
-                {...evaluation}
-                projectId={this.projectId}
-                messageId={id}
-                prototypes={prototypes}
-              />
-            )}
-            {createdAt && (
-              <Typography variant="caption" className="text-[0.65rem] opacity-60 sm:text-[0.75rem]">
-                {new Date(createdAt).toLocaleTimeString()}
-              </Typography>
-            )}
-          </Paper>
-        </div>
-      </div>
-    );
-  };
+  handleParseFile = (messageId: number, text: string) =>
+    this.messageStore.updateOne({ content: text }, messageId);
 
   render() {
     const { jwtPayload } = this.props,
@@ -194,7 +120,15 @@ export default class ProjectEvaluationPage extends ObservedComponent<
               filter={{ project: projectId }}
               renderList={allItems => (
                 <div className="h-full overflow-y-auto p-1 sm:p-2">
-                  {allItems.map(this.renderChatMessage)}
+                  {allItems.map((message, index, { length }) => (
+                    <div
+                      key={message.id}
+                      id={index + 1 === length ? 'last-message' : undefined}
+                      className="mb-2 flex w-full"
+                    >
+                      <ChatMessage {...message} onFileParse={this.handleParseFile} />
+                    </div>
+                  ))}
                 </div>
               )}
             />

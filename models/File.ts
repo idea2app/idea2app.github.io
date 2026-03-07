@@ -17,6 +17,16 @@ export class FileModel extends BaseModel {
 
     return body!.getLink;
   }
+
+  @toggle('downloading')
+  async getText(URI: string) {
+    const { pathname } = new URL(URI);
+
+    const { body } = await this.client.get<string>(`${this.baseURI}/${pathname}`, {
+      Accept: 'text/*',
+    });
+    return body!;
+  }
 }
 
 export default new FileModel();

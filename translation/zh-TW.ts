@@ -146,6 +146,7 @@ export default {
   send_message: '發送訊息',
   send: '發送',
   attach_files: '上傳檔案',
+  parsing_file_text: '正在解析檔案文字，請稍候……',
 
   // Prototype Generator
   generate_prototype: '生成原型',
