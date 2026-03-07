@@ -1,61 +1,70 @@
-import { ClipboardEvent, DragEvent, FC, PropsWithChildren } from 'react';
+import { ClipboardEvent, Component, DragEvent, HTMLAttributes, PropsWithChildren } from 'react';
+import { groupBy } from 'web-utility';
 
-export interface PasteDropBoxProps {
-  className?: string;
-  onText?: (text: string) => void;
-  onHTML?: (html: string) => void;
-  onFiles?: (files: File[]) => void;
+export interface PasteDropData {
+  kind: string;
+  type: string;
+  data: string | File;
 }
 
-export const PasteDropBox: FC<PropsWithChildren<PasteDropBoxProps>> = ({
-  children,
-  className,
-  onFiles,
-  onHTML,
-  onText,
-}) => {
-  const handlePasteDrop = async (event: ClipboardEvent | DragEvent) => {
+export interface PasteDropEvent extends Record<
+  `${'kind' | 'type'}Map`,
+  Record<string, PasteDropData[]>
+> {
+  type: string;
+}
+
+export interface PasteDropBoxProps extends Omit<
+  PropsWithChildren<HTMLAttributes<HTMLDivElement>>,
+  'onChange' | 'onDragOver' | 'onDrop' | 'onPaste'
+> {
+  onChange?: (event: PasteDropEvent) => void;
+}
+
+export class PasteDropBox extends Component<PasteDropBoxProps> {
+  static async *transferData(items: DataTransferItemList) {
+    for (const item of items) {
+      const { kind, type } = item;
+
+      if (kind === 'file') {
+        const data = item.getAsFile();
+
+        if (data) yield { kind, type, data };
+      } else if (kind === 'string') {
+        const data = await new Promise<string>(resolve => item.getAsString(resolve));
+
+        yield { kind, type, data };
+      }
+    }
+  }
+  handlePasteDrop = async (event: ClipboardEvent | DragEvent) => {
+    event.preventDefault();
+
     const items =
       event.type === 'paste'
-        ? [...(event as ClipboardEvent).clipboardData.items]
-        : [...(event as DragEvent).dataTransfer.items];
+        ? (event as ClipboardEvent).clipboardData.items
+        : (event as DragEvent).dataTransfer.items;
 
-    const files = items
-      .filter(item => item.kind === 'file')
-      .map(item => item.getAsFile())
-      .filter((file): file is File => file !== null);
+    const list = await Array.fromAsync(PasteDropBox.transferData(items));
 
-    if (files.length > 0) {
-      event.preventDefault();
-      onFiles?.(files);
+    const kindMap = groupBy(list, 'kind'),
+      typeMap = groupBy(list, 'type');
 
-      return;
-    }
-
-    const htmlItem = items.find(({ type }) => type === 'text/html');
-    const plainItem = items.find(({ type }) => type === 'text/plain');
-
-    if (htmlItem && onHTML) {
-      const html = await new Promise<string>(resolve => htmlItem.getAsString(resolve));
-
-      event.preventDefault();
-      onHTML(html);
-    } else if (plainItem && onText) {
-      const text = await new Promise<string>(resolve => plainItem.getAsString(resolve));
-
-      event.preventDefault();
-      onText(text);
-    }
+    this.props.onChange?.({ type: event.type, kindMap, typeMap });
   };
 
-  return (
-    <div
-      className={className}
-      onDragOver={e => e.preventDefault()}
-      onDrop={handlePasteDrop}
-      onPaste={handlePasteDrop}
-    >
-      {children}
-    </div>
-  );
-};
+  render() {
+    const { children, onChange, ...props } = this.props;
+
+    return (
+      <div
+        {...props}
+        onDragOver={event => event.preventDefault()}
+        onDrop={this.handlePasteDrop}
+        onPaste={this.handlePasteDrop}
+      >
+        {children}
+      </div>
+    );
+  }
+}

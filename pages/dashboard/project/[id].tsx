@@ -1,15 +1,25 @@
 import { ConsultMessage, User, UserRole } from '@idea2app/data-server';
-import { Avatar, Button, Container, IconButton, Paper, TextField, Tooltip, Typography } from '@mui/material';
+import {
+  Avatar,
+  Button,
+  Container,
+  IconButton,
+  Paper,
+  TextField,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { marked } from 'marked';
 import { observer } from 'mobx-react';
 import { ObservedComponent, reaction } from 'mobx-react-helper';
 import { compose, JWTProps, jwtVerifier, RouteProps, router } from 'next-ssr-middleware';
-import { ChangeEvent, FormEvent, KeyboardEventHandler } from 'react';
+import { ChangeEvent, KeyboardEventHandler, type SubmitEvent } from 'react';
 import { formToJSON, scrollTo, sleep } from 'web-utility';
 
 import { SymbolIcon } from '../../../components/Icon';
+import { FilePreview } from '../../../components/FilePreview';
 import { PageHead } from '../../../components/PageHead';
-import { PasteDropBox } from '../../../components/PasteDropBox';
+import { PasteDropBox, PasteDropEvent } from '../../../components/PasteDropBox';
 import { EvaluationDisplay } from '../../../components/Project/EvaluationDisplay';
 import { ScrollList } from '../../../components/ScrollList';
 import { SessionBox } from '../../../components/User/SessionBox';
@@ -56,7 +66,7 @@ export default class ProjectEvaluationPage extends ObservedComponent<
     scrollTo('#last-message');
   }
 
-  handleMessageSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  handleMessageSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const form = event.currentTarget;
@@ -79,27 +89,22 @@ export default class ProjectEvaluationPage extends ObservedComponent<
       );
   };
 
-  handleFiles = async (files: File[]) => {
-    for (const file of files) {
-      const url = await fileStore.upload(file);
-      const content = file.type.startsWith('image/')
-        ? `![${file.name}](${url})`
-        : `[${file.name}](${url})`;
+  uploadFile = async (file: File) => {
+    const link = await fileStore.upload(file);
 
-      await this.messageStore.updateOne({ content });
-    }
+    await this.messageStore.updateOne({ content: '', file: link });
   };
 
-  handleFileInputChange = async (event: ChangeEvent<HTMLInputElement>) => {
-    const files = [...(event.target.files || [])];
+  handleDropFiles = async ({ kindMap }: PasteDropEvent) => {
+    for (const { data } of kindMap.file || []) await this.uploadFile(data as File);
+  };
 
-    event.target.value = '';
-
-    if (files.length > 0) await this.handleFiles(files);
+  handleSelectFiles = async ({ currentTarget }: ChangeEvent<HTMLInputElement>) => {
+    for (const file of currentTarget.files || []) await this.uploadFile(file);
   };
 
   renderChatMessage = (
-    { id, content, evaluation, prototypes, createdAt, createdBy }: ConsultMessage,
+    { id, content, file, evaluation, prototypes, createdAt, createdBy }: ConsultMessage,
     index = 0,
     { length }: ConsultMessage[],
   ) => {
@@ -134,12 +139,16 @@ export default class ProjectEvaluationPage extends ObservedComponent<
               {name}
             </Typography>
 
-            {content && (
-              <Typography
-                className="prose mb-1 text-[0.875rem] sm:text-base"
-                variant="body2"
-                dangerouslySetInnerHTML={{ __html: marked(content) }}
-              />
+            {file ? (
+              <FilePreview className="mb-1" path={file} />
+            ) : (
+              content && (
+                <Typography
+                  className="prose mb-1 text-[0.875rem] sm:text-base"
+                  variant="body2"
+                  dangerouslySetInnerHTML={{ __html: marked(content) }}
+                />
+              )
             )}
             {evaluation && (
               <EvaluationDisplay
@@ -166,7 +175,8 @@ export default class ProjectEvaluationPage extends ObservedComponent<
       { projectId, menu, projectStore, messageStore } = this;
     const { t } = i18n,
       currentProject = projectStore.currentOne;
-    const title = `${currentProject.name} - ${t('project_evaluation')}`;
+    const title = `${currentProject.name} - ${t('project_evaluation')}`,
+      uploading = fileStore.uploading > 0 || messageStore.uploading > 0;
 
     return (
       <SessionBox {...{ jwtPayload, menu, title }} path={`/dashboard/project/${projectId}`}>
@@ -198,21 +208,13 @@ export default class ProjectEvaluationPage extends ObservedComponent<
             onSubmit={this.handleMessageSubmit}
           >
             <Tooltip title={t('attach_files')}>
-              <IconButton
-                component="label"
-                size="small"
-                disabled={fileStore.uploading > 0 || messageStore.uploading > 0}
-              >
+              <IconButton component="label" size="small" disabled={uploading}>
                 <SymbolIcon name="attach_file" />
-                <input
-                  type="file"
-                  multiple
-                  className="sr-only"
-                  onChange={this.handleFileInputChange}
-                />
+
+                <input type="file" multiple hidden onChange={this.handleSelectFiles} />
               </IconButton>
             </Tooltip>
-            <PasteDropBox className="flex-1 min-w-0" onFiles={this.handleFiles}>
+            <PasteDropBox className="min-w-0 flex-1" onChange={this.handleDropFiles}>
               <TextField
                 name="content"
                 placeholder={t('type_your_message')}
@@ -229,7 +231,7 @@ export default class ProjectEvaluationPage extends ObservedComponent<
               type="submit"
               variant="contained"
               className="min-w-full px-2 whitespace-nowrap sm:min-w-0"
-              disabled={fileStore.uploading > 0 || messageStore.uploading > 0}
+              disabled={uploading}
             >
               {t('send')}
             </Button>

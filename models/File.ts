@@ -1,15 +1,9 @@
-import { Base } from '@idea2app/data-server';
-import { toggle } from 'mobx-restful';
+import { SignedLink } from '@idea2app/data-server';
+import { BaseModel, toggle } from 'mobx-restful';
 
-import { TableModel } from './Base';
 import userStore from './User';
 
-interface SignedLink {
-  putLink: string;
-  getLink: string;
-}
-
-export class FileModel extends TableModel<Base> {
+export class FileModel extends BaseModel {
   baseURI = 'file';
   client = userStore.client;
 
@@ -17,13 +11,9 @@ export class FileModel extends TableModel<Base> {
   async upload(file: File | Blob) {
     const name = file instanceof File ? file.name : crypto.randomUUID();
 
-    const { body } = await this.client.post<SignedLink>(`file/signed-link/${name}`);
+    const { body } = await this.client.post<SignedLink>(`${this.baseURI}/signed-link/${name}`);
 
-    await fetch(body!.putLink, {
-      method: 'PUT',
-      body: file,
-      headers: { 'Content-Type': file.type },
-    });
+    await this.client.put(body!.putLink, file, { 'Content-Type': file.type });
 
     return body!.getLink;
   }
