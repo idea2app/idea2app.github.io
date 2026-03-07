@@ -1,16 +1,18 @@
-import { ConsultMessage, User, UserRole } from '@idea2app/data-server';
-import { Avatar, Button, Container, Paper, TextField, Typography } from '@mui/material';
-import { marked } from 'marked';
+import { User } from '@idea2app/data-server';
+import { Button, Container, IconButton, Paper, TextField, Tooltip } from '@mui/material';
 import { observer } from 'mobx-react';
 import { ObservedComponent, reaction } from 'mobx-react-helper';
 import { compose, JWTProps, jwtVerifier, RouteProps, router } from 'next-ssr-middleware';
-import { FormEvent, KeyboardEventHandler } from 'react';
+import { ChangeEvent, KeyboardEventHandler, type SubmitEvent } from 'react';
 import { formToJSON, scrollTo, sleep } from 'web-utility';
 
+import { SymbolIcon } from '../../../components/Icon';
 import { PageHead } from '../../../components/PageHead';
-import { EvaluationDisplay } from '../../../components/Project/EvaluationDisplay';
+import { PasteDropBox, PasteDropEvent } from '../../../components/PasteDropBox';
+import { ChatMessage } from '../../../components/Project/ChatMessage';
 import { ScrollList } from '../../../components/ScrollList';
 import { SessionBox } from '../../../components/User/SessionBox';
+import fileStore from '../../../models/File';
 import { ConsultMessageModel, ProjectModel } from '../../../models/ProjectEvaluation';
 import { i18n, I18nContext } from '../../../models/Translation';
 
@@ -53,7 +55,7 @@ export default class ProjectEvaluationPage extends ObservedComponent<
     scrollTo('#last-message');
   }
 
-  handleMessageSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  handleMessageSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const form = event.currentTarget;
@@ -76,67 +78,22 @@ export default class ProjectEvaluationPage extends ObservedComponent<
       );
   };
 
-  renderChatMessage = (
-    { id, content, evaluation, prototypes, createdAt, createdBy }: ConsultMessage,
-    index = 0,
-    { length }: ConsultMessage[],
-  ) => {
-    const { t } = this.observedContext;
-    const isBot = createdBy.roles.includes(3 as UserRole.Robot);
-    const avatarSrc = isBot ? '/robot-avatar.png' : createdBy?.avatar || '/default-avatar.png';
-    const name = isBot ? `${t('ai_assistant')} 🤖` : createdBy?.name || 'User';
+  uploadFile = async (file: File) => {
+    const link = await fileStore.upload(file);
 
-    return (
-      <div
-        key={id}
-        id={index + 1 === length ? 'last-message' : undefined}
-        className={`mb-2 flex w-full ${isBot ? 'justify-start' : 'justify-end'}`}
-      >
-        <div
-          className={`flex max-w-[95%] items-start gap-1 sm:max-w-[80%] ${isBot ? 'flex-row' : 'flex-row-reverse'}`}
-        >
-          <Avatar src={avatarSrc} alt={name} className="h-7 w-7 sm:h-8 sm:w-8" />
-          <Paper
-            elevation={1}
-            className="bg-primary-light text-primary-contrast rounded-[16px_16px_4px_16px] p-1.5 sm:p-2"
-            sx={{
-              backgroundColor: 'primary.light',
-              color: 'primary.contrastText',
-            }}
-          >
-            <Typography
-              variant="caption"
-              display="block"
-              className="mb-0.5 text-[0.7rem] opacity-80 sm:text-[0.75rem]"
-            >
-              {name}
-            </Typography>
-
-            {content && (
-              <Typography
-                className="prose mb-1 text-[0.875rem] sm:text-base"
-                variant="body2"
-                dangerouslySetInnerHTML={{ __html: marked(content) }}
-              />
-            )}
-            {evaluation && (
-              <EvaluationDisplay
-                {...evaluation}
-                projectId={this.projectId}
-                messageId={id}
-                prototypes={prototypes}
-              />
-            )}
-            {createdAt && (
-              <Typography variant="caption" className="text-[0.65rem] opacity-60 sm:text-[0.75rem]">
-                {new Date(createdAt).toLocaleTimeString()}
-              </Typography>
-            )}
-          </Paper>
-        </div>
-      </div>
-    );
+    await this.messageStore.updateOne({ content: '', file: link });
   };
+
+  handleDropFiles = async ({ kindMap }: PasteDropEvent) => {
+    for (const { data } of kindMap.file || []) await this.uploadFile(data as File);
+  };
+
+  handleSelectFiles = async ({ currentTarget }: ChangeEvent<HTMLInputElement>) => {
+    for (const file of currentTarget.files || []) await this.uploadFile(file);
+  };
+
+  handleParseFile = (messageId: number, text: string) =>
+    this.messageStore.updateOne({ content: text }, messageId);
 
   render() {
     const { jwtPayload } = this.props,
@@ -144,7 +101,8 @@ export default class ProjectEvaluationPage extends ObservedComponent<
       { projectId, menu, projectStore, messageStore } = this;
     const { t } = i18n,
       currentProject = projectStore.currentOne;
-    const title = `${currentProject.name} - ${t('project_evaluation')}`;
+    const title = `${currentProject.name} - ${t('project_evaluation')}`,
+      uploading = fileStore.uploading > 0 || messageStore.uploading > 0;
 
     return (
       <SessionBox {...{ jwtPayload, menu, title }} path={`/dashboard/project/${projectId}`}>
@@ -162,7 +120,15 @@ export default class ProjectEvaluationPage extends ObservedComponent<
               filter={{ project: projectId }}
               renderList={allItems => (
                 <div className="h-full overflow-y-auto p-1 sm:p-2">
-                  {allItems.map(this.renderChatMessage)}
+                  {allItems.map((message, index, { length }) => (
+                    <div
+                      key={message.id}
+                      id={index + 1 === length ? 'last-message' : undefined}
+                      className="mb-2 flex w-full"
+                    >
+                      <ChatMessage {...message} onFileParse={this.handleParseFile} />
+                    </div>
+                  ))}
                 </div>
               )}
             />
@@ -175,22 +141,31 @@ export default class ProjectEvaluationPage extends ObservedComponent<
             className="sticky bottom-0 mx-1 mt-auto mb-1 flex items-end gap-2 p-1.5 sm:mx-0 sm:mb-0 sm:p-2"
             onSubmit={this.handleMessageSubmit}
           >
-            <TextField
-              name="content"
-              placeholder={t('type_your_message')}
-              multiline
-              maxRows={4}
-              fullWidth
-              variant="outlined"
-              size="small"
-              required
-              onKeyUp={this.handleQuickSubmit}
-            />
+            <Tooltip title={t('attach_files')}>
+              <IconButton component="label" size="small" disabled={uploading}>
+                <SymbolIcon name="attach_file" />
+
+                <input type="file" multiple hidden onChange={this.handleSelectFiles} />
+              </IconButton>
+            </Tooltip>
+            <PasteDropBox className="min-w-0 flex-1" onChange={this.handleDropFiles}>
+              <TextField
+                name="content"
+                placeholder={t('type_your_message')}
+                multiline
+                maxRows={4}
+                fullWidth
+                variant="outlined"
+                size="small"
+                required
+                onKeyUp={this.handleQuickSubmit}
+              />
+            </PasteDropBox>
             <Button
               type="submit"
               variant="contained"
               className="min-w-full px-2 whitespace-nowrap sm:min-w-0"
-              disabled={messageStore.uploading > 0}
+              disabled={uploading}
             >
               {t('send')}
             </Button>
