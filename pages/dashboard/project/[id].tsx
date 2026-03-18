@@ -1,202 +1,268 @@
-import { ConsultMessage, User, UserRole } from '@idea2app/data-server';
-import { Avatar, Button, Container, Paper, TextField, Typography } from '@mui/material';
-import { marked } from 'marked';
-import { observer } from 'mobx-react';
-import { ObservedComponent, reaction } from 'mobx-react-helper';
-import { compose, JWTProps, jwtVerifier, RouteProps, router } from 'next-ssr-middleware';
-import { FormEvent, KeyboardEventHandler } from 'react';
-import { formToJSON, scrollTo, sleep } from 'web-utility';
+import { useState, useRef, useCallback } from 'react';
+import { useRouter } from 'next/router';
+import { Upload, X, FileText, Image } from 'lucide-react';
 
-import { PageHead } from '../../../components/PageHead';
-import { EvaluationDisplay } from '../../../components/Project/EvaluationDisplay';
-import { ScrollList } from '../../../components/ScrollList';
-import { SessionBox } from '../../../components/User/SessionBox';
-import { ConsultMessageModel, ProjectModel } from '../../../models/ProjectEvaluation';
-import { i18n, I18nContext } from '../../../models/Translation';
+interface FileItem {
+  id: string;
+  name: string;
+  size: number;
+  type: string;
+  content: string;
+}
 
-type ProjectEvaluationPageProps = JWTProps<User> & RouteProps<{ id: string }>;
+export default function ProjectRequirementPage() {
+  const router = useRouter();
+  const { id } = router.query;
+  const [requirement, setRequirement] = useState('');
+  const [uploadedFiles, setUploadedFiles] = useState<FileItem[]>([]);
+  const [isDragOver, setIsDragOver] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-export const getServerSideProps = compose<{}, ProjectEvaluationPageProps>(jwtVerifier(), router);
+  const processFile = useCallback(async (file: File): Promise<FileItem> => {
+    const id = Date.now().toString() + Math.random().toString(36).substr(2, 9);
+    
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      
+      reader.onload = (e) => {
+        const content = e.target?.result as string;
+        resolve({
+          id,
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          content
+        });
+      };
+      
+      reader.onerror = () => reject(new Error('文件读取失败'));
+      
+      if (file.type.startsWith('text/') || file.name.endsWith('.md') || file.name.endsWith('.txt')) {
+        reader.readAsText(file);
+      } else if (file.type.startsWith('image/')) {
+        reader.readAsDataURL(file);
+      } else {
+        reader.readAsText(file);
+      }
+    });
+  }, []);
 
-@observer
-export default class ProjectEvaluationPage extends ObservedComponent<
-  ProjectEvaluationPageProps,
-  typeof i18n
-> {
-  static contextType = I18nContext;
-
-  projectId = +this.props.route!.params!.id;
-
-  projectStore = new ProjectModel();
-
-  messageStore = new ConsultMessageModel(this.projectId);
-
-  get menu() {
-    const { t } = this.observedContext;
-
-    return [
-      { href: '/dashboard', title: t('overview') },
-      { href: `/dashboard/project/${this.projectId}`, title: t('project_evaluation') },
-    ];
-  }
-
-  componentDidMount() {
-    super.componentDidMount();
-
-    this.projectStore.getOne(this.projectId);
-  }
-
-  @reaction(({ messageStore }) => messageStore.allItems)
-  async handleMessageChange() {
-    await sleep();
-
-    scrollTo('#last-message');
-  }
-
-  handleMessageSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const form = event.currentTarget;
-
-    let { content } = formToJSON<{ content: string }>(form);
-
-    content = content.trim();
-
-    if (!content) return;
-
-    await this.messageStore.updateOne({ content });
-
-    form.reset();
-  };
-
-  handleQuickSubmit: KeyboardEventHandler = ({ ctrlKey, key, target }) => {
-    if (ctrlKey && key === 'Enter')
-      (target as HTMLTextAreaElement).form?.dispatchEvent(
-        new SubmitEvent('submit', { cancelable: true, bubbles: true }),
+  const handleFileSelect = useCallback(async (files: FileList) => {
+    const filePromises = Array.from(files).map(processFile);
+    try {
+      const processedFiles = await Promise.all(filePromises);
+      setUploadedFiles(prev => [...prev, ...processedFiles]);
+      
+      // 如果是文本文件，将内容添加到需求输入框
+      const textFiles = processedFiles.filter(file => 
+        file.type.startsWith('text/') || file.name.endsWith('.md') || file.name.endsWith('.txt')
       );
-  };
+      
+      if (textFiles.length > 0) {
+        const textContent = textFiles.map(file => `\n\n--- ${file.name} ---\n${file.content}`).join('');
+        setRequirement(prev => prev + textContent);
+      }
+    } catch (error) {
+      console.error('文件处理失败:', error);
+    }
+  }, [processFile]);
 
-  renderChatMessage = (
-    { id, content, evaluation, prototypes, createdAt, createdBy }: ConsultMessage,
-    index = 0,
-    { length }: ConsultMessage[],
-  ) => {
-    const { t } = this.observedContext;
-    const isBot = createdBy.roles.includes(3 as UserRole.Robot);
-    const avatarSrc = isBot ? '/robot-avatar.png' : createdBy?.avatar || '/default-avatar.png';
-    const name = isBot ? `${t('ai_assistant')} 🤖` : createdBy?.name || 'User';
+  const handleFileUpload = useCallback(() => {
+    fileInputRef.current?.click();
+  }, []);
 
-    return (
-      <div
-        key={id}
-        id={index + 1 === length ? 'last-message' : undefined}
-        className={`mb-2 flex w-full ${isBot ? 'justify-start' : 'justify-end'}`}
-      >
-        <div
-          className={`flex max-w-[95%] items-start gap-1 sm:max-w-[80%] ${isBot ? 'flex-row' : 'flex-row-reverse'}`}
-        >
-          <Avatar src={avatarSrc} alt={name} className="h-7 w-7 sm:h-8 sm:w-8" />
-          <Paper
-            elevation={1}
-            className="bg-primary-light text-primary-contrast rounded-[16px_16px_4px_16px] p-1.5 sm:p-2"
-            sx={{
-              backgroundColor: 'primary.light',
-              color: 'primary.contrastText',
-            }}
-          >
-            <Typography
-              variant="caption"
-              display="block"
-              className="mb-0.5 text-[0.7rem] opacity-80 sm:text-[0.75rem]"
-            >
-              {name}
-            </Typography>
+  const handleFileInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      handleFileSelect(files);
+    }
+    // 重置input值以便重复选择同一文件
+    e.target.value = '';
+  }, [handleFileSelect]);
 
-            {content && (
-              <Typography
-                className="prose mb-1 text-[0.875rem] sm:text-base"
-                variant="body2"
-                dangerouslySetInnerHTML={{ __html: marked(content) }}
-              />
-            )}
-            {evaluation && (
-              <EvaluationDisplay
-                {...evaluation}
-                projectId={this.projectId}
-                messageId={id}
-                prototypes={prototypes}
-              />
-            )}
-            {createdAt && (
-              <Typography variant="caption" className="text-[0.65rem] opacity-60 sm:text-[0.75rem]">
-                {new Date(createdAt).toLocaleTimeString()}
-              </Typography>
-            )}
-          </Paper>
-        </div>
-      </div>
-    );
-  };
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  }, []);
 
-  render() {
-    const { jwtPayload } = this.props,
-      i18n = this.observedContext,
-      { projectId, menu, projectStore, messageStore } = this;
-    const { t } = i18n,
-      currentProject = projectStore.currentOne;
-    const title = `${currentProject.name} - ${t('project_evaluation')}`;
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+  }, []);
 
-    return (
-      <SessionBox {...{ jwtPayload, menu, title }} path={`/dashboard/project/${projectId}`}>
-        <PageHead title={title} />
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      handleFileSelect(files);
+    }
+  }, [handleFileSelect]);
 
-        <Container maxWidth="md" className="px-4 py-6 pt-16">
-          <h1 className="sticky top-[4rem] z-1 m-0 py-5 text-3xl font-bold backdrop-blur-md">
-            {title}
-          </h1>
-          {/* Chat Messages Area */}
-          <div className="mb-2 flex-1 overflow-auto">
-            <ScrollList
-              translator={i18n}
-              store={messageStore}
-              filter={{ project: projectId }}
-              renderList={allItems => (
-                <div className="h-full overflow-y-auto p-1 sm:p-2">
-                  {allItems.map(this.renderChatMessage)}
-                </div>
-              )}
-            />
+  const handlePaste = useCallback((e: React.ClipboardEvent) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+
+    for (const item of Array.from(items)) {
+      if (item.kind === 'file') {
+        const file = item.getAsFile();
+        if (file) {
+          handleFileSelect([file] as any);
+        }
+      }
+    }
+  }, [handleFileSelect]);
+
+  const removeFile = useCallback((fileId: string) => {
+    setUploadedFiles(prev => prev.filter(file => file.id !== fileId));
+  }, []);
+
+  const formatFileSize = useCallback((bytes: number): string => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }, []);
+
+  const getFileIcon = useCallback((type: string, name: string) => {
+    if (type.startsWith('image/')) {
+      return <Image className="w-4 h-4" />;
+    }
+    return <FileText className="w-4 h-4" />;
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-4xl mx-auto px-4">
+        <div className="bg-white rounded-lg shadow-sm border">
+          <div className="border-b border-gray-200 px-6 py-4">
+            <h1 className="text-2xl font-semibold text-gray-900">项目需求评估</h1>
+            <p className="mt-1 text-sm text-gray-600">请详细描述您的项目需求，或上传相关文档</p>
           </div>
 
-          {/* Message Input Form */}
-          <Paper
-            component="form"
-            elevation={1}
-            className="sticky bottom-0 mx-1 mt-auto mb-1 flex items-end gap-2 p-1.5 sm:mx-0 sm:mb-0 sm:p-2"
-            onSubmit={this.handleMessageSubmit}
-          >
-            <TextField
-              name="content"
-              placeholder={t('type_your_message')}
-              multiline
-              maxRows={4}
-              fullWidth
-              variant="outlined"
-              size="small"
-              required
-              onKeyUp={this.handleQuickSubmit}
-            />
-            <Button
-              type="submit"
-              variant="contained"
-              className="min-w-full px-2 whitespace-nowrap sm:min-w-0"
-              disabled={messageStore.uploading > 0}
-            >
-              {t('send')}
-            </Button>
-          </Paper>
-        </Container>
-      </SessionBox>
-    );
-  }
+          <div className="p-6">
+            <div className="space-y-6">
+              {/* 文件上传区域 */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-medium text-gray-700">文档上传</label>
+                  <button
+                    onClick={handleFileUpload}
+                    className="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    <Upload className="w-4 h-4 mr-2" />
+                    选择文件
+                  </button>
+                </div>
+
+                {/* 拖拽上传区域 */}
+                <div
+                  className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
+                    isDragOver
+                      ? 'border-blue-400 bg-blue-50'
+                      : 'border-gray-300 hover:border-gray-400'
+                  }`}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                >
+                  <Upload className="mx-auto h-8 w-8 text-gray-400" />
+                  <p className="mt-2 text-sm text-gray-600">
+                    拖拽文件到此处上传，或{' '}
+                    <button
+                      onClick={handleFileUpload}
+                      className="text-blue-600 hover:text-blue-500 font-medium"
+                    >
+                      点击选择文件
+                    </button>
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    支持 TXT, MD, 图片等格式
+                  </p>
+                </div>
+
+                {/* 已上传文件列表 */}
+                {uploadedFiles.length > 0 && (
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-medium text-gray-700">已上传文件</h4>
+                    <div className="space-y-2">
+                      {uploadedFiles.map((file) => (
+                        <div
+                          key={file.id}
+                          className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                        >
+                          <div className="flex items-center space-x-3">
+                            {getFileIcon(file.type, file.name)}
+                            <div>
+                              <p className="text-sm font-medium text-gray-900">{file.name}</p>
+                              <p className="text-xs text-gray-500">{formatFileSize(file.size)}</p>
+                            </div>
+                          </div>
+                          <button
+                            onClick={() => removeFile(file.id)}
+                            className="text-gray-400 hover:text-red-500"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* 需求输入区域 */}
+              <div className="space-y-2">
+                <label htmlFor="requirement" className="text-sm font-medium text-gray-700">
+                  项目需求描述
+                </label>
+                <textarea
+                  ref={textareaRef}
+                  id="requirement"
+                  rows={12}
+                  value={requirement}
+                  onChange={(e) => setRequirement(e.target.value)}
+                  onPaste={handlePaste}
+                  placeholder="请详细描述您的项目需求，包括功能要求、技术规格、预期目标等。您也可以直接粘贴文档内容或拖拽文件到此处..."
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
+                />
+                <p className="text-xs text-gray-500">
+                  支持粘贴文本内容，拖拽文件上传，或使用上方的文件上传功能
+                </p>
+              </div>
+
+              {/* 提交按钮 */}
+              <div className="flex justify-end space-x-3">
+                <button
+                  onClick={() => router.back()}
+                  className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  返回
+                </button>
+                <button
+                  className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  disabled={!requirement.trim() && uploadedFiles.length === 0}
+                >
+                  提交评估
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 隐藏的文件输入 */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        multiple
+        accept=".txt,.md,.pdf,.doc,.docx,.jpg,.jpeg,.png,.gif"
+        onChange={handleFileInputChange}
+        className="hidden"
+      />
+    </div>
+  );
 }
