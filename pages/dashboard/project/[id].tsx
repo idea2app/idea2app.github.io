@@ -1,10 +1,11 @@
 import { ConsultMessage, User, UserRole } from '@idea2app/data-server';
-import { Avatar, Button, Container, Paper, TextField, Typography } from '@mui/material';
+import { Avatar, Button, Container, IconButton, Paper, TextField, Typography } from '@mui/material';
+import { AttachFile } from '@mui/icons-material';
 import { marked } from 'marked';
 import { observer } from 'mobx-react';
 import { ObservedComponent, reaction } from 'mobx-react-helper';
 import { compose, JWTProps, jwtVerifier, RouteProps, router } from 'next-ssr-middleware';
-import { FormEvent, KeyboardEventHandler } from 'react';
+import { FormEvent, KeyboardEventHandler, ChangeEvent, ClipboardEvent, DragEvent, useRef } from 'react';
 import { formToJSON, scrollTo, sleep } from 'web-utility';
 
 import { PageHead } from '../../../components/PageHead';
@@ -12,6 +13,7 @@ import { EvaluationDisplay } from '../../../components/Project/EvaluationDisplay
 import { ScrollList } from '../../../components/ScrollList';
 import { SessionBox } from '../../../components/User/SessionBox';
 import { ConsultMessageModel, ProjectModel } from '../../../models/ProjectEvaluation';
+import fileStore from '../../../models/File';
 import { i18n, I18nContext } from '../../../models/Translation';
 
 type ProjectEvaluationPageProps = JWTProps<User> & RouteProps<{ id: string }>;
@@ -30,6 +32,8 @@ export default class ProjectEvaluationPage extends ObservedComponent<
   projectStore = new ProjectModel();
 
   messageStore = new ConsultMessageModel(this.projectId);
+
+  fileInputRef = useRef<HTMLInputElement>(null);
 
   get menu() {
     const { t } = this.observedContext;
@@ -74,6 +78,55 @@ export default class ProjectEvaluationPage extends ObservedComponent<
       (target as HTMLTextAreaElement).form?.dispatchEvent(
         new SubmitEvent('submit', { cancelable: true, bubbles: true }),
       );
+  };
+
+  handleFileButtonClick = () => {
+    this.fileInputRef.current?.click();
+  };
+
+  handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+
+    await this.uploadFilesAndSendMessages(Array.from(files));
+    event.target.value = '';
+  };
+
+  handlePaste = async (event: ClipboardEvent<HTMLDivElement>) => {
+    const items = event.clipboardData.items;
+    const files = items
+      .filter(item => item.kind === 'file' && item.type.startsWith('image/'))
+      .map(item => item.getAsFile())
+      .filter((file): file is File => file !== null);
+
+    if (files.length === 0) return;
+
+    event.preventDefault();
+    await this.uploadFilesAndSendMessages(files);
+  };
+
+  handleDrop = async (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    const files = Array.from(event.dataTransfer.files);
+    if (files.length === 0) return;
+
+    await this.uploadFilesAndSendMessages(files);
+  };
+
+  handleDragOver = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+  };
+
+  uploadFilesAndSendMessages = async (files: File[]) => {
+    for (const file of files) {
+      try {
+        const fileUrl = await fileStore.upload(file);
+        const content = `📎 ${file.name}\n${fileUrl}`;
+        await this.messageStore.updateOne({ content });
+      } catch (error) {
+        console.error(`Failed to upload file ${file.name}:`, error);
+      }
+    }
   };
 
   renderChatMessage = (
@@ -150,7 +203,13 @@ export default class ProjectEvaluationPage extends ObservedComponent<
       <SessionBox {...{ jwtPayload, menu, title }} path={`/dashboard/project/${projectId}`}>
         <PageHead title={title} />
 
-        <Container maxWidth="md" className="px-4 py-6 pt-16">
+        <Container
+          maxWidth="md"
+          className="px-4 py-6 pt-16"
+          onPaste={this.handlePaste}
+          onDrop={this.handleDrop}
+          onDragOver={this.handleDragOver}
+        >
           <h1 className="sticky top-[4rem] z-1 m-0 py-5 text-3xl font-bold backdrop-blur-md">
             {title}
           </h1>
@@ -175,6 +234,24 @@ export default class ProjectEvaluationPage extends ObservedComponent<
             className="sticky bottom-0 mx-1 mt-auto mb-1 flex items-end gap-2 p-1.5 sm:mx-0 sm:mb-0 sm:p-2"
             onSubmit={this.handleMessageSubmit}
           >
+            {/* Hidden file input */}
+            <input
+              ref={this.fileInputRef}
+              type="file"
+              multiple
+              accept="image/*,.pdf,.doc,.docx,.txt,.md"
+              className="hidden"
+              onChange={this.handleFileChange}
+            />
+            {/* File upload button */}
+            <IconButton
+              onClick={this.handleFileButtonClick}
+              disabled={messageStore.uploading > 0}
+              title={t('attach_files') || 'Attach files'}
+              size="small"
+            >
+              <AttachFile />
+            </IconButton>
             <TextField
               name="content"
               placeholder={t('type_your_message')}
