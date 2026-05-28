@@ -4,7 +4,7 @@ import { marked } from 'marked';
 import { observer } from 'mobx-react';
 import { ObservedComponent, reaction } from 'mobx-react-helper';
 import { compose, JWTProps, jwtVerifier, RouteProps, router } from 'next-ssr-middleware';
-import { FormEvent, KeyboardEventHandler } from 'react';
+import { ChangeEvent, ClipboardEvent, DragEvent, FormEvent, KeyboardEventHandler } from 'react';
 import { formToJSON, scrollTo, sleep } from 'web-utility';
 
 import { PageHead } from '../../../components/PageHead';
@@ -12,6 +12,7 @@ import { EvaluationDisplay } from '../../../components/Project/EvaluationDisplay
 import { ScrollList } from '../../../components/ScrollList';
 import { SessionBox } from '../../../components/User/SessionBox';
 import { ConsultMessageModel, ProjectModel } from '../../../models/ProjectEvaluation';
+import fileStore from '../../../models/File';
 import { i18n, I18nContext } from '../../../models/Translation';
 
 type ProjectEvaluationPageProps = JWTProps<User> & RouteProps<{ id: string }>;
@@ -74,6 +75,40 @@ export default class ProjectEvaluationPage extends ObservedComponent<
       (target as HTMLTextAreaElement).form?.dispatchEvent(
         new SubmitEvent('submit', { cancelable: true, bubbles: true }),
       );
+  };
+
+  handleFiles = async (files: File[]) => {
+    for (const file of files) {
+      const URI = await fileStore.upload(file);
+      const content = file.type.startsWith('image/')
+        ? `![${file.name}](${URI})`
+        : `[${file.name}](${URI})`;
+      await this.messageStore.updateOne({ content });
+    }
+  };
+
+  handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || []);
+    if (files.length) {
+      this.handleFiles(files);
+      event.target.value = '';
+    }
+  };
+
+  handlePasteDrop = (event: ClipboardEvent<HTMLDivElement> | DragEvent<HTMLDivElement>) => {
+    const list =
+      event.type === 'paste'
+        ? [...(event as ClipboardEvent).clipboardData.items]
+        : [...(event as DragEvent).dataTransfer.items];
+
+    const files = list
+      .map(item => item.getAsFile())
+      .filter((file): file is File => file !== null);
+
+    if (files.length) {
+      event.preventDefault();
+      this.handleFiles(files);
+    }
   };
 
   renderChatMessage = (
@@ -175,6 +210,10 @@ export default class ProjectEvaluationPage extends ObservedComponent<
             className="sticky bottom-0 mx-1 mt-auto mb-1 flex items-end gap-2 p-1.5 sm:mx-0 sm:mb-0 sm:p-2"
             onSubmit={this.handleMessageSubmit}
           >
+            <Button component="label" className="min-w-0 p-2" title={t('upload_files') as string}>
+              📁
+              <input type="file" hidden multiple onChange={this.handleFileSelect} />
+            </Button>
             <TextField
               name="content"
               placeholder={t('type_your_message')}
@@ -185,12 +224,14 @@ export default class ProjectEvaluationPage extends ObservedComponent<
               size="small"
               required
               onKeyUp={this.handleQuickSubmit}
+              onPaste={this.handlePasteDrop}
+              onDrop={this.handlePasteDrop}
             />
             <Button
               type="submit"
               variant="contained"
               className="min-w-full px-2 whitespace-nowrap sm:min-w-0"
-              disabled={messageStore.uploading > 0}
+              disabled={messageStore.uploading > 0 || fileStore.uploading > 0}
             >
               {t('send')}
             </Button>
