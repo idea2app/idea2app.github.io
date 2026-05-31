@@ -101,9 +101,7 @@ export default class ProjectEvaluationPage extends ObservedComponent<
         ? [...(event as ClipboardEvent).clipboardData.items]
         : [...(event as DragEvent).dataTransfer.items];
 
-    const files = list
-      .map(item => item.getAsFile())
-      .filter((file): file is File => file !== null);
+    const files = list.map(item => item.getAsFile()).filter((file): file is File => file !== null);
 
     if (files.length) {
       event.preventDefault();
