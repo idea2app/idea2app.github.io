@@ -11,7 +11,7 @@ jobs:
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         if: ${{ env.VERCEL_TOKEN && env.VERCEL_ORG_ID && env.VERCEL_PROJECT_ID }}
         with:
           submodules: recursive
@@ -20,7 +20,7 @@ jobs:
 
       - name: Deploy to Vercel
         id: vercel-deployment
-        uses: amondnet/vercel-action@v25
+        uses: amondnet/vercel-action@v42.3.0
         if: ${{ env.VERCEL_TOKEN && env.VERCEL_ORG_ID && env.VERCEL_PROJECT_ID }}
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
@@ -34,29 +34,21 @@ jobs:
         uses: Open-Source-Bazaar/feishu-action@v3
         with:
           url: ${{ secrets.LARK_CHATBOT_HOOK_URL }}
-          msg_type: post
+          msg_type: interactive
           content: |
-            post:
-              zh_cn:
-                title: Vercel 预览环境
-                content:
-                  - - tag: text
-                      text: Git 仓库：
-                    - tag: a
-                      text: ${{ github.server_url }}/${{ github.repository }}
-                      href: ${{ github.server_url }}/${{ github.repository }}
-                  - - tag: text
-                      text: 代码分支：
-                    - tag: a
-                      text: ${{ github.ref }}
-                      href: ${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }}
-                  - - tag: text
-                      text: 提交作者：
-                    - tag: a
-                      text: ${{ github.actor }}
-                      href: ${{ github.server_url }}/${{ github.actor }}
-                  - - tag: text
-                      text: 预览链接：
-                    - tag: a
-                      text: ${{ steps.vercel-deployment.outputs.preview-url }}
-                      href: ${{ steps.vercel-deployment.outputs.preview-url }}
+            schema: "2.0"
+            config:
+              wide_screen_mode: true
+            header:
+              title:
+                tag: plain_text
+                content: Vercel 部署通知
+              template: blue
+            body:
+              elements:
+                - tag: markdown
+                  content: |
+                    **Git 仓库：** [${{ github.server_url }}/${{ github.repository }}](${{ github.server_url }}/${{ github.repository }})
+                    **代码分支：** [${{ github.ref }}](${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }})
+                    **提交作者：** [${{ github.actor }}](${{ github.server_url }}/${{ github.actor }})
+                    **预览链接：** [${{ steps.vercel-deployment.outputs.preview-url }}](${{ steps.vercel-deployment.outputs.preview-url }})
