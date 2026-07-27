@@ -65,16 +65,17 @@ You can check out [the Next.js GitHub repository][27] - your feedback and contri
 
 ### Environment variables
 
-|           name           |     file     |       description       |
-| :----------------------: | :----------: | :---------------------: |
-|       `JWT_SECRET`       | `.env.local` | [API authorization][28] |
-|   `SENTRY_AUTH_TOKEN`    | `.env.local` | [Official document][29] |
-|       `SENTRY_ORG`       |    `.env`    | [Official document][30] |
-|     `SENTRY_PROJECT`     |    `.env`    | [Official document][30] |
-| `NEXT_PUBLIC_SENTRY_DSN` |    `.env`    | [Official document][31] |
-|      `GITHUB_TOKEN`      | `.env.local` | [Official document][32] |
-|      `LARK_APP_ID`       | `.env.local` | [Official document][33] |
-|    `LARK_APP_SECRET`     | `.env.local` | [Official document][33] |
+|              name              |     file     |          description           |
+| :----------------------------: | :----------: | :----------------------------: |
+|          `JWT_SECRET`          | `.env.local` |    [API authorization][28]     |
+|      `SENTRY_AUTH_TOKEN`       | `.env.local` |    [Official document][29]     |
+|          `SENTRY_ORG`          |    `.env`    |    [Official document][30]     |
+|        `SENTRY_PROJECT`        |    `.env`    |    [Official document][30]     |
+|    `NEXT_PUBLIC_SENTRY_DSN`    |    `.env`    |    [Official document][31]     |
+|         `GITHUB_TOKEN`         | `.env.local` |    [Official document][32]     |
+|         `LARK_APP_ID`          | `.env.local` |    [Official document][33]     |
+|       `LARK_APP_SECRET`        | `.env.local` |    [Official document][33]     |
+| `GOOGLE_GENERATIVE_AI_API_KEY` | `.env.local` | [Google Gemini API secret][35] |
 
 ### Vercel
 
@@ -123,3 +124,4 @@ pnpm container
 [32]: https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api#authenticating-with-a-personal-access-token
 [33]: https://open.larksuite.com/document/server-docs/getting-started/api-access-token/app-access-token-development-guide#95c7f5f5
 [34]: https://nextjs.org/docs/deployment
+[35]: https://ai.google.dev/gemini-api/docs/api-key
