@@ -143,7 +143,7 @@ export default class ProjectEvaluationPage extends ObservedComponent<
           >
             <Tooltip title={t('attach_files')}>
               <IconButton component="label" size="small" disabled={uploading}>
-                <SymbolIcon name="attach_file" />
+                <SymbolIcon name="attach_file_add" />
 
                 <input type="file" multiple hidden onChange={this.handleSelectFiles} />
               </IconButton>

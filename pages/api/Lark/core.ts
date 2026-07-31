@@ -2,7 +2,7 @@ import { Context, Middleware } from 'koa';
 import { LarkApp, LarkData } from 'mobx-lark';
 import { buildURLData } from 'web-utility';
 
-import { API_HOST, LARK_API_HOST, LarkAppMeta } from '../../../models/configuration';
+import { LARK_API_HOST, LarkAppMeta } from '../../../models/configuration';
 
 export const lark = new LarkApp(LarkAppMeta);
 
@@ -29,7 +29,7 @@ export const proxyLarkAll: Middleware = async context => {
 };
 
 export function resolveLarkFileURL(URI: string, cache = false) {
-  const { protocol, host, pathname } = new URL(URI, API_HOST);
+  const { protocol, host, pathname } = new URL(URI, LARK_API_HOST);
 
   return protocol === 'lark:'
     ? LARK_API_HOST + host + (cache ? pathname : pathname.split('.').slice(0, -1).join('.'))

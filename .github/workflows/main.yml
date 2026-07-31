@@ -13,10 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         if: ${{ env.VERCEL_TOKEN && env.VERCEL_ORG_ID && env.VERCEL_PROJECT_ID }}
-        with:
-          submodules: recursive
-          lfs: true
-      - run: git submodule update --remote
 
       - name: Deploy to Vercel
         id: vercel-deployment

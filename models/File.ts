@@ -22,9 +22,11 @@ export class FileModel extends BaseModel {
   async getText(URI: string) {
     const { pathname } = new URL(URI);
 
-    const { body } = await this.client.get<string>(`${this.baseURI}/${pathname}`, {
-      Accept: 'text/*',
-    });
+    const { body } = await this.client.get<string>(
+      this.baseURI + pathname,
+      { Accept: 'text/*' },
+      { responseType: 'text' },
+    );
     return body!;
   }
 }

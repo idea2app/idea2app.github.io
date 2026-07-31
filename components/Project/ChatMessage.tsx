@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
 
 import { FileModel } from '../../models/File';
-import { i18n } from '../../models/Translation';
+import { i18n, I18nContext } from '../../models/Translation';
 import { FilePreview } from '../FilePreview';
 import { EvaluationDisplay } from './EvaluationDisplay';
 
@@ -15,6 +15,8 @@ export interface ChatMessageProps extends ConsultMessage {
 
 @observer
 export class ChatMessage extends ObservedComponent<ChatMessageProps, typeof i18n> {
+  static contextType = I18nContext;
+
   fileStore = new FileModel();
 
   async componentDidMount() {
@@ -38,7 +40,7 @@ export class ChatMessage extends ObservedComponent<ChatMessageProps, typeof i18n
 
     return (
       <div
-        className={`flex max-w-[95%] items-start gap-1 sm:max-w-[80%] ${isBot ? 'flex-row justify-self-start' : 'flex-row-reverse justify-self-end'}`}
+        className={`flex max-w-[95%] items-start gap-1 sm:max-w-[80%] ${isBot ? 'mr-auto flex-row' : 'ml-auto flex-row-reverse'}`}
       >
         <Avatar src={avatarSrc} alt={name} className="h-7 w-7 sm:h-8 sm:w-8" />
         <Paper
