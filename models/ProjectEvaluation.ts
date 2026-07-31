@@ -23,12 +23,13 @@ export class ConsultMessageModel extends TableModel<ConsultMessage> {
   }
 
   @toggle('uploading')
-  async updateOne({ content }: Partial<NewData<ConsultMessage>>, id?: IDType) {
+  async updateOne({ content, file }: Partial<NewData<ConsultMessage>>, id?: IDType) {
     const { allItems } = this;
 
     const newMessage = {
       id: Date.now(),
       content,
+      file,
       createdAt: new Date().toJSON(),
       createdBy: userStore.session!,
       project: { id: this.projectId },
@@ -40,7 +41,7 @@ export class ConsultMessageModel extends TableModel<ConsultMessage> {
 
     this.restoreList({ allItems: [...allItems, message] });
 
-    this.triggerEvaluation();
+    if (content) this.triggerEvaluation();
 
     return message;
   }

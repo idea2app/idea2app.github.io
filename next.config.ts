@@ -27,6 +27,14 @@ const rewrites: NextConfig['rewrites'] = async () => ({
   afterFiles: [],
 });
 
+const redirects: NextConfig['redirects'] = async () => [
+  {
+    source: '/wiki/:path*',
+    destination: 'https://wiki.idea2.app/wiki/:path*',
+    permanent: true,
+  },
+];
+
 const nextConfig = withPWA({
   output: CI ? 'standalone' : undefined,
   compiler: {
@@ -46,6 +54,7 @@ const nextConfig = withPWA({
     return config;
   },
   rewrites,
+  redirects,
 });
 
 export default isDev || !SENTRY_AUTH_TOKEN

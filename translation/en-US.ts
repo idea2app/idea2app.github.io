@@ -150,6 +150,8 @@ export default {
   type_your_message: 'Type your message...',
   send_message: 'Send Message',
   send: 'Send',
+  attach_files: 'Attach Files',
+  parsing_file_text: 'Parsing file text, please wait...',
 
   // Prototype Generator
   generate_prototype: 'Generate Prototype',
