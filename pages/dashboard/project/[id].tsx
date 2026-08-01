@@ -1,5 +1,5 @@
 import { User } from '@idea2app/data-server';
-import { Button, Container, IconButton, Paper, TextField, Tooltip } from '@mui/material';
+import { Button, Container, IconButton, Paper, TextField, Tooltip } from '@/components/shadcn/material';
 import { observer } from 'mobx-react';
 import { ObservedComponent, reaction } from 'mobx-react-helper';
 import { compose, JWTProps, jwtVerifier, RouteProps, router } from 'next-ssr-middleware';

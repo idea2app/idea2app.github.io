@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Grid } from '@/components/shadcn/material';
 import { Issue } from 'mobx-github';
 import { observer } from 'mobx-react';
 import { compose, errorLogger } from 'next-ssr-middleware';

@@ -1,4 +1,4 @@
-import { Box, Chip } from '@mui/material';
+import { Box, Chip } from '@/components/shadcn/material';
 import { ElementType, FC } from 'react';
 import { formatDate } from 'web-utility';
 

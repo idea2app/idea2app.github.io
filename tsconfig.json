@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": true,
     "checkJs": true,
     "skipLibCheck": true,
@@ -23,32 +19,9 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@mui/material": [
-        "components/mui-adapter/material.tsx"
-      ],
-      "@mui/material/*": [
-        "components/mui-adapter/material/*"
-      ],
-      "@mui/lab": [
-        "components/mui-adapter/lab.tsx"
-      ],
-      "@mui/lab/*": [
-        "components/mui-adapter/lab/*"
-      ],
-      "@mui/material-nextjs/v15-pagesRouter": [
-        "components/mui-adapter/material-nextjs.tsx"
-      ]
+      "@/*": ["./*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "material-ui-pigment-css.d.ts",
-    "*.mjs",
-    "*.js",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "material-ui-pigment-css.d.ts", "*.mjs", "*.js", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }

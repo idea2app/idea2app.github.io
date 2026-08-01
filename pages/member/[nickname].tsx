@@ -1,5 +1,5 @@
-import { TabContext, TabList, TabListProps, TabPanel } from '@mui/lab';
-import { Badge, Tab } from '@mui/material';
+import { TabContext, TabList, TabListProps, TabPanel } from '@/components/shadcn/lab';
+import { Badge, Tab } from '@/components/shadcn/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';

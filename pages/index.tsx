@@ -1,5 +1,5 @@
-import Masonry from '@mui/lab/Masonry';
-import { Button } from '@mui/material';
+import Masonry from '@/components/shadcn/lab/Masonry';
+import { Button } from '@/components/shadcn/material';
 import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
 import { compose, errorLogger } from 'next-ssr-middleware';

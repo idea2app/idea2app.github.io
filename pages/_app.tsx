@@ -1,7 +1,7 @@
 import '../styles/main.css';
 
-import { createTheme, GlobalStyles, StyledEngineProvider, ThemeProvider } from '@mui/material';
-import { AppCacheProvider, createEmotionCache } from '@mui/material-nextjs/v15-pagesRouter';
+import { createTheme, GlobalStyles, StyledEngineProvider, ThemeProvider } from '@/components/shadcn/material';
+import { AppCacheProvider, createEmotionCache } from '@/components/shadcn/material-nextjs';
 import { HTTPError } from 'koajax';
 import { configure } from 'mobx';
 import { enableStaticRendering, observer } from 'mobx-react';

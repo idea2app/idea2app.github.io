@@ -4,7 +4,7 @@ import {
   RequirementEvaluation,
   UserRole,
 } from '@idea2app/data-server';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography } from '@/components/shadcn/material';
 import { observer } from 'mobx-react';
 import { FC, useContext } from 'react';
 

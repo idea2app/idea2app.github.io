@@ -1,5 +1,5 @@
 import Giscus from '@giscus/react';
-import { Alert } from '@mui/material';
+import { Alert } from '@/components/shadcn/material';
 import { observer } from 'mobx-react';
 import { NextPage } from 'next';
 import { compose, RouteProps, router } from 'next-ssr-middleware';

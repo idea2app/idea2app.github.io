@@ -215,6 +215,8 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
 export interface IconButtonProps extends GenericProps<'button'> {
   size?: 'small' | 'medium' | 'large';
   disabled?: boolean;
+  color?: string;
+  disableRipple?: boolean;
 }
 
 export const IconButton: FC<PropsWithChildren<IconButtonProps>> = ({
@@ -223,6 +225,8 @@ export const IconButton: FC<PropsWithChildren<IconButtonProps>> = ({
   className,
   children,
   disabled,
+  color: _color,
+  disableRipple: _disableRipple,
   ...props
 }) => {
   const Tag = (component || 'button') as ElementType;

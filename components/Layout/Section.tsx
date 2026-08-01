@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Button } from '@/components/shadcn/material';
 import { observer } from 'mobx-react';
 import Link from 'next/link';
 import { FC, PropsWithChildren, useContext } from 'react';

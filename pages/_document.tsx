@@ -1,5 +1,5 @@
-import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
-import { createEmotionCache, documentGetInitialProps } from '@mui/material-nextjs/v15-pagesRouter';
+import InitColorSchemeScript from '@/components/shadcn/material/InitColorSchemeScript';
+import { createEmotionCache, documentGetInitialProps } from '@/components/shadcn/material-nextjs';
 import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 

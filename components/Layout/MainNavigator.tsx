@@ -7,7 +7,7 @@ import {
   MenuItem,
   PopoverProps,
   Toolbar,
-} from '@mui/material';
+} from '@/components/shadcn/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';

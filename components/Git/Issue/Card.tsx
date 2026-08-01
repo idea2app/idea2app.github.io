@@ -1,4 +1,4 @@
-import { Avatar, Box, CardProps, Chip } from '@mui/material';
+import { Avatar, Box, CardProps, Chip } from '@/components/shadcn/material';
 import { marked } from 'marked';
 import { Issue } from 'mobx-github';
 import { FC } from 'react';

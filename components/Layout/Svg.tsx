@@ -1,4 +1,4 @@
-import { SvgIcon, SvgIconProps } from '@mui/material';
+import { SvgIcon, SvgIconProps } from '@/components/shadcn/material';
 import { FC } from 'react';
 
 export interface LogoProps extends SvgIconProps {

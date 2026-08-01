@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Grid, Typography } from '@mui/material';
+import { Box, Card, CardContent, Grid, Typography } from '@/components/shadcn/material';
 import { observer } from 'mobx-react';
 import { FC, useContext } from 'react';
 

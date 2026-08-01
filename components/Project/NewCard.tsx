@@ -1,5 +1,5 @@
 import { Project } from '@idea2app/data-server';
-import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, Typography } from '@/components/shadcn/material';
 import { observer } from 'mobx-react';
 import Link from 'next/link';
 import { FC, useContext } from 'react';

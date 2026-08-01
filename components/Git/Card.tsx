@@ -1,4 +1,4 @@
-import { Button, Chip, IconButton, Tooltip } from '@mui/material';
+import { Button, Chip, IconButton, Tooltip } from '@/components/shadcn/material';
 import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
 import Link from 'next/link';

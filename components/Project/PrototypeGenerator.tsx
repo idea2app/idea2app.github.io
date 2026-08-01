@@ -1,5 +1,5 @@
 import { PrototypeType, PrototypeVersion } from '@idea2app/data-server';
-import { Box, Button, CircularProgress, Link, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Link, Typography } from '@/components/shadcn/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';

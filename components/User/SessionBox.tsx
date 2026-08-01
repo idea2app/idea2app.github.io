@@ -1,5 +1,5 @@
 import { User } from '@idea2app/data-server';
-import { Box, Modal } from '@mui/material';
+import { Box, Modal } from '@/components/shadcn/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { JWTProps } from 'next-ssr-middleware';

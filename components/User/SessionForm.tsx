@@ -1,5 +1,5 @@
 import { SignInData } from '@idea2app/data-server';
-import { Button, IconButton, Tab, Tabs, TextField } from '@mui/material';
+import { Button, IconButton, Tab, Tabs, TextField } from '@/components/shadcn/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';

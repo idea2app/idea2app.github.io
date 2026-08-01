@@ -1,4 +1,4 @@
-import { Button, CardProps, Chip, IconButton } from '@mui/material';
+import { Button, CardProps, Chip, IconButton } from '@/components/shadcn/material';
 import { marked } from 'marked';
 import { observer } from 'mobx-react';
 import Link from 'next/link';

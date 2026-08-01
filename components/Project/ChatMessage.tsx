@@ -1,5 +1,5 @@
 import { ConsultMessage, UserRole } from '@idea2app/data-server';
-import { Avatar, LinearProgress, Paper, Typography } from '@mui/material';
+import { Avatar, LinearProgress, Paper, Typography } from '@/components/shadcn/material';
 import { marked } from 'marked';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';

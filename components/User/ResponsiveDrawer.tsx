@@ -1,4 +1,4 @@
-import { Drawer, useMediaQuery, useTheme } from '@mui/material';
+import { Drawer, useMediaQuery, useTheme } from '@/components/shadcn/material';
 import { FC, PropsWithChildren } from 'react';
 
 const DESKTOP_DRAWER_STYLES = {

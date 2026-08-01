@@ -1,5 +1,5 @@
-import IconButton from '@mui/material/IconButton';
-import { useColorScheme } from '@mui/material/styles';
+import IconButton from '@/components/shadcn/material/IconButton';
+import { useColorScheme } from '@/components/shadcn/material/styles';
 
 import { SymbolIcon } from '../Icon';
 

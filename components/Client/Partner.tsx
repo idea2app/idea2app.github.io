@@ -1,4 +1,4 @@
-import { Tooltip } from '@mui/material';
+import { Tooltip } from '@/components/shadcn/material';
 import { FC, ReactNode } from 'react';
 
 import { fileURLOf } from '../../models/Base';
