@@ -1,5 +1,19 @@
-import { SvgIcon, SvgIconProps } from '@/components/shadcn/material';
-import { FC } from 'react';
+import { FC, PropsWithChildren, SVGProps } from 'react';
+
+export interface SvgIconProps extends SVGProps<SVGSVGElement> {
+  viewBox?: string;
+}
+
+const SvgIcon: FC<PropsWithChildren<SvgIconProps>> = ({
+  children,
+  className,
+  viewBox = '0 0 24 24',
+  ...props
+}) => (
+  <svg className={className} viewBox={viewBox} aria-hidden="true" {...props}>
+    {children}
+  </svg>
+);
 
 export interface LogoProps extends SvgIconProps {
   variant?: 'white' | 'black';

@@ -1,7 +1,6 @@
 import '../styles/main.css';
 
-import { createTheme, GlobalStyles, StyledEngineProvider, ThemeProvider } from '@/components/shadcn/material';
-import { AppCacheProvider, createEmotionCache } from '@/components/shadcn/material-nextjs';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import { HTTPError } from 'koajax';
 import { configure } from 'mobx';
 import { enableStaticRendering, observer } from 'mobx-react';
@@ -18,33 +17,8 @@ configure({ enforceActions: 'never' });
 
 enableStaticRendering(isServer());
 
-const container = isServer() ? null : document.getElementById('__next');
-
-export const theme = createTheme({
-  colorSchemes: { dark: true, light: true },
-  /**
-   * @see {@link  https://mui.com/material-ui/customization/css-theme-variables/usage/#adding-new-theme-tokens}
-   * @see {@link  https://mui.com/material-ui/customization/css-theme-variables/configuration/#toggling-dark-mode-manually}
-   */
-  cssVariables: { colorSchemeSelector: 'class' },
-  /**
-   * add your custom token here, Palette, Typography, etc. @see {@link  https://mui.com/material-ui/customization/palette/} for more details
-   */
-  components: {
-    /**
-     * target root element for Portal-related elements, for tailwind support @see {@link  https://mui.com/material-ui/integrations/interoperability/#setup}
-     * */
-    MuiPopover: { defaultProps: { container } },
-    MuiPopper: { defaultProps: { container } },
-    MuiDialog: { defaultProps: { container } },
-    MuiModal: { defaultProps: { container } },
-  },
-});
-
-const clientCache = createEmotionCache({ enableCssLayer: true, key: 'css', prepend: true });
-
 @observer
-export default class CustomApp extends App<I18nProps & { emotionCache?: unknown }> {
+export default class CustomApp extends App<I18nProps> {
   static async getInitialProps(context: AppContext) {
     return {
       ...(await App.getInitialProps(context)),
@@ -66,33 +40,25 @@ export default class CustomApp extends App<I18nProps & { emotionCache?: unknown 
   }
 
   render() {
-    const { router, Component, pageProps, emotionCache = clientCache } = this.props;
+    const { router, Component, pageProps } = this.props;
     const { asPath } = router,
       { i18nStore } = this;
     const menu = asPath.startsWith('/dashboard') ? PrivateMenu(i18nStore) : PublicMenu(i18nStore);
 
     return (
       <I18nContext.Provider value={i18nStore}>
-        <AppCacheProvider emotionCache={emotionCache}>
-          <GlobalStyles styles="@layer theme, base, mui, components, utilities;" />
-          <Head>
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
-          </Head>
-          <StyledEngineProvider injectFirst>
-            {/**
-             * @see {@link https://mui.com/material-ui/integrations/interoperability/#tailwind-css}
-             */}
-            <ThemeProvider theme={theme} defaultMode="system" disableTransitionOnChange>
-              <div className="flex min-h-screen flex-col justify-between">
-                <MainNavigator menu={menu} />
+        <Head>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+        </Head>
+        <TooltipProvider>
+          <div className="flex min-h-screen flex-col justify-between">
+            <MainNavigator menu={menu} />
 
-                <Component {...pageProps} />
+            <Component {...pageProps} />
 
-                <Footer />
-              </div>
-            </ThemeProvider>
-          </StyledEngineProvider>
-        </AppCacheProvider>
+            <Footer />
+          </div>
+        </TooltipProvider>
       </I18nContext.Provider>
     );
   }

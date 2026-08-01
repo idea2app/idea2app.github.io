@@ -1,5 +1,6 @@
 import { PrototypeType, PrototypeVersion } from '@idea2app/data-server';
-import { Box, Button, CircularProgress, Link, Typography } from '@/components/shadcn/material';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
@@ -25,7 +26,7 @@ export class PrototypeGenerator extends ObservedComponent<PrototypeGeneratorProp
   @observable
   accessor version = this.props.prototype;
 
-  private root = createRef<HTMLElement>();
+  private root = createRef<HTMLDivElement>();
 
   componentDidMount() {
     super.componentDidMount();
@@ -58,14 +59,7 @@ export class PrototypeGenerator extends ObservedComponent<PrototypeGeneratorProp
     const loading = this.versionStore.uploading > 0;
 
     return (
-      <Button
-        variant="contained"
-        color="primary"
-        size="small"
-        disabled={loading}
-        sx={{ textTransform: 'none' }}
-        onClick={this.handleGenerateClick}
-      >
+      <Button size="sm" disabled={loading} onClick={this.handleGenerateClick}>
         {loading ? t('generating') : t('generate_prototype')}
       </Button>
     );
@@ -75,10 +69,10 @@ export class PrototypeGenerator extends ObservedComponent<PrototypeGeneratorProp
     const { t } = this.observedContext;
 
     return (
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        <CircularProgress size={16} />
-        <Typography variant="body2">{t('prototype_generating')}</Typography>
-      </Box>
+      <div className="flex items-center gap-2">
+        <Progress value={100} className="h-2 w-24" />
+        <p className="text-sm">{t('prototype_generating')}</p>
+      </div>
     );
   }
 
@@ -87,32 +81,22 @@ export class PrototypeGenerator extends ObservedComponent<PrototypeGeneratorProp
     const { previewLink, gitLogsLink } = this.version || {};
 
     return (
-      <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+      <div className="flex flex-wrap gap-2">
         {previewLink && (
-          <Button
-            href={previewLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            variant="contained"
-            color="success"
-            size="small"
-          >
-            {t('view_preview')}
+          <Button asChild size="sm" variant="secondary">
+            <a href={previewLink} target="_blank" rel="noopener noreferrer">
+              {t('view_preview')}
+            </a>
           </Button>
         )}
         {gitLogsLink && (
-          <Button
-            href={gitLogsLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            variant="contained"
-            color="warning"
-            size="small"
-          >
-            {t('view_ai_log')}
+          <Button asChild size="sm" variant="outline">
+            <a href={gitLogsLink} target="_blank" rel="noopener noreferrer">
+              {t('view_ai_log')}
+            </a>
           </Button>
         )}
-      </Box>
+      </div>
     );
   }
 
@@ -121,26 +105,19 @@ export class PrototypeGenerator extends ObservedComponent<PrototypeGeneratorProp
     const { errorMessage, gitLogsLink } = this.version || {};
 
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-        <Typography variant="body2" color="error" sx={{ fontSize: '0.875rem' }}>
-          {errorMessage || t('prototype_generation_failed')}
-        </Typography>
+      <div className="flex flex-col gap-1">
+        <p className="text-sm text-red-600">{errorMessage || t('prototype_generation_failed')}</p>
         {gitLogsLink && (
-          <Link
+          <a
+            className="text-muted-foreground text-sm font-medium hover:underline"
             href={gitLogsLink}
             target="_blank"
             rel="noopener noreferrer"
-            sx={{
-              textDecoration: 'none',
-              fontSize: '0.875rem',
-              fontWeight: 500,
-              color: 'text.secondary',
-            }}
           >
             {t('view_ai_log')}
-          </Link>
+          </a>
         )}
-      </Box>
+      </div>
     );
   }
 
@@ -148,7 +125,7 @@ export class PrototypeGenerator extends ObservedComponent<PrototypeGeneratorProp
     const { version } = this;
 
     return (
-      <Box ref={this.root} sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
+      <div ref={this.root} className="border-border border-t pt-2">
         {!version || version.status === 'pending'
           ? this.renderPending()
           : version.status === 'processing'
@@ -156,7 +133,7 @@ export class PrototypeGenerator extends ObservedComponent<PrototypeGeneratorProp
             : version.status === 'completed'
               ? this.renderCompleted()
               : this.renderFailed()}
-      </Box>
+      </div>
     );
   }
 }

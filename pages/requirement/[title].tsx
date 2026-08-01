@@ -1,5 +1,5 @@
 import Giscus from '@giscus/react';
-import { Alert } from '@/components/shadcn/material';
+import { Alert } from '@/components/ui/alert';
 import { observer } from 'mobx-react';
 import { NextPage } from 'next';
 import { compose, RouteProps, router } from 'next-ssr-middleware';
@@ -21,7 +21,10 @@ const RequirementDetailPage: NextPage<RouteProps<{ title: string }>> = observer(
 
         <h1 className="py-10 text-center text-5xl">{title}</h1>
 
-        <Alert severity="warning">
+        <Alert
+          variant="default"
+          className="border-amber-500/40 bg-amber-50 text-amber-950 dark:bg-amber-950/20 dark:text-amber-100"
+        >
           <span dangerouslySetInnerHTML={{ __html: t('information_security_alert') }} />
         </Alert>
 

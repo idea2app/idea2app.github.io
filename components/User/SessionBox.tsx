@@ -1,5 +1,5 @@
 import { User } from '@idea2app/data-server';
-import { Box, Modal } from '@/components/shadcn/material';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { JWTProps } from 'next-ssr-middleware';
@@ -34,14 +34,11 @@ export class SessionBox extends Component<SessionBoxProps> {
       <>
         {children}
 
-        <Modal open={this.modalShown}>
-          <Box
-            className="bg-background-paper absolute top-1/2 left-1/2 w-[90vw] -translate-x-1/2 -translate-y-1/2 rounded p-4 shadow-2xl sm:w-[400px]"
-            sx={{ boxShadow: 24 }}
-          >
+        <Dialog open={this.modalShown} onOpenChange={value => (this.modalShown = value)}>
+          <DialogContent className="max-w-[90vw] rounded-xl p-4 sm:max-w-[400px]">
             <SessionForm onSignIn={() => (this.modalShown = false)} />
-          </Box>
-        </Modal>
+          </DialogContent>
+        </Dialog>
       </>
     );
   }

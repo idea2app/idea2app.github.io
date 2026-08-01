@@ -1,4 +1,5 @@
-import { Button, Grid, TextField } from '@/components/shadcn/material';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { observer } from 'mobx-react';
 import { NextPage } from 'next';
 import { FormEvent, useContext } from 'react';
@@ -28,25 +29,18 @@ const RequirementEntryPage: NextPage = observer(() => {
       <h1 className="py-10 text-center text-6xl">{t('AI_requirement_evaluation')}</h1>
 
       <form className="mb-8 flex flex-col gap-4" onSubmit={handleSubmit}>
-        <TextField
-          label={t('project_name')}
-          name="name"
-          required
-          defaultValue="动物保护平台"
-          fullWidth
-        />
-        <Grid container spacing={2}>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <Button type="submit" variant="contained" size="large" fullWidth value="public">
-              {t('AI_requirement_evaluation')}
-            </Button>
-          </Grid>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <Button type="submit" variant="outlined" size="large" fullWidth value="commercial">
-              {t('commercial_version')}
-            </Button>
-          </Grid>
-        </Grid>
+        <label className="text-sm">
+          <span className="mb-1 block">{t('project_name')}</span>
+          <Input name="name" required defaultValue="动物保护平台" />
+        </label>
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+          <Button type="submit" size="lg" className="w-full" value="public">
+            {t('AI_requirement_evaluation')}
+          </Button>
+          <Button type="submit" size="lg" variant="outline" className="w-full" value="commercial">
+            {t('commercial_version')}
+          </Button>
+        </div>
       </form>
 
       <VersionComparison />

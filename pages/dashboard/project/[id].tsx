@@ -1,5 +1,6 @@
 import { User } from '@idea2app/data-server';
-import { Button, Container, IconButton, Paper, TextField, Tooltip } from '@/components/shadcn/material';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { observer } from 'mobx-react';
 import { ObservedComponent, reaction } from 'mobx-react-helper';
 import { compose, JWTProps, jwtVerifier, RouteProps, router } from 'next-ssr-middleware';
@@ -108,7 +109,7 @@ export default class ProjectEvaluationPage extends ObservedComponent<
       <SessionBox {...{ jwtPayload, menu, title }} path={`/dashboard/project/${projectId}`}>
         <PageHead title={title} />
 
-        <Container maxWidth="md" className="px-4 py-6 pt-16">
+        <div className="mx-auto max-w-screen-md px-4 py-6 pt-16">
           <h1 className="sticky top-[4rem] z-1 m-0 py-5 text-3xl font-bold backdrop-blur-md">
             {title}
           </h1>
@@ -135,42 +136,36 @@ export default class ProjectEvaluationPage extends ObservedComponent<
           </div>
 
           {/* Message Input Form */}
-          <Paper
-            component="form"
-            elevation={1}
-            className="sticky bottom-0 mx-1 mt-auto mb-1 flex items-end gap-2 p-1.5 sm:mx-0 sm:mb-0 sm:p-2"
+          <form
+            className="bg-background sticky bottom-0 mx-1 mt-auto mb-1 flex items-end gap-2 rounded-xl border p-1.5 shadow-sm sm:mx-0 sm:mb-0 sm:p-2"
             onSubmit={this.handleMessageSubmit}
           >
-            <Tooltip title={t('attach_files')}>
-              <IconButton component="label" size="small" disabled={uploading}>
+            <label className="shrink-0" title={t('attach_files')}>
+              <Button type="button" size="icon" disabled={uploading} className="rounded-full">
                 <SymbolIcon name="attach_file_add" />
 
                 <input type="file" multiple hidden onChange={this.handleSelectFiles} />
-              </IconButton>
-            </Tooltip>
+              </Button>
+            </label>
             <PasteDropBox className="min-w-0 flex-1" onChange={this.handleDropFiles}>
-              <TextField
+              <textarea
                 name="content"
                 placeholder={t('type_your_message')}
-                multiline
-                maxRows={4}
-                fullWidth
-                variant="outlined"
-                size="small"
+                rows={3}
                 required
                 onKeyUp={this.handleQuickSubmit}
+                className="border-input focus-visible:border-ring focus-visible:ring-ring/50 flex min-h-16 w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs outline-none focus-visible:ring-[3px]"
               />
             </PasteDropBox>
             <Button
               type="submit"
-              variant="contained"
               className="min-w-full px-2 whitespace-nowrap sm:min-w-0"
               disabled={uploading}
             >
               {t('send')}
             </Button>
-          </Paper>
-        </Container>
+          </form>
+        </div>
       </SessionBox>
     );
   }

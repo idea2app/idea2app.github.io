@@ -1,9 +1,9 @@
-import { Tooltip } from '@/components/shadcn/material';
 import { FC, ReactNode } from 'react';
 
 import { fileURLOf } from '../../models/Base';
 import { Client } from '../../models/Client';
 import { LarkImage } from '../LarkImage';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 export interface PartnerProps extends Client {
   className?: string;
@@ -29,8 +29,13 @@ export const Partner: FC<PartnerProps> = ({ className = '', name, image, summary
 
 export const PartnerOverview: FC<PartnerOverviewProps> = ({ name, tooltip, ...rest }) =>
   tooltip ? (
-    <Tooltip key={name} title={tooltip}>
-      <LogoWithLink name={name} {...rest} />
+    <Tooltip key={name}>
+      <TooltipTrigger asChild>
+        <span>
+          <LogoWithLink name={name} {...rest} />
+        </span>
+      </TooltipTrigger>
+      <TooltipContent>{tooltip}</TooltipContent>
     </Tooltip>
   ) : (
     <LogoWithLink key={name} name={name} {...rest} />

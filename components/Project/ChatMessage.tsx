@@ -1,5 +1,7 @@
 import { ConsultMessage, UserRole } from '@idea2app/data-server';
-import { Avatar, LinearProgress, Paper, Typography } from '@/components/shadcn/material';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 import { marked } from 'marked';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
@@ -42,22 +44,12 @@ export class ChatMessage extends ObservedComponent<ChatMessageProps, typeof i18n
       <div
         className={`flex max-w-[95%] items-start gap-1 sm:max-w-[80%] ${isBot ? 'mr-auto flex-row' : 'ml-auto flex-row-reverse'}`}
       >
-        <Avatar src={avatarSrc} alt={name} className="h-7 w-7 sm:h-8 sm:w-8" />
-        <Paper
-          elevation={1}
-          className="bg-primary-light text-primary-contrast rounded-[16px_16px_4px_16px] p-1.5 sm:p-2"
-          sx={{
-            backgroundColor: 'primary.light',
-            color: 'primary.contrastText',
-          }}
-        >
-          <Typography
-            variant="caption"
-            display="block"
-            className="mb-0.5 text-[0.7rem] opacity-80 sm:text-[0.75rem]"
-          >
-            {name}
-          </Typography>
+        <Avatar className="h-7 w-7 sm:h-8 sm:w-8">
+          <AvatarImage src={avatarSrc} alt={name} />
+          <AvatarFallback>{name.slice(0, 1)}</AvatarFallback>
+        </Avatar>
+        <Card className="bg-primary/10 text-foreground rounded-[16px_16px_4px_16px] border-none p-1.5 sm:p-2">
+          <p className="mb-0.5 text-[0.7rem] opacity-80 sm:text-[0.75rem]">{name}</p>
 
           {file ? (
             <div className="mb-1">
@@ -65,18 +57,15 @@ export class ChatMessage extends ObservedComponent<ChatMessageProps, typeof i18n
 
               {this.fileStore.downloading > 0 && (
                 <div className="mt-1.5">
-                  <Typography variant="caption" className="mb-1 block text-[0.7rem] opacity-80">
-                    {t('parsing_file_text')}
-                  </Typography>
-                  <LinearProgress color="inherit" />
+                  <p className="mb-1 block text-[0.7rem] opacity-80">{t('parsing_file_text')}</p>
+                  <Progress value={100} className="h-1.5" />
                 </div>
               )}
             </div>
           ) : (
             content && (
-              <Typography
+              <div
                 className="prose mb-1 text-[0.875rem] sm:text-base"
-                variant="body2"
                 dangerouslySetInnerHTML={{ __html: marked(content) }}
               />
             )
@@ -90,11 +79,11 @@ export class ChatMessage extends ObservedComponent<ChatMessageProps, typeof i18n
             />
           )}
           {createdAt && (
-            <Typography variant="caption" className="text-[0.65rem] opacity-60 sm:text-[0.75rem]">
+            <p className="text-[0.65rem] opacity-60 sm:text-[0.75rem]">
               {new Date(createdAt).toLocaleTimeString()}
-            </Typography>
+            </p>
           )}
-        </Paper>
+        </Card>
       </div>
     );
   }

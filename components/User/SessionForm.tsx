@@ -1,5 +1,7 @@
 import { SignInData } from '@idea2app/data-server';
-import { Button, IconButton, Tab, Tabs, TextField } from '@/components/shadcn/material';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
@@ -81,63 +83,58 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof i18n
 
     return (
       <form className="flex flex-col gap-4" onSubmit={this.handleSubmit}>
-        <Tabs
-          value={signType}
-          variant="fullWidth"
-          className="mb-4"
-          onChange={(_, newValue: 'up' | 'in') => (this.signType = newValue)}
-        >
-          <Tab label={t('register')} value="up" />
-          <Tab label={t('login')} value="in" />
+        <Tabs value={signType} onValueChange={value => (this.signType = value as 'up' | 'in')}>
+          <TabsList className="mb-4 w-full">
+            <TabsTrigger value="up" className="flex-1">
+              {t('register')}
+            </TabsTrigger>
+            <TabsTrigger value="in" className="flex-1">
+              {t('login')}
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="up" />
+          <TabsContent value="in" />
         </Tabs>
 
-        <TextField
-          name="email"
-          type="email"
-          required
-          fullWidth
-          variant="outlined"
-          label={t('email')}
-          placeholder={t('please_enter_email')}
-        />
+        <label className="flex flex-col gap-1 text-sm">
+          <span>{t('email')}</span>
+          <Input name="email" type="email" required placeholder={t('please_enter_email')} />
+        </label>
         <div className="flex items-center gap-2">
-          <TextField
-            name="password"
-            type="password"
-            required
-            fullWidth
-            variant="outlined"
-            label={t('password')}
-            placeholder={t('please_enter_password')}
-          />
+          <label className="flex-1 text-sm">
+            <span className="mb-1 block">{t('password')}</span>
+            <Input
+              name="password"
+              type="password"
+              required
+              placeholder={t('please_enter_password')}
+            />
+          </label>
           {signType === 'in' && (
-            <IconButton
-              size="large"
+            <Button
+              type="button"
+              size="icon"
               title="Email OTP"
               disabled={loading}
               onClick={this.handleEmailOTP}
+              className="shrink-0"
             >
               <SymbolIcon name="key" />
-            </IconButton>
+            </Button>
           )}
-          <IconButton
-            size="large"
+          <Button
+            type="button"
+            size="icon"
             title="WebAuthn"
             disabled={loading}
             onClick={this.handleWebAuthn}
+            className="shrink-0"
           >
             <SymbolIcon name="fingerprint" />
-          </IconButton>
+          </Button>
         </div>
 
-        <Button
-          className="mt-4"
-          type="submit"
-          variant="contained"
-          fullWidth
-          size="large"
-          disabled={loading}
-        >
+        <Button className="mt-4" type="submit" disabled={loading}>
           {signType === 'up' ? t('register') : t('login')}
         </Button>
       </form>

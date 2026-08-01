@@ -1,5 +1,6 @@
-import IconButton from '@/components/shadcn/material/IconButton';
-import { useColorScheme } from '@/components/shadcn/material/styles';
+import { useEffect, useState } from 'react';
+
+import { Button } from '../ui/button';
 
 import { SymbolIcon } from '../Icon';
 
@@ -9,22 +10,40 @@ export const themeSwitchIcons = {
 };
 
 export function ColorModeIconDropdown() {
-  const { mode, systemMode, setMode } = useColorScheme();
+  const [mode, setMode] = useState<'light' | 'dark'>('light');
 
-  const resolvedMode = (systemMode ?? mode) as 'light' | 'dark';
-  const icon = themeSwitchIcons[resolvedMode];
+  useEffect(() => {
+    const saved = window.localStorage.getItem('color-mode');
+    const resolvedMode =
+      saved === 'light' || saved === 'dark'
+        ? saved
+        : window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light';
 
-  const toggleMode = () => setMode(resolvedMode === 'light' ? 'dark' : 'light');
+    setMode(resolvedMode);
+    document.documentElement.classList.toggle('dark', resolvedMode === 'dark');
+  }, []);
+
+  const toggleMode = () => {
+    const nextMode = mode === 'light' ? 'dark' : 'light';
+
+    setMode(nextMode);
+    document.documentElement.classList.toggle('dark', nextMode === 'dark');
+    window.localStorage.setItem('color-mode', nextMode);
+  };
+
+  const icon = themeSwitchIcons[mode];
 
   return (
-    <IconButton
-      color="inherit"
+    <Button
+      type="button"
+      variant="ghost"
+      size="icon-sm"
       data-screenshot="toggle-mode"
-      size="small"
-      disableRipple
       onClick={toggleMode}
     >
       {icon}
-    </IconButton>
+    </Button>
   );
 }

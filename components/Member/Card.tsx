@@ -1,4 +1,3 @@
-import { Button, CardProps, Chip, IconButton } from '@/components/shadcn/material';
 import { marked } from 'marked';
 import { observer } from 'mobx-react';
 import Link from 'next/link';
@@ -6,25 +5,28 @@ import { FC } from 'react';
 
 import { Member } from '../../models/Member';
 import { GithubIcon } from '../Layout/Svg';
+import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
+import { Card } from '../ui/card';
 
-export type MemberCardProps = Member & Omit<CardProps, 'id'>;
+export type MemberCardProps = Member & { className?: string };
 
 export const MemberCard: FC<MemberCardProps> = observer(
   ({ className = '', nickname, skill, position, summary, github }) => (
-    <li
-      className={`elevation-1 hover:elevation-4 relative rounded-2xl border border-gray-200 p-4 dark:border-0 ${className} mb-4 flex break-inside-avoid flex-col gap-3`}
+    <Card
+      className={`relative mb-4 flex break-inside-avoid flex-col gap-3 rounded-2xl p-4 ${className}`}
     >
       {github && (
-        <IconButton
-          component={Link}
-          className="!absolute top-4 right-4"
-          href={`https://github.com/${String(github)}`}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={`${String(nickname)}'s GitHub account`}
-        >
-          <GithubIcon />
-        </IconButton>
+        <Button asChild size="icon-sm" variant="ghost" className="absolute top-4 right-4">
+          <Link
+            href={`https://github.com/${String(github)}`}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`${String(nickname)}'s GitHub account`}
+          >
+            <GithubIcon />
+          </Link>
+        </Button>
       )}
 
       <div className="flex w-auto items-center gap-4">
@@ -44,16 +46,11 @@ export const MemberCard: FC<MemberCardProps> = observer(
         </hgroup>
       </div>
 
-      <ul className="scrollbar-none scroll-snap-x flex snap-mandatory flex-nowrap gap-2 overflow-x-scroll">
+      <ul className="scroll-snap-x flex snap-mandatory scrollbar-none flex-nowrap gap-2 overflow-x-scroll">
         {(skill as string[]).map(value => (
-          <Chip
-            key={value}
-            size="small"
-            component="li"
-            variant="outlined"
-            color="primary"
-            label={value}
-          />
+          <li key={value}>
+            <Badge variant="outline">{value}</Badge>
+          </li>
         ))}
       </ul>
 
@@ -61,6 +58,6 @@ export const MemberCard: FC<MemberCardProps> = observer(
         dangerouslySetInnerHTML={{ __html: marked((summary as string) || '', { async: false }) }}
         className="text-neutral-500"
       />
-    </li>
+    </Card>
   ),
 );

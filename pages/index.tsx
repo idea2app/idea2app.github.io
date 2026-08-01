@@ -1,5 +1,4 @@
-import Masonry from '@/components/shadcn/lab/Masonry';
-import { Button } from '@/components/shadcn/material';
+import { Button } from '@/components/ui/button';
 import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
 import { compose, errorLogger } from 'next-ssr-middleware';
@@ -73,13 +72,14 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => {
 
               <p className="flex-1 text-neutral-500">{summary}</p>
 
-              <Button
-                className="flex-shrink-0 !rounded-full md:self-center"
-                variant="contained"
-                href={buttonLink}
-                target={buttonLink.startsWith('http') ? '_blank' : undefined}
-              >
-                {buttonText}
+              <Button className="flex-shrink-0 !rounded-full md:self-center" asChild>
+                <a
+                  href={buttonLink}
+                  target={buttonLink.startsWith('http') ? '_blank' : undefined}
+                  rel="noreferrer"
+                >
+                  {buttonText}
+                </a>
               </Button>
             </li>
           ))}
@@ -108,19 +108,13 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => {
 
       <Section title={t('member')} link="/member">
         <div className="relative max-h-[45rem] overflow-hidden">
-          <Masonry
-            component="ul"
-            className="overflow-hidden"
-            columns={{ xs: 1, sm: 2, md: 3 }}
-            spacing={2}
-            defaultHeight={720}
-            defaultColumns={4}
-            defaultSpacing={1}
-          >
+          <ul className="columns-1 gap-4 overflow-hidden sm:columns-2 md:columns-3">
             {members.map(item => (
-              <MemberCard key={String(item.id)} {...item} />
+              <li key={String(item.id)} className="mb-4 break-inside-avoid">
+                <MemberCard {...item} />
+              </li>
             ))}
-          </Masonry>
+          </ul>
           <div className="from-background pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-linear-to-t pt-32 pb-8" />
         </div>
       </Section>
