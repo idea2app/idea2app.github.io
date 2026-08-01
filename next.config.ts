@@ -37,9 +37,6 @@ const redirects: NextConfig['redirects'] = async () => [
 
 const nextConfig = withPWA({
   output: CI ? 'standalone' : undefined,
-  compiler: {
-    emotion: true,
-  },
   images: {
     remotePatterns: [{ protocol: 'https', hostname: 'github.com' }],
   },

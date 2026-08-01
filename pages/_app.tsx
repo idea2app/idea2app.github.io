@@ -1,6 +1,5 @@
 import '../styles/main.css';
 
-import { EmotionCache } from '@emotion/cache';
 import { createTheme, GlobalStyles, StyledEngineProvider, ThemeProvider } from '@mui/material';
 import { AppCacheProvider, createEmotionCache } from '@mui/material-nextjs/v15-pagesRouter';
 import { HTTPError } from 'koajax';
@@ -45,7 +44,7 @@ export const theme = createTheme({
 const clientCache = createEmotionCache({ enableCssLayer: true, key: 'css', prepend: true });
 
 @observer
-export default class CustomApp extends App<I18nProps & { emotionCache: EmotionCache }> {
+export default class CustomApp extends App<I18nProps & { emotionCache?: unknown }> {
   static async getInitialProps(context: AppContext) {
     return {
       ...(await App.getInitialProps(context)),
