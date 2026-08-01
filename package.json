@@ -44,9 +44,6 @@
     "webpack": "^5.109.2"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-decorators": "^7.29.7",
-    "@babel/plugin-transform-typescript": "^7.29.7",
-    "@babel/preset-react": "^7.29.7",
     "@cspell/eslint-plugin": "^10.0.1",
     "@eslint/js": "^10.0.1",
     "@idea2app/data-server": "^1.0.0-rc.11",

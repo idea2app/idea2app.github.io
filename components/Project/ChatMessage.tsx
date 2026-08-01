@@ -8,7 +8,7 @@ import { ObservedComponent } from 'mobx-react-helper';
 
 import { FileModel } from '../../models/File';
 import { i18n, I18nContext } from '../../models/Translation';
-import { FilePreview } from '../FilePreview';
+import { FilePreview } from '@/components/ui/mobx-restful-shadcn/file-preview';
 import { EvaluationDisplay } from './EvaluationDisplay';
 
 export interface ChatMessageProps extends ConsultMessage {

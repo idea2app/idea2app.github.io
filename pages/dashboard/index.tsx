@@ -8,7 +8,7 @@ import { formToJSON } from 'web-utility';
 
 import { PageHead } from '../../components/PageHead';
 import { ProjectCard } from '../../components/Project/NewCard';
-import { ScrollList } from '../../components/ScrollList';
+import { ScrollList } from '@/components/ui/mobx-restful-shadcn/scroll-list';
 import { SessionBox } from '../../components/User/SessionBox';
 import { ProjectModel } from '../../models/ProjectEvaluation';
 import { I18nContext } from '../../models/Translation';

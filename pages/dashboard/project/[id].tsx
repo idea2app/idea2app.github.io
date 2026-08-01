@@ -11,7 +11,7 @@ import { SymbolIcon } from '../../../components/Icon';
 import { PageHead } from '../../../components/PageHead';
 import { PasteDropBox, PasteDropEvent } from '../../../components/PasteDropBox';
 import { ChatMessage } from '../../../components/Project/ChatMessage';
-import { ScrollList } from '../../../components/ScrollList';
+import { ScrollList } from '@/components/ui/mobx-restful-shadcn/scroll-list';
 import { SessionBox } from '../../../components/User/SessionBox';
 import fileStore from '../../../models/File';
 import { ConsultMessageModel, ProjectModel } from '../../../models/ProjectEvaluation';
