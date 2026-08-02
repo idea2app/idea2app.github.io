@@ -42,11 +42,7 @@ export default class CustomDocument extends Document<CustomDocumentProps> {
     const { language, colorScheme } = this.props;
 
     return (
-      <Html
-        lang={language}
-        className={colorScheme === 'dark' ? 'dark' : ''}
-        data-bs-theme={colorScheme}
-      >
+      <Html lang={language} className={colorScheme === 'dark' ? 'dark' : ''}>
         <Head>
           <link rel="icon" href={DefaultImage} />
           <link rel="manifest" href="/manifest.json" />

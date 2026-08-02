@@ -1,6 +1,4 @@
 import { PrototypeType, PrototypeVersion } from '@idea2app/data-server';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
@@ -9,6 +7,8 @@ import { inViewport, sleep } from 'web-utility';
 
 import { PrototypeVersionModel } from '../../models/PrototypeVersion';
 import { i18n, I18nContext } from '../../models/Translation';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 
 export interface PrototypeGeneratorProps {
   projectId: number;

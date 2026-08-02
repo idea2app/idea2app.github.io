@@ -1,13 +1,13 @@
 import { ConsultMessage, UserRole } from '@idea2app/data-server';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
 import { marked } from 'marked';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
 
 import { FileModel } from '../../models/File';
 import { i18n, I18nContext } from '../../models/Translation';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 import { FilePreview } from '@/components/ui/mobx-restful-shadcn/file-preview';
 import { EvaluationDisplay } from './EvaluationDisplay';
 

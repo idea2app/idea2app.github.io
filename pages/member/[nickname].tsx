@@ -1,10 +1,10 @@
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
 import { compose, errorLogger } from 'next-ssr-middleware';
 
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MemberCard } from '../../components/Member/Card';
 import { PageHead } from '../../components/PageHead';
 import { ProjectListLayout } from '../../components/Project';

@@ -1,10 +1,8 @@
 import { observer } from 'mobx-react';
 
 import system from '../../models/System';
-
-import { Button } from '../ui/button';
-
 import { SymbolIcon } from '../Icon';
+import { Button } from '../ui/button';
 
 export const themeSwitchIcons = {
   light: <SymbolIcon name="light_mode" />,

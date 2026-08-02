@@ -1,5 +1,4 @@
 import { User } from '@idea2app/data-server';
-import { Button } from '@/components/ui/button';
 import { observer } from 'mobx-react';
 import { ObservedComponent, reaction } from 'mobx-react-helper';
 import { compose, JWTProps, jwtVerifier, RouteProps, router } from 'next-ssr-middleware';
@@ -10,6 +9,7 @@ import { SymbolIcon } from '../../../components/Icon';
 import { PageHead } from '../../../components/PageHead';
 import { PasteDropBox, PasteDropEvent } from '../../../components/PasteDropBox';
 import { ChatMessage } from '../../../components/Project/ChatMessage';
+import { Button } from '@/components/ui/button';
 import { ScrollList } from '@/components/ui/mobx-restful-shadcn/scroll-list';
 import { SessionBox } from '../../../components/User/SessionBox';
 import fileStore from '../../../models/File';

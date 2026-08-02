@@ -1,20 +1,21 @@
 import { marked } from 'marked';
 import { observer } from 'mobx-react';
 import Link from 'next/link';
-import { FC } from 'react';
+import { ComponentProps, FC } from 'react';
 
 import { Member } from '../../models/Member';
 import { GithubIcon } from '../Layout/Svg';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
-import { Card, CardProps } from '../ui/card';
+import { Card } from '../ui/card';
 
-export type MemberCardProps = Member & CardProps;
+export type MemberCardProps = Member & Omit<ComponentProps<typeof Card>, 'id'>;
 
 export const MemberCard: FC<MemberCardProps> = observer(
-  ({ className = '', nickname, skill, position, summary, github }) => (
+  ({ className = '', id, nickname, skill, position, summary, github, ...props }) => (
     <Card
       className={`relative mb-4 flex break-inside-avoid flex-col gap-3 rounded-2xl p-4 ${className}`}
+      {...props}
     >
       {github && (
         <Button asChild size="icon-sm" variant="ghost" className="absolute top-4 right-4">

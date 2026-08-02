@@ -1,12 +1,12 @@
 import '../styles/main.css';
 
-import { TooltipProvider } from '@/components/ui/tooltip';
 import { HTTPError } from 'koajax';
 import { configure } from 'mobx';
 import { enableStaticRendering, observer } from 'mobx-react';
 import App, { AppContext } from 'next/app';
 import Head from 'next/head';
 
+import { TooltipProvider } from '@/components/ui/tooltip';
 import { Footer } from '../components/Layout/Footer';
 import { MainNavigator } from '../components/Layout/MainNavigator';
 import { PrivateMenu, PublicMenu } from '../components/Layout/menu';

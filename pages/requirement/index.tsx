@@ -1,10 +1,10 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { observer } from 'mobx-react';
 import { NextPage } from 'next';
 import { FormEvent, useContext } from 'react';
 import { buildURLData, formToJSON } from 'web-utility';
 
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { PageHead } from '../../components/PageHead';
 import { VersionComparison } from '../../components/VersionComparison';
 import { I18nContext } from '../../models/Translation';

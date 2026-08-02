@@ -1,9 +1,9 @@
-import { Button } from '@/components/ui/button';
 import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
 import { compose, errorLogger } from 'next-ssr-middleware';
 import { FC, useContext } from 'react';
 
+import { Button } from '@/components/ui/button';
 import { PartnerOverview } from '../components/Client/Partner';
 import { GitListLayout } from '../components/Git';
 import { SymbolIcon } from '../components/Icon';
