@@ -1,7 +1,8 @@
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
-import { GetStaticPaths } from 'next';
+import { GetStaticProps } from 'next';
+import { Minute, Second } from 'web-utility';
 
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -12,7 +13,7 @@ import { Member, MemberModel } from '../../models/Member';
 import { Project, ProjectModel } from '../../models/Project';
 import { i18n, I18nContext } from '../../models/Translation';
 import { lark } from '../api/Lark/core';
-import { skipBuilding } from '@/lib/SSG';
+import { skipBuildingAll } from '@/lib/SSG';
 
 interface MemberDetailPageProps {
   member: Member;
@@ -20,38 +21,29 @@ interface MemberDetailPageProps {
   memberProjects: Project[];
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths = skipBuildingAll;
+
+export const getStaticProps: GetStaticProps<MemberDetailPageProps, { nickname: string }> = async ({
+  params,
+}) => {
   await lark.getAccessToken();
 
-  const store = new MemberModel();
-  store.client = lark.client;
+  const memberStore = new MemberModel(),
+    projectStore = new ProjectModel();
+  memberStore.client = projectStore.client = lark.client;
 
-  const members = await store.getAll();
+  const [member] = await memberStore.getList(params, 1, 1);
 
-  const paths = members.map(({ nickname }) => ({ params: { nickname: nickname + '' } }));
+  const [leaderProjects, memberProjects] = await Promise.all([
+    projectStore.getAll({ leader: params?.nickname }),
+    projectStore.getAll({ members: params?.nickname }),
+  ]);
 
-  return { paths, fallback: false };
+  return {
+    props: JSON.parse(JSON.stringify({ member, leaderProjects, memberProjects })),
+    revalidate: Minute / Second,
+  };
 };
-
-export const getStaticProps = skipBuilding<MemberDetailPageProps, { nickname: string }>(
-  async ({ params }) => {
-    await lark.getAccessToken();
-
-    const store = new MemberModel();
-    store.client = lark.client;
-
-    const [member] = await store.getList(params, 1, 1);
-
-    const [leaderProjects, memberProjects] = await Promise.all([
-      new ProjectModel().getAll({ leader: params?.nickname }),
-      new ProjectModel().getAll({ members: params?.nickname }),
-    ]);
-
-    return {
-      props: JSON.parse(JSON.stringify({ member, leaderProjects, memberProjects })),
-    };
-  },
-);
 
 @observer
 export default class MemberDetailPage extends ObservedComponent<

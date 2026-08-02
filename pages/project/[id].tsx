@@ -1,7 +1,8 @@
 import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
-import { GetStaticPaths } from 'next';
+import { GetStaticProps } from 'next';
 import { FC, useContext } from 'react';
+import { Minute, Second } from 'web-utility';
 
 import { GitCard } from '../../components/Git/Card';
 import { LarkImage } from '../../components/LarkImage';
@@ -11,48 +12,40 @@ import { Project, ProjectModel } from '../../models/Project';
 import { GitRepositoryModel } from '../../models/Repository';
 import { I18nContext } from '../../models/Translation';
 import { lark } from '../api/Lark/core';
-import { skipBuilding } from '@/lib/SSG';
+import { skipBuildingAll } from '@/lib/SSG';
 
 interface ProjectDetailPageProps {
   project: Project;
   repositories: GitRepository[];
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths = skipBuildingAll;
+
+export const getStaticProps: GetStaticProps<ProjectDetailPageProps, { id: string }> = async ({
+  params: { id } = {},
+}) => {
   await lark.getAccessToken();
 
   const store = new ProjectModel();
   store.client = lark.client;
 
-  const projects = await store.getAll();
+  let repositories: GitRepository[] = [];
 
-  const paths = projects.map(({ id }) => ({ params: { id: id + '' } }));
+  const project = await store.getOne(id!);
 
-  return { paths, fallback: false };
+  if (project.openSource) {
+    const openSource = String(project.openSource)
+      .split(/\s+/)
+      .map(path => new URL(path).pathname.slice(1));
+
+    repositories = await new GitRepositoryModel('idea2app').getGroup(openSource);
+  }
+
+  return {
+    props: JSON.parse(JSON.stringify({ project, repositories })),
+    revalidate: Minute / Second,
+  };
 };
-
-export const getStaticProps = skipBuilding<ProjectDetailPageProps, { id: string }>(
-  async ({ params: { id } = {} }) => {
-    await lark.getAccessToken();
-
-    const store = new ProjectModel();
-    store.client = lark.client;
-
-    let repositories: GitRepository[] = [];
-
-    const project = await store.getOne(id!);
-
-    if (project.openSource) {
-      const openSource = String(project.openSource)
-        .split(/\s+/)
-        .map(path => new URL(path).pathname.slice(1));
-
-      repositories = await new GitRepositoryModel('idea2app').getGroup(openSource);
-    }
-
-    return { props: JSON.parse(JSON.stringify({ project, repositories })) };
-  },
-);
 
 const ProjectDetailPage: FC<ProjectDetailPageProps> = observer(({ project, repositories }) => {
   const { t } = useContext(I18nContext);

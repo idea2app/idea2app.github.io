@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
 import { GetStaticProps } from 'next';
 import { FC, useContext } from 'react';
+import { Minute, Second } from 'web-utility';
 
 import { ScrollListPage } from '../../components/Layout/ScrollListPage';
 import { MemberListLayout } from '../../components/Member/List';
@@ -16,7 +17,7 @@ export const getStaticProps: GetStaticProps<{ list: Member[] }> = async () => {
 
   const list = await store.getList();
 
-  return { props: JSON.parse(JSON.stringify({ list })) };
+  return { props: JSON.parse(JSON.stringify({ list })), revalidate: Minute / Second };
 };
 
 const MemberListPage: FC<{ list: Member[] }> = observer(({ list }) => {

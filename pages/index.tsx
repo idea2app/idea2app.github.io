@@ -2,6 +2,7 @@ import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
 import { GetStaticProps } from 'next';
 import { FC, useContext } from 'react';
+import { Minute, Second } from 'web-utility';
 
 import { Button } from '@/components/ui/button';
 import { PartnerOverview } from '../components/Client/Partner';
@@ -40,6 +41,7 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
         members: members.filter(({ github, position, summary }) => github && position && summary),
       }),
     ),
+    revalidate: Minute / Second,
   };
 };
 
