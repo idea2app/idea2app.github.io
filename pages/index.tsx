@@ -1,6 +1,6 @@
 import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
-import { compose, errorLogger } from 'next-ssr-middleware';
+import { GetStaticProps } from 'next';
 import { FC, useContext } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -14,7 +14,7 @@ import { PageHead } from '../components/PageHead';
 import { Member, MEMBER_VIEW, MemberModel } from '../models/Member';
 import { GitRepositoryModel } from '../models/Repository';
 import { I18nContext } from '../models/Translation';
-import { solidCache } from './api/core';
+import { lark } from './api/Lark/core';
 import { PARTNERS_INFO, service } from './api/home';
 
 interface HomePageProps {
@@ -22,10 +22,15 @@ interface HomePageProps {
   members: Member[];
 }
 
-export const getServerSideProps = compose(solidCache, errorLogger, async () => {
+export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
+  await lark.getAccessToken();
+
+  const store = new MemberModel();
+  store.client = lark.client;
+
   const [repositories, members] = await Promise.all([
     new GitRepositoryModel('idea2app').getList({ relation: [] }, 1, 9),
-    new MemberModel().getViewList(MEMBER_VIEW),
+    store.getViewList(MEMBER_VIEW),
   ]);
 
   return {
@@ -36,7 +41,7 @@ export const getServerSideProps = compose(solidCache, errorLogger, async () => {
       }),
     ),
   };
-});
+};
 
 const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => {
   const i18n = useContext(I18nContext);

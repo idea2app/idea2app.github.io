@@ -1,6 +1,6 @@
 {
   "name": "@idea2app/ows",
-  "version": "3.7.0",
+  "version": "4.0.0",
   "description": "React project scaffold based on TypeScript, Next.js, Bootstrap & Workbox.",
   "private": true,
   "engines": {
@@ -15,6 +15,7 @@
     "ai": "^7.0.47",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "core-js": "^3.49.0",
     "file-type": "^22.0.1",
     "idb-keyval": "^6.3.0",
     "jsonwebtoken": "^9.0.3",
@@ -58,6 +59,7 @@
     "@types/next-pwa": "^5.6.9",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
+    "cross-env": "^10.1.0",
     "eslint": "^10.8.0",
     "eslint-config-next": "^16.2.12",
     "eslint-config-prettier": "^10.1.8",
@@ -100,7 +102,7 @@
     "install": "xgit download https://github.com/idea2app/key-vault main idea2app.github.io  ||  true",
     "postinstall": "shadcn-helper install  &&  next typegen",
     "dev": "next dev --webpack",
-    "build": "next build --webpack",
+    "build": "cross-env CI=true  next build --webpack",
     "start": "next start",
     "test": "lint-staged  &&  tsc --noEmit",
     "pack-image": "docker build -t idea2app/web-server .",

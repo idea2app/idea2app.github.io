@@ -1,7 +1,7 @@
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
-import { compose, errorLogger } from 'next-ssr-middleware';
+import { GetStaticPaths } from 'next';
 
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -11,7 +11,8 @@ import { ProjectListLayout } from '../../components/Project';
 import { Member, MemberModel } from '../../models/Member';
 import { Project, ProjectModel } from '../../models/Project';
 import { i18n, I18nContext } from '../../models/Translation';
-import { solidCache } from '../api/core';
+import { lark } from '../api/Lark/core';
+import { skipBuilding } from '@/lib/SSG';
 
 interface MemberDetailPageProps {
   member: Member;
@@ -19,13 +20,27 @@ interface MemberDetailPageProps {
   memberProjects: Project[];
 }
 
-export const getServerSideProps = compose<{ nickname: string }>(
-  solidCache,
-  errorLogger,
-  async ({ params }) => {
-    const [member] = await new MemberModel().getList(params, 1, 1);
+export const getStaticPaths: GetStaticPaths = async () => {
+  await lark.getAccessToken();
 
-    if (!member) return { notFound: true, props: {} };
+  const store = new MemberModel();
+  store.client = lark.client;
+
+  const members = await store.getAll();
+
+  const paths = members.map(({ nickname }) => ({ params: { nickname: nickname + '' } }));
+
+  return { paths, fallback: false };
+};
+
+export const getStaticProps = skipBuilding<MemberDetailPageProps, { nickname: string }>(
+  async ({ params }) => {
+    await lark.getAccessToken();
+
+    const store = new MemberModel();
+    store.client = lark.client;
+
+    const [member] = await store.getList(params, 1, 1);
 
     const [leaderProjects, memberProjects] = await Promise.all([
       new ProjectModel().getAll({ leader: params?.nickname }),

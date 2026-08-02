@@ -1,18 +1,23 @@
 import { observer } from 'mobx-react';
-import { compose, errorLogger } from 'next-ssr-middleware';
+import { GetStaticProps } from 'next';
 import { FC, useContext } from 'react';
 
 import { ScrollListPage } from '../../components/Layout/ScrollListPage';
 import { MemberListLayout } from '../../components/Member/List';
 import memberStore, { Member, MemberModel } from '../../models/Member';
 import { I18nContext } from '../../models/Translation';
-import { solidCache } from '../api/core';
+import { lark } from '../api/Lark/core';
 
-export const getServerSideProps = compose(solidCache, errorLogger, async () => {
-  const list = await new MemberModel().getList();
+export const getStaticProps: GetStaticProps<{ list: Member[] }> = async () => {
+  await lark.getAccessToken();
+
+  const store = new MemberModel();
+  store.client = lark.client;
+
+  const list = await store.getList();
 
   return { props: JSON.parse(JSON.stringify({ list })) };
-});
+};
 
 const MemberListPage: FC<{ list: Member[] }> = observer(({ list }) => {
   const { t } = useContext(I18nContext);

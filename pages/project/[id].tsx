@@ -1,6 +1,6 @@
 import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
-import { compose, errorLogger } from 'next-ssr-middleware';
+import { GetStaticPaths } from 'next';
 import { FC, useContext } from 'react';
 
 import { GitCard } from '../../components/Git/Card';
@@ -10,20 +10,37 @@ import { ProjectCard } from '../../components/Project/PublicCard';
 import { Project, ProjectModel } from '../../models/Project';
 import { GitRepositoryModel } from '../../models/Repository';
 import { I18nContext } from '../../models/Translation';
-import { solidCache } from '../api/core';
+import { lark } from '../api/Lark/core';
+import { skipBuilding } from '@/lib/SSG';
 
 interface ProjectDetailPageProps {
   project: Project;
   repositories: GitRepository[];
 }
 
-export const getServerSideProps = compose<{ id: string }, ProjectDetailPageProps>(
-  solidCache,
-  errorLogger,
+export const getStaticPaths: GetStaticPaths = async () => {
+  await lark.getAccessToken();
+
+  const store = new ProjectModel();
+  store.client = lark.client;
+
+  const projects = await store.getAll();
+
+  const paths = projects.map(({ id }) => ({ params: { id: id + '' } }));
+
+  return { paths, fallback: false };
+};
+
+export const getStaticProps = skipBuilding<ProjectDetailPageProps, { id: string }>(
   async ({ params: { id } = {} }) => {
+    await lark.getAccessToken();
+
+    const store = new ProjectModel();
+    store.client = lark.client;
+
     let repositories: GitRepository[] = [];
 
-    const project = await new ProjectModel().getOne(id!);
+    const project = await store.getOne(id!);
 
     if (project.openSource) {
       const openSource = String(project.openSource)
