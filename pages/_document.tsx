@@ -41,7 +41,11 @@ export default class CustomDocument extends Document<CustomDocumentProps> {
     const { language, colorScheme } = this.props;
 
     return (
-      <Html lang={language} className={colorScheme === 'dark' ? 'dark' : ''}>
+      <Html
+        lang={language}
+        className={colorScheme === 'dark' ? 'dark' : ''}
+        data-bs-theme={colorScheme}
+      >
         <Head>
           <link rel="icon" href={DefaultImage} />
           <link rel="manifest" href="/manifest.json" />
@@ -68,17 +72,6 @@ export default class CustomDocument extends Document<CustomDocumentProps> {
           />
           <script type="application/ld+json">{JSON.stringify(siteNameJsonLd)}</script>
           <script type="application/ld+json">{JSON.stringify(organizationJsonLd)}</script>
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `(() => {
-  try {
-    const mode = localStorage.getItem('color-mode');
-    const dark = mode ? mode === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
-    document.documentElement.classList.toggle('dark', dark);
-  } catch {}
-})();`,
-            }}
-          />
         </Head>
 
         <body>

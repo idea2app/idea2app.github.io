@@ -6,11 +6,10 @@ export interface SvgIconProps extends SVGProps<SVGSVGElement> {
 
 const SvgIcon: FC<PropsWithChildren<SvgIconProps>> = ({
   children,
-  className,
   viewBox = '0 0 24 24',
   ...props
 }) => (
-  <svg className={className} viewBox={viewBox} aria-hidden="true" {...props}>
+  <svg viewBox={viewBox} aria-hidden="true" {...props}>
     {children}
   </svg>
 );

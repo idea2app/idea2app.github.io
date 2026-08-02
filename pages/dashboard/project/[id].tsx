@@ -140,7 +140,7 @@ export default class ProjectEvaluationPage extends ObservedComponent<
             onSubmit={this.handleMessageSubmit}
           >
             <label className="shrink-0" title={t('attach_files')}>
-              <Button type="button" size="icon" disabled={uploading} className="rounded-full">
+              <Button className="rounded-full" type="button" size="icon" disabled={uploading}>
                 <SymbolIcon name="attach_file_add" />
 
                 <input type="file" multiple hidden onChange={this.handleSelectFiles} />

@@ -18,38 +18,18 @@ const statusTextKeys: (keyof typeof zhCN)[] = [
   'project_maintenance', // Maintenance
 ];
 
-const bgColors: string[] = [
-  'grey.200', // Open
-  'success.light', // Evaluated
-  'warning.light', // ContractGenerated
-  'info.light', // InDevelopment
-  'secondary.light', // InTesting
-  'primary.light', // Maintenance
-];
-
-const textColors: string[] = [
-  'text.primary', // Open
-  'success.contrastText', // Evaluated
-  'warning.contrastText', // ContractGenerated
-  'info.contrastText', // InDevelopment
-  'secondary.contrastText', // InTesting
-  'primary.contrastText', // Maintenance
+const statusClasses = [
+  'bg-muted text-muted-foreground',
+  'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-200',
+  'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200',
+  'bg-cyan-100 text-cyan-800 dark:bg-cyan-900/40 dark:text-cyan-200',
+  'bg-violet-100 text-violet-800 dark:bg-violet-900/40 dark:text-violet-200',
+  'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-200',
 ];
 
 export const ProjectCard: FC<Project> = observer(({ id, name, status = 0 }) => {
   const { t } = useContext(I18nContext);
-  const statusClass =
-    status === 1
-      ? 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-200'
-      : status === 2
-        ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200'
-        : status === 3
-          ? 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900/40 dark:text-cyan-200'
-          : status === 4
-            ? 'bg-violet-100 text-violet-800 dark:bg-violet-900/40 dark:text-violet-200'
-            : status === 5
-              ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-200'
-              : 'bg-muted text-muted-foreground';
+  const statusClass = statusClasses[status] || statusClasses[0];
 
   return (
     <Card>

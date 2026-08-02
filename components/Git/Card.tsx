@@ -6,6 +6,7 @@ import { I18nContext } from '../../models/Translation';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
+import { GithubIcon, GitpodIcon, OcticonIcon } from '../Layout/Svg';
 import { GitLogo } from './Logo';
 
 export interface GitCardProps
@@ -67,9 +68,34 @@ export const GitCard: FC<GitCardProps> = observer(
           {description && <p className="text-muted-foreground flex-1 text-sm">{description}</p>}
         </CardContent>
 
-        <CardFooter className="justify-end">
+        <CardFooter className="flex flex-wrap justify-end gap-2">
+          <Button variant="outline" size="sm" asChild>
+            <a target="_blank" rel="noreferrer" href={html_url} aria-label="source code">
+              <GithubIcon className="size-4" /> Source
+            </a>
+          </Button>
+          <Button variant="outline" size="sm" asChild>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href={`https://codespaces.new/${full_name}`}
+              aria-label="open in GitHub Codespaces"
+            >
+              <OcticonIcon className="size-4" /> Codespaces
+            </a>
+          </Button>
+          <Button variant="outline" size="sm" asChild>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href={`https://gitpod.io/?autostart=true#${html_url}`}
+              aria-label="open in Gitpod"
+            >
+              <GitpodIcon className="size-4" /> Gitpod
+            </a>
+          </Button>
           {(homepage || html_url) && (
-            <Button variant="secondary" asChild>
+            <Button variant="secondary" size="sm" asChild>
               <a target="_blank" rel="noreferrer" href={homepage || html_url}>
                 {t('preview') || t('home_page')}
               </a>

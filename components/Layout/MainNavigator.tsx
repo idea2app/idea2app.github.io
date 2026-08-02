@@ -23,9 +23,7 @@ export class MainNavigator extends ObservedComponent<{ menu: MenuLink[] }, typeo
 
   @observable accessor menuExpand = false;
 
-  switchI18n = (key: string) => {
-    this.observedContext!.loadLanguages(key as keyof typeof LanguageName);
-  };
+  switchI18n = (key: string) => this.observedContext!.loadLanguages(key as keyof typeof LanguageName);
 
   renderLinks = () =>
     this.props.menu.map(({ title, href, target }) => (

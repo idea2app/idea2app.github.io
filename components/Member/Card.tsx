@@ -7,9 +7,9 @@ import { Member } from '../../models/Member';
 import { GithubIcon } from '../Layout/Svg';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
-import { Card } from '../ui/card';
+import { Card, CardProps } from '../ui/card';
 
-export type MemberCardProps = Member & { className?: string };
+export type MemberCardProps = Member & CardProps;
 
 export const MemberCard: FC<MemberCardProps> = observer(
   ({ className = '', nickname, skill, position, summary, github }) => (
@@ -18,14 +18,14 @@ export const MemberCard: FC<MemberCardProps> = observer(
     >
       {github && (
         <Button asChild size="icon-sm" variant="ghost" className="absolute top-4 right-4">
-          <Link
+          <a
             href={`https://github.com/${String(github)}`}
             target="_blank"
             rel="noreferrer"
             aria-label={`${String(nickname)}'s GitHub account`}
           >
             <GithubIcon />
-          </Link>
+          </a>
         </Button>
       )}
 

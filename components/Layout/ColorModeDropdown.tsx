@@ -13,15 +13,19 @@ export function ColorModeIconDropdown() {
   const [mode, setMode] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
-    const saved = window.localStorage.getItem('color-mode');
+    const saved = document.cookie
+      .split('; ')
+      .find(item => item.startsWith('colorScheme='))
+      ?.split('=')[1];
     const resolvedMode =
-      saved === 'light' || saved === 'dark'
+      saved === 'dark' || saved === 'light'
         ? saved
         : window.matchMedia('(prefers-color-scheme: dark)').matches
           ? 'dark'
           : 'light';
 
     setMode(resolvedMode);
+    document.documentElement.dataset.bsTheme = resolvedMode;
     document.documentElement.classList.toggle('dark', resolvedMode === 'dark');
   }, []);
 
@@ -29,8 +33,9 @@ export function ColorModeIconDropdown() {
     const nextMode = mode === 'light' ? 'dark' : 'light';
 
     setMode(nextMode);
+    document.documentElement.dataset.bsTheme = nextMode;
     document.documentElement.classList.toggle('dark', nextMode === 'dark');
-    window.localStorage.setItem('color-mode', nextMode);
+    document.cookie = `colorScheme=${nextMode};path=/;max-age=31536000`;
   };
 
   const icon = themeSwitchIcons[mode];
