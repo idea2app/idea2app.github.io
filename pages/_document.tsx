@@ -1,6 +1,7 @@
 import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 
+import type { ColorScheme } from '../models/System';
 import { DefaultImage, Name, SiteUrl } from '../models/configuration';
 import { LanguageCode, parseSSRContext } from '../models/Translation';
 
@@ -27,13 +28,13 @@ const organizationJsonLd = {
 
 interface CustomDocumentProps {
   language: LanguageCode;
-  colorScheme: 'light' | 'dark';
+  colorScheme: ColorScheme;
 }
 export default class CustomDocument extends Document<CustomDocumentProps> {
   static async getInitialProps(context: DocumentContext) {
     return {
       ...(await Document.getInitialProps(context)),
-      ...parseSSRContext<CustomDocumentProps>(context, ['language']),
+      ...parseSSRContext<CustomDocumentProps>(context, ['language', 'colorScheme']),
     };
   }
 
