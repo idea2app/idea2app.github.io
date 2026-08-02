@@ -1,3 +1,5 @@
+# Reference: https://pnpm.io/docker#example-1-build-a-bundle-in-a-docker-container
+
 FROM node:24-slim AS base
 RUN apt-get update && \
     apt-get install ca-certificates curl libjemalloc-dev -y --no-install-recommends  && \
@@ -13,7 +15,9 @@ COPY . /app
 WORKDIR /app
 
 FROM base AS build
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store  pnpm e i --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    --mount=type=secret,id=gh_pat \
+    sh -ec 'pnpm config set "//npm.pkg.github.com/:_authToken" "$(cat /run/secrets/gh_pat)";  pnpm e i --frozen-lockfile;  pnpm config delete "//npm.pkg.github.com/:_authToken";'
 RUN CI=true  pnpm build
 
 FROM base

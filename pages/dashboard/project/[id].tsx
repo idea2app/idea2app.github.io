@@ -1,6 +1,5 @@
 import { User } from '@idea2app/data-server';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { observer } from 'mobx-react';
 import { ObservedComponent, reaction } from 'mobx-react-helper';
 import { compose, JWTProps, jwtVerifier, RouteProps, router } from 'next-ssr-middleware';

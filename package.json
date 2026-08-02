@@ -1,18 +1,18 @@
 {
   "name": "@idea2app/ows",
-  "version": "3.2.0",
+  "version": "3.7.0",
   "description": "React project scaffold based on TypeScript, Next.js, Bootstrap & Workbox.",
   "private": true,
   "engines": {
     "node": ">=22"
   },
   "dependencies": {
-    "@ai-sdk/google": "^4.0.28",
+    "@ai-sdk/google": "^4.0.31",
     "@giscus/react": "^3.1.0",
     "@koa/bodyparser": "^6.1.0",
     "@passwordless-id/webauthn": "^2.4.0",
     "@sentry/nextjs": "^10.69.0",
-    "ai": "^7.0.42",
+    "ai": "^7.0.47",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "file-type": "^22.0.1",
@@ -67,7 +67,7 @@
     "globals": "^17.8.0",
     "husky": "^9.1.7",
     "jiti": "^2.7.0",
-    "lint-staged": "^17.2.0",
+    "lint-staged": "^17.3.0",
     "postcss": "^8.5.25",
     "prettier": "^3.9.6",
     "prettier-plugin-css-order": "^2.2.0",
