@@ -14,7 +14,7 @@
 - Component suite: [Bootstrap v5][4]
 - PWA framework: [Workbox v6][5]
 - State management: [MobX v6][11]
-- CI / CD: GitHub [Actions][12] + [Vercel][13]
+- CI / CD: GitHub [Actions][12] + [CloudFlare workers][13]
 - Monitor service: [Sentry][14]
 
 ## Best practice
@@ -27,7 +27,7 @@
 
 3.  Click the **[<kbd>Open in GitHub codespaces</kbd>][8] button** on the top of ReadMe file, then an **online VS Code development environment** will be started immediately
 
-4.  Set [Vercel variables][19] as [Repository secrets][20], then every commit will get an independent **Preview URL**
+4.  Set CloudFlare variables as [Repository secrets][20], then every commit will get an independent **Preview URL**
 
 5.  Recommend to add a [Notification step in GitHub actions][21] for your Team IM app
 
@@ -77,11 +77,26 @@ You can check out [the Next.js GitHub repository][27] - your feedback and contri
 |       `LARK_APP_SECRET`        | `.env.local` |    [Official document][33]     |
 | `GOOGLE_GENERATIVE_AI_API_KEY` | `.env.local` | [Google Gemini API secret][35] |
 
-### Vercel
+### CloudFlare workers
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform][13] from the creators of Next.js.
+This project is configured to deploy Next.js with OpenNext to CloudFlare workers.
 
-Check out our [Next.js deployment documentation][34] for more details.
+Required GitHub secrets for CI:
+
+- `CLOUDFLARE_ACCOUNT_ID`
+- `CLOUDFLARE_API_TOKEN`
+
+Manual commands:
+
+```bash
+pnpm dev
+pnpm preview
+pnpm run deploy
+```
+
+For setup details, refer to CloudFlare's official Next.js guide:
+
+[CloudFlare Next.js manual configuration][34]
 
 ### Docker
 
@@ -102,7 +117,7 @@ pnpm container
 [10]: https://mdxjs.com/
 [11]: https://mobx.js.org/
 [12]: https://github.com/features/actions
-[13]: https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme
+[13]: https://workers.cloudflare.com/
 [14]: https://sentry.io/
 [15]: https://github.com/apps/settings
 [16]: https://pullrequestbadge.com/
@@ -123,5 +138,5 @@ pnpm container
 [31]: https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#create-initialization-config-files
 [32]: https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api#authenticating-with-a-personal-access-token
 [33]: https://open.larksuite.com/document/server-docs/getting-started/api-access-token/app-access-token-development-guide#95c7f5f5
-[34]: https://nextjs.org/docs/deployment
+[34]: https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/#manual-configuration
 [35]: https://ai.google.dev/gemini-api/docs/api-key

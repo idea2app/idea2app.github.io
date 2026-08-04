@@ -5,46 +5,70 @@ on:
       - '**'
 jobs:
   Build-and-Deploy:
-    env:
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v7
-        if: ${{ env.VERCEL_TOKEN && env.VERCEL_ORG_ID && env.VERCEL_PROJECT_ID }}
 
-      - name: Deploy to Vercel
-        id: vercel-deployment
-        uses: amondnet/vercel-action@v42.3.0
-        if: ${{ env.VERCEL_TOKEN && env.VERCEL_ORG_ID && env.VERCEL_PROJECT_ID }}
+      - uses: pnpm/action-setup@v6
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          working-directory: ./
-          vercel-args: ${{ github.ref == 'refs/heads/main' && '--prod' || '' }}
+          version: 10
 
-      - name: Lark notification
-        uses: Open-Source-Bazaar/feishu-action@v3
+      - uses: actions/setup-node@v7
         with:
-          url: ${{ secrets.LARK_CHATBOT_HOOK_URL }}
-          msg_type: interactive
-          content: |
-            schema: "2.0"
-            config:
-              wide_screen_mode: true
-            header:
-              title:
-                tag: plain_text
-                content: Vercel 部署通知
-              template: blue
-            body:
-              elements:
-                - tag: markdown
-                  content: |
-                    **Git 仓库：** [${{ github.server_url }}/${{ github.repository }}](${{ github.server_url }}/${{ github.repository }})
-                    **代码分支：** [${{ github.ref }}](${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }})
-                    **提交作者：** [${{ github.actor }}](${{ github.server_url }}/${{ github.actor }})
-                    **预览链接：** [${{ steps.vercel-deployment.outputs.preview-url }}](${{ steps.vercel-deployment.outputs.preview-url }})
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm i --frozen-lockfile
+
+      - name: Deploy to CloudFlare
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [[ "$GITHUB_REF_NAME" == "$DEFAULT_BRANCH" ]]; then
+            echo "Deploying to production environment"
+            pnpm run deploy
+          else
+            BRANCH_SLUG=$(echo "$GITHUB_REF_NAME" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9-]+/-/g; s/-+/-/g; s/^-+//; s/-+$//')
+            BRANCH_SLUG="${BRANCH_SLUG:0:40}"
+            PREVIEW_ALIAS="b-${BRANCH_SLUG}"
+            PREVIEW_SUMMARY_FILE="cloudflare-preview-summary.md"
+
+            echo "Building OpenNext bundle for preview URLs"
+            npx opennextjs-cloudflare build
+
+            echo "Uploading Worker version with preview alias: $PREVIEW_ALIAS"
+            npx wrangler versions upload \
+              --config wrangler.jsonc \
+              --preview-alias "$PREVIEW_ALIAS" \
+              --message "Preview for $GITHUB_REF_NAME @ $GITHUB_SHA" | tee wrangler-preview-output.log
+            {
+              echo "## Cloudflare Preview Deployment"
+              echo ""
+              echo "- Branch: $GITHUB_REF_NAME"
+              echo "- Commit: $GITHUB_SHA"
+              echo "- Preview Alias: $PREVIEW_ALIAS"
+              echo ""
+              echo "### Wrangler Output"
+              echo ''
+              grep -E 'workers.dev|preview|Version|Uploaded|Deployed' wrangler-preview-output.log || cat wrangler-preview-output.log
+              echo ''
+            } > "$PREVIEW_SUMMARY_FILE"
+
+            cat "$PREVIEW_SUMMARY_FILE" >> "$GITHUB_STEP_SUMMARY"
+
+            PR_NUMBER=$(gh pr list --head "$GITHUB_REF_NAME" --state open --json number --jq '.[0].number')
+            if [[ -n "$PR_NUMBER" ]]; then
+              echo "Posting preview summary to PR #$PR_NUMBER"
+              gh pr comment "$PR_NUMBER" --body-file "$PREVIEW_SUMMARY_FILE"
+            else
+              echo "No open PR found for branch $GITHUB_REF_NAME, skip PR comment"
+            fi
+          fi

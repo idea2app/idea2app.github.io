@@ -34,7 +34,7 @@ export class SessionBox extends Component<SessionBoxProps> {
       <>
         {children}
 
-        <Dialog open={this.modalShown} onOpenChange={value => (this.modalShown = value)}>
+        <Dialog open={this.modalShown}>
           <DialogContent className="max-w-[90vw] rounded-xl p-4 sm:max-w-[400px]">
             <SessionForm onSignIn={() => (this.modalShown = false)} />
           </DialogContent>

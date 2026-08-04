@@ -10,10 +10,11 @@ yarn.lock
 # testing
 /coverage
 
-# next.js
+# Next.js
 next-env.d.ts
 /.next/
 /out/
+/.open-next/
 
 # PWA
 public/sw.js
@@ -38,10 +39,14 @@ yarn-error.log*
 # local env files
 .env*local
 
-# vercel
+# Vercel
 .vercel
 
-# typescript
+# CloudFlare
+cloudflare-env.d.ts
+.wrangler
+
+# TypeScript
 *.tsbuildinfo
 
 # IDE
