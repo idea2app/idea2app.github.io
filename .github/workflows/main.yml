@@ -14,7 +14,7 @@ jobs:
 
       - uses: pnpm/action-setup@v6
         with:
-          version: 10
+          version: 11
 
       - uses: actions/setup-node@v7
         with:
@@ -23,7 +23,10 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm i --frozen-lockfile
+        run: |
+          pnpm set "//npm.pkg.github.com/:_authToken" "${{ secrets.GH_PAT }}"
+          pnpm i --frozen-lockfile
+          echo "${{ secrets.ENV_FILE }}" > .env.local
 
       - name: Deploy to CloudFlare
         env:
