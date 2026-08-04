@@ -1,6 +1,7 @@
 packages:
   - .
 autoInstallPeers: false
+nodeLinker: hoisted
 overrides:
   next: "$next"
 patchedDependencies:

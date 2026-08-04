@@ -8,9 +8,12 @@ const enableSentry = process.env.NODE_ENV === 'development' || !process.env.SENT
 
 const captureUnderscoreErrorException = async (context: NextPageContext) => {
   try {
-    const Sentry = await import('@sentry/nextjs');
+    const importModule = new Function('m', 'return import(m)') as (m: string) => Promise<{
+      captureUnderscoreErrorException?: (context: NextPageContext) => Promise<void>;
+    }>;
+    const Sentry = await importModule('@sentry/nextjs');
 
-    await Sentry.captureUnderscoreErrorException(context);
+    await Sentry.captureUnderscoreErrorException?.(context);
   } catch {}
 };
 
