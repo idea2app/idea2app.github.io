@@ -7,7 +7,6 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "^1.20.2",
     "@ai-sdk/google": "^4.0.31",
     "@giscus/react": "^3.1.0",
     "@koa/bodyparser": "^6.1.0",
@@ -78,8 +77,7 @@
     "shadcn-helper": "^0.5.9",
     "tailwindcss": "^4.3.3",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.66.0",
-    "wrangler": "^4.118.0"
+    "typescript-eslint": "^8.66.0"
   },
   "resolutions": {
     "next": "$next"
@@ -106,9 +104,6 @@
     "dev": "next dev --webpack",
     "build": "cross-env CI=true  next build --webpack",
     "start": "next start",
-    "preview": "opennextjs-cloudflare build  &&  opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build  &&  opennextjs-cloudflare deploy",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "test": "lint-staged  &&  tsc --noEmit",
     "pack-image": "docker build -t idea2app/web-server .",
     "container": "docker rm -f web-server  &&  docker run --name web-server -p 3000:3000 -d idea2app/web-server"

@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs';
 import type { NextPageContext } from 'next';
 import Error from 'next/error';
 
@@ -6,20 +7,9 @@ import { createI18nStore, I18nContext, I18nProps, loadSSRLanguage } from '../mod
 
 const enableSentry = process.env.NODE_ENV === 'development' || !process.env.SENTRY_AUTH_TOKEN;
 
-const captureUnderscoreErrorException = async (context: NextPageContext) => {
-  try {
-    const importModule = new Function('m', 'return import(m)') as (m: string) => Promise<{
-      captureUnderscoreErrorException?: (context: NextPageContext) => Promise<void>;
-    }>;
-    const Sentry = await importModule('@sentry/nextjs');
-
-    await Sentry.captureUnderscoreErrorException?.(context);
-  } catch {}
-};
-
 export default class CustomError extends Error<I18nProps> {
   static async getInitialProps(context: NextPageContext) {
-    if (enableSentry) await captureUnderscoreErrorException(context);
+    if (enableSentry) await Sentry.captureUnderscoreErrorException(context);
 
     return {
       ...(await Error.getInitialProps(context)),
