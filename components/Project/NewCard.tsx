@@ -1,11 +1,13 @@
 import { Project } from '@idea2app/data-server';
-import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
 import { observer } from 'mobx-react';
 import Link from 'next/link';
 import { FC, useContext } from 'react';
 
 import { I18nContext } from '../../models/Translation';
 import type zhCN from '../../translation/zh-CN';
+import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
 
 const statusTextKeys: (keyof typeof zhCN)[] = [
   'project_open', // Open
@@ -16,51 +18,34 @@ const statusTextKeys: (keyof typeof zhCN)[] = [
   'project_maintenance', // Maintenance
 ];
 
-const bgColors: string[] = [
-  'grey.200', // Open
-  'success.light', // Evaluated
-  'warning.light', // ContractGenerated
-  'info.light', // InDevelopment
-  'secondary.light', // InTesting
-  'primary.light', // Maintenance
-];
-
-const textColors: string[] = [
-  'text.primary', // Open
-  'success.contrastText', // Evaluated
-  'warning.contrastText', // ContractGenerated
-  'info.contrastText', // InDevelopment
-  'secondary.contrastText', // InTesting
-  'primary.contrastText', // Maintenance
+const statusClasses = [
+  'bg-muted text-muted-foreground',
+  'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-200',
+  'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200',
+  'bg-cyan-100 text-cyan-800 dark:bg-cyan-900/40 dark:text-cyan-200',
+  'bg-violet-100 text-violet-800 dark:bg-violet-900/40 dark:text-violet-200',
+  'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-200',
 ];
 
 export const ProjectCard: FC<Project> = observer(({ id, name, status = 0 }) => {
   const { t } = useContext(I18nContext);
+  const statusClass = statusClasses[status] || statusClasses[0];
 
   return (
     <Card>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-lg">{name}</CardTitle>
+      </CardHeader>
       <CardContent>
-        <Typography variant="h6" component="h3" gutterBottom>
-          {name}
-        </Typography>
-        <Typography
-          variant="caption"
-          sx={{
-            px: 1,
-            py: 0.5,
-            borderRadius: 1,
-            bgcolor: bgColors[status] ?? 'grey.200',
-            color: textColors[status] ?? 'text.primary',
-          }}
-        >
+        <Badge className={statusClass}>
           {t((statusTextKeys[status] ?? 'project_open') as keyof typeof zhCN)}
-        </Typography>
+        </Badge>
       </CardContent>
-      <CardActions>
-        <Button component={Link} href={`/dashboard/project/${id}`} size="small" variant="contained">
-          {t('view_evaluation')}
+      <CardFooter>
+        <Button asChild size="sm">
+          <Link href={`/dashboard/project/${id}`}>{t('view_evaluation')}</Link>
         </Button>
-      </CardActions>
+      </CardFooter>
     </Card>
   );
 });

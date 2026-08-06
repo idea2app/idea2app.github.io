@@ -1,48 +1,48 @@
-import { Box, Card, CardContent, Grid, Typography } from '@mui/material';
 import { observer } from 'mobx-react';
 import { FC, useContext } from 'react';
 
 import { I18nContext } from '../models/Translation';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 
 export const VersionComparison: FC = observer(() => {
   const { t } = useContext(I18nContext);
 
   return (
-    <Grid container spacing={4} sx={{ mt: 4 }}>
-      <Grid size={{ xs: 12, md: 6 }}>
-        <Card sx={{ height: '100%' }}>
+    <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div>
+        <Card className="h-full">
+          <CardHeader>
+            <CardTitle>{t('public_version')}</CardTitle>
+          </CardHeader>
           <CardContent>
-            <Typography variant="h5" component="h2" gutterBottom>
-              {t('public_version')}
-            </Typography>
-            <Box component="ol" sx={{ pl: 2 }}>
-              <Typography component="li">{t('github_one_click_login')}</Typography>
-              <Typography component="li">{t('submitted_data_public')}</Typography>
-              <Typography component="li">{t('free_evaluation_daily_limit')}</Typography>
-              <Typography component="li">{t('volunteer_community_support')}</Typography>
-              <Typography component="li">{t('open_source_bounty_development')}</Typography>
-            </Box>
+            <ol className="list-decimal space-y-1 pl-5">
+              <li>{t('github_one_click_login')}</li>
+              <li>{t('submitted_data_public')}</li>
+              <li>{t('free_evaluation_daily_limit')}</li>
+              <li>{t('volunteer_community_support')}</li>
+              <li>{t('open_source_bounty_development')}</li>
+            </ol>
           </CardContent>
         </Card>
-      </Grid>
+      </div>
 
-      <Grid size={{ xs: 12, md: 6 }}>
-        <Card sx={{ height: '100%' }}>
+      <div>
+        <Card className="h-full">
+          <CardHeader>
+            <CardTitle>{t('commercial_version')}</CardTitle>
+          </CardHeader>
           <CardContent>
-            <Typography variant="h5" component="h2" gutterBottom>
-              {t('commercial_version')}
-            </Typography>
-            <Box component="ol" sx={{ pl: 2 }}>
-              <Typography component="li">{t('email_one_click_register')}</Typography>
-              <Typography component="li">{t('project_data_confidential')}</Typography>
-              <Typography component="li">{t('unlimited_evaluation_24_7')}</Typography>
-              <Typography component="li">{t('ai_interactive_prototype')}</Typography>
-              <Typography component="li">{t('daily_engineer_review')}</Typography>
-              <Typography component="li">{t('professional_development_team')}</Typography>
-            </Box>
+            <ol className="list-decimal space-y-1 pl-5">
+              <li>{t('email_one_click_register')}</li>
+              <li>{t('project_data_confidential')}</li>
+              <li>{t('unlimited_evaluation_24_7')}</li>
+              <li>{t('ai_interactive_prototype')}</li>
+              <li>{t('daily_engineer_review')}</li>
+              <li>{t('professional_development_team')}</li>
+            </ol>
           </CardContent>
         </Card>
-      </Grid>
-    </Grid>
+      </div>
+    </div>
   );
 });

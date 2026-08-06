@@ -39,6 +39,8 @@ jobs:
         id: push
         with:
           context: .
+          secrets: |
+            gh_pat=${{ secrets.GH_PAT }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

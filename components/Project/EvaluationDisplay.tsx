@@ -4,7 +4,6 @@ import {
   RequirementEvaluation,
   UserRole,
 } from '@idea2app/data-server';
-import { Box, Typography } from '@mui/material';
 import { observer } from 'mobx-react';
 import { FC, useContext } from 'react';
 
@@ -21,8 +20,7 @@ export const DevelopmentScopeName = ({ t }: typeof i18n) => [
 ];
 
 export interface EvaluationDisplayProps
-  extends RequirementEvaluation,
-    Pick<PrototypeGeneratorProps, 'projectId' | 'messageId'> {
+  extends RequirementEvaluation, Pick<PrototypeGeneratorProps, 'projectId' | 'messageId'> {
   prototypes?: PrototypeVersion[];
 }
 
@@ -46,50 +44,23 @@ export const EvaluationDisplay: FC<EvaluationDisplayProps> = observer(
       { roles } = userStore.session || {};
 
     return (
-      <Box
-        className="prose"
-        sx={{
-          '& .evaluation-item': {
-            marginBottom: 1,
-            fontSize: '0.875rem',
-            padding: '4px 0',
-            borderLeft: '3px solid',
-            borderColor: 'primary.light',
-            paddingLeft: 1,
-          },
-          '& ul': {
-            margin: '8px 0',
-            paddingLeft: '20px',
-          },
-          '& li': {
-            marginBottom: '4px',
-          },
-        }}
-      >
+      <div className="prose text-sm">
         {title && (
-          <Box className="evaluation-item">
-            <Typography component="h3" sx={{ fontWeight: 600, mb: 1 }}>
-              {title}
-            </Typography>
-          </Box>
+          <div className="evaluation-item border-primary/60 mb-2 border-l-2 py-1 pl-2 text-sm">
+            <h3 className="mb-1 font-semibold">{title}</h3>
+          </div>
         )}
         {scopes[0] && (
-          <Box className="evaluation-item">
-            <Typography component="h4" sx={{ fontWeight: 600 }}>
-              {t('development_scopes')}
-            </Typography>
-            <Box component="ul" sx={{ mt: 0.5 }}>
+          <div className="evaluation-item border-primary/60 mb-2 border-l-2 py-1 pl-2 text-sm">
+            <h4 className="font-semibold">{t('development_scopes')}</h4>
+            <ul className="mt-1 space-y-1 pl-5">
               {scopes.map(scope => {
                 const prototypeType = (
                   scope === 2 ? 'desktop' : scope === 3 ? 'mobile' : undefined
                 ) as PrototypeType;
 
                 return (
-                  <Box
-                    key={scope}
-                    component="li"
-                    sx={{ ml: 1, display: 'flex', alignItems: 'center', gap: 1 }}
-                  >
+                  <li key={scope} className="flex flex-wrap items-center gap-2">
                     {DevelopmentScopeName(i18n)[scope]}
 
                     {prototypeType && (
@@ -99,72 +70,56 @@ export const EvaluationDisplay: FC<EvaluationDisplayProps> = observer(
                         prototype={prototypes?.find(({ type }) => type === prototypeType)}
                       />
                     )}
-                  </Box>
+                  </li>
                 );
               })}
-            </Box>
-          </Box>
+            </ul>
+          </div>
         )}
         {models?.[0] && (
-          <Box className="evaluation-item">
-            <Typography component="h4" sx={{ fontWeight: 600 }}>
-              {t('feature_modules')}
-            </Typography>
-            <Box component="ol" sx={{ mt: 0.5 }}>
+          <div className="evaluation-item border-primary/60 mb-2 border-l-2 py-1 pl-2 text-sm">
+            <h4 className="font-semibold">{t('feature_modules')}</h4>
+            <ol className="mt-1 space-y-1 pl-5">
               {models.map((model, index) => (
-                <Box key={index} component="li" sx={{ ml: 1 }}>
+                <li key={index} className="ml-1">
                   {model}
-                </Box>
+                </li>
               ))}
-            </Box>
-          </Box>
+            </ol>
+          </div>
         )}
         {workload && (
-          <Box className="evaluation-item">
-            <Typography component="h4" sx={{ fontWeight: 600 }}>
-              {t('workload')}
-            </Typography>{' '}
-            {workload} {t('hours')}
-          </Box>
+          <div className="evaluation-item border-primary/60 mb-2 border-l-2 py-1 pl-2 text-sm">
+            <h4 className="font-semibold">{t('workload')}</h4> {workload} {t('hours')}
+          </div>
         )}
         {monthPeriod && (
-          <Box className="evaluation-item">
-            <Typography component="h4" sx={{ fontWeight: 600 }}>
-              {t('timeline')}
-            </Typography>{' '}
-            {monthPeriod} {t('months')}
-          </Box>
+          <div className="evaluation-item border-primary/60 mb-2 border-l-2 py-1 pl-2 text-sm">
+            <h4 className="font-semibold">{t('timeline')}</h4> {monthPeriod} {t('months')}
+          </div>
         )}
         {budget && (
-          <Box className="evaluation-item">
-            <Typography component="h4" sx={{ fontWeight: 600 }}>
-              {t('budget')}
-            </Typography>{' '}
-            RMB￥{budget.toLocaleString()}
-          </Box>
+          <div className="evaluation-item border-primary/60 mb-2 border-l-2 py-1 pl-2 text-sm">
+            <h4 className="font-semibold">{t('budget')}</h4> RMB￥{budget.toLocaleString()}
+          </div>
         )}
         {(developerCount || designerCount) && (
-          <Box className="evaluation-item">
-            <Typography component="h4" sx={{ fontWeight: 600 }}>
-              {t('team_size')}
-            </Typography>{' '}
+          <div className="evaluation-item border-primary/60 mb-2 border-l-2 py-1 pl-2 text-sm">
+            <h4 className="font-semibold">{t('team_size')}</h4>{' '}
             {[
               developerCount && `${developerCount} ${t('developers')}`,
               designerCount && `${designerCount} ${t('designers')}`,
             ]
               .filter(Boolean)
               .join(', ')}
-          </Box>
+          </div>
         )}
         {roles && roles.includes(2 as UserRole.Client) && (
-          <Box className="evaluation-item">
-            <Typography component="h4" sx={{ fontWeight: 600 }}>
-              {t('complexity_factor')}
-            </Typography>{' '}
-            {factor}
-          </Box>
+          <div className="evaluation-item border-primary/60 mb-2 border-l-2 py-1 pl-2 text-sm">
+            <h4 className="font-semibold">{t('complexity_factor')}</h4> {factor}
+          </div>
         )}
-      </Box>
+      </div>
     );
   },
 );

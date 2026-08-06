@@ -16,15 +16,13 @@
     "downlevelIteration": true,
     "useDefineForClassFields": true,
     "jsx": "react-jsx",
-    "incremental": true
+    "incremental": true,
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
   },
-  "include": [
-    "next-env.d.ts",
-    "material-ui-pigment-css.d.ts",
-    "*.mjs",
-    "*.js",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
+  "include": ["next-env.d.ts", "*.mjs", "*.js", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

@@ -1,7 +1,8 @@
 import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
-import { compose, errorLogger } from 'next-ssr-middleware';
+import { GetStaticProps } from 'next';
 import { FC, useContext } from 'react';
+import { Minute, Second } from 'web-utility';
 
 import { GitCard } from '../../components/Git/Card';
 import { LarkImage } from '../../components/LarkImage';
@@ -10,32 +11,41 @@ import { ProjectCard } from '../../components/Project/PublicCard';
 import { Project, ProjectModel } from '../../models/Project';
 import { GitRepositoryModel } from '../../models/Repository';
 import { I18nContext } from '../../models/Translation';
-import { solidCache } from '../api/core';
+import { lark } from '../api/Lark/core';
+import { skipBuildingAll } from '@/lib/SSG';
 
 interface ProjectDetailPageProps {
   project: Project;
   repositories: GitRepository[];
 }
 
-export const getServerSideProps = compose<{ id: string }, ProjectDetailPageProps>(
-  solidCache,
-  errorLogger,
-  async ({ params: { id } = {} }) => {
-    let repositories: GitRepository[] = [];
+export const getStaticPaths = skipBuildingAll;
 
-    const project = await new ProjectModel().getOne(id!);
+export const getStaticProps: GetStaticProps<ProjectDetailPageProps, { id: string }> = async ({
+  params: { id } = {},
+}) => {
+  await lark.getAccessToken();
 
-    if (project.openSource) {
-      const openSource = String(project.openSource)
-        .split(/\s+/)
-        .map(path => new URL(path).pathname.slice(1));
+  const store = new ProjectModel();
+  store.client = lark.client;
 
-      repositories = await new GitRepositoryModel('idea2app').getGroup(openSource);
-    }
+  let repositories: GitRepository[] = [];
 
-    return { props: JSON.parse(JSON.stringify({ project, repositories })) };
-  },
-);
+  const project = await store.getOne(id!);
+
+  if (project.openSource) {
+    const openSource = String(project.openSource)
+      .split(/\s+/)
+      .map(path => new URL(path).pathname.slice(1));
+
+    repositories = await new GitRepositoryModel('idea2app').getGroup(openSource);
+  }
+
+  return {
+    props: JSON.parse(JSON.stringify({ project, repositories })),
+    revalidate: Minute / Second,
+  };
+};
 
 const ProjectDetailPage: FC<ProjectDetailPageProps> = observer(({ project, repositories }) => {
   const { t } = useContext(I18nContext);

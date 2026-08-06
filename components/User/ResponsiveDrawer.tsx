@@ -1,38 +1,22 @@
-import { Drawer, useMediaQuery, useTheme } from '@mui/material';
 import { FC, PropsWithChildren } from 'react';
 
-const DESKTOP_DRAWER_STYLES = {
-  position: 'sticky',
-  top: '5rem',
-  height: 'calc(100vh - 5rem)',
-  border: 'none',
-  boxShadow: 'none',
-} as const;
+import { Sheet, SheetContent } from '@/components/ui/sheet';
 
 export interface ResponsiveDrawerProps extends PropsWithChildren {
   open: boolean;
   onClose: () => void;
 }
 
-export const ResponsiveDrawer: FC<ResponsiveDrawerProps> = ({ open, onClose, children }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
-  return (
-    <Drawer
-      anchor="left"
-      open={isMobile ? open : true}
-      variant={isMobile ? 'temporary' : 'permanent'}
-      onClose={onClose}
-      sx={{
-        display: { xs: isMobile ? 'block' : 'none', md: isMobile ? 'none' : 'block' },
-        '& .MuiDrawer-paper': {
-          width: 250,
-          ...(isMobile ? {} : DESKTOP_DRAWER_STYLES),
-        },
-      }}
-    >
+export const ResponsiveDrawer: FC<ResponsiveDrawerProps> = ({ open, onClose, children }) => (
+  <>
+    <aside className="bg-background/95 sticky top-20 hidden h-[calc(100vh-5rem)] w-[250px] shrink-0 border-r p-4 md:flex">
       {children}
-    </Drawer>
-  );
-};
+    </aside>
+
+    <Sheet open={open} onOpenChange={value => !value && onClose()}>
+      <SheetContent side="left" className="w-[250px] p-4">
+        {children}
+      </SheetContent>
+    </Sheet>
+  </>
+);

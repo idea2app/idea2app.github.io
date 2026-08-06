@@ -1,8 +1,7 @@
-import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
-import { createEmotionCache, documentGetInitialProps } from '@mui/material-nextjs/v15-pagesRouter';
 import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 
+import type { ColorScheme } from '../models/System';
 import { DefaultImage, Name, SiteUrl } from '../models/configuration';
 import { LanguageCode, parseSSRContext } from '../models/Translation';
 
@@ -29,21 +28,13 @@ const organizationJsonLd = {
 
 interface CustomDocumentProps {
   language: LanguageCode;
-  colorScheme: 'light' | 'dark';
+  colorScheme: ColorScheme;
 }
-
-/**
- * @see {@link https://mui.com/material-ui/integrations/nextjs/#pages-router}
- */
 export default class CustomDocument extends Document<CustomDocumentProps> {
   static async getInitialProps(context: DocumentContext) {
-    const cacheProps = await documentGetInitialProps(context, {
-      emotionCache: createEmotionCache({ enableCssLayer: true, key: 'css', prepend: true }),
-    });
-
     return {
-      ...cacheProps,
-      ...parseSSRContext<CustomDocumentProps>(context, ['language']),
+      ...(await Document.getInitialProps(context)),
+      ...parseSSRContext<CustomDocumentProps>(context, ['language', 'colorScheme']),
     };
   }
 
@@ -51,7 +42,7 @@ export default class CustomDocument extends Document<CustomDocumentProps> {
     const { language, colorScheme } = this.props;
 
     return (
-      <Html lang={language} data-bs-theme={colorScheme}>
+      <Html lang={language} className={colorScheme === 'dark' ? 'dark' : ''}>
         <Head>
           <link rel="icon" href={DefaultImage} />
           <link rel="manifest" href="/manifest.json" />
@@ -81,10 +72,6 @@ export default class CustomDocument extends Document<CustomDocumentProps> {
         </Head>
 
         <body>
-          {/**
-           * Preventing SSR flickering @see {@link https://mui.com/material-ui/customization/css-theme-variables/configuration/#preventing-ssr-flickering}
-           */}
-          <InitColorSchemeScript attribute="class" />
           <Main />
           <NextScript />
         </body>

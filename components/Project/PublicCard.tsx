@@ -1,8 +1,8 @@
-import { Box, Chip } from '@mui/material';
 import { ElementType, FC } from 'react';
 import { formatDate } from 'web-utility';
 
 import { Project } from '../../models/Project';
+import { Badge } from '../ui/badge';
 
 export interface ProjectCardProps extends Project {
   className?: string;
@@ -17,28 +17,22 @@ export const ProjectCard: FC<ProjectCardProps> = ({
   workForm,
   price,
   settlementDate,
-  component = 'li',
+  component: Tag = 'li',
   ...props
 }) => (
-  <Box
-    className={`elevation-1 hover:elevation-4 relative rounded-2xl border border-gray-200 p-4 dark:border-0 ${className} mb-4 grid break-inside-avoid grid-cols-1 grid-rows-4 gap-2`}
-    component={component}
+  <Tag
+    className={`bg-card text-card-foreground relative mb-4 grid break-inside-avoid grid-cols-1 grid-rows-4 gap-2 rounded-2xl border p-4 ${className}`}
     {...props}
   >
     <a className="row-span-2 flex items-center justify-between" href={`/project/${id}`}>
       <h2 className="text-lg">{String(name)}</h2>
-      <Chip label={String(workForm)} />
+      <Badge variant="secondary">{String(workForm)}</Badge>
     </a>
-    <ul className="scrollbar-none scroll-snap-x row-span-1 flex snap-mandatory flex-nowrap gap-2 overflow-x-scroll">
+    <ul className="scroll-snap-x row-span-1 flex snap-mandatory scrollbar-none flex-nowrap gap-2 overflow-x-scroll">
       {(type as string[])?.map(value => (
-        <Chip
-          key={value}
-          size="small"
-          component="li"
-          variant="outlined"
-          color="primary"
-          label={value}
-        />
+        <li key={value}>
+          <Badge variant="outline">{value}</Badge>
+        </li>
       ))}
     </ul>
     <div className="row-span-1 flex items-center justify-between">
@@ -46,9 +40,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({
         ￥{String(price).replace(/\d/g, (matched, offset) => (offset ? '0' : matched))}+
       </strong>
 
-      <time className="text-sm text-neutral-500">
-        🏁 {formatDate(+settlementDate!, 'YYYY-MM-DD')}
-      </time>
+      <time className="text-sm text-neutral-500">🏁 {formatDate(+settlementDate!, 'YYYY-MM-DD')}</time>
     </div>
-  </Box>
+  </Tag>
 );

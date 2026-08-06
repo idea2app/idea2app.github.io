@@ -2,8 +2,7 @@ import { JsonWebTokenError, sign } from 'jsonwebtoken';
 import { Context, Middleware, ParameterizedContext } from 'koa';
 import JWT from 'koa-jwt';
 import { HTTPError } from 'koajax';
-import { cache, KoaOption, withKoa } from 'next-ssr-middleware';
-import { Month } from 'web-utility';
+import { KoaOption, withKoa } from 'next-ssr-middleware';
 
 import { JWT_SECRET, VERCEL_URL } from '../../models/configuration';
 
@@ -63,6 +62,3 @@ export function getTarget(link: URL | string): string {
 
   return origin !== new URL(link, href).origin ? '_blank' : '_self';
 }
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const solidCache = cache<any, any>(Month, Month);

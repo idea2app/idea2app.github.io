@@ -3,10 +3,12 @@ import { FC, HTMLAttributes, useContext } from 'react';
 
 import { I18nContext } from '../../models/Translation';
 import { PageHead } from '../PageHead';
-import { ScrollList } from '../ScrollList';
+import { ScrollList } from '@/components/ui/mobx-restful-shadcn/scroll-list';
 
-export interface ScrollListPageProps<D extends DataObject, F extends Filter<D> = Filter<D>>
-  extends HTMLAttributes<HTMLDivElement> {
+export interface ScrollListPageProps<
+  D extends DataObject,
+  F extends Filter<D> = Filter<D>,
+> extends HTMLAttributes<HTMLDivElement> {
   store: ListModel<D, F>;
   filter?: F;
   defaultData?: D[];

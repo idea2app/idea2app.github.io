@@ -10,7 +10,7 @@ yarn.lock
 # testing
 /coverage
 
-# next.js
+# Next.js
 next-env.d.ts
 /.next/
 /out/
@@ -38,11 +38,14 @@ yarn-error.log*
 # local env files
 .env*local
 
-# vercel
+# Vercel
 .vercel
 
-# typescript
+# TypeScript
 *.tsbuildinfo
 
 # IDE
 .vscode/settings.json
+
+# Shadcn UI components
+components/ui/

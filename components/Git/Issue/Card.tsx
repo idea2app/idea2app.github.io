@@ -1,11 +1,13 @@
-import { Avatar, Box, CardProps, Chip } from '@mui/material';
 import { marked } from 'marked';
 import { Issue } from 'mobx-github';
 import { FC } from 'react';
 
 import { SymbolIcon } from '../../Icon';
+import { Avatar, AvatarImage } from '../../ui/avatar';
+import { Badge } from '../../ui/badge';
+import { Card } from '../../ui/card';
 
-export type IssueCardProps = Issue & Omit<CardProps, 'id'>;
+export type IssueCardProps = Issue & { className?: string };
 
 export const IssueCard: FC<IssueCardProps> = ({
   id,
@@ -19,12 +21,10 @@ export const IssueCard: FC<IssueCardProps> = ({
   user,
   comments,
   created_at,
-  component = 'li',
   ...props
 }) => (
-  <Box
-    className={`elevation-1 hover:elevation-4 relative mb-4 grid break-inside-avoid grid-cols-1 grid-rows-5 gap-2 rounded-2xl border border-gray-200 p-4 dark:border-0 ${className}`}
-    component={component}
+  <Card
+    className={`relative mb-4 grid break-inside-avoid grid-cols-1 grid-rows-5 gap-2 rounded-2xl p-4 ${className}`}
     {...props}
   >
     <a
@@ -38,18 +38,13 @@ export const IssueCard: FC<IssueCardProps> = ({
       </h2>
     </a>
 
-    <ul className="scrollbar-none scroll-snap-x row-span-1 flex snap-mandatory flex-nowrap gap-2 overflow-x-scroll">
+    <ul className="scroll-snap-x row-span-1 flex snap-mandatory scrollbar-none flex-nowrap gap-2 overflow-x-scroll">
       {labels?.map(
         label =>
           typeof label === 'object' && (
-            <Chip
-              key={label.name}
-              size="small"
-              component="li"
-              variant="outlined"
-              color="primary"
-              label={label.name}
-            />
+            <li key={label.name}>
+              <Badge variant="outline">{label.name}</Badge>
+            </li>
           ),
       )}
     </ul>
@@ -62,7 +57,9 @@ export const IssueCard: FC<IssueCardProps> = ({
     <footer className="row-span-1 flex items-center justify-between text-neutral-500">
       {user && (
         <div className="flex items-center gap-2">
-          <Avatar src={user.avatar_url} alt={user.name || ''} />
+          <Avatar>
+            <AvatarImage src={user.avatar_url} alt={user.name || ''} />
+          </Avatar>
           {user.name || ''}
         </div>
       )}
@@ -74,5 +71,5 @@ export const IssueCard: FC<IssueCardProps> = ({
         {new Date(created_at).toLocaleString()}
       </time>
     </footer>
-  </Box>
+  </Card>
 );

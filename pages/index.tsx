@@ -1,10 +1,10 @@
-import Masonry from '@mui/lab/Masonry';
-import { Button } from '@mui/material';
 import { GitRepository } from 'mobx-github';
 import { observer } from 'mobx-react';
-import { compose, errorLogger } from 'next-ssr-middleware';
+import { GetStaticProps } from 'next';
 import { FC, useContext } from 'react';
+import { Minute, Second } from 'web-utility';
 
+import { Button } from '@/components/ui/button';
 import { PartnerOverview } from '../components/Client/Partner';
 import { GitListLayout } from '../components/Git';
 import { SymbolIcon } from '../components/Icon';
@@ -15,7 +15,7 @@ import { PageHead } from '../components/PageHead';
 import { Member, MEMBER_VIEW, MemberModel } from '../models/Member';
 import { GitRepositoryModel } from '../models/Repository';
 import { I18nContext } from '../models/Translation';
-import { solidCache } from './api/core';
+import { lark } from './api/Lark/core';
 import { PARTNERS_INFO, service } from './api/home';
 
 interface HomePageProps {
@@ -23,10 +23,15 @@ interface HomePageProps {
   members: Member[];
 }
 
-export const getServerSideProps = compose(solidCache, errorLogger, async () => {
+export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
+  await lark.getAccessToken();
+
+  const store = new MemberModel();
+  store.client = lark.client;
+
   const [repositories, members] = await Promise.all([
     new GitRepositoryModel('idea2app').getList({ relation: [] }, 1, 9),
-    new MemberModel().getViewList(MEMBER_VIEW),
+    store.getViewList(MEMBER_VIEW),
   ]);
 
   return {
@@ -36,8 +41,9 @@ export const getServerSideProps = compose(solidCache, errorLogger, async () => {
         members: members.filter(({ github, position, summary }) => github && position && summary),
       }),
     ),
+    revalidate: Minute / Second,
   };
-});
+};
 
 const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => {
   const i18n = useContext(I18nContext);
@@ -73,13 +79,14 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => {
 
               <p className="flex-1 text-neutral-500">{summary}</p>
 
-              <Button
-                className="flex-shrink-0 !rounded-full md:self-center"
-                variant="contained"
-                href={buttonLink}
-                target={buttonLink.startsWith('http') ? '_blank' : undefined}
-              >
-                {buttonText}
+              <Button className="flex-shrink-0 !rounded-full md:self-center" asChild>
+                <a
+                  href={buttonLink}
+                  target={buttonLink.startsWith('http') ? '_blank' : undefined}
+                  rel="noreferrer"
+                >
+                  {buttonText}
+                </a>
               </Button>
             </li>
           ))}
@@ -108,19 +115,13 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => {
 
       <Section title={t('member')} link="/member">
         <div className="relative max-h-[45rem] overflow-hidden">
-          <Masonry
-            component="ul"
-            className="overflow-hidden"
-            columns={{ xs: 1, sm: 2, md: 3 }}
-            spacing={2}
-            defaultHeight={720}
-            defaultColumns={4}
-            defaultSpacing={1}
-          >
+          <ul className="columns-1 gap-4 overflow-hidden sm:columns-2 md:columns-3">
             {members.map(item => (
-              <MemberCard key={String(item.id)} {...item} />
+              <li key={String(item.id)} className="mb-4 break-inside-avoid">
+                <MemberCard {...item} />
+              </li>
             ))}
-          </Masonry>
+          </ul>
           <div className="from-background pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-linear-to-t pt-32 pb-8" />
         </div>
       </Section>

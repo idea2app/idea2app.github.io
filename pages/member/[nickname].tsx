@@ -1,17 +1,19 @@
-import { TabContext, TabList, TabListProps, TabPanel } from '@mui/lab';
-import { Badge, Tab } from '@mui/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
-import { compose, errorLogger } from 'next-ssr-middleware';
+import { GetStaticProps } from 'next';
+import { Minute, Second } from 'web-utility';
 
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MemberCard } from '../../components/Member/Card';
 import { PageHead } from '../../components/PageHead';
 import { ProjectListLayout } from '../../components/Project';
 import { Member, MemberModel } from '../../models/Member';
 import { Project, ProjectModel } from '../../models/Project';
 import { i18n, I18nContext } from '../../models/Translation';
-import { solidCache } from '../api/core';
+import { lark } from '../api/Lark/core';
+import { skipBuildingAll } from '@/lib/SSG';
 
 interface MemberDetailPageProps {
   member: Member;
@@ -19,24 +21,29 @@ interface MemberDetailPageProps {
   memberProjects: Project[];
 }
 
-export const getServerSideProps = compose<{ nickname: string }>(
-  solidCache,
-  errorLogger,
-  async ({ params }) => {
-    const [member] = await new MemberModel().getList(params, 1, 1);
+export const getStaticPaths = skipBuildingAll;
 
-    if (!member) return { notFound: true, props: {} };
+export const getStaticProps: GetStaticProps<MemberDetailPageProps, { nickname: string }> = async ({
+  params,
+}) => {
+  await lark.getAccessToken();
 
-    const [leaderProjects, memberProjects] = await Promise.all([
-      new ProjectModel().getAll({ leader: params?.nickname }),
-      new ProjectModel().getAll({ members: params?.nickname }),
-    ]);
+  const memberStore = new MemberModel(),
+    projectStore = new ProjectModel();
+  memberStore.client = projectStore.client = lark.client;
 
-    return {
-      props: JSON.parse(JSON.stringify({ member, leaderProjects, memberProjects })),
-    };
-  },
-);
+  const [member] = await memberStore.getList(params, 1, 1);
+
+  const [leaderProjects, memberProjects] = await Promise.all([
+    projectStore.getAll({ leader: params?.nickname }),
+    projectStore.getAll({ members: params?.nickname }),
+  ]);
+
+  return {
+    props: JSON.parse(JSON.stringify({ member, leaderProjects, memberProjects })),
+    revalidate: Minute / Second,
+  };
+};
 
 @observer
 export default class MemberDetailPage extends ObservedComponent<
@@ -47,7 +54,7 @@ export default class MemberDetailPage extends ObservedComponent<
 
   @observable accessor eventKey = '0';
 
-  handleChange: TabListProps['onChange'] = (event, newValue) => (this.eventKey = newValue);
+  handleChange = (value: string) => (this.eventKey = value);
 
   render() {
     const { member, leaderProjects, memberProjects } = this.props;
@@ -68,38 +75,21 @@ export default class MemberDetailPage extends ObservedComponent<
           </ul>
 
           <div className="flex w-full flex-col rounded-2xl md:w-3/4">
-            <TabContext value={this.eventKey}>
-              <TabList
-                className="mx-auto"
-                component="ul"
-                aria-label="project tab"
-                variant="fullWidth"
-                onChange={this.handleChange}
-              >
+            <Tabs value={this.eventKey} onValueChange={this.handleChange} className="w-full">
+              <TabsList className="mx-auto mb-4">
                 {entries.map(([label, list], index) => (
-                  <Tab
-                    key={label}
-                    component="li"
-                    label={
-                      <Badge
-                        className="px-2"
-                        badgeContent={list.length}
-                        color="primary"
-                        aria-label={`${list.length} ${label}`}
-                      >
-                        {label}
-                      </Badge>
-                    }
-                    value={index + ''}
-                  />
+                  <TabsTrigger key={label} value={index + ''} className="gap-2">
+                    <span>{label}</span>
+                    <Badge variant="secondary">{list.length}</Badge>
+                  </TabsTrigger>
                 ))}
-              </TabList>
+              </TabsList>
               {entries.map(([label, list], index) => (
-                <TabPanel key={label} className="px-0!" value={index + ''}>
+                <TabsContent key={label} value={index + ''} className="px-0">
                   <ProjectListLayout defaultData={list} />
-                </TabPanel>
+                </TabsContent>
               ))}
-            </TabContext>
+            </Tabs>
           </div>
         </div>
       </div>

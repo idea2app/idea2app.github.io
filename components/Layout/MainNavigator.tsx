@@ -1,13 +1,3 @@
-import {
-  AppBar,
-  Button,
-  Drawer,
-  IconButton,
-  Menu,
-  MenuItem,
-  PopoverProps,
-  Toolbar,
-} from '@mui/material';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
@@ -15,6 +5,14 @@ import Link from 'next/link';
 
 import { i18n, I18nContext, LanguageName } from '../../models/Translation';
 import { SymbolIcon } from '../Icon';
+import { Button } from '../ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
+import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
 import { ColorModeIconDropdown } from './ColorModeDropdown';
 import { BrandLogo, GithubIcon } from './Svg';
 import { MenuLink } from './menu';
@@ -24,117 +22,85 @@ export class MainNavigator extends ObservedComponent<{ menu: MenuLink[] }, typeo
   static contextType = I18nContext;
 
   @observable accessor menuExpand = false;
-  @observable accessor menuAnchor: PopoverProps['anchorEl'] = null;
 
-  switchI18n = (key: string) => {
-    this.observedContext!.loadLanguages(key as keyof typeof LanguageName);
-    this.menuAnchor = null;
-  };
+  switchI18n = (key: string) => this.observedContext!.loadLanguages(key as keyof typeof LanguageName);
 
   renderLinks = () =>
     this.props.menu.map(({ title, href, target }) => (
-      <Button key={title} component={Link} className="py-1" href={href} target={target}>
-        {title}
+      <Button key={title} variant="ghost" asChild>
+        <Link className="py-1" href={String(href)} target={target}>
+          {title}
+        </Link>
       </Button>
     ));
 
   renderI18nSwitch = () => {
-    const { currentLanguage } = this.observedContext!,
-      { menuAnchor } = this;
+    const { currentLanguage } = this.observedContext!;
 
     return (
-      <>
-        <IconButton
-          color="inherit"
-          aria-label="language selector"
-          id="i18n-selector"
-          onClick={event => (this.menuAnchor = event.currentTarget)}
-        >
-          <SymbolIcon name="language" />
-        </IconButton>
-        <Menu
-          anchorEl={menuAnchor}
-          id="i18n-menu"
-          slotProps={{ paper: { variant: 'outlined', sx: { my: '4px' } } }}
-          open={Boolean(menuAnchor)}
-          onClose={() => (this.menuAnchor = null)}
-        >
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button type="button" variant="ghost" size="icon-sm" aria-label="language selector">
+            <SymbolIcon name="language" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
           {Object.entries(LanguageName).map(([key, name]) => (
-            <MenuItem
+            <DropdownMenuItem
               key={key}
-              value={key}
-              selected={key === currentLanguage}
+              className={key === currentLanguage ? 'bg-accent' : ''}
               onClick={() => this.switchI18n(key)}
             >
               {name}
-            </MenuItem>
+            </DropdownMenuItem>
           ))}
-        </Menu>
-      </>
+        </DropdownMenuContent>
+      </DropdownMenu>
     );
   };
 
   renderDrawer = () => (
     <nav className="md:hidden">
-      <IconButton
-        aria-label="nav links"
-        aria-controls="drawer"
-        aria-haspopup="true"
-        onClick={() => (this.menuExpand = true)}
-      >
-        <SymbolIcon name="menu" />
-      </IconButton>
-
-      <Drawer
-        variant="temporary"
-        anchor="top"
-        ModalProps={{ keepMounted: true }}
-        slotProps={{ paper: { className: 'w-full bg-transparent shadow-none bg-none' } }}
-        open={this.menuExpand}
-        onClose={() => (this.menuExpand = false)}
-      >
-        <Toolbar disableGutters />
-        <div className="bg-background-paper elevation-16 py-3">
+      <Sheet open={this.menuExpand} onOpenChange={open => (this.menuExpand = open)}>
+        <SheetTrigger asChild>
+          <Button type="button" variant="ghost" size="icon-sm" aria-label="nav links">
+            <SymbolIcon name="menu" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="top" className="pt-12">
           <nav className="flex flex-col items-center gap-4">{this.renderLinks()}</nav>
-        </div>
-      </Drawer>
+        </SheetContent>
+      </Sheet>
     </nav>
   );
 
   render() {
     return (
-      <AppBar color="transparent" className="fixed z-[1201] backdrop-blur-md">
-        <Toolbar>
-          <div className="container mx-auto flex max-w-screen-xl items-center justify-between px-3">
-            <div className="flex flex-row items-center gap-3">
-              {this.renderDrawer()}
+      <header className="bg-background/90 fixed inset-x-0 top-0 z-50 border-b backdrop-blur-md">
+        <div className="container mx-auto flex h-16 max-w-screen-xl items-center justify-between px-3">
+          <div className="flex flex-row items-center gap-3">
+            {this.renderDrawer()}
 
-              <BrandLogo className="dark:!hidden" variant="black" />
-              <BrandLogo className="!hidden dark:!block" variant="white" />
-              <Link translate="no" className="font-bold uppercase" href="/" rel="home">
-                idea2app
-              </Link>
-            </div>
-
-            <nav className="item-center hidden flex-row gap-4 md:flex">{this.renderLinks()}</nav>
-
-            <div className="flex flex-row items-center gap-3 sm:gap-6">
-              <IconButton
-                className="!text-black dark:!text-white"
-                component={Link}
-                href="https://github.com/idea2app"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="idea2app's GitHub account"
-              >
-                <GithubIcon />
-              </IconButton>
-              <ColorModeIconDropdown />
-              {this.renderI18nSwitch()}
-            </div>
+            <BrandLogo className="h-8 w-8 dark:!hidden" variant="black" />
+            <BrandLogo className="hidden h-8 w-8 dark:!block" variant="white" />
+            <Link translate="no" className="font-bold uppercase" href="/" rel="home">
+              idea2app
+            </Link>
           </div>
-        </Toolbar>
-      </AppBar>
+
+          <nav className="item-center hidden flex-row gap-2 md:flex">{this.renderLinks()}</nav>
+
+          <div className="flex flex-row items-center gap-2 sm:gap-3">
+            <Button asChild variant="ghost" size="icon-sm" aria-label="idea2app's GitHub account">
+              <Link href="https://github.com/idea2app" target="_blank" rel="noopener noreferrer">
+                <GithubIcon />
+              </Link>
+            </Button>
+            <ColorModeIconDropdown />
+            {this.renderI18nSwitch()}
+          </div>
+        </div>
+      </header>
     );
   }
 }
