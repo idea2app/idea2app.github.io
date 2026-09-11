@@ -9,47 +9,42 @@ import { Button } from '@/components/ui/button';
 import { ScrollList } from '@/components/ui/mobx-restful-shadcn/scroll-list';
 
 export interface WebAuthnCredentialListProps {
-  email?: string;
+  email: string;
 }
 
-const CredentialItem: FC<UserCredential> = ({
-  id,
-  uuid,
-  transports = [],
-  authenticator,
-  synced,
-  userVerified,
-}) => {
-  const { t } = useContext(I18nContext);
+export const CredentialCard: FC<UserCredential> = observer(
+  ({ id, uuid, transports = [], authenticator, synced, userVerified }) => {
+    const { t } = useContext(I18nContext);
 
-  return (
-    <li className="border-border flex items-start justify-between gap-3 rounded-lg border p-3">
-      <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium">{authenticator?.name || 'WebAuthn'}</p>
-        <p className="text-muted-foreground text-xs break-all">{uuid}</p>
-        <p className="text-muted-foreground mt-1 text-xs">
-          {[
-            transports.join(', '),
-            synced && t('credential_synced'),
-            userVerified && t('user_verified'),
-          ]
-            .filter(Boolean)
-            .join(' · ')}
-        </p>
-      </div>
+    return (
+      <li className="border-border flex items-start justify-between gap-3 rounded-lg border p-3">
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-medium">{authenticator?.name || 'WebAuthn'}</p>
+          <p className="text-muted-foreground text-xs break-all">{uuid}</p>
+          <p className="text-muted-foreground mt-1 text-xs">
+            {[
+              transports.join(', '),
+              synced && t('credential_synced'),
+              userVerified && t('user_verified'),
+            ]
+              .filter(Boolean)
+              .join(' · ')}
+          </p>
+        </div>
 
-      <Button
-        type="button"
-        size="sm"
-        variant="outline"
-        disabled={userCredentialStore.uploading > 0}
-        onClick={() => userCredentialStore.deleteCredential(id)}
-      >
-        {t('delete')}
-      </Button>
-    </li>
-  );
-};
+        <Button
+          type="button"
+          size="sm"
+          variant="outline"
+          disabled={userCredentialStore.uploading > 0}
+          onClick={() => userCredentialStore.deleteOne(id)}
+        >
+          {t('delete')}
+        </Button>
+      </li>
+    );
+  },
+);
 
 export const WebAuthnCredentialList: FC<WebAuthnCredentialListProps> = observer(({ email }) => {
   const { t } = useContext(I18nContext);
@@ -78,11 +73,11 @@ export const WebAuthnCredentialList: FC<WebAuthnCredentialListProps> = observer(
         className="max-h-60 overflow-y-auto pr-1"
         translator={i18n}
         store={userCredentialStore}
-        renderList={(allItems: UserCredential[]) =>
+        renderList={allItems =>
           allItems[0] ? (
             <ul className="space-y-3">
-              {allItems.map((credential: UserCredential) => (
-                <CredentialItem key={credential.id} {...credential} />
+              {allItems.map(credential => (
+                <CredentialCard key={credential.id} {...credential} />
               ))}
             </ul>
           ) : (

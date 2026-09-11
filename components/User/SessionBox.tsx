@@ -36,10 +36,11 @@ export class SessionBox extends Component<SessionBoxProps> {
 
         <Dialog open={this.modalShown} onOpenChange={this.toggleModal}>
           <DialogContent className="max-w-[90vw] rounded-xl p-4 sm:max-w-[400px]">
-            <div className="flex flex-col gap-4">
+            {currentUser ? (
+              <WebAuthnCredentialList email={currentUser.email!} />
+            ) : (
               <SessionForm onSignIn={() => (this.modalShown = true)} />
-              {currentUser && <WebAuthnCredentialList email={currentUser.email} />}
-            </div>
+            )}
           </DialogContent>
         </Dialog>
       </>
