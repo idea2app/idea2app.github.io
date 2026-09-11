@@ -27,17 +27,7 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof i18n
     event.preventDefault();
     event.stopPropagation();
 
-    const { t } = this.observedContext;
-
-    if (this.signType === 'up') {
-      const { email } = formToJSON<SignInData>(event.currentTarget.form!);
-
-      if (!email) throw new Error(t('email_required_for_webauthn'));
-
-      await userStore.signUpWebAuthn(email);
-    } else {
-      await userStore.signInWebAuthn();
-    }
+    await userStore.signInWebAuthn();
     this.props.onSignIn?.();
   };
 
@@ -83,7 +73,10 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof i18n
 
     return (
       <form className="flex flex-col gap-4" onSubmit={this.handleSubmit}>
-        <Tabs value={signType} onValueChange={value => (this.signType = value as 'up' | 'in')}>
+        <Tabs
+          value={signType}
+          onValueChange={(value: string) => (this.signType = value as 'up' | 'in')}
+        >
           <TabsList className="mb-4 w-full">
             <TabsTrigger value="up" className="flex-1">
               {t('register')}
@@ -122,16 +115,18 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof i18n
               <SymbolIcon name="key" />
             </Button>
           )}
-          <Button
-            type="button"
-            size="icon"
-            title="WebAuthn"
-            disabled={loading}
-            onClick={this.handleWebAuthn}
-            className="shrink-0"
-          >
-            <SymbolIcon name="fingerprint" />
-          </Button>
+          {signType === 'in' && (
+            <Button
+              type="button"
+              size="icon"
+              title="WebAuthn"
+              disabled={loading}
+              onClick={this.handleWebAuthn}
+              className="shrink-0"
+            >
+              <SymbolIcon name="fingerprint" />
+            </Button>
+          )}
         </div>
 
         <Button className="mt-4" type="submit" disabled={loading}>

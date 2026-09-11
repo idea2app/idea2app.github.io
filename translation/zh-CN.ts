@@ -141,6 +141,11 @@ export default {
   email_required_for_OTP: '电子邮箱是发送验证码的必填项',
   OTP_sent_to_email: '验证码已发送到您的邮箱',
   registration_success_please_login: '注册成功，请登录',
+  webauthn_credentials: '安全凭证',
+  webauthn_credentials_description: '绑定当前设备的 U 盾、指纹、人脸等安全凭证',
+  webauthn_credentials_empty: '在当前设备绑定 U 盾、指纹、人脸等安全凭证，以便下次一键登录',
+  credential_synced: '已同步',
+  user_verified: '已验证',
 
   // Chat interface
   type_your_message: '输入您的消息……',
