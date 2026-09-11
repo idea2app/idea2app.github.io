@@ -28,6 +28,7 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof i18n
     event.stopPropagation();
 
     await userStore.signInWebAuthn();
+
     this.props.onSignIn?.();
   };
 
@@ -73,10 +74,7 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof i18n
 
     return (
       <form className="flex flex-col gap-4" onSubmit={this.handleSubmit}>
-        <Tabs
-          value={signType}
-          onValueChange={(value: string) => (this.signType = value as 'up' | 'in')}
-        >
+        <Tabs value={signType} onValueChange={value => (this.signType = value as 'up' | 'in')}>
           <TabsList className="mb-4 w-full">
             <TabsTrigger value="up" className="flex-1">
               {t('register')}

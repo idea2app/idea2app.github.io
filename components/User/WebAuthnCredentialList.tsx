@@ -5,6 +5,7 @@ import { FC, useContext } from 'react';
 import { I18nContext, i18n } from '../../models/Translation';
 import userCredentialStore from '../../models/UserCredential';
 import userStore from '../../models/User';
+
 import { Button } from '@/components/ui/button';
 import { ScrollList } from '@/components/ui/mobx-restful-shadcn/scroll-list';
 
@@ -63,7 +64,7 @@ export const WebAuthnCredentialList: FC<WebAuthnCredentialListProps> = observer(
           size="sm"
           variant="outline"
           disabled={loading || !email}
-          onClick={() => email && userCredentialStore.createCredential(email)}
+          onClick={() => email && userCredentialStore.createOne(email)}
         >
           {t('create')}
         </Button>

@@ -17,7 +17,7 @@ export const API_HOST = process.env.NEXT_PUBLIC_API_HOST!;
 
 export const CACHE_HOST = process.env.NEXT_PUBLIC_CACHE_HOST!;
 
-export const ProxyBaseURL = `https://idea2.app/proxy`;
+export const ProxyBaseURL = `https://idea2app.cn/proxy`;
 
 export const LARK_API_HOST = `${Own_API_Host}/api/Lark/`;
 
