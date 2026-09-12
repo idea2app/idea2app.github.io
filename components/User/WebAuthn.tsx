@@ -8,22 +8,27 @@ import userStore from '../../models/User';
 
 import { Button } from '@/components/ui/button';
 import { ScrollList } from '@/components/ui/mobx-restful-shadcn/scroll-list';
-
-export interface WebAuthnCredentialListProps {
-  email: string;
-}
+import systemStore from '@/models/System';
 
 export const CredentialCard: FC<UserCredential> = observer(
-  ({ id, uuid, transports = [], authenticator, synced, userVerified }) => {
-    const { t } = useContext(I18nContext);
+  ({ id, uuid, algorithm, transports = [], authenticator, synced, userVerified }) => {
+    const { t } = useContext(I18nContext),
+      { colorScheme } = systemStore;
 
     return (
       <li className="border-border flex items-start justify-between gap-3 rounded-lg border p-3">
+        <img
+          className="size-10 shrink-0 rounded-md object-contain"
+          loading="lazy"
+          src={colorScheme === 'dark' ? authenticator?.icon_dark : authenticator?.icon_light}
+          alt={authenticator?.name || 'WebAuthn'}
+        />
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-medium">{authenticator?.name || 'WebAuthn'}</p>
           <p className="text-muted-foreground text-xs break-all">{uuid}</p>
           <p className="text-muted-foreground mt-1 text-xs">
             {[
+              algorithm,
               transports.join(', '),
               synced && t('credential_synced'),
               userVerified && t('user_verified'),
@@ -38,7 +43,7 @@ export const CredentialCard: FC<UserCredential> = observer(
           size="sm"
           variant="outline"
           disabled={userCredentialStore.uploading > 0}
-          onClick={() => userCredentialStore.deleteOne(id)}
+          onClick={() => confirm(`${t('delete')} ${uuid} ?`) && userCredentialStore.deleteOne(id)}
         >
           {t('delete')}
         </Button>
@@ -47,12 +52,16 @@ export const CredentialCard: FC<UserCredential> = observer(
   },
 );
 
-export const WebAuthnCredentialList: FC<WebAuthnCredentialListProps> = observer(({ email }) => {
+export interface CredentialListProps {
+  email: string;
+}
+
+export const CredentialList: FC<CredentialListProps> = observer(({ email }) => {
   const { t } = useContext(I18nContext);
   const loading = userCredentialStore.uploading + userStore.uploading > 0;
 
   return (
-    <section className="border-border flex flex-col gap-3 border-t pt-4">
+    <section className="flex flex-col gap-3 pt-4">
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
           <h3 className="text-sm font-medium">{t('webauthn_credentials')}</h3>

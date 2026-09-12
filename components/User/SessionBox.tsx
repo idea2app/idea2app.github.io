@@ -7,7 +7,7 @@ import { Component, PropsWithChildren } from 'react';
 
 import userStore from '../../models/User';
 import { SessionForm } from './SessionForm';
-import { WebAuthnCredentialList } from './WebAuthnCredentialList';
+import { CredentialList } from './WebAuthn';
 
 export interface SessionBoxProps extends PropsWithChildren<JWTProps<User>> {
   path?: string;
@@ -35,9 +35,12 @@ export class SessionBox extends Component<SessionBoxProps> {
         {children}
 
         <Dialog open={this.modalShown} onOpenChange={this.toggleModal}>
-          <DialogContent className="max-w-[90vw] rounded-xl p-4 sm:max-w-[400px]">
+          <DialogContent
+            className="max-w-[90vw] rounded-xl p-4 sm:max-w-[400px]"
+            showCloseButton={!!currentUser}
+          >
             {currentUser ? (
-              <WebAuthnCredentialList email={currentUser.email!} />
+              <CredentialList email={currentUser.email!} />
             ) : (
               <SessionForm onSignIn={() => (this.modalShown = true)} />
             )}
