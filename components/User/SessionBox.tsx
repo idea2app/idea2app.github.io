@@ -23,7 +23,7 @@ export class SessionBox extends Component<SessionBoxProps> {
   }
 
   toggleModal = (open: boolean) => {
-    if (open || this.props.jwtPayload || userStore.session) this.modalShown = open;
+    if (open || userStore.session || this.props.jwtPayload) this.modalShown = open;
   };
 
   render() {
@@ -39,11 +39,7 @@ export class SessionBox extends Component<SessionBoxProps> {
             className="max-w-[90vw] rounded-xl p-4 sm:max-w-[400px]"
             showCloseButton={!!currentUser}
           >
-            {currentUser ? (
-              <CredentialList email={currentUser.email!} />
-            ) : (
-              <SessionForm onSignIn={() => (this.modalShown = true)} />
-            )}
+            {currentUser ? <CredentialList email={currentUser.email!} /> : <SessionForm />}
           </DialogContent>
         </Dialog>
       </>
