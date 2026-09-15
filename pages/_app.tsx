@@ -1,5 +1,6 @@
 import '../styles/main.css';
 
+import '@khmyznikov/pwa-install';
 import { SerwistProvider } from '@serwist/next/react';
 import { HTTPError } from 'koajax';
 import { configure } from 'mobx';
@@ -7,12 +8,11 @@ import { enableStaticRendering, observer } from 'mobx-react';
 import App, { AppContext } from 'next/app';
 import Head from 'next/head';
 
-import { PWAInstall } from '@/components/PWA/Install';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Footer } from '../components/Layout/Footer';
 import { MainNavigator } from '../components/Layout/MainNavigator';
 import { PrivateMenu, PublicMenu } from '../components/Layout/menu';
-import { isServer } from '../models/configuration';
+import { isDev, isServer, Summary } from '../models/configuration';
 import { createI18nStore, I18nContext, I18nProps, loadSSRLanguage } from '../models/Translation';
 
 configure({ enforceActions: 'never' });
@@ -48,11 +48,12 @@ export default class CustomApp extends App<I18nProps> {
     const menu = asPath.startsWith('/dashboard') ? PrivateMenu(i18nStore) : PublicMenu(i18nStore);
 
     return (
-      <SerwistProvider swUrl="/sw.js" disable={process.env.NODE_ENV !== 'production'}>
+      <SerwistProvider swUrl="/sw.js" disable={isDev}>
         <I18nContext.Provider value={i18nStore}>
           <Head>
             <meta name="viewport" content="width=device-width, initial-scale=1" />
           </Head>
+
           <TooltipProvider>
             <div className="flex min-h-screen flex-col justify-between">
               <MainNavigator menu={menu} />
@@ -61,7 +62,8 @@ export default class CustomApp extends App<I18nProps> {
 
               <Footer />
             </div>
-            <PWAInstall />
+
+            <pwa-install description={Summary} />
           </TooltipProvider>
         </I18nContext.Provider>
       </SerwistProvider>
