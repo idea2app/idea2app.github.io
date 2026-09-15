@@ -11,17 +11,17 @@ const isDev = NODE_ENV === 'development';
 const { stdout, stderr } = spawnSync('git', ['rev-parse', 'HEAD'], {
   encoding: 'utf8',
 });
+const gitRevision = stdout?.trim();
 const { GITHUB_SHA, VERCEL_GIT_COMMIT_SHA } = process.env;
 
-const revision = stdout.trim() || VERCEL_GIT_COMMIT_SHA || GITHUB_SHA || crypto.randomUUID();
+const revision = gitRevision || VERCEL_GIT_COMMIT_SHA || GITHUB_SHA || crypto.randomUUID();
 
-if (!stdout.trim())
+if (!gitRevision)
   console.warn(
     `Falling back to random UUID for Serwist revision: ${
-      stderr.trim() || 'Git revision is unavailable'
+      stderr?.trim() || 'Git revision is unavailable'
     }`,
   );
-
 const withSerwist = withSerwistInit({
   swSrc: 'service-worker.ts',
   swDest: 'public/sw.js',
