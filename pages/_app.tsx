@@ -48,7 +48,7 @@ export default class CustomApp extends App<I18nProps> {
     const menu = asPath.startsWith('/dashboard') ? PrivateMenu(i18nStore) : PublicMenu(i18nStore);
 
     return (
-      <SerwistProvider swUrl="/sw.js" disable={isServer()}>
+      <SerwistProvider swUrl="/sw.js" disable={process.env.NODE_ENV !== 'production'}>
         <I18nContext.Provider value={i18nStore}>
           <Head>
             <meta name="viewport" content="width=device-width, initial-scale=1" />
