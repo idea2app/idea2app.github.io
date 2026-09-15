@@ -1,16 +1,34 @@
+import { spawnSync } from 'node:child_process';
+
 import { withSentryConfig } from '@sentry/nextjs';
+import withSerwistInit from '@serwist/next';
 import { NextConfig } from 'next';
-import setPWA from 'next-pwa';
 import webpack from 'webpack';
 
 const { NODE_ENV, CI, SENTRY_AUTH_TOKEN, SENTRY_ORG, SENTRY_PROJECT } = process.env;
 const isDev = NODE_ENV === 'development';
 
-const withPWA = setPWA({
-  dest: 'public',
-  register: true,
-  skipWaiting: true,
-  disable: isDev,
+const { stdout, stderr } = spawnSync('git', ['rev-parse', 'HEAD'], {
+  encoding: 'utf8',
+});
+const { GITHUB_SHA, VERCEL_GIT_COMMIT_SHA } = process.env;
+const revision =
+  stdout.trim() ||
+  VERCEL_GIT_COMMIT_SHA ||
+  GITHUB_SHA ||
+  globalThis.crypto.randomUUID();
+
+if (!stdout.trim())
+  console.warn(
+    `Falling back to random UUID for Serwist revision: ${
+      stderr.trim() || 'Git revision is unavailable'
+    }`,
+  );
+
+const withSerwist = withSerwistInit({
+  swSrc: 'service-worker.ts',
+  swDest: 'public/sw.js',
+  additionalPrecacheEntries: [{ url: '/', revision }],
 });
 
 const rewrites: NextConfig['rewrites'] = async () => ({
@@ -35,7 +53,7 @@ const redirects: NextConfig['redirects'] = async () => [
   },
 ];
 
-const nextConfig = withPWA({
+const nextConfig = withSerwist({
   output: CI ? 'standalone' : undefined,
   images: {
     remotePatterns: [{ protocol: 'https', hostname: 'github.com' }],

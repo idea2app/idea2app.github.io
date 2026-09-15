@@ -1,6 +1,6 @@
 # idea2app OWS
 
-[React][1] project scaffold based on [TypeScript][2], [Next.js][3], [Bootstrap][4] & [Workbox][5]. And this project bootstrapped with [`create-next-app`][6].
+[React][1] project scaffold based on [TypeScript][2], [Next.js][3], [Bootstrap][4] & [Serwist][5]. And this project bootstrapped with [`create-next-app`][6].
 
 [![CI & CD](https://github.com/idea2app/idea2app.github.io/actions/workflows/main.yml/badge.svg)][7]
 
@@ -12,7 +12,7 @@
 - Language: [TypeScript v5][2] + [MDX v3][10]
 - Component engine: [Next.js v16][3]
 - Component suite: [Bootstrap v5][4]
-- PWA framework: [Workbox v6][5]
+- PWA framework: [Serwist v9][5]
 - State management: [MobX v6][11]
 - CI / CD: GitHub [Actions][12] + [Vercel][13]
 - Monitor service: [Sentry][14]
@@ -94,7 +94,7 @@ pnpm container
 [2]: https://www.typescriptlang.org/
 [3]: https://nextjs.org/
 [4]: https://getbootstrap.com/
-[5]: https://developers.google.com/web/tools/workbox
+[5]: https://serwist.pages.dev/
 [6]: https://github.com/vercel/next.js/tree/canary/packages/create-next-app
 [7]: https://github.com/idea2app/idea2app.github.io/actions/workflows/main.yml
 [8]: https://codespaces.new/idea2app/idea2app.github.io
