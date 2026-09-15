@@ -1,7 +1,7 @@
 {
   "name": "@idea2app/ows",
   "version": "4.0.0",
-  "description": "React project scaffold based on TypeScript, Next.js, Bootstrap & Workbox.",
+  "description": "React project scaffold based on TypeScript, Next.js, Bootstrap & Serwist.",
   "private": true,
   "engines": {
     "node": ">=22"
@@ -9,9 +9,11 @@
   "dependencies": {
     "@ai-sdk/google": "^4.0.69",
     "@giscus/react": "^3.1.0",
+    "@khmyznikov/pwa-install": "^0.6.4",
     "@koa/bodyparser": "^6.1.0",
     "@passwordless-id/webauthn": "^2.4.0",
     "@sentry/nextjs": "^10.74.0",
+    "@serwist/next": "^9.5.12",
     "ai": "^7.0.100",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -35,7 +37,6 @@
     "mobx-react-helper": "^0.5.4",
     "mobx-restful": "^2.1.5",
     "next": "16.3.4",
-    "next-pwa": "~5.6.0",
     "next-ssr-middleware": "^1.1.1",
     "radix-ui": "^1.6.7",
     "react": "^19.3.0",
@@ -43,7 +44,8 @@
     "tailwind-merge": "^3.7.0",
     "tw-animate-css": "^1.4.0",
     "web-utility": "^4.7.2",
-    "webpack": "^5.111.0"
+    "webpack": "^5.111.0",
+    "serwist": "^9.5.12"
   },
   "devDependencies": {
     "@cspell/eslint-plugin": "^10.3.1",
@@ -57,7 +59,6 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/koa": "^3.0.3",
     "@types/lodash.debounce": "^4.0.9",
-    "@types/next-pwa": "^5.6.9",
     "@types/node": "^24.13.4",
     "@types/react": "^19.3.0",
     "cross-env": "^10.1.0",

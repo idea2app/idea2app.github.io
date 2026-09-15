@@ -3,9 +3,10 @@ import type { NextPageContext } from 'next';
 import Error from 'next/error';
 
 import { NotFoundCard } from '../components/NotFoundCard';
+import { isDev } from '../models/configuration';
 import { createI18nStore, I18nContext, I18nProps, loadSSRLanguage } from '../models/Translation';
 
-const enableSentry = process.env.NODE_ENV === 'development' || !process.env.SENTRY_AUTH_TOKEN;
+const enableSentry = isDev || !process.env.SENTRY_AUTH_TOKEN;
 
 export default class CustomError extends Error<I18nProps> {
   static async getInitialProps(context: NextPageContext) {

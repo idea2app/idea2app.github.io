@@ -5,6 +5,8 @@ export const Name = process.env.NEXT_PUBLIC_SITE_NAME,
 
 export const isServer = () => typeof window === 'undefined';
 
+export const isDev = process.env.NODE_ENV === 'development';
+
 export const { CI, VERCEL, VERCEL_URL, JWT_SECRET, GITHUB_TOKEN } = process.env;
 
 export const Own_API_Host = isServer()
