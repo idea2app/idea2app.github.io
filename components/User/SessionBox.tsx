@@ -5,7 +5,9 @@ import { observer } from 'mobx-react';
 import { JWTProps } from 'next-ssr-middleware';
 import { Component, PropsWithChildren } from 'react';
 
+import userStore from '../../models/User';
 import { SessionForm } from './SessionForm';
+import { CredentialList } from './WebAuthn';
 
 export interface SessionBoxProps extends PropsWithChildren<JWTProps<User>> {
   path?: string;
@@ -16,27 +18,28 @@ export class SessionBox extends Component<SessionBoxProps> {
   @observable
   accessor modalShown = false;
 
-  @observable
-  accessor drawerOpen = false;
-
   componentDidMount() {
     this.modalShown = !this.props.jwtPayload;
   }
 
-  toggleDrawer = () => (this.drawerOpen = !this.drawerOpen);
-
-  closeDrawer = () => (this.drawerOpen = false);
+  toggleModal = (open: boolean) => {
+    if (open || userStore.session || this.props.jwtPayload) this.modalShown = open;
+  };
 
   render() {
-    const { children } = this.props;
+    const { children, jwtPayload } = this.props,
+      currentUser = userStore.session || jwtPayload;
 
     return (
       <>
         {children}
 
-        <Dialog open={this.modalShown}>
-          <DialogContent className="max-w-[90vw] rounded-xl p-4 sm:max-w-[400px]">
-            <SessionForm onSignIn={() => (this.modalShown = false)} />
+        <Dialog open={this.modalShown} onOpenChange={this.toggleModal}>
+          <DialogContent
+            className="max-w-[90vw] rounded-xl p-4 sm:max-w-[400px]"
+            showCloseButton={!!currentUser}
+          >
+            {currentUser ? <CredentialList email={currentUser.email!} /> : <SessionForm />}
           </DialogContent>
         </Dialog>
       </>

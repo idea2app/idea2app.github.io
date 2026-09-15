@@ -48,6 +48,9 @@ export abstract class TableModel<D extends Base, F extends Filter<D> = Filter<D>
       ? this.client.put<D>(`${this.baseURI}/${id}`, data)
       : this.client.post<D>(this.baseURI, data));
 
+    if (id) this.changeOne(body!, id);
+    else this.restoreList({ allItems: [body!, ...this.allItems] });
+
     return (this.currentOne = body!);
   }
 

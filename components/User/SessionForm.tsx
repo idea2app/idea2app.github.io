@@ -27,17 +27,8 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof i18n
     event.preventDefault();
     event.stopPropagation();
 
-    const { t } = this.observedContext;
+    await userStore.signInWebAuthn();
 
-    if (this.signType === 'up') {
-      const { email } = formToJSON<SignInData>(event.currentTarget.form!);
-
-      if (!email) throw new Error(t('email_required_for_webauthn'));
-
-      await userStore.signUpWebAuthn(email);
-    } else {
-      await userStore.signInWebAuthn();
-    }
     this.props.onSignIn?.();
   };
 
@@ -122,16 +113,18 @@ export class SessionForm extends ObservedComponent<SessionFormProps, typeof i18n
               <SymbolIcon name="key" />
             </Button>
           )}
-          <Button
-            type="button"
-            size="icon"
-            title="WebAuthn"
-            disabled={loading}
-            onClick={this.handleWebAuthn}
-            className="shrink-0"
-          >
-            <SymbolIcon name="fingerprint" />
-          </Button>
+          {signType === 'in' && (
+            <Button
+              type="button"
+              size="icon"
+              title="WebAuthn"
+              disabled={loading}
+              onClick={this.handleWebAuthn}
+              className="shrink-0"
+            >
+              <SymbolIcon name="fingerprint" />
+            </Button>
+          )}
         </div>
 
         <Button className="mt-4" type="submit" disabled={loading}>

@@ -1,4 +1,4 @@
-import { User, WebAuthnChallenge } from '@idea2app/data-server';
+import { User, UserCredential, WebAuthnChallenge } from '@idea2app/data-server';
 import { clear } from 'idb-keyval';
 import { HTTPClient } from 'koajax';
 import { observable, reaction } from 'mobx';
@@ -73,12 +73,12 @@ export class UserModel extends TableModel<User> {
 
     const registration = await client.register({ user: email, challenge });
 
-    const { body } = await this.client.post<User>('user/WebAuthn/registration', {
+    const { body } = await this.client.post<UserCredential>('user/WebAuthn/registration', {
       ...registration,
       challenge,
     });
 
-    return (this.session = body);
+    return body!;
   }
 
   @toggle('uploading')
