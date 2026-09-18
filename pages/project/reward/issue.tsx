@@ -8,7 +8,7 @@ import { PageHead } from '../../../components/PageHead';
 import { ScrollList } from '@/components/ui/mobx-restful-shadcn/scroll-list';
 import issueStore, { IssueFilter, IssueModel } from '../../../models/Issue';
 import { I18nContext } from '../../../models/Translation';
-import { githubOAuth } from '../../api/GitHub/core';
+import { githubOAuth } from '../../../lib/GitHub';
 
 const issueFilter: IssueFilter = {
   repository_url: 'https://github.com/idea2app',

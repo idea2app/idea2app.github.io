@@ -7,7 +7,7 @@ import { ScrollListPage } from '../../components/Layout/ScrollListPage';
 import { ProjectListLayout } from '../../components/Project';
 import projectStore, { Project, ProjectModel } from '../../models/Project';
 import { I18nContext } from '../../models/Translation';
-import { lark } from '../api/Lark/core';
+import { lark } from '../../lib/Lark';
 
 export const getStaticProps: GetStaticProps<{ list: Project[] }> = async () => {
   await lark.getAccessToken();

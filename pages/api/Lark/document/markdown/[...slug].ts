@@ -1,7 +1,7 @@
 import { createKoaRouter, withKoaRouter } from 'next-ssr-middleware';
 
-import { safeAPI, verifyJWT } from '../../../core';
-import { lark } from '../../core';
+import { safeAPI, verifyJWT } from '../../../../../lib/API';
+import { lark } from '../../../../../lib/Lark';
 
 const router = createKoaRouter(import.meta.url);
 

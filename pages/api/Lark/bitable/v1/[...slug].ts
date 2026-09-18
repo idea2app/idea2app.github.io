@@ -2,8 +2,8 @@ import { LarkPageData, TableCellText, TableRecord, TableRecordData } from 'mobx-
 import { DataObject } from 'mobx-restful';
 import { createKoaRouter, withKoaRouter } from 'next-ssr-middleware';
 
-import { JWTContext, parseJWT, safeAPI, verifyJWT } from '../../../core';
-import { proxyLark, proxyLarkAll } from '../../core';
+import { JWTContext, parseJWT, safeAPI, verifyJWT } from '../../../../../lib/API';
+import { proxyLark, proxyLarkAll } from '../../../../../lib/Lark';
 
 export const config = { api: { bodyParser: false } };
 

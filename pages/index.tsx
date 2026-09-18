@@ -15,7 +15,7 @@ import { PageHead } from '../components/PageHead';
 import { Member, MEMBER_VIEW, MemberModel } from '../models/Member';
 import { GitRepositoryModel } from '../models/Repository';
 import { I18nContext } from '../models/Translation';
-import { lark } from './api/Lark/core';
+import { lark } from '../lib/Lark';
 import { PARTNERS_INFO, service } from './api/home';
 
 interface HomePageProps {

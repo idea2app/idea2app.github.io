@@ -1,8 +1,8 @@
 import { Context, Middleware } from 'koa';
 import { githubOAuth2 } from 'next-ssr-middleware';
 
-import { githubClient } from '../../../models/Base';
-import { ProxyBaseURL, VERCEL } from '../../../models/configuration';
+import { githubClient } from '../models/Base';
+import { ProxyBaseURL, VERCEL } from '../models/configuration';
 
 export const proxyGithub = async <T>({
   method,

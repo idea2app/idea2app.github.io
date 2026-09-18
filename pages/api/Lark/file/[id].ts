@@ -7,8 +7,8 @@ import { Readable } from 'stream';
 import { parseJSON } from 'web-utility';
 
 import { CACHE_HOST } from '../../../../models/configuration';
-import { safeAPI } from '../../core';
-import { downloadLarkFile } from '../core';
+import { safeAPI } from '../../../../lib/API';
+import { downloadLarkFile } from '../../../../lib/Lark';
 
 export const config = { api: { bodyParser: false } };
 

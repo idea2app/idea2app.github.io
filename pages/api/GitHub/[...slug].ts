@@ -1,7 +1,7 @@
 import { createKoaRouter, withKoaRouter } from 'next-ssr-middleware';
 
-import { safeAPI, verifyJWT } from '../core';
-import { proxyGitHubAll } from './core';
+import { safeAPI, verifyJWT } from '../../../lib/API';
+import { proxyGitHubAll } from '../../../lib/GitHub';
 
 export const config = { api: { bodyParser: false } };
 
