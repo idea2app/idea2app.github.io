@@ -18,13 +18,12 @@ export class FileModel extends BaseModel {
     return body!.getLink;
   }
 
-  @toggle('downloading')
-  async getText(URI: string) {
-    const { pathname } = new URL(URI);
-
-    const { body } = await this.client.get<string>(
-      this.baseURI + pathname,
-      { Accept: 'text/*' },
+  @toggle('uploading')
+  async textualize(URI: string) {
+    const { body } = await this.client.post<string>(
+      `${this.baseURI}/markdown`,
+      { URI },
+      {},
       { responseType: 'text' },
     );
     return body!;

@@ -28,7 +28,7 @@ export class ChatMessage extends ObservedComponent<ChatMessageProps, typeof i18n
 
     if (!file || content) return;
 
-    const text = await this.fileStore.getText(file);
+    const text = await this.fileStore.textualize(file);
 
     this.props.onFileParse?.(this.props.id, text);
   }
@@ -55,7 +55,7 @@ export class ChatMessage extends ObservedComponent<ChatMessageProps, typeof i18n
             <div className="mb-1">
               <FilePreview path={file} />
 
-              {this.fileStore.downloading > 0 && (
+              {this.fileStore.uploading > 0 && (
                 <div className="mt-1.5">
                   <p className="mb-1 block text-[0.7rem] opacity-80">{t('parsing_file_text')}</p>
                   <Progress value={100} className="h-1.5" />
