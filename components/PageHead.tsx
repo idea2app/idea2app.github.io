@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import type { FC, PropsWithChildren } from 'react';
 
-import { Name, SiteUrl, Summary } from '../models/configuration';
+import { Name, Summary, CurrentHost } from '../models/configuration';
 
 export type PageHeadProps = PropsWithChildren<
   Partial<Record<'title' | 'description' | 'ogImage' | 'type' | 'url', string>>
@@ -12,11 +12,11 @@ export const PageHead: FC<PageHeadProps> = ({
   description = Summary,
   ogImage = 'https://github.com/idea2app.png',
   type = 'website',
-  url = SiteUrl,
+  url = CurrentHost,
   children,
 }) => {
   const fullTitle = (title ? `${title} - ` : '') + Name;
-  const fullUrl = url.startsWith('/') ? `${SiteUrl}${url}` : url;
+  const fullUrl = url.startsWith('/') ? `${CurrentHost}${url}` : url;
 
   return (
     <Head>

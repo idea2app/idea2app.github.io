@@ -7,7 +7,7 @@ import { ScrollListPage } from '../../components/Layout/ScrollListPage';
 import { MemberListLayout } from '../../components/Member/List';
 import memberStore, { Member, MemberModel } from '../../models/Member';
 import { I18nContext } from '../../models/Translation';
-import { lark } from '../api/Lark/core';
+import { lark } from '../../lib/Lark';
 
 export const getStaticProps: GetStaticProps<{ list: Member[] }> = async () => {
   await lark.getAccessToken();

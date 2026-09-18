@@ -1,19 +1,28 @@
 export const Name = process.env.NEXT_PUBLIC_SITE_NAME,
   Summary = process.env.NEXT_PUBLIC_SITE_SUMMARY,
-  DefaultImage = process.env.NEXT_PUBLIC_LOGO || '/idea2app.svg',
-  SiteUrl = `https://${process.env.VERCEL_URL || 'idea2.app'}`;
+  DefaultImage = process.env.NEXT_PUBLIC_LOGO || '/idea2app.svg';
 
 export const isServer = () => typeof window === 'undefined';
 
 export const isDev = process.env.NODE_ENV === 'development';
 
-export const { CI, VERCEL, VERCEL_URL, JWT_SECRET, GITHUB_TOKEN } = process.env;
+export const {
+  NODE_ENV,
+  CI,
+  VERCEL,
+  VERCEL_ENV = NODE_ENV,
+  VERCEL_URL,
+  VERCEL_PROJECT_PRODUCTION_URL,
+  JWT_SECRET,
+  GITHUB_TOKEN,
+} = process.env;
 
-export const Own_API_Host = isServer()
-  ? VERCEL_URL
-    ? `https://${VERCEL_URL}`
-    : 'http://localhost:3000'
-  : globalThis.location.origin;
+export const RemoteDomain =
+  VERCEL_ENV === 'production' ? VERCEL_PROJECT_PRODUCTION_URL : VERCEL_URL;
+
+export const CurrentHost = RemoteDomain ? `https://${RemoteDomain}` : 'http://localhost:3000';
+
+export const Own_API_Host = isServer() ? CurrentHost : globalThis.location.origin;
 
 export const API_HOST = process.env.NEXT_PUBLIC_API_HOST!;
 

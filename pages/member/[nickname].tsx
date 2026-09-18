@@ -12,7 +12,7 @@ import { ProjectListLayout } from '../../components/Project';
 import { Member, MemberModel } from '../../models/Member';
 import { Project, ProjectModel } from '../../models/Project';
 import { i18n, I18nContext } from '../../models/Translation';
-import { lark } from '../api/Lark/core';
+import { lark } from '../../lib/Lark';
 import { skipBuildingAll } from '@/lib/SSG';
 
 interface MemberDetailPageProps {

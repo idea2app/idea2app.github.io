@@ -2,8 +2,8 @@ import { Context } from 'koa';
 import { LarkDocumentPathType } from 'mobx-lark';
 import { createKoaRouter, withKoaRouter } from 'next-ssr-middleware';
 
-import { safeAPI, verifyJWT } from '../../../core';
-import { lark } from '../../core';
+import { safeAPI, verifyJWT } from '../../../../../lib/API';
+import { lark } from '../../../../../lib/Lark';
 
 export const config = { api: { bodyParser: false } };
 

@@ -2,7 +2,7 @@ import { Context, Middleware } from 'koa';
 import { LarkApp, LarkData } from 'mobx-lark';
 import { buildURLData } from 'web-utility';
 
-import { LARK_API_HOST, LarkAppMeta } from '../../../models/configuration';
+import { LARK_API_HOST, LarkAppMeta } from '../models/configuration';
 
 export const lark = new LarkApp(LarkAppMeta);
 

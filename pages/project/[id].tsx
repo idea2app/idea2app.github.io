@@ -11,7 +11,7 @@ import { ProjectCard } from '../../components/Project/PublicCard';
 import { Project, ProjectModel } from '../../models/Project';
 import { GitRepositoryModel } from '../../models/Repository';
 import { I18nContext } from '../../models/Translation';
-import { lark } from '../api/Lark/core';
+import { lark } from '../../lib/Lark';
 import { skipBuildingAll } from '@/lib/SSG';
 
 interface ProjectDetailPageProps {

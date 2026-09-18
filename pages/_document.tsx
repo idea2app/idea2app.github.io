@@ -2,7 +2,7 @@ import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/do
 import Script from 'next/script';
 
 import type { ColorScheme } from '../models/System';
-import { DefaultImage, Name, SiteUrl } from '../models/configuration';
+import { DefaultImage, Name, CurrentHost } from '../models/configuration';
 import { LanguageCode, parseSSRContext } from '../models/Translation';
 
 /**
@@ -13,14 +13,14 @@ const siteNameJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: Name,
-  url: SiteUrl,
+  url: CurrentHost,
 };
 
 const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: Name,
-  url: SiteUrl,
+  url: CurrentHost,
   logo: DefaultImage,
   sameAs: ['https://github.com/idea2app'],
   email: 'contact@idea2app.cn',

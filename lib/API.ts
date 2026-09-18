@@ -4,7 +4,7 @@ import JWT from 'koa-jwt';
 import { HTTPError } from 'koajax';
 import { KoaOption, withKoa } from 'next-ssr-middleware';
 
-import { JWT_SECRET, VERCEL_URL } from '../../models/configuration';
+import { JWT_SECRET, CurrentHost } from '../models/configuration';
 
 export type JWTContext = ParameterizedContext<
   { jwtOriginalError: JsonWebTokenError } | { user: { email: string } }
@@ -57,8 +57,7 @@ export const withSafeKoa = <S, C>(...middlewares: Middleware<S, C>[]) =>
   withKoa<S, C>({} as KoaOption, safeAPI, ...middlewares);
 
 export function getTarget(link: URL | string): string {
-  const { origin = `https://${VERCEL_URL}`, href = `https://${VERCEL_URL}` } =
-    globalThis.location || {};
+  const { origin = CurrentHost, href = CurrentHost } = globalThis.location || {};
 
   return origin !== new URL(link, href).origin ? '_blank' : '_self';
 }

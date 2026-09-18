@@ -3,8 +3,8 @@ import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { generateText } from 'ai';
 import mime from 'mime';
 
-import { safeAPI } from '../core';
-import { resolveLarkFileURL } from '../Lark/core';
+import { safeAPI } from '../../../lib/API';
+import { resolveLarkFileURL } from '../../../lib/Lark';
 
 export const config = { api: { bodyParser: false } };
 
