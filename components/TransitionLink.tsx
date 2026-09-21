@@ -6,7 +6,9 @@ type ViewTransitionDocument = Document & {
   startViewTransition?: (updateCallback: () => Promise<unknown> | unknown) => void;
 };
 
-type TransitionLinkProps = ComponentProps<typeof Link>;
+type TransitionLinkProps = Omit<ComponentProps<typeof Link>, 'href'> & {
+  href: string;
+};
 
 export function TransitionLink({
   href,
@@ -14,11 +16,16 @@ export function TransitionLink({
   scroll,
   shallow,
   locale,
+  onClickCapture,
   ...props
 }: TransitionLinkProps) {
   const router = useRouter();
 
   const handleClickCapture = (event: MouseEvent<HTMLAnchorElement>) => {
+    onClickCapture?.(event);
+
+    if (event.defaultPrevented) return;
+
     if (
       event.button !== 0 ||
       event.metaKey ||

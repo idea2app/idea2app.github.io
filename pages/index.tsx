@@ -48,7 +48,8 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
 
 const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => {
   const i18n = useContext(I18nContext);
-  const { t } = i18n;
+  const { t } = i18n,
+    partners = PARTNERS_INFO(i18n);
 
   return (
     <main className="px-4 py-6 pt-16">
@@ -108,8 +109,8 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => {
                 key={index}
                 className="flex min-w-full shrink-0 flex-row flex-nowrap items-center justify-around gap-12"
               >
-                {PARTNERS_INFO(i18n).map(({ name, ...rest }) => (
-                  <PartnerOverview key={name} name={name} {...rest} />
+                {partners.map(({ name, ...rest }) => (
+                  <PartnerOverview key={`${index}-${name}`} name={name} {...rest} />
                 ))}
               </li>
             ))}
