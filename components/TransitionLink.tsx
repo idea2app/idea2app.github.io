@@ -45,7 +45,12 @@ export function TransitionLink({
     const nextURL = new URL(href, location.href),
       currentURL = new URL(router.asPath, location.href);
 
-    if (nextURL.pathname === currentURL.pathname && nextURL.search === currentURL.search)
+    const isHashOnlyNavigation =
+      nextURL.pathname === currentURL.pathname &&
+      nextURL.search === currentURL.search &&
+      nextURL.hash !== currentURL.hash;
+
+    if (isHashOnlyNavigation || nextURL.href === currentURL.href)
       return;
 
     event.preventDefault();
