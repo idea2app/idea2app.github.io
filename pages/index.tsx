@@ -102,7 +102,7 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => {
           {/**
            * @todo: polish the carousel animation
            */}
-          {Array.from({ length: 3 }).map((_, index) => (
+          {Array.from({ length: 2 }).map((_, index) => (
             <li
               key={index}
               className="flex min-w-full shrink-0 flex-row flex-nowrap items-center justify-around gap-12"
