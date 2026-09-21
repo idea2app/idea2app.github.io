@@ -98,21 +98,23 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => {
 
       <section id="partner" className="relative mx-auto max-w-screen-xl px-8 py-16">
         <div className="from-background absolute top-0 left-0 z-20 block h-24 w-24 bg-linear-to-r to-transparent" />
-        <ul className="partner-marquee flex flex-row flex-nowrap items-center justify-center overflow-hidden">
-          {/**
-           * @todo: polish the carousel animation
-           */}
-          {Array.from({ length: 2 }).map((_, index) => (
-            <li
-              key={index}
-              className="flex min-w-full shrink-0 flex-row flex-nowrap items-center justify-around gap-12"
-            >
-              {PARTNERS_INFO(i18n).map(({ name, ...rest }) => (
-                <PartnerOverview key={name} name={name} {...rest} />
-              ))}
-            </li>
-          ))}
-        </ul>
+        <div className="partner-marquee overflow-hidden">
+          <ul className="partner-marquee-track flex flex-row flex-nowrap items-center justify-center">
+            {/**
+             * @todo: polish the carousel animation
+             */}
+            {Array.from({ length: 2 }).map((_, index) => (
+              <li
+                key={index}
+                className="flex min-w-full shrink-0 flex-row flex-nowrap items-center justify-around gap-12"
+              >
+                {PARTNERS_INFO(i18n).map(({ name, ...rest }) => (
+                  <PartnerOverview key={name} name={name} {...rest} />
+                ))}
+              </li>
+            ))}
+          </ul>
+        </div>
         <div className="from-background absolute top-0 right-0 z-20 block h-24 w-24 bg-linear-to-l to-transparent" />
       </section>
 

@@ -14,24 +14,18 @@ export function TransitionLink({
   scroll,
   shallow,
   locale,
-  onClick,
-  target,
-  children,
   ...props
 }: TransitionLinkProps) {
   const router = useRouter();
 
-  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    onClick?.(event);
-
+  const handleClickCapture = (event: MouseEvent<HTMLAnchorElement>) => {
     if (
-      event.defaultPrevented ||
       event.button !== 0 ||
       event.metaKey ||
       event.ctrlKey ||
       event.shiftKey ||
       event.altKey ||
-      target ||
+      props.target ||
       typeof href !== 'string' ||
       !href.startsWith('/')
     )
@@ -44,7 +38,8 @@ export function TransitionLink({
     const nextURL = new URL(href, location.href),
       currentURL = new URL(router.asPath, location.href);
 
-    if (nextURL.href === currentURL.href) return;
+    if (nextURL.pathname === currentURL.pathname && nextURL.search === currentURL.search)
+      return;
 
     event.preventDefault();
 
@@ -63,11 +58,10 @@ export function TransitionLink({
       scroll={scroll}
       shallow={shallow}
       locale={locale}
-      target={target}
-      onClick={handleClick}
+      onClickCapture={handleClickCapture}
       {...props}
     >
-      {children}
+      {props.children}
     </Link>
   );
 }

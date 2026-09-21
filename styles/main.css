@@ -70,11 +70,11 @@ div:has(.next-error-h1) {
     animation-delay: 0.18s;
   }
 
-  .partner-marquee {
+  .partner-marquee-track {
     animation: carousel-scroll 24s linear infinite;
   }
 
-  .partner-marquee:hover {
+  .partner-marquee:hover .partner-marquee-track {
     animation-play-state: paused;
   }
 
