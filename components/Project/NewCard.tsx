@@ -1,10 +1,10 @@
 import { Project } from '@idea2app/data-server';
 import { observer } from 'mobx-react';
-import Link from 'next/link';
 import { FC, useContext } from 'react';
 
 import { I18nContext } from '../../models/Translation';
 import type zhCN from '../../translation/zh-CN';
+import { TransitionLink } from '../TransitionLink';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
@@ -43,7 +43,9 @@ export const ProjectCard: FC<Project> = observer(({ id, name, status = 0 }) => {
       </CardContent>
       <CardFooter>
         <Button asChild size="sm">
-          <Link href={`/dashboard/project/${id}`}>{t('view_evaluation')}</Link>
+          <TransitionLink href={`/dashboard/project/${id}`}>
+            {t('view_evaluation')}
+          </TransitionLink>
         </Button>
       </CardFooter>
     </Card>

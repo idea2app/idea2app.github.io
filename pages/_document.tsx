@@ -26,6 +26,25 @@ const organizationJsonLd = {
   email: 'contact@idea2app.cn',
 };
 
+const speculationRules = {
+  prerender: [
+    {
+      where: {
+        and: [{ href_matches: '/*' }, { not: { href_matches: '/dashboard*' } }],
+      },
+      eagerness: 'moderate',
+    },
+  ],
+  prefetch: [
+    {
+      where: {
+        and: [{ href_matches: '/*' }, { not: { href_matches: '/dashboard*' } }],
+      },
+      eagerness: 'moderate',
+    },
+  ],
+};
+
 interface CustomDocumentProps {
   language: LanguageCode;
   colorScheme: ColorScheme;
@@ -67,6 +86,7 @@ export default class CustomDocument extends Document<CustomDocumentProps> {
             rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=attach_file_add,chat,code,dark_mode,diversity_3,fingerprint,key,keyboard_arrow_down,language,light_mode,menu,translate,trending_up,visibility&display=swap"
           />
+          <script type="speculationrules">{JSON.stringify(speculationRules)}</script>
           <script type="application/ld+json">{JSON.stringify(siteNameJsonLd)}</script>
           <script type="application/ld+json">{JSON.stringify(organizationJsonLd)}</script>
         </Head>

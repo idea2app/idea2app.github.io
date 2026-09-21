@@ -5,6 +5,7 @@ import { FC, useContext } from 'react';
 import { Minute, Second } from 'web-utility';
 
 import { Button } from '@/components/ui/button';
+import { TransitionLink } from '@/components/TransitionLink';
 import { PartnerOverview } from '../components/Client/Partner';
 import { GitListLayout } from '../components/Git';
 import { SymbolIcon } from '../components/Icon';
@@ -54,11 +55,13 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => {
       <PageHead />
 
       <section className="container mx-auto flex max-w-screen-lg flex-col gap-4">
-        <div className="flex flex-row items-center justify-around py-12">
-          <BrandLogo className="!h-48 !w-48 dark:!hidden" variant="black" />
-          <BrandLogo className="!hidden !h-48 !w-48 dark:!block" variant="white" />
+        <div className="landing-hero grid items-center gap-8 py-12 md:grid-cols-[auto_1fr]">
+          <div className="landing-hero-logo">
+            <BrandLogo className="!h-48 !w-48 dark:!hidden" variant="black" />
+            <BrandLogo className="!hidden !h-48 !w-48 dark:!block" variant="white" />
+          </div>
 
-          <header className="border-s-2 border-s-black p-4 dark:border-s-white">
+          <header className="landing-hero-copy border-s-2 border-s-black p-4 dark:border-s-white">
             <p>{t('idea2app_summary')}</p>
             <p>{t('idea2app_slogan')}</p>
 
@@ -70,7 +73,7 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => {
           {service(i18n).map(({ title, summary, icon, buttonText, buttonLink }) => (
             <li
               key={title}
-              className="bg-primary/10 flex flex-col gap-4 rounded-3xl p-4 md:col-span-2 last:md:col-start-2 lg:col-span-1 last:lg:col-start-3 dark:border-0"
+              className="landing-service-card bg-primary/10 flex flex-col gap-4 rounded-3xl p-4 md:col-span-2 last:md:col-start-2 lg:col-span-1 last:lg:col-start-3 dark:border-0"
               tabIndex={-1}
             >
               <h5 className="flex flex-shrink-0 items-center gap-4 lg:text-nowrap">
@@ -80,13 +83,13 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => {
               <p className="flex-1 text-neutral-500">{summary}</p>
 
               <Button className="flex-shrink-0 !rounded-full md:self-center" asChild>
-                <a
-                  href={buttonLink}
-                  target={buttonLink.startsWith('http') ? '_blank' : undefined}
-                  rel="noreferrer"
-                >
-                  {buttonText}
-                </a>
+                {buttonLink.startsWith('http') ? (
+                  <a href={buttonLink} target="_blank" rel="noreferrer">
+                    {buttonText}
+                  </a>
+                ) : (
+                  <TransitionLink href={buttonLink}>{buttonText}</TransitionLink>
+                )}
               </Button>
             </li>
           ))}
@@ -95,7 +98,7 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => {
 
       <section id="partner" className="relative mx-auto max-w-screen-xl px-8 py-16">
         <div className="from-background absolute top-0 left-0 z-20 block h-24 w-24 bg-linear-to-r to-transparent" />
-        <ul className="hover:animation-pause-all flex flex-row flex-nowrap items-center justify-center gap-12 overflow-hidden">
+        <ul className="partner-marquee hover:animation-pause-all flex flex-row flex-nowrap items-center justify-center gap-12 overflow-hidden">
           {/**
            * @todo: polish the carousel animation
            */}
@@ -114,7 +117,7 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => {
       </section>
 
       <Section title={t('member')} link="/member">
-        <div className="relative max-h-[45rem] overflow-hidden">
+        <div className="landing-section relative max-h-[45rem] overflow-hidden">
           <ul className="columns-1 gap-4 overflow-hidden sm:columns-2 md:columns-3">
             {members.map(item => (
               <li key={String(item.id)} className="mb-4 break-inside-avoid">
@@ -127,7 +130,9 @@ const HomePage: FC<HomePageProps> = observer(({ repositories, members }) => {
       </Section>
 
       <Section title={t('open_source_project')} link="/open-source">
-        <GitListLayout defaultData={repositories} />
+        <div className="landing-section">
+          <GitListLayout defaultData={repositories} />
+        </div>
       </Section>
     </main>
   );
