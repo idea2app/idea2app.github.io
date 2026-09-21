@@ -30,7 +30,7 @@ const speculationRules = {
   prerender: [
     {
       where: {
-        and: [{ href_matches: '/*' }, { not: { href_matches: '/dashboard*' } }],
+        or: [{ href_matches: '/member*' }, { href_matches: '/open-source*' }],
       },
       eagerness: 'moderate',
     },
@@ -38,7 +38,11 @@ const speculationRules = {
   prefetch: [
     {
       where: {
-        and: [{ href_matches: '/*' }, { not: { href_matches: '/dashboard*' } }],
+        or: [
+          { href_matches: '/member*' },
+          { href_matches: '/open-source*' },
+          { href_matches: '/project*' },
+        ],
       },
       eagerness: 'moderate',
     },

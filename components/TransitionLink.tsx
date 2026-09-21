@@ -39,7 +39,12 @@ export function TransitionLink({
 
     const documentWithTransition = document as ViewTransitionDocument;
 
-    if (!documentWithTransition.startViewTransition || href === router.asPath) return;
+    if (!documentWithTransition.startViewTransition) return;
+
+    const nextURL = new URL(href, location.href),
+      currentURL = new URL(router.asPath, location.href);
+
+    if (nextURL.href === currentURL.href) return;
 
     event.preventDefault();
 

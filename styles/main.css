@@ -70,7 +70,11 @@ div:has(.next-error-h1) {
     animation-delay: 0.18s;
   }
 
-  .partner-marquee:hover .animate-carousel-scroll {
+  .partner-marquee {
+    animation: carousel-scroll 24s linear infinite;
+  }
+
+  .partner-marquee:hover {
     animation-play-state: paused;
   }
 
@@ -86,9 +90,6 @@ div:has(.next-error-h1) {
     box-shadow: 0 1rem 2.5rem color-mix(in srgb, currentColor 10%, transparent);
   }
 
-  .animate-carousel-scroll {
-    animation: carousel-scroll 24s linear infinite;
-  }
 }
 
 @keyframes rise-in {
@@ -129,6 +130,6 @@ div:has(.next-error-h1) {
   }
 
   to {
-    transform: translateX(-100%);
+    transform: translateX(calc(-100% / 3));
   }
 }
