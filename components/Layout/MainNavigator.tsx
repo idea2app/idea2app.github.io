@@ -1,9 +1,8 @@
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { ObservedComponent } from 'mobx-react-helper';
-import Link from 'next/link';
-
 import { i18n, I18nContext, LanguageName } from '../../models/Translation';
+import { TransitionLink } from '../TransitionLink';
 import { SymbolIcon } from '../Icon';
 import { Button } from '../ui/button';
 import {
@@ -28,9 +27,9 @@ export class MainNavigator extends ObservedComponent<{ menu: MenuLink[] }, typeo
   renderLinks = () =>
     this.props.menu.map(({ title, href, target }) => (
       <Button key={title} variant="ghost" asChild>
-        <Link className="py-1" href={String(href)} target={target}>
+        <TransitionLink className="py-1" href={String(href)} target={target}>
           {title}
-        </Link>
+        </TransitionLink>
       </Button>
     ));
 
@@ -83,18 +82,18 @@ export class MainNavigator extends ObservedComponent<{ menu: MenuLink[] }, typeo
 
             <BrandLogo className="h-8 w-8 dark:!hidden" variant="black" />
             <BrandLogo className="hidden h-8 w-8 dark:!block" variant="white" />
-            <Link translate="no" className="font-bold uppercase" href="/" rel="home">
+            <TransitionLink translate="no" className="font-bold uppercase" href="/" rel="home">
               idea2app
-            </Link>
+            </TransitionLink>
           </div>
 
           <nav className="item-center hidden flex-row gap-2 md:flex">{this.renderLinks()}</nav>
 
           <div className="flex flex-row items-center gap-2 sm:gap-3">
             <Button asChild variant="ghost" size="icon-sm" aria-label="idea2app's GitHub account">
-              <Link href="https://github.com/idea2app" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/idea2app" target="_blank" rel="noopener noreferrer">
                 <GithubIcon />
-              </Link>
+              </a>
             </Button>
             <ColorModeIconDropdown />
             {this.renderI18nSwitch()}
