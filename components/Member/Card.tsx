@@ -1,10 +1,10 @@
 import { marked } from 'marked';
 import { observer } from 'mobx-react';
-import Link from 'next/link';
 import { ComponentProps, FC } from 'react';
 
 import { Member } from '../../models/Member';
 import { GithubIcon } from '../Layout/Svg';
+import { TransitionLink } from '../TransitionLink';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
@@ -32,14 +32,14 @@ export const MemberCard: FC<MemberCardProps> = observer(
 
       <div className="flex w-auto items-center gap-4">
         {github && (
-          <Link href={`/member/${String(nickname)}`} aria-label={String(nickname)}>
+          <TransitionLink href={`/member/${String(nickname)}`} aria-label={String(nickname)}>
             <img
               style={{ width: '4rem', height: '4rem' }}
               className="rounded-full object-cover"
               src={`https://github.com/${String(github)}.png`}
               alt={String(github)}
             />
-          </Link>
+          </TransitionLink>
         )}
         <hgroup>
           <h4 className="text-base font-bold">{String(nickname)}</h4>
