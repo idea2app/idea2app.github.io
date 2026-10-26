@@ -14,12 +14,11 @@ RUN npm i pnpm@latest -g
 WORKDIR /app
 
 FROM base AS build
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-    --mount=type=secret,id=gh_pat \
-    sh -ec 'pnpm config set "//npm.pkg.github.com/:_authToken" "$(cat /run/secrets/gh_pat)";  pnpm e i --frozen-lockfile;  pnpm config delete "//npm.pkg.github.com/:_authToken";'
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 COPY patches ./patches
-RUN pnpm fetch --frozen-lockfile --store-dir=/pnpm/store
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    --mount=type=secret,id=gh_pat \
+    sh -ec 'pnpm config set "//npm.pkg.github.com/:_authToken" "$(cat /run/secrets/gh_pat)";  pnpm fetch --frozen-lockfile --store-dir=/pnpm/store;  pnpm config delete "//npm.pkg.github.com/:_authToken";'
 COPY . .
 RUN pnpm i --offline --frozen-lockfile --store-dir=/pnpm/store
 RUN CI=true  pnpm build
